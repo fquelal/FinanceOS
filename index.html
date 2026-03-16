@@ -314,14 +314,34 @@ hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
 <div class="overlay" id="modal-settings">
   <div class="modal">
     <div class="modal-header"><span class="modal-title">⚙️ Settings</span><button class="close-btn" onclick="closeModal('settings')">✕</button></div>
-    <div style="background:rgba(108,99,255,.1);border:1px solid rgba(108,99,255,.25);border-radius:12px;padding:14px;margin-bottom:14px">
+
+    <!-- Auto-save info -->
+    <div style="background:rgba(108,99,255,.1);border:1px solid rgba(108,99,255,.25);border-radius:12px;padding:14px;margin-bottom:12px">
       <div style="font-size:12px;font-weight:700;color:var(--accent2);margin-bottom:5px">💾 Auto-Save Active</div>
       <div style="font-size:12px;color:var(--muted);line-height:1.6">Data saves automatically in <strong style="color:var(--text)">this browser only</strong> via local storage. Nothing is ever sent anywhere.</div>
     </div>
-    <hr/>
+
+    <!-- Demo Mode -->
+    <div style="background:rgba(251,146,60,.07);border:1px solid rgba(251,146,60,.2);border-radius:12px;padding:14px;margin-bottom:12px">
+      <div style="font-size:13px;font-weight:700;color:#fb923c;margin-bottom:5px">🎭 Demo Mode</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.6">Loads realistic sample data across all sections - income, expenses, bills, debts, cards, and transactions. Great for testing or showcasing the app.</div>
+      <button class="btn btn-full" style="background:rgba(251,146,60,.15);color:#fb923c;padding:10px" onclick="loadDemoData()">🎭 Load Demo Data</button>
+    </div>
+
+    <!-- Export / Import -->
+    <div style="background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.2);border-radius:12px;padding:14px;margin-bottom:12px">
+      <div style="font-size:13px;font-weight:700;color:var(--green);margin-bottom:5px">📦 Backup & Restore</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.6">Export your data as a <strong style="color:var(--text)">.json</strong> file saved to your device. Import it any time to restore - even after app updates or on a new device.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <button class="btn btn-full" style="background:rgba(34,197,94,.15);color:var(--green);padding:10px" onclick="exportData()">⬇️ Export Backup</button>
+        <button class="btn btn-full" style="background:rgba(108,99,255,.15);color:var(--accent2);padding:10px" onclick="importData()">⬆️ Import Backup</button>
+      </div>
+    </div>
+
+    <!-- Reset -->
     <div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:12px;padding:14px">
       <div style="font-size:13px;font-weight:700;color:var(--red);margin-bottom:5px">⚠️ Reset All Data</div>
-      <div style="font-size:12px;color:var(--muted);margin-bottom:12px">Permanently erases all data. Cannot be undone.</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:12px">Permanently erases all data from this browser. Cannot be undone.</div>
       <button class="btn btn-danger btn-full" onclick="confirmReset()">🗑️ Reset Everything</button>
     </div>
   </div>
@@ -425,7 +445,7 @@ hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
 
 <script>
 'use strict';
-const STORAGE_KEY='financeOS_v3';
+const STORAGE_KEY='financeOS_data';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[]};
 let currentTxnType='Withdrawal';
 let debtMethod='avalanche';
@@ -452,12 +472,18 @@ function saveData(){
   catch(e){console.warn(e);}
 }
 function loadData(){
-  try{const s=localStorage.getItem(STORAGE_KEY);if(s)data=JSON.parse(s);}
+  try{
+    // Migrate from older versioned keys if needed
+    const legacy=['financeOS_v3','financeOS_v2','financeOS_v1'];
+    let s=localStorage.getItem(STORAGE_KEY);
+    if(!s){ for(const k of legacy){ s=localStorage.getItem(k); if(s){localStorage.setItem(STORAGE_KEY,s); legacy.forEach(lk=>localStorage.removeItem(lk)); break;} } }
+    if(s) data=JSON.parse(s);
+  }
   catch(e){console.warn(e);}
 }
-function showToast(){
-  const t=$('toast');t.classList.add('show');
-  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),1800);
+function showToast(msg){
+  const t=$('toast');t.textContent=msg||'Saved';t.classList.add('show');
+  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2200);
 }
 function confirmReset(){
   if(confirm('Reset ALL data? Cannot be undone.')){
@@ -467,8 +493,105 @@ function confirmReset(){
     alert('All data has been reset.');
   }
 }
+function exportData(){
+  try{
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;
+    const d=new Date();
+    a.download=`financeos-backup-${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('Backup downloaded!');
+  }catch(e){alert('Export failed: '+e.message);}
+}
+function importData(){
+  const input=document.createElement('input');
+  input.type='file';input.accept='.json';
+  input.onchange=e=>{
+    const file=e.target.files[0];if(!file)return;
+    const reader=new FileReader();
+    reader.onload=ev=>{
+      try{
+        const parsed=JSON.parse(ev.target.result);
+        // Validate structure
+        if(typeof parsed!=='object'||Array.isArray(parsed)) throw new Error('Invalid file format');
+        const valid={income:[],expenses:[],bills:[],cards:[],transactions:[]};
+        Object.keys(valid).forEach(k=>{ if(Array.isArray(parsed[k])) valid[k]=parsed[k]; });
+        if(confirm(`Import data? This will replace your current data.\n\nFound: ${valid.income.length} income, ${valid.expenses.length} expenses, ${valid.bills.length} bills, ${valid.cards.length} cards, ${valid.transactions.length} transactions.`)){
+          data=valid;
+          saveData();
+          closeModal('settings');
+          renderAll();
+          showToast('Data imported!');
+        }
+      }catch(err){alert('Import failed - invalid backup file.\n'+err.message);}
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+}
 
-// ── NAVIGATION ───────────────────────────────────
+function loadDemoData(){
+  if(!confirm('Load demo data? This will replace your current data with realistic sample data.\n\nTip: Export a backup first if you have real data to keep.')) return;
+  const now=new Date();
+  const dt=(offsetDays)=>{ const d=new Date(now); d.setDate(d.getDate()+offsetDays); return d.toISOString().split('T')[0]; };
+  const pastDt=(offsetDays)=>dt(-offsetDays);
+
+  data={
+    income:[
+      {id:1001, source:'Salary - SoftNetworks', amount:4200, frequency:'Bi-weekly', date:pastDt(3)},
+      {id:1002, source:'Freelance Tech Support', amount:650, frequency:'Monthly', date:pastDt(10)},
+      {id:1003, source:'Tax Refund', amount:1200, frequency:'One-time', date:pastDt(20)},
+    ],
+    expenses:[
+      {id:2001, category:'Housing', description:'Rent', amount:1450, frequency:'Monthly', date:pastDt(1)},
+      {id:2002, category:'Transport', description:'Car insurance', amount:187, frequency:'Monthly', date:pastDt(5)},
+      {id:2003, category:'Food', description:'Groceries', amount:320, frequency:'Monthly', date:pastDt(4)},
+      {id:2004, category:'Utilities', description:'Electric & gas', amount:145, frequency:'Monthly', date:pastDt(2)},
+      {id:2005, category:'Subscriptions', description:'Netflix, Spotify, iCloud', amount:42, frequency:'Monthly', date:pastDt(8)},
+      {id:2006, category:'Healthcare', description:'Health insurance copay', amount:95, frequency:'Monthly', date:pastDt(6)},
+      {id:2007, category:'Entertainment', description:'Dining out', amount:180, frequency:'Monthly', date:pastDt(9)},
+      {id:2008, category:'Savings', description:'Emergency fund', amount:200, frequency:'Monthly', date:pastDt(1)},
+    ],
+    bills:[
+      // Regular bills
+      {id:3001, name:'Rent', amount:1450, dueDate:dt(2),  recurring:'Monthly',  status:'Pending',   btype:'bill', balance:0, apr:0},
+      {id:3002, name:'Electric & Gas', amount:145, dueDate:dt(5),  recurring:'Monthly',  status:'Scheduled', btype:'bill', balance:0, apr:0},
+      {id:3003, name:'Internet - Xfinity', amount:79,  dueDate:dt(10), recurring:'Monthly',  status:'Pending',   btype:'bill', balance:0, apr:0},
+      {id:3004, name:'Car Insurance', amount:187, dueDate:dt(8),  recurring:'Monthly',  status:'Paid',      btype:'bill', balance:0, apr:0},
+      {id:3005, name:'Phone Bill', amount:65,  dueDate:pastDt(2), recurring:'Monthly',  status:'Paid',      btype:'bill', balance:0, apr:0},
+      // Debts
+      {id:3006, name:'Chase Sapphire Card', amount:85,  dueDate:dt(6),  recurring:'Monthly',  status:'Pending',   btype:'debt', balance:4250,  apr:22.99},
+      {id:3007, name:'Student Loan',        amount:210, dueDate:dt(15), recurring:'Monthly',  status:'Scheduled', btype:'debt', balance:18400, apr:5.75},
+      {id:3008, name:'Car Loan - Honda',    amount:340, dueDate:dt(3),  recurring:'Monthly',  status:'Pending',   btype:'debt', balance:9800,  apr:7.49},
+      {id:3009, name:'Capital One Card',    amount:35,  dueDate:pastDt(1), recurring:'Monthly', status:'Overdue',  btype:'debt', balance:1150,  apr:26.99},
+    ],
+    cards:[
+      {id:4001, name:'Discover it Card',   last4:'4823', reminderDays:60, nextReminder:dt(12),  notes:'Use for online purchases'},
+      {id:4002, name:'Amex Gold (old)',     last4:'9901', reminderDays:90, nextReminder:dt(4),   notes:'Keep open for credit age'},
+      {id:4003, name:'Citi Double Cash',    last4:'3377', reminderDays:60, nextReminder:dt(45),  notes:'2% cashback - use monthly'},
+    ],
+    transactions:[
+      {id:5001, description:'ATM - Walgreens',         amount:200, type:'Withdrawal',   date:pastDt(1)},
+      {id:5002, description:'Extra Chase card payment', amount:150, type:'Extra Payment', date:pastDt(3)},
+      {id:5003, description:'Birthday cash gift',       amount:100, type:'Adjustment',   date:pastDt(7)},
+      {id:5004, description:'ATM - Chase branch',       amount:300, type:'Withdrawal',   date:pastDt(12)},
+      {id:5005, description:'Extra student loan payment',amount:100, type:'Extra Payment', date:pastDt(15)},
+    ]
+  };
+  saveData();
+  closeModal('settings');
+  // Navigate to dashboard
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
+  $('dashboard').classList.add('active');
+  document.querySelector('.nav-item').classList.add('active');
+  const mob=$('mobile-page-title'); if(mob) mob.textContent='Dashboard';
+  renderAll();
+  showToast('Demo data loaded!');
+}
 const pageTitles={dashboard:'Dashboard',budget:'Budget',bills:'Bills & Payments',debt:'Debt Planner',cards:'Inactive Cards',quick:'Quick Update'};
 function show(sec,btn){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
