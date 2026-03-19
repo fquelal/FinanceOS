@@ -1,2 +1,2 @@
 # FinanceOS
-Finance Tracker
+Personal Finance Tools
