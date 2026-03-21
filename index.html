@@ -83,6 +83,10 @@ main{max-width:900px;padding:20px 20px 60px;}
 
 /* ── ALERTS ── */
 .alert{border-radius:10px;padding:10px 14px;margin-bottom:8px;font-size:13px;display:flex;align-items:center;gap:8px;animation:fadeIn .3s ease;}
+.alert-tap{cursor:pointer;justify-content:space-between;transition:opacity .15s;}
+.alert-tap:hover{opacity:.8;}
+.alert-tap .alert-chevron{font-size:12px;opacity:.6;flex-shrink:0;}
+.alert-tap .alert-body{flex:1;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(-4px);}to{opacity:1;}}
 
 /* ── STAT CARDS ── */
@@ -184,7 +188,7 @@ hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
 .pin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:220px;}
 .pin-key{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;font-size:20px;font-weight:600;cursor:pointer;text-align:center;color:var(--text);font-family:var(--font-b);transition:background .1s,transform .1s;}
 .pin-key:active{background:var(--border2);transform:scale(.95);}
-.pin-key.wide{grid-column:span 2;}
+.pin-key
 .pin-key.del{font-size:16px;}
 
 /* ── CHART ── */
@@ -192,7 +196,7 @@ hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
 canvas{width:100%!important;}
 
 /* ── BUDGET TARGETS ── */
-.target-bar-wrap{margin-top:6px;}
+
 .target-bar-bg{background:var(--border);border-radius:4px;height:6px;overflow:hidden;margin-top:4px;}
 .target-bar-fill{height:6px;border-radius:4px;transition:width .4s ease;}
 
@@ -201,29 +205,90 @@ canvas{width:100%!important;}
 .nw-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;}
 
 /* ── UTILITY CLASSES (extracted from repeated inline styles) ── */
-.flex-between{display:flex;justify-content:space-between;align-items:center;}
+
 .flex-start{display:flex;align-items:center;gap:10px;}
 .flex-wrap{display:flex;flex-wrap:wrap;gap:10px;}
-.info-box{background:rgba(255,255,255,.04);border-radius:8px;padding:8px;}
+
 .info-box .stat-label{margin-bottom:2px;}
-.mb-4{margin-bottom:4px;}
-.mb-8{margin-bottom:8px;}
-.mb-12{margin-bottom:12px;}
-.mb-14{margin-bottom:14px;}
-.mb-16{margin-bottom:16px;}
-.mb-18{margin-bottom:18px;}
-.text-muted{color:var(--muted);}
-.text-green{color:var(--green);}
-.text-red{color:var(--red);}
-.text-accent{color:var(--accent2);}
-.f-10{font-size:10px;}
-.f-11{font-size:11px;}
-.f-12{font-size:12px;}
-.f-13{font-size:13px;}
-.f-700{font-weight:700;}
-.f-600{font-weight:600;}
-.br-12{border-radius:12px;}
-.br-10{border-radius:10px;}
+
+/* ── SWIPE TO DELETE ── */
+.swipe-wrap{position:relative;overflow:hidden;border-radius:12px;margin-bottom:11px;}
+.swipe-wrap .card,.swipe-wrap .row{margin-bottom:0;border-radius:12px;transition:transform .25s ease;touch-action:pan-y;will-change:transform;}
+.swipe-delete-zone{position:absolute;right:0;top:0;height:100%;width:80px;background:var(--red);display:flex;align-items:center;justify-content:center;border-radius:0 12px 12px 0;cursor:pointer;transform:translateX(80px);transition:transform .25s ease;}
+.swipe-delete-zone svg{width:22px;height:22px;fill:#fff;}
+.swipe-wrap.swiped .swipe-delete-zone{transform:translateX(0);}
+/* Empty state guidance */
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:36px 20px;text-align:center;gap:10px;}
+.empty-state .es-icon{font-size:40px;opacity:.6;}
+.empty-state .es-title{font-size:15px;font-weight:700;color:var(--text);}
+.empty-state .es-desc{font-size:13px;color:var(--muted);line-height:1.5;max-width:260px;}
+.empty-state .es-btn{margin-top:6px;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:10px 22px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--font-b);}
+.empty-state .es-btn:hover{opacity:.85;}
+/* Bill sort toggles */
+.sort-bar{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+.sort-btn{background:rgba(255,255,255,.06);border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;font-family:var(--font-b);transition:all .15s;}
+.sort-btn.active{background:var(--accent);color:#fff;}
+/* Search bar */
+.search-bar{position:relative;margin-bottom:14px;}
+.search-bar input{width:100%;background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:9px 12px 9px 36px;font-size:13px;color:var(--text);font-family:var(--font-b);box-sizing:border-box;}
+.search-bar input:focus{outline:none;border-color:var(--accent);}
+.search-bar .search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none;}
+.search-bar .clear-btn{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;padding:0;line-height:1;}
+
+@media(hover:hover) and (pointer:fine){.show-desktop{display:inline-flex!important;}}
+@media(hover:none),(pointer:coarse){.show-desktop{display:none!important;}}
+
+/* ── MONTHLY SNAPSHOT ── */
+#snapshot-card{margin-bottom:20px;}
+
+.snap-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:12px;}
+.snap-item{background:rgba(255,255,255,.03);border-radius:8px;padding:10px 12px;}
+.snap-item .si-label{font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;}
+.snap-item .si-val{font-size:16px;font-weight:700;}
+.snap-item .si-delta{font-size:11px;margin-top:2px;}
+
+/* ── SAVINGS RATE ── */
+.savings-rate-bar{height:8px;border-radius:4px;background:rgba(255,255,255,.06);overflow:hidden;margin-top:6px;}
+.savings-rate-fill{height:100%;border-radius:4px;transition:width .4s ease;}
+/* ── DEBT PROGRESS ── */
+.debt-progress-wrap{margin-bottom:18px;}
+.debt-progress-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.debt-progress-bar{height:12px;border-radius:6px;background:rgba(255,255,255,.06);overflow:hidden;}
+.debt-progress-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--green),#22c55e88);transition:width .5s ease;}
+/* ── NAV BADGE ── */
+.nav-badge{display:inline-block;background:var(--yellow);color:#000;font-size:9px;font-weight:700;border-radius:8px;padding:1px 5px;margin-left:4px;vertical-align:middle;line-height:14px;}
+.nav-badge.red{background:var(--red);color:#fff;}
+
+/* ── MONTH NAVIGATOR ── */
+.month-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:8px 12px;}
+.month-nav .mn-btn{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:0 8px;line-height:1;transition:color .15s;font-family:var(--font-b);}
+.month-nav .mn-btn:hover{color:var(--text);}
+.month-nav .mn-btn:disabled{opacity:.3;cursor:default;}
+.month-nav .mn-label{font-size:14px;font-weight:700;color:var(--text);text-align:center;flex:1;}
+
+.drill-panel{display:none;margin-top:10px;border-top:1px solid var(--border);padding-top:10px;}
+.drill-panel.open{display:block;}
+.drill-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:12px;}
+.drill-row:last-child{border-bottom:none;}
+.drill-row .dr-left{display:flex;flex-direction:column;gap:2px;}
+.drill-row .dr-desc{color:var(--text);font-weight:600;}
+.drill-row .dr-sub{color:var(--muted);font-size:11px;}
+.drill-row .dr-amt{font-weight:700;color:var(--red);white-space:nowrap;}
+.drill-toggle{display:flex;align-items:center;gap:6px;cursor:pointer;font-size:11px;color:var(--muted);margin-top:6px;user-select:none;}
+.drill-toggle:hover{color:var(--text);}
+.drill-toggle .dt-icon{transition:transform .2s;display:inline-block;font-style:normal;}
+.drill-toggle.open .dt-icon{transform:rotate(90deg);}
+.drill-empty{font-size:11px;color:var(--muted);padding:8px 0;font-style:italic;}
+
+
+.txn-summary .ts-item{display:flex;flex-direction:column;gap:2px;}
+.txn-summary .ts-label{font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.6px;}
+
+.txn-summary{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:rgba(255,255,255,.03);border-radius:8px;margin-bottom:12px;font-size:12px;flex-wrap:wrap;gap:6px;}
+
+.txn-summary-item .ts-val{font-size:15px;font-weight:700;}
+.txn-summary-item 
+
 </style>
 </head>
 <body>
@@ -263,10 +328,10 @@ canvas{width:100%!important;}
   <div class="brand">💼 FinanceOS<span data-i18n="Personal Finance Tools">Personal Finance Tools</span></div>
   <button class="nav-item active" onclick="show('dashboard',this)"><span class="ni">📊</span><span data-i18n="Dashboard">Dashboard</span></button>
   <button class="nav-item" onclick="show('budget',this)"><span class="ni">💰</span><span data-i18n="Cash Flow">Cash Flow</span></button>
-  <button class="nav-item" onclick="show('bills',this)"><span class="ni">📋</span><span data-i18n="Bills">Bills</span></button>
+  <button class="nav-item" onclick="show('bills',this)"><span class="ni">📋</span><span data-i18n="Bills">Bills</span><span id="bills-badge" class="nav-badge red" style="display:none"></span></button>
   <button class="nav-item" onclick="show('debt',this)"><span class="ni">📉</span><span data-i18n="Debt Planner">Debt Planner</span></button>
   <button class="nav-item" onclick="show('networth',this)"><span class="ni">🏦</span><span data-i18n="Net Worth">Net Worth</span></button>
-  <button class="nav-item" onclick="show('insights',this)"><span class="ni">📈</span><span data-i18n="Insights">Insights</span></button>
+  <button class="nav-item" onclick="show('insights',this)"><span class="ni">📈</span><span data-i18n="Insights">Insights</span><span id="insights-badge" class="nav-badge" style="display:none"></span></button>
   <button class="nav-item" onclick="show('cards',this)"><span class="ni">💳</span><span data-i18n="Cards">Cards</span></button>
   <button class="nav-item" onclick="show('quick',this)"><span class="ni">⚡</span><span data-i18n="Quick Update">Quick Update</span></button>
   <div class="nav-settings">
@@ -282,7 +347,6 @@ canvas{width:100%!important;}
     <button onclick="toggleSidebar()">&#9776;</button>
     <span id="mobile-page-title" data-i18n="Dashboard">Dashboard</span>
   </div>
-  <div id="alerts-bar"><div id="alerts"></div></div>
   <main>
 
     <!-- DASHBOARD -->
@@ -291,6 +355,7 @@ canvas{width:100%!important;}
         <h2 class="sec-title" data-i18n="Financial Overview">Financial Overview</h2>
         <div id="today-display" style="font-size:15px;color:var(--muted);font-weight:600"></div>
       </div>
+      <div id="dash-alerts"></div>
       <div class="card-grid">
         <div class="stat-card"><div class="stat-label" data-i18n="Total Income">Total Income</div><div class="stat-value" id="d-income" style="color:var(--green)">$0.00</div></div>
         <div class="stat-card"><div class="stat-label" data-i18n="Total Expenses">Total Expenses</div><div class="stat-value" id="d-expenses" style="color:var(--yellow)">$0.00</div></div>
@@ -315,6 +380,7 @@ canvas{width:100%!important;}
     <!-- BUDGET -->
     <div id="budget" class="section">
       <!-- Summary bar -->
+      <div id="budget-alerts"></div>
       <div class="card-grid" style="margin-bottom:18px">
         <div class="stat-card"><div class="stat-label" data-i18n="Money In">Money In</div><div class="stat-value" id="cf-in" style="color:var(--green)">$0.00</div></div>
         <div class="stat-card"><div class="stat-label" data-i18n="Money Out">Money Out</div><div class="stat-value" id="cf-out" style="color:var(--red)">$0.00</div></div>
@@ -350,6 +416,12 @@ canvas{width:100%!important;}
       <div class="sec-header">
         <h2 class="sec-title" data-i18n="Bills &amp; Payments">Bills &amp; Payments</h2>
       </div>
+      <div id="bills-alerts"></div>
+      <div class="sort-bar" id="bill-sort-bar">
+        <button class="sort-btn active" onclick="setBillSort('date')" id="bs-date" data-i18n="Due Date">Due Date</button>
+        <button class="sort-btn" onclick="setBillSort('status')" id="bs-status" data-i18n="Status">Status</button>
+        <button class="sort-btn" onclick="setBillSort('amount')" id="bs-amount" data-i18n="Amount">Amount</button>
+      </div>
       <div id="bill-list"></div>
     </div>
 
@@ -358,6 +430,7 @@ canvas{width:100%!important;}
       <div class="sec-header">
         <h2 class="sec-title" data-i18n="Debt Planner">Debt Planner</h2>
       </div>
+      <div id="debt-alerts"></div>
       <div id="debt-no-data" style="display:none">
         <div class="card" style="text-align:center;padding:32px">
           <div style="font-size:32px;margin-bottom:12px">📉</div>
@@ -385,6 +458,21 @@ canvas{width:100%!important;}
           </div>
         </div>
 
+        <!-- Debt Payoff Progress -->
+        <div class="debt-progress-wrap card" id="debt-progress-wrap" style="display:none;margin-bottom:18px">
+          <div class="debt-progress-header">
+            <div>
+              <div style="font-size:13px;font-weight:700;color:var(--text)" data-i18n="Overall Payoff Progress">Overall Payoff Progress</div>
+              <div style="font-size:11px;color:var(--muted)" id="debt-progress-label"></div>
+            </div>
+            <div style="font-size:20px;font-weight:700;color:var(--green)" id="debt-progress-pct"></div>
+          </div>
+          <div class="debt-progress-bar"><div class="debt-progress-fill" id="debt-progress-fill" style="width:0%"></div></div>
+          <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:10px;color:var(--muted)">
+            <span id="debt-progress-paid"></span>
+            <span id="debt-progress-original"></span>
+          </div>
+        </div>
         <div class="summary-grid" id="debt-summary"></div>
         <div id="debt-list"></div>
       </div>
@@ -399,6 +487,8 @@ canvas{width:100%!important;}
           <button class="btn btn-primary btn-sm" onclick="openModal('asset')">+ Asset</button>
         </div>
       </div>
+
+      <div id="networth-alerts"></div>
 
       <!-- Summary -->
       <div class="nw-grid" style="margin-bottom:20px">
@@ -423,10 +513,10 @@ canvas{width:100%!important;}
       </div>
     </div>
 
-
     <!-- INSIGHTS -->
     <div id="insights" class="section">
       <h2 class="sec-title" style="margin-bottom:18px" data-i18n="Insights">Insights</h2>
+      <div id="insights-alerts"></div>
 
       <!-- Spending Chart -->
       <div class="card" style="margin-bottom:16px">
@@ -455,15 +545,27 @@ canvas{width:100%!important;}
         </div>
         <div id="budget-targets"></div>
       </div>
+      <!-- Monthly Snapshot -->
+      <div class="card" id="snapshot-card" style="margin-top:4px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+          <span style="font-size:18px">📅</span>
+          <div>
+            <div class="section-label" style="color:var(--muted);margin-bottom:0" data-i18n="Monthly Snapshot">Monthly Snapshot</div>
+            <div style="font-size:11px;color:var(--muted)" id="snap-subtitle">This month vs last month</div>
+          </div>
+        </div>
+        <div class="snap-grid" id="snap-grid"></div>
+        <div id="savings-rate-wrap" style="margin-top:12px"></div>
+      </div>
     </div>
 
     <!-- CARDS -->
     <div id="cards" class="section">
       <div class="sec-header">
         <h2 class="sec-title" data-i18n="Cards">Cards</h2>
-        <button class="btn btn-primary" onclick="openModal('card')">+ Add Reminder Card</button>
       </div>
 
+      <div id="cards-alerts"></div>
       <!-- Credit Utilization Summary -->
       <div id="credit-summary-wrap">
         <div class="card" style="margin-bottom:16px">
@@ -488,7 +590,7 @@ canvas{width:100%!important;}
         <div class="sec-header" style="margin-bottom:12px">
           <div class="section-label" style="color:var(--muted);margin-bottom:0" data-i18n="Inactive Card Reminders">Inactive Card Reminders</div>
         </div>
-        <p style="color:var(--muted);font-size:13px;margin-bottom:14px" data-i18n="Track rarely-used cards so they don't get canceled.">Track rarely-used cards so they don't get canceled.</p>
+        <p style="color:var(--muted);font-size:13px;margin-bottom:14px" data-i18n="Credit cards with a $0 balance automatically appear here. Use them every 90 days to keep them active.">Credit cards with a $0 balance automatically appear here. Use them every 90 days to keep them active.</p>
         <div id="card-list"></div>
       </div>
     </div>
@@ -496,12 +598,17 @@ canvas{width:100%!important;}
     <!-- QUICK UPDATE -->
     <div id="quick" class="section">
       <h2 class="sec-title" style="margin-bottom:6px" data-i18n="Quick Update">Quick Update</h2>
+      <div id="quick-alerts"></div>
       <p style="color:var(--muted);font-size:13px;margin-bottom:20px">Log cash withdrawals and purchases. Bill and debt payments are handled in Bills &amp; Payments.</p>
       <div class="quick-grid">
         <div class="quick-tile" onclick="openWithdrawal()"><div class="quick-icon">💵</div><div class="quick-label" data-i18n="Cash Withdrawal">Cash Withdrawal</div></div>
         <div class="quick-tile" onclick="openModal('purchase')"><div class="quick-icon">🛒</div><div class="quick-label" data-i18n="New Purchase">New Purchase</div></div>
       </div>
       <div class="card">
+
+        <!-- Summary bar -->
+        <div class="txn-summary" id="txn-summary"></div>
+        <!-- Filter + label -->
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px">
           <div class="section-label" style="color:var(--muted);margin-bottom:0" data-i18n="Transaction Log">Transaction Log</div>
           <div class="plan-toggle" style="margin-bottom:0;flex-wrap:wrap">
@@ -509,6 +616,17 @@ canvas{width:100%!important;}
             <button id="tf-withdrawal"   onclick="setTxnFilter('Withdrawal')" data-i18n="Withdrawals">Withdrawals</button>
             <button id="tf-purchase"     onclick="setTxnFilter('Purchase')" data-i18n="Purchases">Purchases</button>
           </div>
+        </div>
+        <div class="month-nav">
+          <button class="mn-btn" onclick="shiftTxnMonth(-1)">‹</button>
+          <span class="mn-label" id="txn-month-label">--</span>
+          <button class="mn-btn" onclick="shiftTxnMonth(1)" id="txn-month-next">›</button>
+        </div>
+        <div id="txn-summary"></div>
+        <div class="search-bar">
+          <span class="search-icon">🔍</span>
+          <input id="txn-search" type="text" placeholder="Search transactions..." oninput="setTxnSearch(this.value)"/>
+          <button class="clear-btn" onclick="clearTxnSearch()" id="txn-clear" style="display:none">✕</button>
         </div>
         <div id="txn-list"></div>
       </div>
@@ -906,6 +1024,9 @@ let appLang='en';
 const LANG_KEY='financeOS_lang';
 let insightsTab='categories';
 let txnFilter='All';
+let billSort='date';
+let txnSearch='';
+let txnMonth='';
 let pinBuffer='';
 
 const $=id=>document.getElementById(id);
@@ -987,6 +1108,7 @@ const TRANSLATIONS={
     'Credit Cards':'Tarjetas de Credito',
     'Inactive Card Reminders':'Recordatorios de Tarjetas',
     "Track rarely-used cards so they don't get canceled.":"Registra tarjetas poco usadas para que no sean canceladas.",
+    'Credit cards with a $0 balance automatically appear here. Use them every 90 days to keep them active.':'Las tarjetas con saldo $0 aparecen aqui automaticamente. Usaelas cada 90 dias para mantenerlas activas.',
     '+ Add Reminder Card':'+ Agregar Tarjeta',
     '✅ Mark Used':'✅ Marcar Usada',
     '📅 Remind':'📅 Recordar',
@@ -1031,6 +1153,9 @@ const TRANSLATIONS={
     'Auto-Save Active':'Guardado Automatico Activo',
     'Backup & Restore':'Respaldo y Restauracion',
     'Demo Mode':'Modo Demo',
+    'Monthly Snapshot':'Resumen Mensual',
+    'Overall Payoff Progress':'Progreso de Pago',
+    'This month vs last month':'Este mes vs mes anterior',
     'Reset All Data':'Restablecer Datos',
     'Set Up PIN':'Configurar PIN',
     'Change PIN':'Cambiar PIN',
@@ -1299,7 +1424,9 @@ function confirmReset(){
   if(confirm('Reset ALL data? Cannot be undone.')){
     data={income:[],expenses:[],bills:[],cards:[],transactions:[]};
     localStorage.removeItem(STORAGE_KEY);
-    closeModal('settings');renderAll();
+    closeModal('settings');
+  const si=$('txn-search');if(si)si.value='';
+  const sc=$('txn-clear');if(sc)sc.style.display='none';renderAll();
     alert('All data has been reset.');
   }
 }
@@ -1376,12 +1503,12 @@ function loadDemoData(){
       {id:3001, name:'Rent',              amount:1450, dueDate:dt(2),           recurring:'Monthly', status:'Pending',   btype:'bill',       balance:0,     apr:0,     creditLimit:0,     scheduledAmount:null, scheduledAccountId:null},
       {id:3002, name:'Electric & Gas',    amount:145,  dueDate:dt(5),           recurring:'Monthly', status:'Scheduled', btype:'bill',       balance:0,     apr:0,     creditLimit:0,     scheduledAmount:145,  scheduledAccountId:8001},
       {id:3005, name:'Phone Bill',        amount:65,   dueDate:ago(2),          recurring:'Monthly', status:'Paid',      btype:'bill',       balance:0,     apr:0,     creditLimit:0,     scheduledAmount:null, scheduledAccountId:null},
-      {id:3006, name:'Chase Sapphire',    amount:85,   dueDate:dt(6),           recurring:'Monthly', status:'Pending',   btype:'creditcard', balance:4250,  apr:22.99, creditLimit:10000, scheduledAmount:null, scheduledAccountId:null},
-      {id:3009, name:'Capital One Card',  amount:35,   dueDate:ago(1),          recurring:'Monthly', status:'Overdue',   btype:'creditcard', balance:1150,  apr:26.99, creditLimit:3000,  scheduledAmount:null, scheduledAccountId:null},
-      {id:3008, name:'Car Loan - Honda',  amount:340,  dueDate:dt(3),           recurring:'Monthly', status:'Pending',   btype:'loan',       balance:9800,  apr:7.49,  creditLimit:0,     scheduledAmount:null, scheduledAccountId:null},
+      {id:3006, name:'Chase Sapphire',    amount:85,   dueDate:dt(6),           recurring:'Monthly', status:'Pending',   btype:'creditcard', balance:4250,  apr:22.99, creditLimit:10000, scheduledAmount:null, scheduledAccountId:null, originalBalance:5800},
+      {id:3009, name:'Capital One Card',  amount:35,   dueDate:ago(1),          recurring:'Monthly', status:'Overdue',   btype:'creditcard', balance:1150,  apr:26.99, creditLimit:3000,  scheduledAmount:null, scheduledAccountId:null, originalBalance:2200},
+      {id:3008, name:'Car Loan - Honda',  amount:340,  dueDate:dt(3),           recurring:'Monthly', status:'Pending',   btype:'loan',       balance:9800,  apr:7.49,  creditLimit:0,     scheduledAmount:null, scheduledAccountId:null, originalBalance:14000},
       {id:3003, name:'Internet - Xfinity',amount:79,  dueDate:nextMonth(1,10), recurring:'Monthly', status:'Pending',   btype:'bill',       balance:0,     apr:0,     creditLimit:0,     scheduledAmount:null, scheduledAccountId:null},
       {id:3004, name:'Car Insurance',     amount:187,  dueDate:nextMonth(1,8),  recurring:'Monthly', status:'Pending',   btype:'bill',       balance:0,     apr:0,     creditLimit:0,     scheduledAmount:null, scheduledAccountId:null},
-      {id:3007, name:'Student Loan',      amount:210,  dueDate:nextMonth(1,15), recurring:'Monthly', status:'Scheduled', btype:'loan',       balance:18400, apr:5.75,  creditLimit:0,     scheduledAmount:210,  scheduledAccountId:8001},
+      {id:3007, name:'Student Loan',      amount:210,  dueDate:nextMonth(1,15), recurring:'Monthly', status:'Scheduled', btype:'loan',       balance:18400, apr:5.75,  creditLimit:0,     scheduledAmount:210,  scheduledAccountId:8001, originalBalance:24000},
     ],
 
     // ── INACTIVE REMINDER CARDS
@@ -1444,9 +1571,14 @@ function loadDemoData(){
       {id:8003, name:'Cash Wallet',         type:'cash',     balance:320,  notes:''},
     ]
   }
+  updateOriginalBalances();
   saveData();
   // Reset UI state
   txnFilter='All';
+  billSort='date';
+  txnSearch='';
+  txnMonth=null;
+  txnMonth=today().slice(0,7);
   insightsTab='categories';
   closeModal('settings');
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
@@ -1589,7 +1721,6 @@ function confirmPurchase(){
   showToast(t('Purchase logged!'));
 }
 
-
 function renderNetWorth(){
   if(!$('nw-assets'))return;
   const assets=data.assets||[];
@@ -1619,7 +1750,7 @@ function renderNetWorth(){
         </div>
       </div>
     </div>`).join('')
-    :t('No accounts added yet.');
+    :emptyState('🏦','No accounts yet','Add your checking, savings, and cash accounts to track live balances.','+ Add Account',"openModal('account')");
   }
   const catIcon={cash:'💵',invest:'📈',property:'🏠',vehicle:'🚗'};
   const catLabel={cash:'Savings / Cash',invest:'Investments',property:'Property',vehicle:'Vehicle'};
@@ -1632,7 +1763,7 @@ function renderNetWorth(){
       <span style="color:var(--green);font-weight:600">${usd(a.value)}</span>
       <button class="btn btn-secondary btn-sm" onclick="openEditAsset(${a.id})">✏️</button>
       <button class="btn btn-danger btn-sm" onclick="deleteItem('assets',${a.id})">✕</button>
-    </div></div>`).join(''):t('No assets added yet.');
+    </div></div>`).join(''):emptyState('📈','No assets yet','Add investments, property, and vehicles to see your full net worth.','+ Add Asset',"openModal('asset')");
   // Dashboard accounts widget
   const wrap=$('d-accounts-wrap'),grid=$('d-accounts');
   if(wrap&&grid){
@@ -1958,7 +2089,7 @@ function saveBill(){
     scheduledAccountId:prev?prev.scheduledAccountId:null
   };
   data.bills=eid?data.bills.map(b=>b.id===eid?item:b):[...data.bills,item];
-  closeModal('bill');saveData();renderAll();
+  closeModal('bill');updateOriginalBalances();saveData();renderAll();
 }
 
 function saveCard(){
@@ -2014,9 +2145,88 @@ function saveTxn(){
   closeModal('txn');saveData();renderAll();
 }
 
+// ── SWIPE TO DELETE ────────────────────────────────
+function initSwipe(wrap, onDeleteFn){
+  const inner=wrap.firstElementChild;
+  let startX=0,startY=0,dx=0,swiped=false,locked=false;
+  wrap.addEventListener('touchstart',e=>{
+    startX=e.touches[0].clientX;startY=e.touches[0].clientY;
+    dx=0;locked=false;inner.style.transition='none';
+  },{passive:true});
+  wrap.addEventListener('touchmove',e=>{
+    const diffX=e.touches[0].clientX-startX,diffY=e.touches[0].clientY-startY;
+    if(!locked){if(Math.abs(diffY)>Math.abs(diffX)){locked=true;return;}}
+    if(locked)return;
+    dx=Math.min(0,diffX);
+    inner.style.transform='translateX('+Math.max(dx,-80)+'px)';
+    e.preventDefault();
+  },{passive:false});
+  wrap.addEventListener('touchend',()=>{
+    inner.style.transition='';
+    if(dx<-50){inner.style.transform='translateX(-80px)';wrap.classList.add('swiped');swiped=true;}
+    else{inner.style.transform='';wrap.classList.remove('swiped');swiped=false;}
+    dx=0;
+  });
+  wrap.addEventListener('click',e=>{
+    if(swiped&&!e.target.closest('.swipe-delete-zone')){
+      inner.style.transform='';wrap.classList.remove('swiped');swiped=false;
+    }
+  });
+  const zone=wrap.querySelector('.swipe-delete-zone');
+  if(zone) zone.addEventListener('click',()=>{ onDeleteFn(); });
+}
+
+function wrapSwipeable(html, deleteFnStr){
+  return '<div class="swipe-wrap">'+html
+    +'<div class="swipe-delete-zone" data-del="'+deleteFnStr+'">'
+    +'<svg viewBox="0 0 24 24" width="22" height="22" fill="#fff"><path d="M9 3h6l1 1h4v2H4V4h4zm-4 5h14l-1 13H6zm5 2v9h1v-9zm4 0v9h1v-9z"/></svg>'
+    +'</div></div>';
+}
+
+function attachSwipes(){
+  document.querySelectorAll('.swipe-wrap').forEach(wrap=>{
+    if(wrap._swipeInited) return;
+    wrap._swipeInited=true;
+    const zone=wrap.querySelector('.swipe-delete-zone');
+    const fn=zone?zone.getAttribute('data-del'):'';
+    initSwipe(wrap, ()=>{ if(fn) eval(fn); });
+  });
+}
+
+// ── BILL SORT ─────────────────────────────────────────
+function setBillSort(s){
+  billSort=s;
+  ['date','status','amount'].forEach(k=>{
+    const b=$('bs-'+k);if(b)b.classList.toggle('active',k===s);
+  });
+  renderBills();
+}
+
+// ── TRANSACTION SEARCH ──────────────────────────────
+function setTxnSearch(val){
+  txnSearch=val.trim().toLowerCase();
+  const clr=$('txn-clear');if(clr)clr.style.display=txnSearch?'block':'none';
+  renderTxns();
+}
+function clearTxnSearch(){
+  txnSearch='';
+  const inp=$('txn-search');if(inp)inp.value='';
+  const clr=$('txn-clear');if(clr)clr.style.display='none';
+  renderTxns();
+}
+
+// ── EMPTY STATE HELPER ──────────────────────────────
+function emptyState(icon,title,desc,btnLabel,btnAction){
+  return '<div class="empty-state">'
+    +'<div class="es-icon">'+icon+'</div>'
+    +'<div class="es-title">'+title+'</div>'
+    +'<div class="es-desc">'+desc+'</div>'
+    +(btnLabel?'<button class="es-btn" onclick="'+btnAction+'">'+btnLabel+'</button>':'')
+    +'</div>';
+}
+
 // ── DATA HELPERS ─────────────────────────────────
 function deleteItem(key,id){data[key]=data[key].filter(i=>i.id!==id);saveData();renderAll();}
-function setBillStatus(id,status){const b=data.bills.find(b=>b.id===id);if(b){b.status=status;saveData();renderAll();}}
 
 function autoProcessScheduledBills(){
   let changed=false;
@@ -2220,15 +2430,6 @@ function getLastPurchaseDate(billId,nameHint){
 }
 function cardLastUsed(cardName){ return getLastPurchaseDate(null,cardName); }
 
-function markCardUsed(id){
-  const c=data.cards.find(c=>c.id===id);if(!c)return;
-  // Reset reminder to 90 days from now
-  const next=new Date();next.setDate(next.getDate()+90);
-  c.nextReminder=next.toISOString().split('T')[0];
-  c.reminderDays=90;
-  saveData();renderAll();
-}
-
 // After a purchase on a credit card, reset any matching inactive card reminder
 function resetInactiveCardForPurchase(cardId){
   if(!cardId) return;
@@ -2380,6 +2581,7 @@ function renderDebt(){
   }
   $('debt-no-data').style.display='none';
   $('debt-planner-content').style.display='block';
+  renderDebtProgress();
 
   const desc={
     avalanche:'Sorted by highest APR first - focus payments on most expensive debt to minimize total interest paid.',
@@ -2515,18 +2717,119 @@ function renderDebt(){
 }
 
 // ── RENDERS ──────────────────────────────────────
-function renderAlerts(){
-  const a=[];
-  data.bills.forEach(b=>{const d=daysUntil(b.dueDate);if(b.status!=='Paid'&&d<0)a.push({msg:`${b.name} is OVERDUE by ${Math.abs(d)} day(s)`,color:'#ef4444'});else if(b.status!=='Paid'&&d<=7)a.push({msg:`${b.name} due in ${d} day(s) - ${usd(b.amount)}`,color:'#f59e0b'});});
-  // Inactive card alerts - only for zero-balance credit cards unused 90+ days
+function buildAlerts(){
+  const now=new Date();
+  const alerts=[];
+
+  // ── BILLS: overdue + due within 7 days ──────────────────────
+  data.bills.forEach(b=>{
+    const d=daysUntil(b.dueDate);
+    if(b.status!=='Paid'&&b.status!=='Scheduled'&&d<0){
+      alerts.push({
+        section:'bills', color:'#ef4444', icon:'📋',
+        msg:`${b.name} is overdue by ${Math.abs(d)} day${Math.abs(d)===1?'':'s'}`,
+      });
+    } else if(b.status!=='Paid'&&b.status!=='Scheduled'&&d<=7&&d>=0){
+      alerts.push({
+        section:'bills', color:'#f59e0b', icon:'📋',
+        msg:`${b.name} due in ${d===0?'today':(d+' day'+(d===1?'':'s'))} - ${usd(b.amount)}`,
+      });
+    }
+  });
+
+  // ── CARDS: inactive 90+ days ─────────────────────────────────
   data.bills.filter(b=>b.btype==='creditcard'&&(!b.balance||b.balance<=0)).forEach(b=>{
     const last=getLastPurchaseDate(b.id,null);
     const days=last?-daysUntil(last):null;
-    if(days===null||days>=90) a.push({msg:`${b.name} has no purchases in 90+ days - use it to keep it active`,color:'#818cf8'});
+    if(days===null||days>=90){
+      alerts.push({
+        section:'cards', color:'#818cf8', icon:'💳',
+        msg:`${b.name} - no purchases in ${days===null?'90+':days} days. Use it to keep it active.`,
+      });
+    }
   });
-  // Also check manually tracked reminder cards
-  data.cards.forEach(c=>{if(cardIsInactive(c))a.push({msg:`Use your ${c.name} card - no purchases in 90+ days`,color:'#818cf8'});});
-  $('alerts').innerHTML=a.map(x=>`<div class="alert" style="background:${x.color}18;border:1px solid ${x.color}44;color:${x.color}">⚠️ ${x.msg}</div>`).join('');
+  data.cards.forEach(c=>{
+    if(cardIsInactive(c)){
+      alerts.push({
+        section:'cards', color:'#818cf8', icon:'💳',
+        msg:`${c.name} - no purchases in 90+ days. Use it to keep it active.`,
+      });
+    }
+  });
+
+  // ── INSIGHTS: budget targets ≥ 80% ───────────────────────────
+  (data.targets||[]).forEach(tg=>{
+    let spent=0, label='';
+    if(tg.type==='card'){
+      const card=data.bills.find(b=>b.id===tg.cardId);
+      label=card?card.name:'Card';
+      spent=data.transactions.filter(tr=>{
+        if(tr.cardId!==tg.cardId||!tr.date)return false;
+        const d=new Date(tr.date);
+        return d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth();
+      }).reduce((s,tr)=>s+tr.amount,0);
+    } else {
+      label=tg.category;
+      const expSpent=data.expenses.filter(e=>{
+        if(e.category!==tg.category||!e.date)return false;
+        const d=new Date(e.date);
+        return d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth();
+      }).reduce((s,e)=>s+e.amount,0);
+      const txnSpent=data.transactions.filter(tr=>{
+        if(tr.type!=='Purchase'||tr.category!==tg.category||!tr.date)return false;
+        const d=new Date(tr.date);
+        return d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth();
+      }).reduce((s,tr)=>s+tr.amount,0);
+      spent=expSpent+txnSpent;
+    }
+    if(tg.amount>0){
+      const pct=Math.round(spent/tg.amount*100);
+      if(pct>=100){
+        alerts.push({
+          section:'insights', color:'#ef4444', icon:'📈',
+          msg:`${label} - over budget by ${usd(spent-tg.amount)} (${pct}% used)`,
+        });
+      } else if(pct>=80){
+        alerts.push({
+          section:'insights', color:'#f59e0b', icon:'📈',
+          msg:`${label} - ${pct}% of ${usd(tg.amount)} budget used this month`,
+        });
+      }
+    }
+  });
+
+  return alerts;
+}
+
+function renderAlerts(){
+  const alerts=buildAlerts();
+  const navTarget={
+    bills:"show('bills',document.querySelector('.nav-item:nth-child(3)'))",
+    cards:"show('cards',document.querySelector('.nav-item:nth-child(7)'))",
+    insights:"show('insights',document.querySelector('.nav-item:nth-child(6)'))",
+  };
+
+  // ── Dashboard: all alerts, tappable ──────────────────────────
+  const dashEl=$('dash-alerts');
+  if(dashEl){
+    dashEl.innerHTML=alerts.length?alerts.map(a=>`
+      <div class="alert alert-tap" style="background:${a.color}18;border:1px solid ${a.color}44;color:${a.color}"
+           onclick="${navTarget[a.section]}">
+        <div class="alert-body">${a.icon} ${a.msg}</div>
+        <div class="alert-chevron">›</div>
+      </div>`).join(''):'';
+  }
+
+  // ── Per-section: only relevant alerts ────────────────────────
+  ['bills','cards','insights','budget','debt','networth','quick'].forEach(sec=>{
+    const el=$(sec+'-alerts');
+    if(!el) return;
+    const relevant=alerts.filter(a=>a.section===sec);
+    el.innerHTML=relevant.map(a=>`
+      <div class="alert" style="background:${a.color}18;border:1px solid ${a.color}44;color:${a.color}">
+        ${a.icon} ${a.msg}
+      </div>`).join('');
+  });
 }
 
 function renderDashboard(){
@@ -2630,7 +2933,7 @@ function renderDashboard(){
   });
 
   if(!items.length){
-    $('d-timeline').innerHTML=t('No activity this week.');
+    $('d-timeline').innerHTML=emptyState('📅','All clear this week','No upcoming bills or recent transactions in the past 7 days. Add bills in Cash Flow to see them here.','','');
     return;
   }
 
@@ -2665,7 +2968,6 @@ function renderDashboard(){
   $('d-timeline').innerHTML=html;
 }
 
-
 function renderBudget(){
   const thisMonth=today().slice(0,7);
   const ti=data.income.reduce((s,i)=>s+getEffectiveIncome(i),0);
@@ -2683,6 +2985,7 @@ function renderBudget(){
   }
   $('income-total').textContent=usd(ti);
   $('expense-total').textContent=usd(totalOut);
+  setTimeout(attachSwipes,80);
 
   // Money In -- income
   $('income-list').innerHTML=data.income.length?data.income.map(i=>{
@@ -2695,26 +2998,25 @@ function renderBudget(){
           <div style="font-size:10px;color:var(--accent2);font-weight:700">ACTUAL</div>
         </div>`
       :`<span style="color:var(--green);font-weight:600">${usd(eff)}</span>`;
-    return`<div class="row"><div>
+    return wrapSwipeable(`<div class="row" style="margin-bottom:0;border-radius:12px"><div>
       <div class="row-label">${i.source} ${recurBadge(i.frequency)}</div>
       <div class="row-sub">${[fmtDate(i.date),i.frequency!=='One-time'?i.frequency:'One-time'].filter(Boolean).join(' - ')}</div>
     </div><div class="row-actions">
       ${amtDisplay}
       <button class="btn btn-secondary btn-sm" onclick="openEditIncome(${i.id})">✏️</button>
-      <button class="btn btn-danger btn-sm" onclick="deleteItem('income',${i.id})">✕</button>
-    </div></div>`;
-  }).join(''): t('No income added yet.');
+      <button class="btn btn-danger btn-sm" onclick="deleteItem('income',${i.id})" class="show-desktop">✕</button>
+    </div></div>`,`deleteItem('income',${i.id})`);
+  }).join(''): emptyState('💰','No income yet','Add your salary, freelance work, or any other income sources.','+ Add Income',"openModal('income')");
 
   // Money Out -- expenses + bills combined
-  const expRows=data.expenses.map(e=>`
-    <div class="row"><div>
+  const expRows=data.expenses.map(e=>wrapSwipeable(`<div class="row" style="margin-bottom:0;border-radius:12px"><div>
       <div class="row-label">${e.category} ${recurBadge(e.frequency)}</div>
       <div class="row-sub">${[e.description,fmtDate(e.date)].filter(Boolean).join(' - ')}</div>
     </div><div class="row-actions">
       <span style="color:var(--red);font-weight:600">${usd(e.amount)}</span>
       <button class="btn btn-secondary btn-sm" onclick="openEditExpense(${e.id})">✏️</button>
-      <button class="btn btn-danger btn-sm" onclick="deleteItem('expenses',${e.id})">✕</button>
-    </div></div>`);
+      <button class="btn btn-danger btn-sm" onclick="deleteItem('expenses',${e.id})" class="show-desktop">✕</button>
+    </div></div>`,`deleteItem('expenses',${e.id})`));
 
   const billTypeIcon={bill:'📋',creditcard:'💳',loan:'🏦'};
   const billRows=data.bills.map(b=>`
@@ -2731,25 +3033,30 @@ function renderBudget(){
     </div></div>`);
 
   const allOut=[...expRows,...billRows];
-  $('expense-list').innerHTML=allOut.length?allOut.join(''):t('No expenses added yet.');
+  $('expense-list').innerHTML=allOut.length?allOut.join(''):emptyState('💸','No outgoings yet','Add your monthly expenses and bills to see your full cash flow picture.','+ Add Expense',"openModal('expense')");
 }
 
 function renderBills(){
   autoProcessScheduledBills();
-  if(!data.bills.length){$('bill-list').innerHTML=t('No bills added yet.');return;}
-  const sorted=[...data.bills].sort((a,b)=>new Date(a.dueDate)-new Date(b.dueDate));
+  if(!data.bills.length){
+    $('bill-list').innerHTML=emptyState('📋','No bills yet','Add your recurring bills, credit cards, and loans to track due dates and payments.',"+ Add a Bill","openModal('bill')");
+    return;
+  }
+  const statusOrder={'Overdue':0,'Pending':1,'Scheduled':2,'Paid':3};
+  let sorted=[...data.bills];
+  if(billSort==='date') sorted.sort((a,b)=>new Date(a.dueDate)-new Date(b.dueDate));
+  else if(billSort==='status') sorted.sort((a,b)=>(statusOrder[a.status]??9)-(statusOrder[b.status]??9));
+  else if(billSort==='amount') sorted.sort((a,b)=>b.amount-a.amount);
   let lastMonth='';
   const rows=sorted.map(b=>{
-    // Month divider
-    const monthKey=b.dueDate?b.dueDate.slice(0,7):'';
     let divider='';
-    if(monthKey&&monthKey!==lastMonth){
-      lastMonth=monthKey;
-      const label=b.dueDate?new Date(b.dueDate+'T12:00:00').toLocaleDateString('en-US',{month:'long',year:'numeric'}):'';
-      divider=`<div style="display:flex;align-items:center;gap:10px;margin:${sorted.indexOf(b)===0?'0':'18px'} 0 12px">
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--accent2);white-space:nowrap">${label}</div>
-        <div style="flex:1;height:1px;background:linear-gradient(to right,var(--border2),transparent)"></div>
-      </div>`;
+    if(billSort==='date'){
+      const monthKey=b.dueDate?b.dueDate.slice(0,7):'';
+      if(monthKey&&monthKey!==lastMonth){
+        lastMonth=monthKey;
+        const label=b.dueDate?new Date(b.dueDate+'T12:00:00').toLocaleDateString('en-US',{month:'long',year:'numeric'}):'';
+        divider='<div style="display:flex;align-items:center;gap:10px;margin:'+(sorted.indexOf(b)===0?'0':'18px')+' 0 12px"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--accent2);white-space:nowrap">'+label+'</div><div style="flex:1;height:1px;background:linear-gradient(to right,var(--border2),transparent)"></div></div>';
+      }
     }
     const d=daysUntil(b.dueDate);
     const isDebt=b.btype==='creditcard'||b.btype==='loan';
@@ -2765,12 +3072,12 @@ function renderBills(){
         <button class="btn btn-sm" style="background:rgba(255,255,255,.06);color:var(--muted);font-size:11px" onclick="revertToPending(${b.id})">Cancel</button>`;
     } else if(eff==='Overdue'){
       actions=`<span class="badge" style="background:${sc}22;color:${sc};font-size:12px">${t('Overdue')}</span>
-        <button class="btn btn-sm" style="background:rgba(239,68,68,.15);color:var(--red)" onclick="${isDebt?`openPayDebt(${b.id})`:`openScheduleBill(${b.id})`}">${t("Schedule Now")}</button>`;
+        <button class="btn btn-sm" style="background:rgba(239,68,68,.15);color:var(--red)" onclick="${isDebt?`openPayDebt(${b.id})`:`openScheduleBill(${b.id})`}">${t('Schedule Now')}</button>`;
     } else {
       actions=`<span class="badge" style="background:${sc}22;color:${sc};font-size:12px">${t('Pending')}</span>
-        <button class="btn btn-sm" style="background:rgba(59,130,246,.15);color:var(--blue)" onclick="${isDebt?`openPayDebt(${b.id})`:`openScheduleBill(${b.id})`}">${t("Schedule")}</button>`;
+        <button class="btn btn-sm" style="background:rgba(59,130,246,.15);color:var(--blue)" onclick="${isDebt?`openPayDebt(${b.id})`:`openScheduleBill(${b.id})`}">${t('Schedule')}</button>`;
     }
-    return divider+`<div class="card" style="margin-bottom:11px;border-color:${sc}44">
+    const cardHtml=`<div class="card" style="margin-bottom:0;border-color:${sc}44;border-radius:12px">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px">
         <div>
           <div style="font-size:15px;font-weight:600;margin-bottom:3px">${b.name}
@@ -2784,11 +3091,14 @@ function renderBills(){
           ${actions}
           <button class="btn btn-secondary btn-sm" onclick="openEditBill(${b.id})">✏️</button>
           ${b.dueDate?`<button class="btn btn-secondary btn-sm" onclick="addToCalendar('${b.name} Payment','${b.dueDate}','Min: ${usd(b.amount)}')">📅</button>`:''}
+          <button class="btn btn-danger btn-sm show-desktop" onclick="deleteBillFromModal(${b.id})">✕</button>
         </div>
       </div>
     </div>`;
+    return divider+wrapSwipeable(cardHtml,`deleteBillFromModal(${b.id})`);
   });
   $('bill-list').innerHTML=rows.join('');
+  setTimeout(attachSwipes,50);
 }
 
 function renderCards(){
@@ -2819,6 +3129,24 @@ function renderCards(){
       const cardUtil=c.creditLimit>0?Math.min(100,Math.round(c.balance/c.creditLimit*100)):0;
       const cardColor=cardUtil<30?'var(--green)':cardUtil<50?'var(--yellow)':'var(--red)';
       const avail=Math.max(0,c.creditLimit-c.balance);
+      // Card drill-down transactions
+      const now2=new Date();
+      const cardTxns=data.transactions.filter(tr=>{
+        if(!tr.date)return false;
+        const d=new Date(tr.date);
+        return tr.cardId===c.id&&d.getFullYear()===now2.getFullYear()&&d.getMonth()===now2.getMonth();
+      }).sort((a,b)=>b.date.localeCompare(a.date));
+      const cardDrillId='drill-card-'+c.id;
+      const cardDrillHtml=cardTxns.length
+        ? cardTxns.map(tr=>`<div class="drill-row">
+            <div class="dr-left">
+              <div class="dr-desc">${tr.description||'Purchase'}</div>
+              <div class="dr-sub">${fmtDate(tr.date)}${tr.category?' · '+tr.category:''}</div>
+            </div>
+            <div class="dr-amt">-${usd(tr.amount)}</div>
+          </div>`).join('')
+        : '<div class="drill-empty">No purchases on this card this month.</div>';
+
       return`<div class="card" style="margin-bottom:11px;border-color:${cardColor}44">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px">
           <div style="flex:1;min-width:160px">
@@ -2842,12 +3170,16 @@ function renderCards(){
               <span style="font-size:12px;font-weight:700;color:${cardColor};min-width:36px">${cardUtil}%</span>
             </div>
             <div style="font-size:10px;color:var(--muted);margin-top:3px">APR: ${pct(c.apr)}</div>
+            <div class="drill-toggle" onclick="toggleDrill('${cardDrillId}',this)">
+              <i class="dt-icon">›</i> <span class="dt-label">${cardTxns.length} purchase${cardTxns.length===1?'':'s'} this month</span>
+            </div>
+            <div class="drill-panel" id="${cardDrillId}">${cardDrillHtml}</div>
           </div>
           <button class="btn btn-secondary btn-sm" onclick="openEditBill(${c.id})">✏️</button>
         </div>
       </div>`;
     }).join('')
-    :`<div class="empty">${t('No credit cards with a limit set. Edit a debt in Bills and add a Credit Limit.')}</div>`;
+    :emptyState('💳','No credit cards yet','Add a Credit Card in Cash Flow - tap the + Bill button and choose Credit Card as the type.','Go to Cash Flow',"show('budget',document.querySelector('.nav-item:nth-child(2)'));closeModal&&closeModal('settings')");
   }
 
   // ── INACTIVE CARD REMINDERS ──────────────────────
@@ -2909,34 +3241,107 @@ function setTxnFilter(f){
   const active=$(map[f]); if(active) active.classList.add('active');
   renderTxns();
 }
+// ── TRANSACTION MONTH PAGINATION ────────────────────────────
+function initTxnMonth(){
+  if(!txnMonth) txnMonth=today().slice(0,7);
+}
+function shiftTxnMonth(dir){
+  initTxnMonth();
+  const [y,m]=txnMonth.split('-').map(Number);
+  const d=new Date(y,m-1+dir,1);
+  txnMonth=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+  renderTxns();
+}
+
 function renderTxns(){
+  initTxnMonth();
+  const [y,m]=txnMonth.split('-').map(Number);
+  const now=new Date();
+  const isCurrentMonth=y===now.getFullYear()&&m-1===now.getMonth();
+
+  // Update month label
+  const lbl=$('txn-month-label');
+  if(lbl) lbl.textContent=new Date(y,m-1,1).toLocaleString('default',{month:'long',year:'numeric'});
+
+  // Disable next if already at current month
+  const nextBtn=$('txn-month-next');
+  if(nextBtn){
+    nextBtn.style.opacity=isCurrentMonth?'0.3':'1';
+    nextBtn.style.pointerEvents=isCurrentMonth?'none':'auto';
+  }
+
   const excluded=['Bill Payment','Debt Payment'];
-  const all=[...data.transactions].filter(tx=>!excluded.includes(tx.type)).reverse();
-  const filtered=txnFilter==='All'?all:all.filter(tx=>tx.type===txnFilter);
+
+  // All transactions for selected month
+  const monthAll=[...data.transactions].filter(tx=>{
+    if(excluded.includes(tx.type)||!tx.date)return false;
+    return tx.date.slice(0,7)===txnMonth;
+  }).sort((a,b)=>b.date.localeCompare(a.date));
+
+  // Apply type filter
+  let filtered=txnFilter==='All'?monthAll:monthAll.filter(tx=>tx.type===txnFilter);
+
+  // Apply search
+  if(txnSearch){
+    filtered=filtered.filter(tx=>{
+      const method=tx.methodLabel||'';
+      return (tx.description||'').toLowerCase().includes(txnSearch)
+        ||(tx.category||'').toLowerCase().includes(txnSearch)
+        ||method.toLowerCase().includes(txnSearch);
+    });
+  }
+
+  // Monthly summary bar
+  const sumEl=$('txn-summary');
+  if(sumEl){
+    if(monthAll.length){
+      const totalSpent=monthAll.reduce((s,tx)=>s+tx.amount,0);
+      const purchaseCt=monthAll.filter(tx=>tx.type==='Purchase').length;
+      const withdrawCt=monthAll.filter(tx=>tx.type==='Withdrawal').length;
+      sumEl.innerHTML=`<div class="txn-summary">
+        <div class="ts-item"><div class="ts-label">Total Spent</div><div class="ts-val" style="color:var(--red)">-${usd(totalSpent)}</div></div>
+        <div class="ts-item"><div class="ts-label">Transactions</div><div class="ts-val">${monthAll.length}</div></div>
+        <div class="ts-item"><div class="ts-label">Purchases</div><div class="ts-val" style="color:var(--yellow)">${purchaseCt}</div></div>
+        <div class="ts-item"><div class="ts-label">Withdrawals</div><div class="ts-val" style="color:var(--muted)">${withdrawCt}</div></div>
+      </div>`;
+    } else {
+      sumEl.innerHTML='';
+    }
+  }
+
   const typeColor={'Withdrawal':'var(--red)','Purchase':'var(--yellow)','Bill Payment':'var(--blue)','Debt Payment':'var(--accent2)'};
   const typeIcon={'Withdrawal':'💵','Purchase':'🛒','Bill Payment':'📋','Debt Payment':'💳'};
+
   if(!filtered.length){
-    $('txn-list').innerHTML=`<div class="empty">${t('No updates logged yet.')}</div>`;
+    const noData=!data.transactions.length;
+    const noMonth=data.transactions.length>0&&!monthAll.length;
+    $('txn-list').innerHTML=noData
+      ? emptyState('⚡','Log your first transaction','Tap Cash Withdrawal or New Purchase above to start tracking your spending.','','')
+      : noMonth
+        ? emptyState('📅','No transactions this month','Use the arrows to browse other months, or log a new transaction above.','','')
+        : '<div class="empty-state"><div class="es-icon">🔍</div><div class="es-title">No results</div><div class="es-desc">No transactions match your search.</div></div>';
     return;
   }
+
   $('txn-list').innerHTML=filtered.map(tx=>{
     const color=typeColor[tx.type]||'var(--muted)';
     const icon=typeIcon[tx.type]||'📝';
-    // Build subtitle - show method label or account name, plus category if set
     const method=tx.methodLabel||(tx.accountId?(data.accounts||[]).find(a=>a.id===tx.accountId)?.name:'');
     const sub=[fmtDate(tx.date),tx.type,method,tx.category].filter(Boolean).join(' - ');
-    return`<div class="row">
+    const rowHtml=`<div class="row" style="margin-bottom:0;border-radius:12px">
       <div>
         <div class="row-label">${icon} ${tx.description}</div>
         <div class="row-sub">${sub}</div>
       </div>
       <div class="row-actions">
-        <span style="color:${color};font-weight:600">-${usd(t.amount)}</span>
+        <span style="color:${color};font-weight:600">-${usd(tx.amount)}</span>
         <button class="btn btn-secondary btn-sm" onclick="openEditTxn(${tx.id})">✏️</button>
-        <button class="btn btn-danger btn-sm" onclick="deleteItem('transactions',${tx.id})">✕</button>
+        <button class="btn btn-danger btn-sm show-desktop" onclick="deleteItem('transactions',${tx.id})">✕</button>
       </div>
     </div>`;
+    return wrapSwipeable(rowHtml,`deleteItem('transactions',${tx.id})`);
   }).join('');
+  setTimeout(attachSwipes,50);
 }
 
 function setInsightsTab(tab){
@@ -3031,25 +3436,245 @@ function renderInsights(){
         </div>
         <div class="target-bar-bg"><div class="target-bar-fill" style="width:${Math.min(100,Math.round(cardBill.balance/cardBill.creditLimit*100))}%;background:${cardBill.balance/cardBill.creditLimit<0.3?'var(--green)':cardBill.balance/cardBill.creditLimit<0.5?'var(--yellow)':'var(--red)'}"></div></div>
       </div>`:'';
+    // Gather transactions for drill-down
+    const drillId='drill-tg-'+tg.id;
+    let drillRows=[];
+    if(tg.type==='card'){
+      drillRows=data.transactions.filter(tr=>{
+        if(!tr.date)return false;
+        const d=new Date(tr.date);
+        return tr.cardId===tg.cardId&&d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth();
+      }).sort((a,b)=>b.date.localeCompare(a.date));
+    } else {
+      const exps=data.expenses.filter(e=>{
+        if(e.category!==tg.category||!e.date)return false;
+        const d=new Date(e.date);
+        return d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth();
+      }).map(e=>({date:e.date,desc:e.description||e.category,sub:'Expense',amt:e.amount}));
+      const txns=data.transactions.filter(tr=>{
+        if(tr.type!=='Purchase'||tr.category!==tg.category||!tr.date)return false;
+        const d=new Date(tr.date);
+        return d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth();
+      }).map(tr=>{
+        const cardName=tr.cardId?(data.bills.find(b=>b.id===tr.cardId)||{}).name||'':
+          tr.accountId?(data.accounts||[]).find(a=>a.id===tr.accountId)?.name||'':'';
+        return{date:tr.date,desc:tr.description,sub:cardName||tr.methodLabel||'Purchase',amt:tr.amount};
+      });
+      drillRows=[...exps,...txns].sort((a,b)=>b.date.localeCompare(a.date));
+    }
+    const drillHtml=drillRows.length
+      ? drillRows.map(r=>`<div class="drill-row">
+          <div class="dr-left">
+            <div class="dr-desc">${r.desc||'--'}</div>
+            <div class="dr-sub">${fmtDate(r.date)}${r.sub?' · '+r.sub:''}</div>
+          </div>
+          <div class="dr-amt">-${usd(r.amt)}</div>
+        </div>`).join('')
+      : '<div class="drill-empty">No transactions this month for this target.</div>';
+
     return`<div style="margin-bottom:14px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;cursor:pointer" onclick="toggleDrill('${drillId}',this)">
         <span style="font-size:13px;font-weight:600">${icon}${label}</span>
         <div style="display:flex;align-items:center;gap:8px">
           <span style="font-size:12px;color:${over?'var(--red)':'var(--muted)'}">${usd(spent)} / ${usd(tg.amount)}</span>
-          <button class="btn btn-danger btn-sm" style="padding:3px 7px;font-size:10px" onclick="deleteItem('targets',${tg.id})">✕</button>
+          <button class="btn btn-danger btn-sm" style="padding:3px 7px;font-size:10px" onclick="event.stopPropagation();deleteItem('targets',${tg.id})">✕</button>
         </div>
       </div>
       <div class="target-bar-bg"><div class="target-bar-fill" style="width:${pctVal}%;background:${barColor}"></div></div>
       <div style="font-size:10px;color:${over?'var(--red)':'var(--muted)'};margin-top:3px">${over?t('Over budget by')+' '+usd(spent-tg.amount):pctVal+'% '+t('used this month')}</div>
       ${utilRow}
+      <div class="drill-toggle" onclick="toggleDrill('${drillId}',this.previousElementSibling.previousElementSibling.previousElementSibling)">
+        <i class="dt-icon">›</i> <span class="dt-label">${drillRows.length} transaction${drillRows.length===1?'':'s'}</span>
+      </div>
+      <div class="drill-panel" id="${drillId}">${drillHtml}</div>
     </div>`;
   }).join('');
 }
 
+// ── MONTHLY SNAPSHOT ─────────────────────────────────────────
+function renderSnapshot(){
+  const now = new Date();
+  const yr = now.getFullYear(), mo = now.getMonth();
+  const prevYr = mo === 0 ? yr - 1 : yr;
+  const prevMo = mo === 0 ? 11 : mo - 1;
+
+  function inMonth(dateStr, y, m){
+    if(!dateStr) return false;
+    const d = new Date(dateStr);
+    return d.getFullYear() === y && d.getMonth() === m;
+  }
+
+  // This month
+  const thisIncome   = data.income.filter(i => inMonth(i.date, yr, mo)).reduce((s,i) => s + getEffectiveIncome(i), 0);
+  const thisExpenses = data.expenses.filter(e => inMonth(e.date, yr, mo)).reduce((s,e) => s + e.amount, 0);
+  const thisBillsOut = data.bills.filter(b => inMonth(b.dueDate, yr, mo)).reduce((s,b) => s + b.amount, 0);
+  const thisOut      = thisExpenses + thisBillsOut;
+  const thisNet      = thisIncome - thisOut;
+  const thisBillsPaid= data.bills.filter(b => inMonth(b.dueDate, yr, mo) && b.status === 'Paid').length;
+  const thisBillsTotal = data.bills.filter(b => inMonth(b.dueDate, yr, mo)).length;
+
+  // Last month
+  const lastIncome   = data.income.filter(i => inMonth(i.date, prevYr, prevMo)).reduce((s,i) => s + i.amount, 0);
+  const lastExpenses = data.expenses.filter(e => inMonth(e.date, prevYr, prevMo)).reduce((s,e) => s + e.amount, 0);
+  const lastBillsOut = data.bills.filter(b => inMonth(b.dueDate, prevYr, prevMo)).reduce((s,b) => s + b.amount, 0);
+  const lastOut      = lastExpenses + lastBillsOut;
+  const lastNet      = lastIncome - lastOut;
+
+  function delta(curr, prev){
+    if(!prev) return '';
+    const diff = curr - prev;
+    const pct  = Math.abs(Math.round(diff / prev * 100));
+    const up   = diff >= 0;
+    const col  = up ? 'var(--green)' : 'var(--red)';
+    return `<div class="si-delta" style="color:${col}">${up ? '▲' : '▼'} ${pct}% vs last month</div>`;
+  }
+
+  const monthName = now.toLocaleString('default', {month:'long'});
+  const sub = $('snap-subtitle');
+  if(sub) sub.textContent = monthName + ' vs ' + new Date(prevYr, prevMo).toLocaleString('default', {month:'long'});
+
+  const grid = $('snap-grid');
+  if(!grid) return;
+  grid.innerHTML = [
+    { label:'Income',    val:thisIncome,   prev:lastIncome,   col:'var(--green)' },
+    { label:'Spending',  val:thisOut,      prev:lastOut,      col:'var(--red)'   },
+    { label:'Net',       val:thisNet,      prev:lastNet,      col:thisNet>=0?'var(--green)':'var(--red)' },
+    { label:'Bills Paid',val:null,         prev:null,         col:'var(--blue)', custom:`<div class="si-val" style="color:var(--blue)">${thisBillsPaid} / ${thisBillsTotal}</div><div class="si-delta" style="color:var(--muted)">${thisBillsTotal - thisBillsPaid} remaining</div>` },
+  ].map(item => `
+    <div class="snap-item">
+      <div class="si-label">${item.label}</div>
+      ${item.custom || `<div class="si-val" style="color:${item.col}">${usd(item.val)}</div>${delta(item.val, item.prev)}`}
+    </div>`).join('');
+
+  // Savings rate
+  const srWrap = $('savings-rate-wrap');
+  if(srWrap && thisIncome > 0){
+    const saved   = Math.max(0, thisIncome - thisOut);
+    const rate    = Math.round(saved / thisIncome * 100);
+    const rateCol = rate >= 20 ? 'var(--green)' : rate >= 10 ? 'var(--yellow)' : 'var(--red)';
+    const msg     = rate >= 20 ? 'Great saving rate!' : rate >= 10 ? 'On track - aim for 20%' : 'Try to save more this month';
+    srWrap.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <div style="font-size:12px;font-weight:700;color:var(--text)">💰 Savings Rate - ${monthName}</div>
+        <div style="font-size:18px;font-weight:700;color:${rateCol}">${rate}%</div>
+      </div>
+      <div class="savings-rate-bar">
+        <div class="savings-rate-fill" style="width:${Math.min(rate,100)}%;background:${rateCol}"></div>
+      </div>
+      <div style="font-size:11px;color:var(--muted);margin-top:5px">${msg} &nbsp;•&nbsp; ${usd(saved)} saved of ${usd(thisIncome)} earned</div>`;
+  } else if(srWrap){
+    srWrap.innerHTML = '<div style="font-size:11px;color:var(--muted);margin-top:6px">Add income entries to see your savings rate.</div>';
+  }
+}
+
+// ── DEBT PAYOFF PROGRESS ─────────────────────────────────────
+function updateOriginalBalances(){
+  // Auto-track highest ever balance per debt
+  data.bills.forEach(b => {
+    if((b.btype === 'creditcard' || b.btype === 'loan') && b.balance > 0){
+      if(!b.originalBalance || b.balance > b.originalBalance){
+        b.originalBalance = b.balance;
+      }
+    }
+  });
+}
+
+function renderDebtProgress(){
+  const debts = data.bills.filter(b => (b.btype==='creditcard'||b.btype==='loan') && b.originalBalance > 0);
+  const wrap  = $('debt-progress-wrap');
+  if(!wrap) return;
+  if(!debts.length){ wrap.style.display = 'none'; return; }
+
+  const totalOriginal = debts.reduce((s,b) => s + b.originalBalance, 0);
+  const totalCurrent  = debts.reduce((s,b) => s + (b.balance||0), 0);
+  const totalPaid     = totalOriginal - totalCurrent;
+  const pct           = Math.min(100, Math.round(totalPaid / totalOriginal * 100));
+
+  wrap.style.display = 'block';
+  const fill  = $('debt-progress-fill');
+  const label = $('debt-progress-label');
+  const pctEl = $('debt-progress-pct');
+  const paid  = $('debt-progress-paid');
+  const orig  = $('debt-progress-original');
+
+  if(fill)  fill.style.width = pct + '%';
+  if(pctEl) pctEl.textContent = pct + '% paid off';
+  if(label) label.textContent = usd(totalPaid) + ' paid down from original balances';
+  if(paid)  paid.textContent  = usd(totalCurrent) + ' remaining';
+  if(orig)  orig.textContent  = 'Started at ' + usd(totalOriginal);
+}
+
+// ── SPENDING ALERT BADGE ─────────────────────────────────────
+function updateInsightsBadge(){
+  const badge = $('insights-badge');
+  if(!badge) return;
+  const now = new Date();
+  const targets = data.targets || [];
+  let warnCount = 0;
+
+  targets.forEach(tg => {
+    let spent = 0;
+    if(tg.type === 'card'){
+      spent = data.transactions.filter(tr => {
+        if(tr.cardId !== tg.cardId || !tr.date) return false;
+        const d = new Date(tr.date);
+        return d.getFullYear()===now.getFullYear() && d.getMonth()===now.getMonth();
+      }).reduce((s,tr) => s + tr.amount, 0);
+    } else {
+      const cat = tg.category;
+      const expSpent = data.expenses.filter(e => {
+        if(e.category !== cat || !e.date) return false;
+        const d = new Date(e.date);
+        return d.getFullYear()===now.getFullYear() && d.getMonth()===now.getMonth();
+      }).reduce((s,e) => s + e.amount, 0);
+      const txnSpent = data.transactions.filter(tr => {
+        if(tr.type!=='Purchase'||tr.category!==cat||!tr.date) return false;
+        const d = new Date(tr.date);
+        return d.getFullYear()===now.getFullYear() && d.getMonth()===now.getMonth();
+      }).reduce((s,tr) => s + tr.amount, 0);
+      spent = expSpent + txnSpent;
+    }
+    if(tg.amount > 0 && spent / tg.amount >= 0.8) warnCount++;
+  });
+
+  if(warnCount > 0){
+    badge.textContent = warnCount;
+    badge.style.display = 'inline-block';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+// ── DRILL-DOWN TOGGLE ────────────────────────────────────────
+function toggleDrill(id, toggleEl){
+  const panel=$(id);
+  if(!panel) return;
+  const isOpen=panel.classList.toggle('open');
+  if(toggleEl){
+    toggleEl.classList.toggle('open', isOpen);
+    const lbl=toggleEl.querySelector('.dt-label');
+    const icon=toggleEl.querySelector('.dt-icon');
+    if(icon) icon.style.transform=isOpen?'rotate(90deg)':'rotate(0)';
+  }
+}
+
+// ── BILLS OVERDUE BADGE ──────────────────────────────────────
+function updateBillsBadge(){
+  const badge=$('bills-badge');
+  if(!badge) return;
+  const overdue=data.bills.filter(b=>{
+    if(b.status==='Paid'||b.status==='Scheduled') return false;
+    return daysUntil(b.dueDate)<0;
+  }).length;
+  badge.textContent=overdue;
+  badge.style.display=overdue>0?'inline-block':'none';
+}
 
 function renderAll(){
+  updateOriginalBalances();
   renderAlerts();renderDashboard();renderBudget();renderBills();renderDebt();
   renderNetWorth();renderInsights();renderCards();renderTxns();
+  renderSnapshot();updateInsightsBadge();updateBillsBadge();
 }
 
 // ── INIT ─────────────────────────────────────────
