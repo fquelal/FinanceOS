@@ -4,6 +4,11 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
+<script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
+<meta name="apple-mobile-web-app-title" content="FinanceOS"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="theme-color" content="#080812"/>
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236c63ff'/><text y='.9em' font-size='80' x='10'>💰</text></svg>"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <title>FinanceOS</title>
 <style>
@@ -159,7 +164,7 @@ hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
 .section.active{display:block;}
 
 /* ── TOAST ── */
-#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(60px);background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.35);color:var(--green);border-radius:20px;padding:8px 18px;font-size:13px;font-weight:600;transition:transform .28s ease,opacity .28s ease;opacity:0;z-index:200;white-space:nowrap;pointer-events:none;}
+#toast{position:fixed;top:16px;left:50%;transform:translateX(-50%) translateY(-80px);background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.35);color:var(--green);border-radius:20px;padding:8px 18px;font-size:13px;font-weight:600;transition:transform .28s ease,opacity .28s ease;opacity:0;z-index:400;white-space:nowrap;pointer-events:none;}
 #toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
 
 /* ── DEBT PLANNER ── */
@@ -394,11 +399,162 @@ canvas{width:100%!important;}
 [data-theme="light"] .empty-state{ color:#1a1a2e; }
 [data-theme="light"] #last-saved span#ls-text{ color:#aaaacc !important; }
 
+
+/* ── PWA INSTALL BANNER ── */
+#pwa-banner{position:fixed;bottom:0;left:0;right:0;z-index:180;
+  background:var(--surface);border-top:1px solid var(--border2);
+  padding:12px 16px;display:none;align-items:center;gap:12px;
+  box-shadow:0 -4px 24px rgba(0,0,0,.3);}
+#pwa-banner .pwa-icon{font-size:28px;flex-shrink:0;}
+#pwa-banner .pwa-text{flex:1;}
+#pwa-banner .pwa-title{font-size:13px;font-weight:700;color:var(--text);}
+#pwa-banner .pwa-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+#pwa-banner .pwa-install{background:var(--accent);color:#fff;border:none;
+  border-radius:8px;padding:8px 16px;font-size:12px;font-weight:700;
+  cursor:pointer;font-family:var(--font-b);white-space:nowrap;}
+#pwa-banner .pwa-dismiss{background:none;border:none;color:var(--muted);
+  font-size:20px;cursor:pointer;padding:0 4px;line-height:1;}
+
+
+/* ── SPENDING VELOCITY ── */
+.velocity-row{display:flex;align-items:center;gap:6px;margin-top:4px;font-size:11px;color:var(--muted);}
+.vel-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;display:inline-block;}
+/* ── ANOMALY BADGE ── */
+.anomaly-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;
+  border-radius:6px;padding:2px 7px;margin-top:4px;}
+.anomaly-badge.yellow{background:rgba(245,158,11,.15);color:var(--yellow);}
+.anomaly-badge.red{background:rgba(239,68,68,.15);color:var(--red);}
+/* ── ANOMALY SECTION IN INSIGHTS ── */
+#anomaly-wrap{margin-bottom:18px;}
+.anomaly-item{display:flex;align-items:center;justify-content:space-between;
+  padding:10px 12px;background:var(--surface);border-radius:10px;
+  border-left:3px solid var(--yellow);margin-bottom:8px;font-size:13px;}
+.anomaly-item.red{border-left-color:var(--red);}
+.anomaly-item .an-label{font-weight:600;color:var(--text);}
+.anomaly-item .an-detail{font-size:11px;color:var(--muted);margin-top:2px;}
+.anomaly-item .an-badge{font-size:11px;font-weight:700;white-space:nowrap;}
+
+
+/* ── NW HISTORY ── */
+.nwh-btn{background:rgba(255,255,255,.06);border:none;border-radius:8px;
+  padding:5px 12px;font-size:11px;font-weight:600;color:var(--muted);
+  cursor:pointer;font-family:var(--font-b);transition:all .15s;}
+.nwh-btn.active{background:var(--accent);color:#fff;}
+
+
+/* ── SMART BILL REMINDER ── */
+#smart-bills-wrap{margin-bottom:20px;}
+.smart-bill-card{background:var(--surface);border:1px solid var(--border2);
+  border-radius:12px;padding:14px 16px;margin-bottom:10px;}
+.smart-bill-card .sb-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.smart-bill-card .sb-title{font-size:13px;font-weight:700;color:var(--text);}
+.smart-bill-card .sb-balance{font-size:13px;font-weight:700;}
+.smart-bill-row{display:flex;justify-content:space-between;align-items:center;
+  padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;}
+.smart-bill-row:last-child{border-bottom:none;}
+.smart-bill-row .sbr-name{color:var(--text);font-weight:600;}
+.smart-bill-row .sbr-due{color:var(--muted);font-size:11px;}
+.smart-bill-row .sbr-amt{font-weight:700;}
+.smart-bill-verdict{margin-top:10px;padding:8px 12px;border-radius:8px;font-size:12px;font-weight:600;}
+.smart-bill-verdict.ok{background:rgba(34,197,94,.1);color:var(--green);}
+.smart-bill-verdict.warn{background:rgba(245,158,11,.1);color:var(--yellow);}
+.smart-bill-verdict.danger{background:rgba(239,68,68,.1);color:var(--red);}
+
+/* ── DEBT FREE COUNTDOWN ── */
+.debt-countdown{background:linear-gradient(135deg,rgba(108,99,255,.12),rgba(129,140,248,.06));
+  border:1px solid rgba(108,99,255,.25);border-radius:12px;padding:14px 16px;
+  margin-bottom:20px;display:flex;align-items:center;gap:14px;}
+.debt-countdown .dc-icon{font-size:28px;flex-shrink:0;}
+.debt-countdown .dc-body{flex:1;}
+.debt-countdown .dc-label{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.6px;}
+.debt-countdown .dc-debt{font-size:13px;font-weight:700;color:var(--text);margin-top:2px;}
+.debt-countdown .dc-date{font-size:12px;color:var(--accent2);margin-top:2px;}
+.debt-countdown .dc-months{font-size:22px;font-weight:700;color:var(--accent);white-space:nowrap;}
+
+
+/* ── PROMO SIMULATOR ── */
+#promo-simulator{background:var(--surface);border:1px solid var(--border2);
+  border-radius:14px;padding:16px;margin-bottom:16px;}
+.promo-sim-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:14px;
+  display:flex;align-items:center;gap:8px;}
+.promo-scenario-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+.promo-tab{background:rgba(255,255,255,.06);border:1px solid var(--border2);border-radius:8px;
+  padding:6px 12px;font-size:11px;font-weight:600;color:var(--muted);cursor:pointer;
+  font-family:var(--font-b);transition:all .15s;}
+.promo-tab.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+.promo-result{background:rgba(108,99,255,.06);border:1px solid rgba(108,99,255,.2);
+  border-radius:10px;padding:12px;margin-top:12px;}
+.promo-result-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.promo-result-item{background:var(--surface);border-radius:8px;padding:8px 10px;
+  border:1px solid var(--border);}
+.promo-result-label{font-size:10px;color:var(--muted);text-transform:uppercase;
+  letter-spacing:.5px;margin-bottom:3px;}
+.promo-result-val{font-size:15px;font-weight:700;}
+.promo-verdict{padding:10px 12px;border-radius:8px;font-size:12px;font-weight:600;margin-top:8px;}
+.promo-verdict.go{background:rgba(34,197,94,.12);color:var(--green);}
+.promo-verdict.caution{background:rgba(245,158,11,.12);color:var(--yellow);}
+.promo-verdict.nogo{background:rgba(239,68,68,.12);color:var(--red);}
+
+/* ── PROMO BADGE ON DEBT CARD ── */
+.promo-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(34,197,94,.12);
+  color:var(--green);border:1px solid rgba(34,197,94,.25);border-radius:6px;
+  padding:3px 8px;font-size:10px;font-weight:700;margin-top:4px;}
+.promo-badge.warn{background:rgba(245,158,11,.12);color:var(--yellow);border-color:rgba(245,158,11,.25);}
+.promo-badge.danger{background:rgba(239,68,68,.12);color:var(--red);border-color:rgba(239,68,68,.25);}
+.promo-needed{font-size:11px;color:var(--muted);margin-top:3px;}
+
+
+/* ── PROMO SIMULATOR ── */
+#promo-simulator{background:var(--surface);border:1px solid var(--border2);border-radius:14px;padding:16px;margin-bottom:16px;}
+.promo-sim-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.promo-scenario-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+.promo-tab{background:rgba(255,255,255,.06);border:1px solid var(--border2);border-radius:8px;padding:6px 12px;font-size:11px;font-weight:600;color:var(--muted);cursor:pointer;font-family:var(--font-b);transition:all .15s;}
+.promo-tab.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+.promo-result{background:rgba(108,99,255,.06);border:1px solid rgba(108,99,255,.2);border-radius:10px;padding:12px;margin-top:12px;}
+.promo-result-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.promo-result-item{background:var(--surface);border-radius:8px;padding:8px 10px;border:1px solid var(--border);}
+.promo-result-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;}
+.promo-result-val{font-size:15px;font-weight:700;}
+.promo-verdict{padding:10px 12px;border-radius:8px;font-size:12px;font-weight:600;margin-top:8px;}
+.promo-verdict.go{background:rgba(34,197,94,.12);color:var(--green);}
+.promo-verdict.caution{background:rgba(245,158,11,.12);color:var(--yellow);}
+.promo-verdict.nogo{background:rgba(239,68,68,.12);color:var(--red);}
+.promo-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.25);border-radius:6px;padding:3px 8px;font-size:10px;font-weight:700;margin-top:4px;}
+.promo-badge.warn{background:rgba(245,158,11,.12);color:var(--yellow);border-color:rgba(245,158,11,.25);}
+.promo-badge.danger{background:rgba(239,68,68,.12);color:var(--red);border-color:rgba(239,68,68,.25);}
+.promo-needed{font-size:11px;color:var(--muted);margin-top:3px;}
+
+
+/* ── PROMO CARD TOGGLE (iOS-safe multi-select) ── */
+.promo-card-toggle{display:flex;align-items:center;justify-content:space-between;
+  padding:10px 12px;background:var(--surface);border:1.5px solid var(--border2);
+  border-radius:10px;cursor:pointer;user-select:none;transition:all .15s;gap:10px;}
+.promo-card-toggle.selected{border-color:var(--accent);background:rgba(108,99,255,.1);}
+.promo-card-toggle .pct-left{display:flex;align-items:center;gap:10px;flex:1;min-width:0;}
+.promo-card-toggle .pct-check{width:20px;height:20px;border-radius:50%;border:2px solid var(--border2);
+  flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;font-size:12px;}
+.promo-card-toggle.selected .pct-check{background:var(--accent);border-color:var(--accent);color:#fff;}
+.promo-card-toggle .pct-info{min-width:0;}
+.promo-card-toggle .pct-name{font-size:13px;font-weight:600;color:var(--text);}
+.promo-card-toggle .pct-sub{font-size:11px;color:var(--muted);margin-top:1px;}
+.promo-card-toggle .pct-bal{font-size:13px;font-weight:700;color:var(--red);white-space:nowrap;flex-shrink:0;}
+.promo-limit-warn{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);
+  border-radius:8px;padding:8px 12px;font-size:12px;color:var(--red);margin-top:8px;display:none;}
+
 </style>
 </head>
 <body>
 
 <div id="toast"></div>
+<div id="pwa-banner">
+  <div class="pwa-icon">💰</div>
+  <div class="pwa-text">
+    <div class="pwa-title" id="pwa-title">Install FinanceOS</div>
+    <div class="pwa-sub" id="pwa-sub">Add to your home screen for quick access</div>
+  </div>
+  <button class="pwa-install" id="pwa-install-btn" onclick="pwaInstall()">Install</button>
+  <button class="pwa-dismiss" onclick="pwaDismiss()">✕</button>
+</div>
 <div id="undo-toast"><span id="undo-msg">Deleted</span><button class="undo-btn" onclick="undoDelete()">Undo</button><div class="undo-progress" id="undo-progress"></div></div>
 <div id="onboarding-overlay" class="hidden">
   <div class="ob-card">
@@ -542,6 +698,7 @@ canvas{width:100%!important;}
         <h2 class="sec-title" data-i18n="Bills &amp; Payments">Bills &amp; Payments</h2>
       </div>
       <div id="bills-alerts"></div>
+      <div id="smart-bills-wrap" style="margin-bottom:4px"></div>
       <div class="sort-bar" id="bill-sort-bar">
         <button class="sort-btn active" onclick="setBillSort('date')" id="bs-date" data-i18n="Due Date">Due Date</button>
         <button class="sort-btn" onclick="setBillSort('status')" id="bs-status" data-i18n="Status">Status</button>
@@ -565,6 +722,9 @@ canvas{width:100%!important;}
         </div>
       </div>
       <div id="debt-planner-content">
+
+        <!-- Debt-Free Countdown -->
+        <div id="debt-countdown-wrap" style="margin-bottom:16px"></div>
         <div style="margin-bottom:16px">
           <div class="plan-toggle">
             <button id="btn-avalanche" class="active" onclick="setMethod('avalanche')" data-i18n="Avalanche">Avalanche</button>
@@ -600,6 +760,32 @@ canvas{width:100%!important;}
         </div>
         <div class="summary-grid" id="debt-summary"></div>
         <div id="debt-list"></div>
+
+        <!-- Promo Simulator -->
+        <div id="promo-simulator">
+          <div class="promo-sim-title">🎁 Promo / 0% Offer Simulator</div>
+          <div class="promo-scenario-tabs">
+            <button class="promo-tab" id="ptab-promo" onclick="setPromoScenario('promo',this)">🎁 Promo APR</button>
+            <button class="promo-tab" id="ptab-transfer" onclick="setPromoScenario('transfer',this)">🔄 Balance Transfer</button>
+          </div>
+          <div id="promo-sim-inputs" style="display:none;grid-template-columns:1fr 1fr;gap:10px">
+            <div class="field" style="margin:0"><label id="promo-amount-label">Amount ($)</label><input id="promo-amount" type="number" placeholder="5000" oninput="calcPromo()"/></div>
+            <div class="field" style="margin:0"><label>Promo Months</label><input id="promo-months" type="number" placeholder="10" value="10" oninput="calcPromo()"/></div>
+            <div class="field" style="margin:0"><label id="promo-fee-label">Fee (%)</label><input id="promo-fee" type="number" placeholder="3" step="0.1" oninput="calcPromo()"/></div>
+            <div class="field" style="margin:0"><label>Regular APR After (%)</label><input id="promo-regular-apr" type="number" placeholder="24.99" step="0.01" oninput="calcPromo()"/></div>
+            <div class="field" style="margin:0" id="promo-current-apr-wrap"><label>Current Debt APR (%)</label><input id="promo-current-apr" type="number" placeholder="22.99" step="0.01" oninput="calcPromo()"/></div>
+            <div class="field" style="margin:0">
+              <label>Fee Type</label>
+              <select id="promo-fee-type" onchange="calcPromo()" style="background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:8px;color:var(--text);font-size:13px;width:100%">
+                <option value="percent">Percent (%)</option>
+                <option value="fixed">Fixed ($)</option>
+                <option value="none">No Fee</option>
+              </select>
+            </div>
+          </div>
+          <div id="promo-result"></div>
+          <div id="promo-sim-actions" style="display:none"><button class="btn btn-primary btn-full" style="margin-top:12px" onclick="trackPromo()">+ Track This Promo</button></div>
+        </div>
       </div>
     </div>
 
@@ -614,6 +800,20 @@ canvas{width:100%!important;}
       </div>
 
       <div id="networth-alerts"></div>
+
+      <!-- Net Worth History Chart -->
+      <div class="card" style="margin-bottom:20px" id="nw-history-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+          <div class="section-label" style="color:var(--muted);margin-bottom:0" data-i18n="Net Worth History">Net Worth History</div>
+          <div class="plan-toggle" style="margin-bottom:0">
+            <button class="nwh-btn active" onclick="setNWHWindow(6,this)">6mo</button>
+            <button class="nwh-btn" onclick="setNWHWindow(12,this)">12mo</button>
+            <button class="nwh-btn" onclick="setNWHWindow(24,this)">All</button>
+          </div>
+        </div>
+        <div class="chart-wrap"><canvas id="nw-history-chart"></canvas></div>
+        <div id="nw-history-empty" style="display:none;font-size:12px;color:var(--muted);padding:8px 0;text-align:center">Keep using the app monthly to build your history.</div>
+      </div>
 
       <!-- Summary -->
       <div class="nw-grid" style="margin-bottom:20px">
@@ -656,6 +856,12 @@ canvas{width:100%!important;}
         <div class="chart-wrap"><canvas id="spending-chart"></canvas></div>
       </div>
 
+      <!-- Spending Anomalies -->
+      <div class="card" style="margin-bottom:16px" id="anomaly-card">
+        <div class="section-label" style="color:var(--muted);margin-bottom:14px" data-i18n="Spending Anomalies">Spending Anomalies</div>
+        <div id="anomaly-wrap"></div>
+      </div>
+
       <!-- Budget vs Actual -->
       <div class="card" style="margin-bottom:16px">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px">
@@ -668,7 +874,8 @@ canvas{width:100%!important;}
             <button class="btn btn-secondary btn-sm" id="add-target-btn" onclick="openAddTarget()">+ Set Target</button>
           </div>
         </div>
-        <div id="budget-targets"></div>
+        <div id="anomaly-wrap"></div>
+      <div id="budget-targets"></div>
       </div>
       <!-- Monthly Snapshot -->
       <div class="card" id="snapshot-card" style="margin-top:4px">
@@ -824,6 +1031,7 @@ canvas{width:100%!important;}
         <button class="btn btn-full" style="background:rgba(34,197,94,.15);color:var(--green);padding:10px" onclick="exportData()" data-i18n="⬇️ Export Backup">⬇️ Export Backup</button>
         <button class="btn btn-full" style="background:rgba(108,99,255,.15);color:var(--accent2);padding:10px" onclick="importData()" data-i18n="⬆️ Import Backup">⬆️ Import Backup</button>
       </div>
+      <button class="btn btn-full" style="background:rgba(34,197,94,.12);color:var(--green);padding:10px;margin-top:8px" onclick="exportToExcel()" data-i18n="📊 Export to Excel / Numbers">📊 Export to Excel / Numbers</button>
     </div>
 
     <!-- Reset -->
@@ -992,6 +1200,10 @@ canvas{width:100%!important;}
     <div class="modal-header"><span class="modal-title" id="account-modal-title" data-i18n="Add Account">Add Account</span><button class="close-btn" onclick="closeModal('account')">✕</button></div>
     <input type="hidden" id="ac-id"/>
     <div class="field"><label data-i18n="Account Name">Account Name</label><input id="ac-name" placeholder="e.g. Chase Checking, Wells Savings"/></div>
+    <div class="field" style="display:flex;align-items:center;gap:10px;padding:8px 0">
+      <input type="checkbox" id="ac-default" style="width:18px;height:18px;accent-color:var(--accent);cursor:pointer"/>
+      <label for="ac-default" style="font-size:13px;color:var(--text);cursor:pointer" data-i18n="Set as default payment account">Set as default payment account</label>
+    </div>
     <div class="field"><label data-i18n="Type">Type</label>
       <select id="ac-type">
         <option value="checking">🏦 Checking</option>
@@ -1158,6 +1370,78 @@ canvas{width:100%!important;}
   </div>
 </div>
 
+
+  <!-- PROMO DEBT MODAL -->
+  <div class="overlay" id="modal-promo">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="promo-modal-title">Track Promo</span>
+      <button class="close-btn" onclick="closeModal('promo')">&#x2715;</button>
+    </div>
+    <input type="hidden" id="promo-id"/>
+    <input type="hidden" id="promo-modal-scenario"/>
+
+    <!-- PROMO APR: existing or new card + optional deposit -->
+    <div id="promo-apr-fields" style="display:none">
+      <div class="field">
+        <label>Apply To Card</label>
+        <select id="promo-apr-card" onchange="onPromoAprCardChange()" style="background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:8px;color:var(--text);font-size:13px;width:100%">
+          <option value="">-- Select card --</option>
+          <option value="new">+ Create New Card</option>
+        </select>
+      </div>
+      <div id="promo-apr-new-fields" style="display:none">
+        <div class="field"><label>New Card Name</label><input id="promo-apr-new-name" placeholder="e.g. Chase Freedom, Citi Simplicity"/></div>
+        <div class="field"><label>Credit Limit ($)</label><input id="promo-apr-new-limit" type="number" placeholder="10000"/></div>
+      </div>
+      <div class="field" style="display:flex;align-items:center;gap:10px;padding:4px 0">
+        <input type="checkbox" id="promo-apr-draw-check" onchange="togglePromoDrawDest()" style="width:16px;height:16px;accent-color:var(--accent);cursor:pointer"/>
+        <label for="promo-apr-draw-check" style="font-size:13px;color:var(--text);cursor:pointer">Funds deposited to an account (cash draw)</label>
+      </div>
+      <div id="promo-apr-draw-dest-wrap" style="display:none" class="field">
+        <label>Deposit To Account</label>
+        <select id="promo-apr-dest" style="background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:8px;color:var(--text);font-size:13px;width:100%">
+          <option value="">-- Select account --</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- TRANSFER: source cards + destination -->
+    <div id="promo-transfer-fields" style="display:none">
+      <div class="field">
+        <label>Pay Off These Cards (select all that apply)</label>
+        <div id="promo-transfer-sources" style="display:flex;flex-direction:column;gap:6px;padding:4px 0"></div>
+      </div>
+      <div class="field">
+        <label>Transfer To</label>
+        <select id="promo-transfer-dest" onchange="onPromoTransferDestChange()" style="background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:8px;color:var(--text);font-size:13px;width:100%">
+          <option value="">-- Select or create new card --</option>
+          <option value="new">+ Create New Card</option>
+        </select>
+      </div>
+      <div id="promo-new-card-fields" style="display:none">
+        <div class="field"><label>New Card Name</label><input id="promo-new-card-name" placeholder="e.g. Citi Simplicity, Discover 0%"/></div>
+        <div class="field"><label>Credit Limit ($)</label><input id="promo-new-card-limit" type="number" placeholder="10000" oninput="updateTransferTotal()"/></div>
+      </div>
+      <div class="promo-limit-warn" id="promo-limit-warn"></div>
+    </div>
+
+
+    <!-- SHARED FIELDS -->
+    <div class="field"><label id="promo-bal-label">Balance / Amount ($)</label><input id="promo-bal" type="number" placeholder="5000"/></div>
+    <div class="field"><label>Suggested Monthly Payment ($)</label><input id="promo-pay" type="number" placeholder="500"/></div>
+    <div class="field"><label>Promo APR (%)</label><input id="promo-papr" type="number" value="0" step="0.01"/></div>
+    <div class="field"><label>Promo End Date</label><input id="promo-end" type="date"/></div>
+    <div class="field"><label>Regular APR After (%)</label><input id="promo-rapr" type="number" placeholder="24.99" step="0.01"/></div>
+    <div class="field"><label>One-Time Fee ($)</label><input id="promo-feepaid" type="number" placeholder="0" step="0.01"/></div>
+
+    <div id="promo-summary-note" style="display:none;background:rgba(108,99,255,.07);border:1px solid rgba(108,99,255,.2);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--muted);margin-bottom:10px"></div>
+
+    <button class="btn btn-primary btn-full" onclick="savePromoDebt()">Save Promo</button>
+  </div>
+  </div>
+
+
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
@@ -1190,6 +1474,23 @@ const TRANSLATIONS={
   es:{
     'Theme':'Tema',
     'Restored!':'Restaurado!',
+    'Please select a Pay From account':'Por favor selecciona una cuenta de pago',
+    'Please select a payment method':'Por favor selecciona un metodo de pago',
+    'Set as default payment account':'Cuenta de pago predeterminada',
+    'Spending Anomalies':'Anomalias de Gastos',
+    'Track Promo Debt':'Registrar Promo',
+    'Promo debt tracked!':'Promo registrada!',
+    'Net Worth History':'Historial de Patrimonio Neto',
+    '📊 Export to Excel / Numbers':'📊 Exportar a Excel / Numbers',
+    'Excel file downloaded!':'Archivo Excel descargado!',
+    'Debt-Free Countdown':'Cuenta Regresiva sin Deudas',
+    'Smart Bill Reminder':'Recordatorio Inteligente de Facturas',
+    'Next 30 Days':'Proximos 30 dias',
+    'vs 3-month average':'vs promedio 3 meses',
+    'this month vs':'este mes vs',
+    'ahead of pace':'adelantado al ritmo',
+    'slightly ahead':'ligeramente adelantado',
+    'on track':'al ritmo',
     'Income Projection':'Proyeccion de Ingresos',
     'Dark':'Oscuro',
     'Light':'Claro',
@@ -1507,6 +1808,12 @@ function setLanguage(lang){
   localStorage.setItem(LANG_KEY,lang);
   applyTranslations();
   renderAll();
+  // Update language button highlights
+  ['en','es'].forEach(l=>{
+    const btn=$('lang-'+l);
+    if(btn) btn.style.background=appLang===l?'var(--accent)':'rgba(255,255,255,.06)';
+    if(btn) btn.style.color=appLang===l?'#fff':'var(--text)';
+  });
   // Seed timestamp if data exists but no timestamp recorded yet
   if(!localStorage.getItem(SAVE_TS_KEY)&&(data.income.length||data.bills.length||data.transactions.length)){
     localStorage.setItem(SAVE_TS_KEY,Date.now().toString());
@@ -1514,7 +1821,9 @@ function setLanguage(lang){
   updateLastSavedUI();
   checkBackupReminder();
   showOnboarding();
+  initPWA();
   showOnboarding();
+  initPWA();
 }
 function applyTranslations(){
   document.querySelectorAll('[data-i18n]').forEach(el=>{
@@ -1576,6 +1885,12 @@ function loadData(){
     if(!data.assets) data.assets=[];
     if(!data.targets) data.targets=[];
     if(!data.accounts) data.accounts=[];
+    // Auto-reset recurring bills on new month
+    autoResetRecurringBills();
+    // Auto-expire promo APRs when end date passes
+    autoExpirePromos();
+    // Auto-expire promo APRs
+    autoExpirePromos();
     // Purge obsolete transaction types
     const obsolete=['Extra Payment','Adjustment'];
     data.transactions=data.transactions.filter(t=>!obsolete.includes(t.type));
@@ -1593,9 +1908,22 @@ function loadData(){
 function getEffectiveIncome(i){
   return(i.actualAmount&&i.actualMonth===today().slice(0,7))?i.actualAmount:i.amount;
 }
-function showToast(msg){
-  const t=$('toast');t.textContent=msg||(appLang==='es'?'Guardado':'Saved');t.classList.add('show');
-  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2200);
+function showToast(msg, type){
+  const el=$('toast');
+  if(!el) return;
+  el.textContent=msg||(appLang==='es'?'Guardado':'Saved');
+  if(type==='error'){
+    el.style.background='rgba(239,68,68,.15)';
+    el.style.borderColor='rgba(239,68,68,.4)';
+    el.style.color='var(--red)';
+  } else {
+    el.style.background='rgba(34,197,94,.15)';
+    el.style.borderColor='rgba(34,197,94,.35)';
+    el.style.color='var(--green)';
+  }
+  el.classList.add('show');
+  clearTimeout(showToast._t);
+  showToast._t=setTimeout(()=>el.classList.remove('show'),2400);
 }
 function confirmReset(){
   if(confirm('Reset ALL data? Cannot be undone.')){
@@ -1659,106 +1987,149 @@ function loadDemoData(skipConfirm){
   const nextMonth=(m,day)=>{ const d=new Date(now); d.setMonth(d.getMonth()+m); d.setDate(day); return d.toISOString().split('T')[0]; };
 
   data={
-    // ── INCOME (linked to Chase Checking)
+    // ── INCOME ─────────────────────────────────────────────────
     income:[
-      {id:1001, source:'Salary - SoftNetworks',  amount:4200, frequency:'Bi-weekly', date:ago(3),  accountId:8001},
-      {id:1002, source:'Freelance Tech Support',  amount:650,  frequency:'Monthly',   date:ago(10), accountId:8001},
-      {id:1003, source:'Tax Refund',              amount:1200, frequency:'One-time',  date:ago(20), accountId:8002},
+      {id:1001, source:'Salary - SoftNetworks',  amount:4200, frequency:'Bi-weekly',  date:ago(3),  accountId:8001, actualAmount:4850, actualMonth:new Date().getFullYear()+'-'+String(new Date().getMonth()+1).padStart(2,'0')},
+      {id:1002, source:'Freelance Tech Support',  amount:650,  frequency:'Monthly',    date:ago(10), accountId:8001},
+      {id:1003, source:'Tax Refund',              amount:1200, frequency:'One-time',   date:ago(20), accountId:8002},
+      {id:1004, source:'Rental Income',           amount:800,  frequency:'Monthly',    date:ago(5),  accountId:8002},
     ],
 
-    // ── EXPENSES (linked to checking)
+    // ── EXPENSES ───────────────────────────────────────────────
     expenses:[
-      {id:2001, category:'Housing',       description:'Rent',                    amount:1450, frequency:'Monthly',  date:ago(1),  accountId:8001},
-      {id:2002, category:'Transport',     description:'Car insurance',           amount:187,  frequency:'Monthly',  date:ago(5),  accountId:8001},
-      {id:2003, category:'Food',          description:'Grocery run - ShopRite',  amount:220,  frequency:'Monthly',  date:ago(4),  accountId:8001},
-      {id:2004, category:'Utilities',     description:'Electric & gas',          amount:145,  frequency:'Monthly',  date:ago(2),  accountId:8001},
-      {id:2005, category:'Subscriptions', description:'Netflix, Spotify, iCloud',amount:42,   frequency:'Monthly',  date:ago(8),  accountId:8001},
-      {id:2006, category:'Healthcare',    description:'Health insurance copay',  amount:95,   frequency:'Monthly',  date:ago(6),  accountId:8001},
-      {id:2007, category:'Entertainment', description:'Concert tickets',         amount:120,  frequency:'One-time', date:ago(9),  accountId:8001},
-      {id:2008, category:'Savings',       description:'Emergency fund transfer', amount:200,  frequency:'Monthly',  date:ago(1),  accountId:8002},
+      {id:2001, category:'Housing',       description:'Rent',                     amount:1450, frequency:'Monthly',  date:ago(1),  accountId:8001},
+      {id:2002, category:'Transport',     description:'Car insurance',            amount:187,  frequency:'Monthly',  date:ago(5),  accountId:8001},
+      {id:2003, category:'Food',          description:'Grocery run - ShopRite',   amount:280,  frequency:'Monthly',  date:ago(4),  accountId:8001},
+      {id:2004, category:'Utilities',     description:'Electric & gas',           amount:145,  frequency:'Monthly',  date:ago(2),  accountId:8001},
+      {id:2005, category:'Subscriptions', description:'Netflix, Spotify, iCloud', amount:42,   frequency:'Monthly',  date:ago(8),  accountId:8001},
+      {id:2006, category:'Healthcare',    description:'Health insurance copay',   amount:95,   frequency:'Monthly',  date:ago(6),  accountId:8001},
+      {id:2007, category:'Entertainment', description:'Concert tickets',          amount:185,  frequency:'One-time', date:ago(9),  accountId:8001},
+      {id:2008, category:'Savings',       description:'Emergency fund transfer',  amount:300,  frequency:'Monthly',  date:ago(1),  accountId:8002},
+      {id:2009, category:'Dining',        description:'Dinner out - various',     amount:210,  frequency:'Monthly',  date:ago(3),  accountId:8001},
+      {id:2010, category:'Shopping',      description:'Clothing & household',     amount:320,  frequency:'One-time', date:ago(7),  accountId:8001},
     ],
 
-    // ── BILLS: mix of statuses + this month & next month (shows divider)
+    // ── BILLS ──────────────────────────────────────────────────
     bills:[
+      // Due this week - shows on 7-day timeline + smart bill reminder
       {id:3001, name:'Rent',              amount:1450, dueDate:dt(2),           recurring:'Monthly', status:'Pending',   btype:'bill',       balance:0,     apr:0,     creditLimit:0,     scheduledAmount:null, scheduledAccountId:null},
-      {id:3002, name:'Electric & Gas',    amount:145,  dueDate:dt(5),           recurring:'Monthly', status:'Scheduled', btype:'bill',       balance:0,     apr:0,     creditLimit:0,     scheduledAmount:145,  scheduledAccountId:8001},
-      {id:3005, name:'Phone Bill',        amount:65,   dueDate:ago(2),          recurring:'Monthly', status:'Paid',      btype:'bill',       balance:0,     apr:0,     creditLimit:0,     scheduledAmount:null, scheduledAccountId:null},
-      {id:3006, name:'Chase Sapphire',    amount:85,   dueDate:dt(6),           recurring:'Monthly', status:'Pending',   btype:'creditcard', balance:4250,  apr:22.99, creditLimit:10000, scheduledAmount:null, scheduledAccountId:null, originalBalance:5800},
-      {id:3009, name:'Capital One Card',  amount:35,   dueDate:ago(1),          recurring:'Monthly', status:'Overdue',   btype:'creditcard', balance:1150,  apr:26.99, creditLimit:3000,  scheduledAmount:null, scheduledAccountId:null, originalBalance:2200},
+      {id:3006, name:'Chase Sapphire',    amount:85,   dueDate:dt(4),           recurring:'Monthly', status:'Pending',   btype:'creditcard', balance:4250,  apr:22.99, creditLimit:10000, scheduledAmount:null, scheduledAccountId:null, originalBalance:5800},
       {id:3008, name:'Car Loan - Honda',  amount:340,  dueDate:dt(3),           recurring:'Monthly', status:'Pending',   btype:'loan',       balance:9800,  apr:7.49,  creditLimit:0,     scheduledAmount:null, scheduledAccountId:null, originalBalance:14000},
+      // Overdue - shows red badge + alert
+      {id:3009, name:'Capital One Card',  amount:35,   dueDate:ago(1),          recurring:'Monthly', status:'Overdue',   btype:'creditcard', balance:1150,  apr:26.99, creditLimit:3000,  scheduledAmount:null, scheduledAccountId:null, originalBalance:2200},
+      // Scheduled - shows blue badge
+      {id:3002, name:'Electric & Gas',    amount:145,  dueDate:dt(5),           recurring:'Monthly', status:'Scheduled', btype:'bill',       balance:0,     apr:0,     creditLimit:0,     scheduledAmount:145,  scheduledAccountId:8001},
+      // Paid - shows checkmark animation
+      {id:3005, name:'Phone Bill',        amount:65,   dueDate:ago(2),          recurring:'Monthly', status:'Paid',      btype:'bill',       balance:0,     apr:0,     creditLimit:0,     scheduledAmount:null, scheduledAccountId:null},
+      // Next month bills - shows month divider
       {id:3003, name:'Internet - Xfinity',amount:79,  dueDate:nextMonth(1,10), recurring:'Monthly', status:'Pending',   btype:'bill',       balance:0,     apr:0,     creditLimit:0,     scheduledAmount:null, scheduledAccountId:null},
       {id:3004, name:'Car Insurance',     amount:187,  dueDate:nextMonth(1,8),  recurring:'Monthly', status:'Pending',   btype:'bill',       balance:0,     apr:0,     creditLimit:0,     scheduledAmount:null, scheduledAccountId:null},
       {id:3007, name:'Student Loan',      amount:210,  dueDate:nextMonth(1,15), recurring:'Monthly', status:'Scheduled', btype:'loan',       balance:18400, apr:5.75,  creditLimit:0,     scheduledAmount:210,  scheduledAccountId:8001, originalBalance:24000},
+      // Additional debt for Debt Planner showcase
+      {id:3010, name:'Amex Platinum',     amount:120,  dueDate:nextMonth(1,20), recurring:'Monthly', status:'Pending',   btype:'creditcard', balance:6800,  apr:24.99, creditLimit:15000, scheduledAmount:null, scheduledAccountId:null, originalBalance:8500},
     ],
 
-    // ── INACTIVE REMINDER CARDS
+    // ── INACTIVE REMINDER CARDS ────────────────────────────────
     cards:[
       {id:4001, name:'Discover it Card', last4:'4823', reminderDays:90, nextReminder:dt(75),  notes:'Use for online purchases'},
       {id:4002, name:'Amex Gold (old)',  last4:'9901', reminderDays:90, nextReminder:ago(5),  notes:'Keep open for credit age'},
-      {id:4003, name:'Citi Double Cash', last4:'3377', reminderDays:90, nextReminder:dt(60),  notes:'2% cashback - use monthly'},
     ],
 
-    // ── TRANSACTIONS: 3 months of data, all valid types
+    // ── TRANSACTIONS (3 months - showcases anomaly detection) ──
     transactions:[
-      // 2 months ago
-      {id:5001, description:'ATM - Chase branch',     amount:200, type:'Withdrawal',  date:monthAgo(2,15), accountId:8001, methodLabel:'Chase Checking'},
-      {id:5050, description:'Whole Foods',            amount:110, type:'Purchase',    date:monthAgo(2,18), cardId:3006, accountId:0, category:'Food',          methodLabel:'Chase Sapphire'},
-      {id:5051, description:'Shell Gas Station',      amount:55,  type:'Purchase',    date:monthAgo(2,20), cardId:3006, accountId:0, category:'Transport',     methodLabel:'Chase Sapphire'},
-      {id:5052, description:'Chase Sapphire payment', amount:200, type:'Debt Payment',date:monthAgo(2,25), accountId:8001, cardId:3006, methodLabel:'Chase Checking'},
-      // Last month
-      {id:5002, description:'ATM - Walgreens',        amount:80,  type:'Withdrawal',  date:monthAgo(1,3),  accountId:8001, methodLabel:'Chase Checking'},
-      {id:5060, description:'Trader Joes',            amount:145, type:'Purchase',    date:monthAgo(1,5),  cardId:3006, accountId:0, category:'Food',          methodLabel:'Chase Sapphire'},
-      {id:5061, description:'Amazon - household',     amount:74,  type:'Purchase',    date:monthAgo(1,8),  cardId:3009, accountId:0, category:'Other',         methodLabel:'Capital One Card'},
-      {id:5062, description:'Netflix annual',         amount:180, type:'Purchase',    date:monthAgo(1,10), cardId:3006, accountId:0, category:'Subscriptions', methodLabel:'Chase Sapphire'},
-      {id:5063, description:'Discover - gas',         amount:48,  type:'Purchase',    date:monthAgo(1,12), cardId:4001, accountId:0, category:'Transport',     methodLabel:'Discover it Card'},
-      {id:5064, description:'Capital One payment',    amount:150, type:'Debt Payment',date:monthAgo(1,20), accountId:8001, cardId:3009, methodLabel:'Chase Checking'},
-      {id:5065, description:'Student Loan payment',   amount:210, type:'Debt Payment',date:monthAgo(1,15), accountId:8001, methodLabel:'Chase Checking'},
-      {id:5066, description:'Phone Bill (auto)',       amount:65,  type:'Bill Payment',date:monthAgo(1,2),  accountId:8001, methodLabel:'Chase Checking'},
-      // This month
-      {id:5010, description:'Whole Foods',            amount:95,  type:'Purchase',    date:ago(3),  cardId:3006, accountId:0, category:'Food',          methodLabel:'Chase Sapphire'},
-      {id:5011, description:'Shell Gas Station',      amount:62,  type:'Purchase',    date:ago(6),  cardId:3006, accountId:0, category:'Transport',     methodLabel:'Chase Sapphire'},
-      {id:5012, description:'AMC Theaters',           amount:45,  type:'Purchase',    date:ago(8),  cardId:3006, accountId:0, category:'Entertainment', methodLabel:'Chase Sapphire'},
-      {id:5013, description:'CVS Pharmacy',           amount:28,  type:'Purchase',    date:ago(11), cardId:3006, accountId:0, category:'Healthcare',    methodLabel:'Chase Sapphire'},
-      {id:5020, description:'Dominos Pizza',          amount:38,  type:'Purchase',    date:ago(7),  cardId:3009, accountId:0, category:'Food',          methodLabel:'Capital One Card'},
-      {id:5021, description:'Citi - groceries',       amount:92,  type:'Purchase',    date:ago(4),  cardId:4003, accountId:0, category:'Food',          methodLabel:'Citi Double Cash'},
-      {id:5030, description:'Costco - groceries',     amount:180, type:'Purchase',    date:ago(2),  cardId:0, accountId:8001, category:'Food',          methodLabel:'Chase Checking'},
-      {id:5031, description:'NJ Transit pass',        amount:89,  type:'Purchase',    date:ago(14), cardId:0, accountId:8001, category:'Transport',     methodLabel:'Chase Checking'},
-      {id:5040, description:'Phone Bill (auto)',       amount:65,  type:'Bill Payment',date:ago(2),  accountId:8001, methodLabel:'Chase Checking'},
-      {id:5041, description:'Car Loan payment',       amount:340, type:'Debt Payment',date:ago(5),  accountId:8001, cardId:0, methodLabel:'Chase Checking'},
+      // ── 2 months ago (lower baseline for anomalies) ──────────
+      {id:5001, description:'ATM - Chase branch',       amount:200,  type:'Withdrawal',  date:monthAgo(2,15), accountId:8001, methodLabel:'Chase Checking'},
+      {id:5050, description:'Whole Foods',              amount:95,   type:'Purchase',    date:monthAgo(2,8),  cardId:3006, accountId:0, category:'Food',          methodLabel:'Chase Sapphire'},
+      {id:5051, description:'Shell Gas Station',        amount:45,   type:'Purchase',    date:monthAgo(2,12), cardId:3006, accountId:0, category:'Transport',     methodLabel:'Chase Sapphire'},
+      {id:5052, description:'Netflix',                  amount:18,   type:'Purchase',    date:monthAgo(2,5),  cardId:3006, accountId:0, category:'Subscriptions', methodLabel:'Chase Sapphire'},
+      {id:5053, description:'Chipotle',                 amount:32,   type:'Purchase',    date:monthAgo(2,18), cardId:3009, accountId:0, category:'Dining',        methodLabel:'Capital One Card'},
+      {id:5054, description:'Target - household',       amount:68,   type:'Purchase',    date:monthAgo(2,20), cardId:3006, accountId:0, category:'Shopping',      methodLabel:'Chase Sapphire'},
+      {id:5055, description:'AMC Theaters',             amount:28,   type:'Purchase',    date:monthAgo(2,22), cardId:3009, accountId:0, category:'Entertainment', methodLabel:'Capital One Card'},
+      {id:5056, description:'Chase Sapphire payment',   amount:200,  type:'Debt Payment',date:monthAgo(2,25), accountId:8001, cardId:3006, methodLabel:'Chase Checking'},
+      // ── Last month (moderate spending) ───────────────────────
+      {id:5002, description:'ATM - Walgreens',          amount:80,   type:'Withdrawal',  date:monthAgo(1,3),  accountId:8001, methodLabel:'Chase Checking'},
+      {id:5060, description:'Trader Joes',              amount:145,  type:'Purchase',    date:monthAgo(1,5),  cardId:3006, accountId:0, category:'Food',          methodLabel:'Chase Sapphire'},
+      {id:5061, description:'Uber Eats',                amount:55,   type:'Purchase',    date:monthAgo(1,8),  cardId:3009, accountId:0, category:'Dining',        methodLabel:'Capital One Card'},
+      {id:5062, description:'Netflix annual',           amount:18,   type:'Purchase',    date:monthAgo(1,10), cardId:3006, accountId:0, category:'Subscriptions', methodLabel:'Chase Sapphire'},
+      {id:5063, description:'Shell Gas Station',        amount:52,   type:'Purchase',    date:monthAgo(1,12), cardId:3006, accountId:0, category:'Transport',     methodLabel:'Chase Sapphire'},
+      {id:5064, description:'Capital One payment',      amount:150,  type:'Debt Payment',date:monthAgo(1,20), accountId:8001, cardId:3009, methodLabel:'Chase Checking'},
+      {id:5065, description:'Student Loan payment',     amount:210,  type:'Debt Payment',date:monthAgo(1,15), accountId:8001, methodLabel:'Chase Checking'},
+      {id:5066, description:'Phone Bill (auto)',         amount:65,   type:'Bill Payment',date:monthAgo(1,2),  accountId:8001, methodLabel:'Chase Checking'},
+      {id:5067, description:'Broadway show tickets',    amount:95,   type:'Purchase',    date:monthAgo(1,14), cardId:3006, accountId:0, category:'Entertainment', methodLabel:'Chase Sapphire'},
+      {id:5068, description:'H&M clothing',             amount:88,   type:'Purchase',    date:monthAgo(1,18), cardId:3009, accountId:0, category:'Shopping',      methodLabel:'Capital One Card'},
+      // ── This month (higher - triggers anomaly detection) ──────
+      // Food up 40% vs avg - yellow anomaly
+      {id:5010, description:'Whole Foods',              amount:180,  type:'Purchase',    date:ago(3),  cardId:3006, accountId:0, category:'Food',          methodLabel:'Chase Sapphire'},
+      {id:5011, description:'Costco - groceries',       amount:160,  type:'Purchase',    date:ago(2),  accountId:8001, category:'Food',          methodLabel:'Chase Checking'},
+      // Entertainment up 60% - red anomaly
+      {id:5012, description:'Taylor Swift Concert',     amount:280,  type:'Purchase',    date:ago(8),  cardId:3006, accountId:0, category:'Entertainment', methodLabel:'Chase Sapphire'},
+      {id:5013, description:'AMC Theaters',             amount:52,   type:'Purchase',    date:ago(5),  cardId:3009, accountId:0, category:'Entertainment', methodLabel:'Capital One Card'},
+      // Dining up 50% - red anomaly
+      {id:5020, description:'Nobu - dinner',            amount:180,  type:'Purchase',    date:ago(6),  cardId:3006, accountId:0, category:'Dining',        methodLabel:'Chase Sapphire'},
+      {id:5021, description:'Dominos Pizza',            amount:38,   type:'Purchase',    date:ago(7),  cardId:3009, accountId:0, category:'Dining',        methodLabel:'Capital One Card'},
+      // Transport normal
+      {id:5031, description:'NJ Transit pass',          amount:89,   type:'Purchase',    date:ago(14), accountId:8001, category:'Transport',     methodLabel:'Chase Checking'},
+      // Bill + debt payments
+      {id:5040, description:'Phone Bill (auto)',         amount:65,   type:'Bill Payment',date:ago(2),  accountId:8001, methodLabel:'Chase Checking'},
+      {id:5041, description:'Car Loan payment',         amount:340,  type:'Debt Payment',date:ago(5),  accountId:8001, cardId:0,    methodLabel:'Chase Checking'},
+      {id:5042, description:'ATM - Chase branch',       amount:100,  type:'Withdrawal',  date:ago(4),  accountId:8001, methodLabel:'Chase Checking'},
+      {id:5043, description:'CVS Pharmacy',             amount:45,   type:'Purchase',    date:ago(11), cardId:3006, accountId:0, category:'Healthcare',    methodLabel:'Chase Sapphire'},
     ],
 
-    // ── ASSETS
+    // ── ASSETS ─────────────────────────────────────────────────
     assets:[
-      {id:6001, name:'Fidelity 401k',       category:'invest',   value:22000,  notes:'Employer matched'},
-      {id:6002, name:'Tesla Model 3',        category:'vehicle',  value:28000,  notes:'2022, estimated KBB'},
-      {id:6003, name:'Condo - Jersey City',  category:'property', value:310000, notes:'Estimated Zillow value'},
+      {id:6001, name:'Fidelity 401k',        category:'invest',   value:28500,  notes:'Employer matched - 6%'},
+      {id:6002, name:'Tesla Model 3',         category:'vehicle',  value:28000,  notes:'2022, estimated KBB'},
+      {id:6003, name:'Condo - Jersey City',   category:'property', value:310000, notes:'Estimated Zillow value'},
+      {id:6004, name:'Robinhood Portfolio',   category:'invest',   value:4800,   notes:'Index funds'},
     ],
 
-    // ── BUDGET TARGETS
+    // ── BUDGET TARGETS (showcase velocity + drill-down) ─────────
     targets:[
-      {id:7001, type:'category', category:'Food',          amount:400},
-      {id:7002, type:'category', category:'Entertainment', amount:200},
-      {id:7003, type:'category', category:'Transport',     amount:250},
-      {id:7004, type:'category', category:'Subscriptions', amount:60},
-      {id:7005, type:'card',     cardId:3006,              amount:300},
-      {id:7006, type:'card',     cardId:3009,              amount:150},
+      {id:7001, type:'category', category:'Food',          amount:350},
+      {id:7002, type:'category', category:'Entertainment', amount:150},
+      {id:7003, type:'category', category:'Transport',     amount:280},
+      {id:7004, type:'category', category:'Dining',        amount:180},
+      {id:7005, type:'category', category:'Subscriptions', amount:60},
+      {id:7006, type:'card',     cardId:3006,              amount:400},
+      {id:7007, type:'card',     cardId:3009,              amount:150},
     ],
 
-    // ── ACCOUNTS (show as both live balances and in Net Worth)
+    // ── ACCOUNTS ───────────────────────────────────────────────
     accounts:[
-      {id:8001, name:'Chase Checking',      type:'checking', balance:4250, notes:'Primary account'},
+      {id:8001, name:'Chase Checking',      type:'checking', balance:4250, notes:'Primary account', isDefault:true},
       {id:8002, name:'Wells Fargo Savings', type:'savings',  balance:8500, notes:'Emergency fund'},
       {id:8003, name:'Cash Wallet',         type:'cash',     balance:320,  notes:''},
     ]
-  }
+  };
+
   updateOriginalBalances();
   saveData();
-  localStorage.setItem(SAVE_TS_KEY,Date.now().toString());
+  localStorage.setItem(SAVE_TS_KEY, Date.now().toString());
+
+  // ── Seed Net Worth History (6 months for chart) ─────────────
+  const nwHistory=[];
+  const baseNW=308000;
+  const monthlyGrowth=[2200, -800, 1500, 3100, -400, 2800];
+  let runningNW=baseNW;
+  for(let i=6;i>=1;i--){
+    const d=new Date(now); d.setMonth(d.getMonth()-i);
+    const mo=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+    runningNW+=monthlyGrowth[6-i];
+    nwHistory.push({month:mo, value:runningNW});
+  }
+  // Current month
+  const currentMo=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+  nwHistory.push({month:currentMo, value:runningNW+3200});
+  localStorage.setItem('financeOS_nwHistory', JSON.stringify(nwHistory));
+
+  // ── Reset bill reset key so demo starts fresh ───────────────
+  localStorage.removeItem('financeOS_billResetMonth');
+
   // Reset UI state
   txnFilter='All';
   billSort='date';
   txnSearch='';
-  txnMonth=null;
   txnMonth=today().slice(0,7);
   insightsTab='categories';
   closeModal('settings');
@@ -1770,7 +2141,7 @@ function loadDemoData(skipConfirm){
   renderAll();
   showToast(t('Demo data loaded!'));
 }
-// ── ACCOUNTS ─────────────────────────────────────
+
 const acTypeIcon={checking:'🏦',savings:'💰',cash:'💵'};
 const acTypeLabel={checking:'Checking',savings:'Savings',cash:'Cash'};
 
@@ -1783,6 +2154,11 @@ function populateAccountSelects(){
     el.innerHTML=opts;
     if(prev) el.value=prev;
   });
+}
+
+function getDefaultAccountId(){
+  const def=(data.accounts||[]).find(a=>a.isDefault);
+  return def?def.id:((data.accounts||[])[0]?.id||0);
 }
 
 function getAccountBalance(id){
@@ -1801,6 +2177,7 @@ function openEditAccount(id){
   $('account-modal-title').textContent='Edit Account';
   $('ac-id').value=a.id;$('ac-name').value=a.name;$('ac-type').value=a.type;
   $('ac-balance').value=a.balance;$('ac-notes').value=a.notes||'';
+  $('ac-default').checked=a.isDefault||false;
   $('account-delete-wrap').style.display='block';
   $('modal-account').classList.add('open');
 }
@@ -1809,8 +2186,11 @@ function saveAccount(){
   const name=$('ac-name').value.trim(),type=$('ac-type').value,bal=parseFloat($('ac-balance').value)||0,notes=$('ac-notes').value.trim();
   if(!name)return;
   if(!data.accounts)data.accounts=[];
+  const isDefault=$('ac-default').checked;
   const eid=parseInt($('ac-id').value);
-  const item={id:eid||Date.now(),name,type,balance:bal,notes};
+  const item={id:eid||Date.now(),name,type,balance:bal,notes,isDefault};
+  // If this is default, clear isDefault on all others
+  if(isDefault) (data.accounts||[]).forEach(a=>{ if(a.id!==item.id) a.isDefault=false; });
   data.accounts=eid?data.accounts.map(a=>a.id===eid?item:a):[...data.accounts,item];
   $('ac-name').value='';$('ac-balance').value='';$('ac-notes').value='';$('ac-id').value='';
   $('account-delete-wrap').style.display='none';
@@ -1828,7 +2208,9 @@ function deleteAccountFromModal(){
 // ── NEW PURCHASE ──────────────────────────────────
 function openPurchaseModal(){
   $('pu-desc').value='';$('pu-amount').value='';$('pu-date').value=today();
-  $('pu-category').value='';$('pu-method').value='';
+  $('pu-category').value='';
+  const defAcId=getDefaultAccountId();
+  $('pu-method').value=defAcId?'acc-'+defAcId:'';
   $('pu-overdraft-warn').style.display='none';
   // Populate unified payment method dropdown
   const accs=data.accounts||[];
@@ -1861,6 +2243,7 @@ function confirmPurchase(){
   const method=$('pu-method').value;
   const category=$('pu-category').value||'';
   if(!desc||!amt)return;
+  if(!method){showToast(t('Please select a payment method'),'error');return;}
 
   let cardId=0,acId=0,methodLabel='';
   if(method.startsWith('card-')){
@@ -1914,7 +2297,7 @@ function renderNetWorth(){
   $('nw-assets').textContent=usd(totalAssets);
   $('nw-debts').textContent=usd(totalDebt);
   const nwEl=$('nw-total');
-  if(nwEl){nwEl.textContent=usd(netWorth);nwEl.style.color=netWorth>=0?'var(--green)':'var(--red)';}
+  if(nwEl){nwEl.textContent=usd(netWorth);snapshotNetWorth(netWorth);drawNWHistoryChart();nwEl.style.color=netWorth>=0?'var(--green)':'var(--red)';}
   // Render accounts in Net Worth section
   const acList=$('account-list');
   if(acList){
@@ -2111,6 +2494,15 @@ function drawChart(pts){
 
 const pageTitles={dashboard:'Dashboard',budget:'Cash Flow',bills:'Bills & Payments',debt:'Debt Planner',networth:'Net Worth',insights:'Insights',cards:'Cards',quick:'Quick Update'};
 function show(sec,btn){
+  if(sec==='networth') setTimeout(drawNWHistoryChart,80);
+  // Collapse simulator when leaving debt section
+  if(sec!=='debt'){
+    const inputs=$('promo-sim-inputs'); if(inputs) inputs.style.display='none';
+    const actions=$('promo-sim-actions'); if(actions) actions.style.display='none';
+    const res=$('promo-result'); if(res) res.innerHTML='';
+    document.querySelectorAll('.promo-tab').forEach(b=>b.classList.remove('active'));
+    promoScenario='promo';
+  }
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
   $(sec).classList.add('active');
@@ -2132,7 +2524,7 @@ function openModal(type,extra){
   if(type==='income'){$('income-modal-title').textContent='Add Income';$('i-id').value='';$('i-source').value='';$('i-amount').value='';$('i-date').value=today();$('i-freq').value='Monthly';$('i-account').value='';$('i-actual').value='';$('i-actual-wrap').style.display='none';populateAccountSelects();}
   if(type==='expense'){$('expense-modal-title').textContent='Add Expense';$('e-id').value='';$('e-cat').value='';$('e-desc').value='';$('e-amount').value='';$('e-date').value=today();$('e-freq').value='One-time';$('e-account').value='';populateAccountSelects();}
   if(type==='bill'){$('bill-modal-title').textContent='Add Bill / Debt';$('b-id').value='';$('b-name').value='';$('b-amount').value='';$('b-date').value='';$('b-recur').value='No';$('b-type').value='bill';$('b-balance').value='';$('b-apr').value='';$('b-limit').value='';toggleDebtFields();$('bill-delete-wrap').style.display='none';}
-  if(type==='account'){$('account-modal-title').textContent='Add Account';$('ac-id').value='';$('ac-name').value='';$('ac-type').value='checking';$('ac-balance').value='';$('ac-notes').value='';$('account-delete-wrap').style.display='none';}
+  if(type==='account'){$('account-modal-title').textContent='Add Account';$('ac-id').value='';$('ac-name').value='';$('ac-type').value='checking';$('ac-balance').value='';$('ac-notes').value='';$('ac-default').checked=false;$('account-delete-wrap').style.display='none';}
   if(type==='purchase'){openPurchaseModal();return;}
   if(type==='txn'){openWithdrawal();return;}
   if(type==='asset'){$('asset-modal-title').textContent='Add Asset';$('a-id').value='';$('a-name').value='';$('a-cat').value='cash';$('a-value').value='';$('a-notes').value='';}
@@ -2288,7 +2680,7 @@ function openWithdrawal(){
   $('t-id').value='';$('t-desc').value='';$('t-amount').value='';$('t-date').value=today();
   $('t-overdraft-warn').style.display='none';
   populateAccountSelects();
-  $('t-account').value='';
+  $('t-account').value=getDefaultAccountId()||'';
   $('modal-txn').classList.add('open');
   setTimeout(()=>$('t-desc').focus(),260);
 }
@@ -2307,6 +2699,7 @@ function saveTxn(){
   const desc=$('t-desc').value.trim(),amt=parseFloat($('t-amount').value),dt=$('t-date').value||today();
   const acId=parseInt($('t-account').value)||0;
   if(!desc||!amt)return;
+  if(!acId){showToast(t('Please select a Pay From account'),'error');return;}
   // Overdraft check
   if(acId){
     const bal=getAccountBalance(acId);
@@ -2345,7 +2738,7 @@ function initSwipe(wrap, onDeleteFn){
   },{passive:false});
   wrap.addEventListener('touchend',()=>{
     inner.style.transition='';
-    if(dx<-50){inner.style.transform='translateX(-80px)';wrap.classList.add('swiped');swiped=true;}
+    if(dx<-50){inner.style.transform='translateX(-80px)';wrap.classList.add('swiped');swiped=true;haptic('swipe');}
     else{inner.style.transform='';wrap.classList.remove('swiped');swiped=false;}
     dx=0;
   });
@@ -2420,7 +2813,7 @@ function autoProcessScheduledBills(){
     // Debit linked account
     if(acId) adjustAccountBalance(acId,-amt);
     // If debt, reduce balance
-    if((b.btype==='creditcard'||b.btype==='loan')&&b.balance>0){
+    if((b.btype==='creditcard'||b.btype==='loan'||b.btype==='promo')&&b.balance>0){
       const monthlyRate=(b.apr||0)/100/12;
       const interest=b.balance*monthlyRate;
       const principal=Math.max(0,amt-interest);
@@ -2471,7 +2864,7 @@ function openScheduleBill(id){
   $('sb-custom').value='';
   $('sb-custom').placeholder='e.g. '+b.amount;
   populateAccountSelects();
-  $('sb-account').value='';
+  $('sb-account').value=getDefaultAccountId()||'';
   _sbAmount=b.amount;
   $('sb-min-btn').style.outline='2px solid var(--accent)';
   $('modal-schedulebill').classList.add('open');
@@ -2492,7 +2885,8 @@ function confirmScheduleBill(){
   const b=data.bills.find(x=>x.id===_scheduleBillId);if(!b)return;
   const amt=parseFloat($('sb-custom').value)||_sbAmount||b.amount;
   const acId=parseInt($('sb-account').value)||0;
-  if(!amt||amt<=0){showToast('Enter a valid amount');return;}
+  if(!amt||amt<=0){showToast(t('Enter a valid amount'),'error');return;}
+  if(!acId){showToast(t('Please select a Pay From account'),'error');return;}
   // Overdraft check
   if(acId){
     const bal=getAccountBalance(acId);
@@ -2530,7 +2924,7 @@ function openPayDebt(id){
   $('pd-breakdown').style.display='none';
   $('pd-sug-btn').style.display='none';
   populateAccountSelects();
-  $('pd-account').value='';
+  $('pd-account').value=getDefaultAccountId()||'';
   // Default select min
   _payDebtAmount=minAmt;
   _payDebtType='min';
@@ -2577,7 +2971,8 @@ function confirmDebtPayment(){
     ? parseFloat($('pd-custom').value)||0
     : _payDebtAmount;
   const acId=parseInt($('pd-account').value)||0;
-  if(!amount||amount<=0){showToast('Enter a valid amount');return;}
+  if(!amount||amount<=0){showToast(t('Enter a valid amount'),'error');return;}
+  if(!acId){showToast(t('Please select a Pay From account'),'error');return;}
   // Overdraft check
   if(acId){
     const bal=getAccountBalance(acId);
@@ -2754,7 +3149,7 @@ function calcDebtPlan(debts, extra){
 }
 
 function renderDebt(){
-  const debts=data.bills.filter(b=>(b.btype==='creditcard'||b.btype==='loan')&&b.balance>0&&b.apr>0);
+  const debts=data.bills.filter(b=>(b.btype==='creditcard'||b.btype==='loan'||b.btype==='promo')&&b.balance>0&&(b.apr>=0));
   if(!debts.length){
     $('debt-no-data').style.display='block';
     $('debt-planner-content').style.display='none';
@@ -2763,6 +3158,12 @@ function renderDebt(){
   $('debt-no-data').style.display='none';
   $('debt-planner-content').style.display='block';
   renderDebtProgress();
+  renderDebtCountdown();
+  // Reset simulator to unselected state if inputs hidden
+  const simInputs=$('promo-sim-inputs');
+  if(simInputs&&simInputs.style.display==='none'){
+    document.querySelectorAll('.promo-tab').forEach(b=>b.classList.remove('active'));
+  }
 
   const desc={
     avalanche:'Sorted by highest APR first - focus payments on most expensive debt to minimize total interest paid.',
@@ -2860,13 +3261,15 @@ function renderDebt(){
         <td>${usd(r.balance)}</td>
       </tr>`).join('');
 
-    return`<div class="debt-card">
+    const promoBadgeHtml=getPromoBadgeHtml(d);
+    return`<div class="debt-card"${d.btype==='promo'?' style="border-color:rgba(34,197,94,.3)"':''}>
       <div style="display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap">
         <div class="debt-rank" style="background:${rc}22;color:${rc}">${idx+1}</div>
         <div style="flex:1;min-width:160px">
           <div style="font-size:15px;font-weight:700;margin-bottom:4px">${d.name}${focusLabel(d,idx)}</div>
           <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px">
-            <span class="apr-badge">APR ${pct(d.apr)}</span>
+            <span class="apr-badge"${d.btype==='promo'?' style="background:rgba(34,197,94,.15);color:var(--green)"':''}>APR ${pct(d.apr)}</span>
+            ${promoBadgeHtml}
             <span style="font-size:12px;color:var(--muted)">Min: ${usd(d.amount)}/mo</span>
           </div>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px">
@@ -2935,6 +3338,21 @@ function buildAlerts(){
         section:'cards', color:'#818cf8', icon:'💳',
         msg:`${c.name} - no purchases in 90+ days. Use it to keep it active.`,
       });
+    }
+  });
+
+  // ── PROMO: expiry warnings ─────────────────────────────────
+  data.bills.filter(b=>b.promoEndDate&&b.regularApr!=null&&b.balance>0).forEach(b=>{
+    const daysLeft=Math.round((new Date(b.promoEndDate)-now)/86400000);
+    if(daysLeft<0){
+      alerts.push({section:'debt',color:'#ef4444',icon:'🚨',
+        msg:`${b.name} promo EXPIRED - now at ${b.regularApr||0}% APR`});
+    } else if(daysLeft<=7){
+      alerts.push({section:'debt',color:'#ef4444',icon:'🚨',
+        msg:`${b.name} promo expires in ${daysLeft} day${daysLeft===1?'':'s'} - ${usd(b.balance)} remaining`});
+    } else if(daysLeft<=30){
+      alerts.push({section:'debt',color:'#f59e0b',icon:'⚠️',
+        msg:`${b.name} promo expires in ${daysLeft} days - pay ${usd(Math.ceil(b.balance/(Math.ceil(daysLeft/30))))} /mo to clear it`});
     }
   });
 
@@ -3108,7 +3526,7 @@ function renderDashboard(){
           <div class="row-label">${typeIcon[tx.type]||'📝'} ${tx.description}</div>
           <div class="row-sub">${fmtDate(tx.date)}${method?' - '+method:''}${tx.category?' - '+tx.category:''}</div>
         </div>
-        <div style="color:var(--red);font-weight:600">-${usd(t.amount)}</div>
+        <div style="color:var(--red);font-weight:600">-${usd(tx.amount)}</div>
       </div>`
     });
   });
@@ -3191,7 +3609,7 @@ function renderBudget(){
 
   // Money Out -- expenses + bills combined
   const expRows=data.expenses.map(e=>wrapSwipeable(`<div class="row" style="margin-bottom:0;border-radius:12px"><div>
-      <div class="row-label">${e.category} ${recurBadge(e.frequency)}</div>
+      <div class="row-label">${catIcon(e.category)}${e.category} ${recurBadge(e.frequency)}</div>
       <div class="row-sub">${[e.description,fmtDate(e.date)].filter(Boolean).join(' - ')}</div>
     </div><div class="row-actions">
       <span style="color:var(--red);font-weight:600">${usd(e.amount)}</span>
@@ -3199,12 +3617,13 @@ function renderBudget(){
       <button class="btn btn-danger btn-sm" onclick="deleteItem('expenses',${e.id})" class="show-desktop">✕</button>
     </div></div>`,`deleteItem('expenses',${e.id})`));
 
-  const billTypeIcon={bill:'📋',creditcard:'💳',loan:'🏦'};
+  const billTypeIcon={bill:'📋',creditcard:'💳',loan:'🏦',promo:'🎁'};
   const billRows=data.bills.map(b=>`
     <div class="row"><div>
       <div class="row-label">${billTypeIcon[b.btype]||'📋'} ${b.name}
         ${b.btype==='creditcard'?'<span style="background:rgba(239,68,68,.15);color:#ef4444;border-radius:5px;padding:1px 6px;font-size:10px;font-weight:700;margin-left:4px">CARD</span>':
-          b.btype==='loan'?'<span style="background:rgba(251,146,60,.15);color:#fb923c;border-radius:5px;padding:1px 6px;font-size:10px;font-weight:700;margin-left:4px">LOAN</span>':''}
+          b.btype==='loan'?'<span style="background:rgba(251,146,60,.15);color:#fb923c;border-radius:5px;padding:1px 6px;font-size:10px;font-weight:700;margin-left:4px">LOAN</span>':
+          b.promoEndDate?'<span style="background:rgba(34,197,94,.15);color:var(--green);border-radius:5px;padding:1px 6px;font-size:10px;font-weight:700;margin-left:4px">PROMO</span>':''}
       </div>
       <div class="row-sub">${b.recurring!=='No'?b.recurring+' payment':''} ${b.dueDate?'- Due '+fmtDate(b.dueDate):''}</div>
     </div><div class="row-actions">
@@ -3219,6 +3638,7 @@ function renderBudget(){
 
 function renderBills(){
   autoProcessScheduledBillsWithNotify();
+  renderSmartBillReminder();
   if(!data.bills.length){
     $('bill-list').innerHTML=emptyState('📋','No bills yet','Add your recurring bills, credit cards, and loans to track due dates and payments.',"+ Add a Bill","openModal('bill')");
     return;
@@ -3240,7 +3660,7 @@ function renderBills(){
       }
     }
     const d=daysUntil(b.dueDate);
-    const isDebt=b.btype==='creditcard'||b.btype==='loan';
+    const isDebt=b.btype==='creditcard'||b.btype==='loan'||b.btype==='promo';
     let eff=b.status;
     if(eff!=='Paid'&&eff!=='Scheduled'&&d<0) eff='Overdue';
     const sc=statusColor(eff);
@@ -3266,6 +3686,7 @@ function renderBills(){
           </div>
           <div style="font-size:12px;color:var(--muted)">Due: ${fmtDate(b.dueDate)} - ${b.recurring}</div>
           ${isDebt&&b.balance?`<div style="font-size:12px;color:var(--muted)">Balance: ${usd(b.balance)} ${b.apr?'| APR: '+pct(b.apr):''}</div>`:''}
+          ${b.promoEndDate?`<div style="font-size:11px;color:var(--green);font-weight:600">🎁 Promo ends: ${fmtDate(b.promoEndDate)} - ${pct(b.regularApr||0)} after</div>`:''}
         </div>
         <div class="row-actions">
           <span style="font-family:var(--font-d);font-size:19px">${usd(b.amount)}</span>
@@ -3508,10 +3929,11 @@ function renderTxns(){
     const color=typeColor[tx.type]||'var(--muted)';
     const icon=typeIcon[tx.type]||'📝';
     const method=tx.methodLabel||(tx.accountId?(data.accounts||[]).find(a=>a.id===tx.accountId)?.name:'');
-    const sub=[fmtDate(tx.date),tx.type,method,tx.category].filter(Boolean).join(' - ');
+    const catLabel=tx.category?catIcon(tx.category)+tx.category:'';
+    const sub=[fmtDate(tx.date),tx.type,method,catLabel].filter(Boolean).join(' - ');
     const rowHtml=`<div class="row" style="margin-bottom:0;border-radius:12px">
       <div>
-        <div class="row-label">${icon} ${tx.description}</div>
+        <div class="row-label">${tx.description}</div>
         <div class="row-sub">${sub}</div>
       </div>
       <div class="row-actions">
@@ -3568,6 +3990,7 @@ function renderInsights(){
   const cardTargets=targets.filter(tg=>tg.type==='card');
   const activeTargets=tab==='cards'?cardTargets:catTargets;
 
+  renderAnomalies();
   if(!activeTargets.length){
     $('budget-targets').innerHTML='<div class="empty">No '+(tab==='cards'?'card':'category')+' targets set. Click "+ Set Target" to add one.</div>';
     return;
@@ -3586,7 +4009,7 @@ function renderInsights(){
         return d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth();
       }).reduce((s,tr)=>s+tr.amount,0);
     } else {
-      label=tg.category;
+      label=catIcon(tg.category)+tg.category;
       // Expenses with this category this month
       const expSpent=data.expenses.filter(e=>{
         if(e.category!==tg.category||!e.date)return false;
@@ -3646,7 +4069,7 @@ function renderInsights(){
     const drillHtml=drillRows.length
       ? drillRows.map(r=>`<div class="drill-row">
           <div class="dr-left">
-            <div class="dr-desc">${r.desc||'--'}</div>
+            <div class="dr-desc">${r.desc?catIcon(r.desc)+r.desc:'--'}</div>
             <div class="dr-sub">${fmtDate(r.date)}${r.sub?' · '+r.sub:''}</div>
           </div>
           <div class="dr-amt">-${usd(r.amt)}</div>
@@ -3663,6 +4086,7 @@ function renderInsights(){
       </div>
       <div class="target-bar-bg"><div class="target-bar-fill" style="width:${pctVal}%;background:${barColor}"></div></div>
       <div style="font-size:10px;color:${over?'var(--red)':'var(--muted)'};margin-top:3px">${over?t('Over budget by')+' '+usd(spent-tg.amount):pctVal+'% '+t('used this month')}</div>
+      ${tg.amount>0&&!over?velocityHtml(pctVal,getVelocityInfo().monthPct):''}
       ${utilRow}
       <div class="drill-toggle" onclick="toggleDrill('${drillId}',this.previousElementSibling.previousElementSibling.previousElementSibling)">
         <i class="dt-icon">›</i> <span class="dt-label">${drillRows.length} transaction${drillRows.length===1?'':'s'}</span>
@@ -3949,6 +4373,9 @@ function loadTheme(){
 
 // ── ONBOARDING ───────────────────────────────────────────────
 const ONBOARD_KEY='financeOS_onboarded';
+const BILL_RESET_KEY='financeOS_billResetMonth';
+const PWA_PROMPT_KEY='financeOS_pwaPromptDismissed';
+const NW_HISTORY_KEY='financeOS_nwHistory';
 const OB_STEPS_EN=[
   {icon:'👋',title:'Welcome to FinanceOS',desc:"Your personal finance app. Everything stays private on your device - nothing is ever sent anywhere. Let's get you set up in 3 quick steps.",btn:'Get Started',color:null},
   {icon:'🏦',title:'Add Your Accounts',desc:'Start by adding your checking, savings, and cash accounts with their current balances. This keeps your finances accurate as you track spending.',btn:'Next',color:null},
@@ -4162,6 +4589,1086 @@ function renderProjection(){
 }
 
 
+
+// ── CATEGORY ICONS ────────────────────────────────────────────
+const CAT_ICONS={
+  'Food':'🍕','Groceries':'🛒','Transport':'🚗','Gas':'⛽',
+  'Entertainment':'🎬','Shopping':'🛍️','Healthcare':'🏥',
+  'Housing':'🏠','Rent':'🏠','Utilities':'💡','Electric':'💡',
+  'Subscriptions':'📱','Education':'📚','Travel':'✈️',
+  'Savings':'💰','Investment':'📈','Dining':'🍽️',
+  'Gym':'💪','Insurance':'🛡️','Personal':'👤',
+  'Clothing':'👕','Electronics':'💻','Other':'📦',
+};
+function catIcon(cat){
+  if(!cat) return '';
+  const icon=CAT_ICONS[cat];
+  return icon?icon+' ':'';
+}
+
+// ── HAPTIC FEEDBACK ───────────────────────────────────────────
+function haptic(type){
+  if(!navigator.vibrate) return;
+  if(type==='swipe') navigator.vibrate(15);
+  else if(type==='success') navigator.vibrate([10,50,10]);
+  else if(type==='undo') navigator.vibrate(20);
+}
+
+// ── RECURRING BILL RESET ──────────────────────────────────────
+function autoResetRecurringBills(){
+  const currentMonth=today().slice(0,7);
+  const lastReset=localStorage.getItem(BILL_RESET_KEY);
+  if(lastReset===currentMonth) return; // Already reset this month
+  let changed=0;
+  data.bills.forEach(b=>{
+    if(b.recurring==='One-time') return; // Skip one-time bills
+    if(b.status==='Paid'||b.status==='Scheduled'){
+      b.status='Pending';
+      b.scheduledAmount=null;
+      b.scheduledAccountId=null;
+      changed++;
+    }
+  });
+  localStorage.setItem(BILL_RESET_KEY, currentMonth);
+  if(changed>0) saveData();
+}
+
+// ── PWA INSTALL PROMPT ────────────────────────────────────────
+let _pwaPrompt=null;
+
+function initPWA(){
+  if(localStorage.getItem(PWA_PROMPT_KEY)) return;
+  const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isInStandalone=window.navigator.standalone===true||window.matchMedia('(display-mode: standalone)').matches;
+  if(isInStandalone) return; // Already installed
+
+  if(isIOS){
+    // iOS: show manual tip after 10 seconds
+    setTimeout(()=>{
+      if(localStorage.getItem(PWA_PROMPT_KEY)) return;
+      const banner=$('pwa-banner');
+      const sub=$('pwa-sub');
+      const btn=$('pwa-install-btn');
+      if(banner&&sub&&btn){
+        sub.textContent='Tap '+String.fromCharCode(0x2B06)+' Share then "Add to Home Screen"';
+        btn.style.display='none';
+        banner.style.display='flex';
+      }
+    },10000);
+  } else {
+    // Android/Chrome: capture install event
+    window.addEventListener('beforeinstallprompt',e=>{
+      e.preventDefault();
+      _pwaPrompt=e;
+      setTimeout(()=>{
+        if(localStorage.getItem(PWA_PROMPT_KEY)) return;
+        const banner=$('pwa-banner');
+        if(banner) banner.style.display='flex';
+      },5000);
+    });
+  }
+  // Hide if already installed
+  window.addEventListener('appinstalled',()=>{ pwaDismiss(); });
+}
+
+function pwaInstall(){
+  if(_pwaPrompt){
+    _pwaPrompt.prompt();
+    _pwaPrompt.userChoice.then(r=>{ if(r.outcome==='accepted') pwaDismiss(); });
+  }
+}
+
+function pwaDismiss(){
+  localStorage.setItem(PWA_PROMPT_KEY,'1');
+  const banner=$('pwa-banner');
+  if(banner) banner.style.display='none';
+}
+
+
+
+// ── ANOMALY DETECTION ─────────────────────────────────────────
+function getCategorySpend(cat, yr, mo){
+  const expSpent = data.expenses.filter(e=>{
+    if(!e.date||e.category!==cat) return false;
+    const d=new Date(e.date);
+    return d.getFullYear()===yr && d.getMonth()===mo;
+  }).reduce((s,e)=>s+e.amount, 0);
+  const txnSpent = data.transactions.filter(tr=>{
+    if(!tr.date||tr.type!=='Purchase'||tr.category!==cat) return false;
+    const d=new Date(tr.date);
+    return d.getFullYear()===yr && d.getMonth()===mo;
+  }).reduce((s,tr)=>s+tr.amount, 0);
+  return expSpent + txnSpent;
+}
+
+function detectAnomalies(){
+  const now=new Date();
+  const yr=now.getFullYear(), mo=now.getMonth();
+  // Get all categories that appear in last 3 months
+  const cats=new Set();
+  data.expenses.forEach(e=>{ if(e.category) cats.add(e.category); });
+  data.transactions.filter(tr=>tr.type==='Purchase'&&tr.category).forEach(tr=>cats.add(tr.category));
+  const anomalies=[];
+  cats.forEach(cat=>{
+    const thisMonth=getCategorySpend(cat, yr, mo);
+    if(thisMonth===0) return;
+    // 3-month average (previous 3 months, not current)
+    let avg3=0, validMonths=0;
+    for(let i=1;i<=3;i++){
+      const d=new Date(yr, mo-i, 1);
+      const spend=getCategorySpend(cat, d.getFullYear(), d.getMonth());
+      if(spend>0){ avg3+=spend; validMonths++; }
+    }
+    if(validMonths===0) return; // No history, skip
+    avg3=avg3/validMonths;
+    if(avg3===0) return;
+    const overpct=Math.round((thisMonth-avg3)/avg3*100);
+    if(overpct>=30){
+      anomalies.push({
+        cat, thisMonth, avg3, overpct,
+        level: overpct>=50?'red':'yellow'
+      });
+    }
+  });
+  return anomalies.sort((a,b)=>b.overpct-a.overpct);
+}
+
+function renderAnomalies(){
+  const el=$('anomaly-wrap');
+  const card=$('anomaly-card');
+  if(!el) return;
+  const anomalies=detectAnomalies();
+  if(!anomalies.length){
+    el.innerHTML='<div style="font-size:12px;color:var(--muted);padding:4px 0">No unusual spending detected vs your 3-month average.</div>';
+    if(card) card.style.display='block';
+    return;
+  }
+  if(card) card.style.display='block';
+  const items=anomalies.map(a=>`
+    <div class="anomaly-item ${a.level}">
+      <div>
+        <div class="an-label">${catIcon(a.cat)}${a.cat}</div>
+        <div class="an-detail">${usd(a.thisMonth)} this month vs ${usd(Math.round(a.avg3))} avg</div>
+      </div>
+      <div class="an-badge" style="color:${a.level==='red'?'var(--red)':'var(--yellow)'}">
+        +${a.overpct}%
+      </div>
+    </div>`).join('');
+  el.innerHTML=`<div style="font-size:10px;color:var(--muted);margin-bottom:10px">vs your 3-month average</div>`+items;
+}
+
+// ── SPENDING VELOCITY ─────────────────────────────────────────
+function getVelocityInfo(){
+  const now=new Date();
+  const daysInMonth=new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
+  const daysPassed=now.getDate();
+  const monthPct=Math.round(daysPassed/daysInMonth*100);
+  return { monthPct, daysPassed, daysInMonth };
+}
+
+function velocityHtml(spentPct, monthPct){
+  const diff=spentPct-monthPct;
+  let color, dotColor, msg;
+  if(diff>20){
+    color='var(--red)'; dotColor='var(--red)';
+    msg=`${spentPct}% spent, ${monthPct}% through month - ahead of pace`;
+  } else if(diff>0){
+    color='var(--yellow)'; dotColor='var(--yellow)';
+    msg=`${spentPct}% spent, ${monthPct}% through month - slightly ahead`;
+  } else {
+    color='var(--green)'; dotColor='var(--green)';
+    msg=`${spentPct}% spent, ${monthPct}% through month - on track`;
+  }
+  return `<div class="velocity-row">
+    <span class="vel-dot" style="background:${dotColor}"></span>
+    <span style="color:${color}">${msg}</span>
+  </div>`;
+}
+
+
+
+// ── NET WORTH HISTORY ─────────────────────────────────────────
+let nwhWindow = 6;
+
+function setNWHWindow(n, btn){
+  nwhWindow = n;
+  document.querySelectorAll('.nwh-btn').forEach(b => b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  drawNWHistoryChart();
+}
+
+function snapshotNetWorth(value){
+  const month = today().slice(0,7);
+  let history = [];
+  try { history = JSON.parse(localStorage.getItem(NW_HISTORY_KEY)||'[]'); } catch(e){}
+  const existing = history.find(h => h.month === month);
+  if(existing){
+    existing.value = value; // Update current month snapshot
+  } else {
+    history.push({month, value});
+  }
+  // Keep max 36 months
+  history.sort((a,b) => a.month.localeCompare(b.month));
+  if(history.length > 36) history = history.slice(-36);
+  localStorage.setItem(NW_HISTORY_KEY, JSON.stringify(history));
+  return history;
+}
+
+function drawNWHistoryChart(){
+  const canvas = $('nw-history-chart');
+  const empty  = $('nw-history-empty');
+  if(!canvas) return;
+
+  let history = [];
+  try { history = JSON.parse(localStorage.getItem(NW_HISTORY_KEY)||'[]'); } catch(e){}
+  history.sort((a,b) => a.month.localeCompare(b.month));
+
+  // Filter to window
+  const sliced = nwhWindow === 0 ? history : history.slice(-nwhWindow);
+
+  if(sliced.length < 2){
+    canvas.style.display = 'none';
+    if(empty) empty.style.display = 'block';
+    return;
+  }
+  canvas.style.display = 'block';
+  if(empty) empty.style.display = 'none';
+
+  const W = canvas.parentElement.offsetWidth || 300;
+  if(W === 0){ setTimeout(drawNWHistoryChart, 150); return; }
+  const H = 160;
+  canvas.width  = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0,0,W,H);
+
+  const values = sliced.map(h => h.value);
+  const minV   = Math.min(...values);
+  const maxV   = Math.max(...values);
+  const range  = maxV - minV || 1;
+  const pad    = { top:20, right:16, bottom:28, left:16 };
+  const chartW = W - pad.left - pad.right;
+  const chartH = H - pad.top  - pad.bottom;
+
+  // Gradient fill
+  const grad = ctx.createLinearGradient(0, pad.top, 0, H - pad.bottom);
+  grad.addColorStop(0,  'rgba(108,99,255,0.25)');
+  grad.addColorStop(1,  'rgba(108,99,255,0.00)');
+
+  const pts = sliced.map((h,i) => ({
+    x: pad.left + (i / (sliced.length-1)) * chartW,
+    y: pad.top  + (1 - (h.value - minV) / range) * chartH,
+    v: h.value,
+    m: h.month,
+  }));
+
+  // Fill
+  ctx.beginPath();
+  ctx.moveTo(pts[0].x, H - pad.bottom);
+  pts.forEach(p => ctx.lineTo(p.x, p.y));
+  ctx.lineTo(pts[pts.length-1].x, H - pad.bottom);
+  ctx.closePath();
+  ctx.fillStyle = grad;
+  ctx.fill();
+
+  // Line
+  ctx.beginPath();
+  ctx.strokeStyle = '#6c63ff';
+  ctx.lineWidth = 2;
+  ctx.lineJoin  = 'round';
+  pts.forEach((p,i) => i===0 ? ctx.moveTo(p.x,p.y) : ctx.lineTo(p.x,p.y));
+  ctx.stroke();
+
+  // Dots + labels
+  pts.forEach((p, i) => {
+    // Dot
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 3, 0, Math.PI*2);
+    ctx.fillStyle = '#6c63ff';
+    ctx.fill();
+
+    // Month label (first, last, and every 3rd)
+    if(i===0 || i===pts.length-1 || i%3===0){
+      const d = new Date(p.m+'-15');
+      const lbl = d.toLocaleString('default',{month:'short', year:'2-digit'});
+      ctx.font = '9px -apple-system,sans-serif';
+      ctx.fillStyle = 'rgba(136,136,153,0.9)';
+      ctx.textAlign = i===0?'left':i===pts.length-1?'right':'center';
+      ctx.fillText(lbl, p.x, H - 6);
+    }
+
+    // Value label on last point
+    if(i===pts.length-1){
+      const isPositive = p.v >= 0;
+      ctx.font = 'bold 11px -apple-system,sans-serif';
+      ctx.fillStyle = isPositive ? '#22c55e' : '#ef4444';
+      ctx.textAlign = 'right';
+      ctx.fillText(usd(p.v), p.x, p.y - 8);
+    }
+  });
+}
+
+
+
+// ── DEBT-FREE DATE COUNTDOWN ──────────────────────────────────
+function renderDebtCountdown(){
+  const wrap=$('debt-countdown-wrap');
+  if(!wrap) return;
+  const debts=data.bills.filter(b=>(b.btype==='creditcard'||b.btype==='loan'||b.btype==='promo')&&b.balance>0&&(b.apr>=0));
+  if(!debts.length){ wrap.innerHTML=''; return; }
+
+  const extra=Math.max(0,(data.income.reduce((s,i)=>s+getEffectiveIncome(i),0))
+    -(data.expenses.reduce((s,e)=>s+e.amount,0))
+    -(data.bills.filter(b=>b.btype==='bill').reduce((s,b)=>s+b.amount,0))
+    -(debts.reduce((s,b)=>s+b.amount,0)));
+  const plan=calcDebtPlan(debts.map(b=>({...b,balance:b.balance,amount:b.amount,apr:b.apr})), Math.max(0,extra));
+  if(!plan||!plan.months){ wrap.innerHTML=''; return; }
+
+  // Find actual payoff month for each debt from sched data (plan order)
+  const payoffs=plan.items.map(d=>{
+    const idx=d.sched.findIndex(s=>s.balance<0.01);
+    const payoffMonth=idx>=0?idx+1:d.sched.length;
+    const date=new Date();
+    date.setMonth(date.getMonth()+payoffMonth);
+    return{name:d.name, payoffMonth, date};
+  }).sort((a,b)=>a.payoffMonth-b.payoffMonth);
+
+  if(!payoffs.length){ wrap.innerHTML=''; return; }
+
+  const methodLabel=debtMethod==='avalanche'?'Avalanche':'Snowball';
+  const methodColor=debtMethod==='avalanche'?'var(--red)':'var(--green)';
+
+  // Show next 2 payoffs
+  const nextTwo=payoffs.slice(0,2).map((p,i)=>`
+    <div style="display:flex;justify-content:space-between;align-items:center;${i>0?'margin-top:6px;padding-top:6px;border-top:1px solid var(--border)':''}">
+      <div>
+        <div style="font-size:12px;font-weight:700;color:var(--text)">${i===0?'Next:':'Then:'} <strong>${p.name}</strong></div>
+        <div style="font-size:11px;color:var(--muted)">${p.date.toLocaleString('default',{month:'long',year:'numeric'})}</div>
+      </div>
+      <div style="font-size:14px;font-weight:700;color:var(--accent)">${p.payoffMonth}mo</div>
+    </div>`).join('');
+
+  wrap.innerHTML=`
+    <div class="debt-countdown">
+      <div class="dc-icon">🎯</div>
+      <div class="dc-body">
+        <div class="dc-label">Next Payoff - <span style="color:${methodColor}">${methodLabel}</span></div>
+        ${nextTwo}
+      </div>
+    </div>`;
+}
+
+
+// ── SMART BILL REMINDER ───────────────────────────────────────
+function renderSmartBillReminder(){
+  const wrap=$('smart-bills-wrap');
+  if(!wrap) return;
+
+  // Get accounts with balances
+  const accounts=data.accounts||[];
+  if(!accounts.length){ wrap.innerHTML=''; return; }
+
+  // Get unpaid bills due in next 30 days
+  const now=new Date();
+  const in30=new Date(now); in30.setDate(in30.getDate()+30);
+  const todayStr=today();
+  const in30Str=in30.toISOString().slice(0,10);
+
+  const upcoming=data.bills.filter(b=>{
+    if(b.status==='Paid'||b.status==='Scheduled') return false;
+    if(!b.dueDate) return false;
+    return b.dueDate>=todayStr&&b.dueDate<=in30Str || b.dueDate<todayStr; // include overdue
+  }).sort((a,b)=>a.dueDate.localeCompare(b.dueDate));
+
+  if(!upcoming.length){ wrap.innerHTML=''; return; }
+
+  const totalDue=upcoming.reduce((s,b)=>s+b.amount,0);
+  const totalBalance=accounts.reduce((s,a)=>s+a.balance,0);
+  const remaining=totalBalance-totalDue;
+  const canPay=remaining>=0;
+  const pct=totalBalance>0?Math.round(totalDue/totalBalance*100):100;
+
+  const verdictClass=canPay&&remaining>totalBalance*0.2?'ok':canPay?'warn':'danger';
+  const verdictMsg=verdictClass==='ok'
+    ? `You have ${usd(remaining)} left after paying all upcoming bills - comfortable.`
+    : verdictClass==='warn'
+    ? `Paying all bills leaves only ${usd(remaining)} - consider spacing payments.`
+    : `Insufficient funds - bills exceed balance by ${usd(Math.abs(remaining))}.`;
+
+  const rows=upcoming.slice(0,5).map(b=>{
+    const d=b.dueDate<todayStr?'Overdue':b.dueDate===todayStr?'Today':
+      (()=>{const diff=Math.round((new Date(b.dueDate)-now)/86400000);return`in ${diff}d`;})();
+    const col=b.dueDate<todayStr?'var(--red)':b.dueDate===todayStr?'var(--yellow)':'var(--muted)';
+    return`<div class="smart-bill-row">
+      <div><div class="sbr-name">${b.name}</div><div class="sbr-due" style="color:${col}">${d}</div></div>
+      <div class="sbr-amt" style="color:var(--text)">${usd(b.amount)}</div>
+    </div>`;
+  }).join('');
+
+  const moreCount=upcoming.length>5?`<div style="font-size:11px;color:var(--muted);text-align:center;padding-top:6px">+${upcoming.length-5} more bills</div>`:'';
+
+  wrap.innerHTML=`<div class="smart-bill-card">
+    <div class="sb-header">
+      <div class="sb-title">💡 Smart Bill Reminder - Next 30 Days</div>
+      <div class="sb-balance" style="color:${canPay?'var(--green)':'var(--red)'}">
+        ${usd(totalBalance)} available
+      </div>
+    </div>
+    ${rows}${moreCount}
+    <div class="smart-bill-verdict ${verdictClass}">${verdictMsg}</div>
+  </div>`;
+}
+
+
+
+// ── EXPORT TO EXCEL / NUMBERS ─────────────────────────────────
+function exportToExcel(){
+  if(typeof XLSX==='undefined'){
+    showToast('Excel library not loaded. Check your connection.','error');
+    return;
+  }
+
+  const now  = new Date();
+  const fmtD = d => d ? new Date(d+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
+  const fmtN = n => typeof n==='number' ? parseFloat(n.toFixed(2)) : 0;
+
+  // ── STYLE CONSTANTS ──────────────────────────────────────────
+  const H  = { font:{name:'Arial',sz:10,bold:true,color:{rgb:'FFFFFF'}},
+                fill:{patternType:'solid',fgColor:{rgb:'6C63FF'}},
+                border:{top:{style:'thin',color:{rgb:'6C63FF'}},bottom:{style:'thin',color:{rgb:'6C63FF'}},left:{style:'thin',color:{rgb:'6C63FF'}},right:{style:'thin',color:{rgb:'6C63FF'}}},
+                alignment:{horizontal:'left',vertical:'center'} };
+  const D  = { font:{name:'Arial',sz:10},
+                border:{top:{style:'thin',color:{rgb:'EEEEEE'}},bottom:{style:'thin',color:{rgb:'EEEEEE'}},left:{style:'thin',color:{rgb:'EEEEEE'}},right:{style:'thin',color:{rgb:'EEEEEE'}}},
+                alignment:{horizontal:'left',vertical:'center'} };
+  const DA = { ...D, fill:{patternType:'solid',fgColor:{rgb:'F0EFFF'}} };
+  const DR = { ...D,  alignment:{horizontal:'right',vertical:'center'}, numFmt:'"$"#,##0.00' };
+  const DRA= { ...DA, alignment:{horizontal:'right',vertical:'center'}, numFmt:'"$"#,##0.00' };
+  const HR = { ...H,  alignment:{horizontal:'right',vertical:'center'} };
+  const SEC= { font:{name:'Arial',sz:10,bold:true,color:{rgb:'6C63FF'}},
+                fill:{patternType:'solid',fgColor:{rgb:'F0EFFF'}},
+                alignment:{horizontal:'left',vertical:'center'} };
+  const TOT= { font:{name:'Arial',sz:11,bold:true,color:{rgb:'22C55E'}},
+                fill:{patternType:'solid',fgColor:{rgb:'F0EFFF'}},
+                alignment:{horizontal:'right',vertical:'center'},
+                numFmt:'"$"#,##0.00' };
+
+  // ── CELL BUILDER ─────────────────────────────────────────────
+  function c(v, s){ return {v, s, t: typeof v==='number'?'n': v instanceof Date?'d':'s'}; }
+
+  // ── SHEET BUILDER ────────────────────────────────────────────
+  function makeSheet(headers, rows, numColIdxs=[]){
+    // headers: array of strings
+    // rows: array of arrays (values)
+    // numColIdxs: 0-based column indices that are currency
+    const aoa = [];
+    aoa.push(headers.map((h,i)=> c(h, numColIdxs.includes(i)?HR:H)));
+    rows.forEach((row,ri)=>{
+      const isAlt = ri%2===1;
+      aoa.push(row.map((v,ci)=>{
+        const isNum = numColIdxs.includes(ci) && typeof v==='number';
+        if(isNum) return c(v, isAlt?DRA:DR);
+        return c(v==null?'':v, isAlt?DA:D);
+      }));
+    });
+    // Totals row
+    if(numColIdxs.length){
+      const totals = headers.map((_,ci)=>{
+        if(numColIdxs.includes(ci)){
+          const sum = rows.reduce((s,r)=>s+(typeof r[ci]==='number'?r[ci]:0),0);
+          return c(fmtN(sum), TOT);
+        }
+        return c(ci===0?'TOTAL':'', {font:{name:'Arial',sz:10,bold:true},fill:{patternType:'solid',fgColor:{rgb:'F0EFFF'}}});
+      });
+      aoa.push(totals);
+    }
+    const ws = XLSX.utils.aoa_to_sheet(aoa);
+    ws['!rows'] = [{hpt:20},...rows.map(()=>({hpt:16}))];
+    ws['!freeze'] = {xSplit:0, ySplit:1};
+    ws['!cols']  = headers.map((_,i)=>({wch: Math.max(headers[i].length+4,14)}));
+    return ws;
+  }
+
+  const wb = XLSX.utils.book_new();
+
+  // ── CALCULATED TOTALS ────────────────────────────────────────
+  const totalIncome   = data.income.reduce((s,i)=>s+getEffectiveIncome(i),0);
+  const totalExpenses = data.expenses.reduce((s,e)=>s+e.amount,0);
+  const totalBills    = data.bills.reduce((s,b)=>s+b.amount,0);
+  const totalDebt     = data.bills.filter(b=>b.btype==='creditcard'||b.btype==='loan').reduce((s,b)=>s+(b.balance||0),0);
+  const totalAssets   = (data.assets||[]).reduce((s,a)=>s+a.value,0);
+  const totalAccounts = (data.accounts||[]).reduce((s,a)=>s+a.balance,0);
+  const netWorth      = totalAssets+totalAccounts-totalDebt;
+
+  // ── SHEET 1: SUMMARY ─────────────────────────────────────────
+  const summaryAOA = [
+    [c('FinanceOS Export',{font:{name:'Arial',sz:14,bold:true,color:{rgb:'6C63FF'}}}), c(''),c('')],
+    [c('Generated',{font:{name:'Arial',sz:10,bold:true}}), c(now.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}),D), c('')],
+    [c(''),c(''),c('')],
+    [c('INCOME & SPENDING',SEC),c('',SEC),c('',SEC)],
+    [c('Total Income',D),              c(fmtN(totalIncome),DR),      c('')],
+    [c('Total Expenses',DA),           c(fmtN(totalExpenses),DRA),   c('')],
+    [c('Total Bills',D),               c(fmtN(totalBills),DR),       c('')],
+    [c('Net Cash Flow',DA),            c(fmtN(totalIncome-totalExpenses-totalBills),DRA), c('')],
+    [c(''),c(''),c('')],
+    [c('NET WORTH',SEC),c('',SEC),c('',SEC)],
+    [c('Account Balances',D),          c(fmtN(totalAccounts),DR),    c('')],
+    [c('Total Assets',DA),             c(fmtN(totalAssets+totalAccounts),DRA), c('')],
+    [c('Total Debt',D),                c(fmtN(totalDebt),DR),        c('')],
+    [c('Net Worth',{font:{name:'Arial',sz:10,bold:true}}), c(fmtN(netWorth),TOT), c('')],
+    [c(''),c(''),c('')],
+    [c('DEBT BREAKDOWN',SEC),c('Amount Remaining',{...H,alignment:{horizontal:'right'}}),c('APR',H)],
+    ...data.bills.filter(b=>b.btype==='creditcard'||b.btype==='loan').map((b,i)=>[
+      c(b.name, i%2?DA:D),
+      c(fmtN(b.balance), i%2?DRA:DR),
+      c((b.apr||0).toFixed(2)+'%', i%2?DA:D),
+    ]),
+  ];
+  const wsSummary = XLSX.utils.aoa_to_sheet(summaryAOA);
+  wsSummary['!cols'] = [{wch:30},{wch:22},{wch:12}];
+  wsSummary['!rows'] = summaryAOA.map((_,i)=>({hpt:i===0?26:i===1?15:14}));
+  XLSX.utils.book_append_sheet(wb, wsSummary, 'Summary');
+
+  // ── SHEET 2: INCOME ──────────────────────────────────────────
+  const wsIncome = makeSheet(
+    ['Source','Amount ($)','Frequency','Date','Actual Override ($)','Account'],
+    data.income.map(i=>[
+      i.source, fmtN(i.amount), i.frequency, fmtD(i.date),
+      i.actualAmount?fmtN(i.actualAmount):null,
+      (data.accounts||[]).find(a=>a.id===i.accountId)?.name||'',
+    ]),
+    [1,4]
+  );
+  wsIncome['!cols']=[{wch:28},{wch:14},{wch:14},{wch:16},{wch:20},{wch:20}];
+  XLSX.utils.book_append_sheet(wb, wsIncome, 'Income');
+
+  // ── SHEET 3: EXPENSES ────────────────────────────────────────
+  const wsExp = makeSheet(
+    ['Category','Description','Amount ($)','Frequency','Date','Account'],
+    data.expenses.map(e=>[
+      e.category, e.description||'', fmtN(e.amount),
+      e.frequency||'', fmtD(e.date),
+      (data.accounts||[]).find(a=>a.id===e.accountId)?.name||'',
+    ]),
+    [2]
+  );
+  wsExp['!cols']=[{wch:18},{wch:28},{wch:14},{wch:14},{wch:16},{wch:20}];
+  XLSX.utils.book_append_sheet(wb, wsExp, 'Expenses');
+
+  // ── SHEET 4: BILLS ───────────────────────────────────────────
+  const wsBills = makeSheet(
+    ['Name','Type','Min Payment ($)','Due Date','Recurring','Status','Balance ($)','APR (%)','Credit Limit ($)'],
+    data.bills.map(b=>[
+      b.name,
+      b.btype==='creditcard'?'Credit Card':b.btype==='loan'?'Loan':'Bill',
+      fmtN(b.amount), fmtD(b.dueDate), b.recurring||'', b.status||'',
+      b.balance?fmtN(b.balance):null,
+      b.apr?fmtN(b.apr):null,
+      b.creditLimit?fmtN(b.creditLimit):null,
+    ]),
+    [2,6,7,8]
+  );
+  wsBills['!cols']=[{wch:24},{wch:14},{wch:16},{wch:14},{wch:12},{wch:12},{wch:14},{wch:10},{wch:16}];
+  XLSX.utils.book_append_sheet(wb, wsBills, 'Bills');
+
+  // ── SHEET 5: TRANSACTIONS ────────────────────────────────────
+  const sorted=[...data.transactions].sort((a,b)=>b.date.localeCompare(a.date));
+  const wsTxn = makeSheet(
+    ['Date','Description','Type','Amount ($)','Category','Account','Card'],
+    sorted.map(tx=>[
+      fmtD(tx.date), tx.description, tx.type, fmtN(tx.amount),
+      tx.category||'',
+      tx.methodLabel||(data.accounts||[]).find(a=>a.id===tx.accountId)?.name||'',
+      data.bills.find(b=>b.id===tx.cardId)?.name||'',
+    ]),
+    [3]
+  );
+  wsTxn['!cols']=[{wch:16},{wch:32},{wch:16},{wch:14},{wch:16},{wch:22},{wch:22}];
+  XLSX.utils.book_append_sheet(wb, wsTxn, 'Transactions');
+
+  // ── SHEET 6: NET WORTH ───────────────────────────────────────
+  const accs   = (data.accounts||[]).map((a,i)=>[
+    c(a.name,i%2?DA:D), c(a.type.charAt(0).toUpperCase()+a.type.slice(1),i%2?DA:D),
+    c(fmtN(a.balance),i%2?DRA:DR), c(a.notes||'',i%2?DA:D)
+  ]);
+  const assets = (data.assets||[]).map((a,i)=>[
+    c(a.name,i%2?DA:D), c(a.category.charAt(0).toUpperCase()+a.category.slice(1),i%2?DA:D),
+    c(fmtN(a.value),i%2?DRA:DR), c(a.notes||'',i%2?DA:D)
+  ]);
+  const wsNW = XLSX.utils.aoa_to_sheet([
+    [c('ACCOUNTS',SEC),c('',SEC),c('',SEC),c('',SEC)],
+    [c('Name',H),c('Type',H),c('Balance ($)',HR),c('Notes',H)],
+    ...accs,
+    [c(''),c(''),c(''),c('')],
+    [c('ASSETS',SEC),c('',SEC),c('',SEC),c('',SEC)],
+    [c('Name',H),c('Category',H),c('Value ($)',HR),c('Notes',H)],
+    ...assets,
+    [c(''),c(''),c(''),c('')],
+    [c('NET WORTH',{font:{name:'Arial',sz:11,bold:true}}),c(''),c(fmtN(netWorth),TOT),c('')],
+  ]);
+  wsNW['!cols']=[{wch:28},{wch:16},{wch:16},{wch:28}];
+  XLSX.utils.book_append_sheet(wb, wsNW, 'Net Worth');
+
+  // ── DOWNLOAD ─────────────────────────────────────────────────
+  const filename=`FinanceOS-${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}.xlsx`;
+  XLSX.writeFile(wb, filename);
+  showToast('Excel file downloaded!');
+  markBackupDone();
+}
+
+
+
+// ── PROMO / 0% OFFER SYSTEM ───────────────────────────────────
+
+let promoScenario = 'promo';
+
+function setPromoScenario(s, btn){
+  promoScenario = s;
+  document.querySelectorAll('.promo-tab').forEach(b => b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  // Reveal inputs on first tab click
+  const inputs = $('promo-sim-inputs');
+  if(inputs) inputs.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:10px';
+  const actions = $('promo-sim-actions');
+  if(actions) actions.style.display = 'block';
+  // Clear previous result when switching tabs
+  const res = $('promo-result'); if(res) res.innerHTML='';
+  // Show/hide current APR field (transfer only)
+  const wrap = $('promo-current-apr-wrap');
+  if(wrap) wrap.style.display = s==='transfer' ? 'block' : 'none';
+  const amtLabel = $('promo-amount-label');
+  if(amtLabel) amtLabel.textContent = s==='transfer' ? 'Transfer Amount ($)' : 'Amount ($)';
+  calcPromo();
+}
+
+function calcPromo(){
+  const amount      = parseFloat($('promo-amount').value) || 0;
+  const months      = parseInt($('promo-months').value)   || 0;
+  const feeVal      = parseFloat($('promo-fee').value)    || 0;
+  const feeType     = $('promo-fee-type').value;
+  const regularApr  = parseFloat($('promo-regular-apr').value) || 0;
+  const currentApr  = parseFloat($('promo-current-apr').value) || 0;
+  const el          = $('promo-result');
+  if(!el) return;
+
+  if(!amount || !months){ el.innerHTML = ''; return; }
+
+  // Fee calculation
+  const feeCost = feeType==='percent' ? amount*(feeVal/100)
+                : feeType==='fixed'   ? feeVal
+                : 0;
+  const totalOwed  = amount + feeCost;
+  const monthlyNeeded = months > 0 ? totalOwed / months : totalOwed;
+
+  // What if NOT paid off in time: interest on remaining at regularApr
+  // Assume user pays monthlyNeeded - if they stop at month 0 (pays nothing)
+  // Cost of carrying at regularApr for same period
+  const regularRate = regularApr / 100 / 12;
+  const interestIfKept = regularRate > 0
+    ? amount * regularRate * (Math.pow(1+regularRate,months)-1) / (Math.pow(1+regularRate,months)) * months
+    : 0;
+
+  // For transfer: interest saved vs keeping debt at current APR
+  let interestSaved = 0;
+  if(promoScenario === 'transfer' && currentApr > 0){
+    const curRate = currentApr / 100 / 12;
+    const interestAtCurrentApr = curRate > 0
+      ? amount * curRate * months
+      : 0;
+    interestSaved = Math.max(0, interestAtCurrentApr - feeCost);
+  }
+
+  // Verdict
+  let verdict, verdictClass;
+  if(promoScenario === 'transfer'){
+    if(interestSaved > feeCost * 2){
+      verdict = `Strong move - you save approximately ${usd(interestSaved)} in interest vs the ${usd(feeCost)} fee. Do it.`;
+      verdictClass = 'go';
+    } else if(interestSaved > 0){
+      verdict = `Marginal - interest savings (${usd(interestSaved)}) barely exceed the fee (${usd(feeCost)}). Only worth it if you can pay it off.`;
+      verdictClass = 'caution';
+    } else {
+      verdict = `Not recommended - the fee (${usd(feeCost)}) exceeds any interest savings at your current APR.`;
+      verdictClass = 'nogo';
+    }
+  } else if(promoScenario === 'promo'){
+    verdict = feeCost === 0
+      ? `Free money if you pay ${usd(monthlyNeeded)}/mo and clear it by the end of the promo. Watch the expiry date!`
+      : `Worth it if you pay ${usd(monthlyNeeded)}/mo to clear it in time. Fee is only ${usd(feeCost)}.`;
+    verdictClass = feeCost < amount * 0.03 ? 'go' : 'caution';
+  } else {
+    verdict = feeCost === 0
+      ? `Free - just pay ${usd(monthlyNeeded)}/mo to clear it in ${months} months.`
+      : feeCost < amount * 0.05
+      ? `Low cost - ${usd(feeCost)} fee to spread ${usd(amount)} over ${months} months. Pay ${usd(monthlyNeeded)}/mo.`
+      : `High fee - ${usd(feeCost)} (${feeType==='percent'?feeVal+'%':'fixed'}) on ${usd(amount)}. Make sure you can pay ${usd(monthlyNeeded)}/mo.`;
+    verdictClass = feeCost < amount*0.03 ? 'go' : feeCost < amount*0.06 ? 'caution' : 'nogo';
+  }
+
+  const items = [
+    {label:'Fee Cost', val:usd(feeCost), color: feeCost===0?'var(--green)':feeCost<amount*0.05?'var(--yellow)':'var(--red)'},
+    {label:'Total to Pay Back', val:usd(totalOwed), color:'var(--text)'},
+    {label:'Monthly Needed', val:usd(monthlyNeeded)+'/mo', color:'var(--accent)'},
+    {label: promoScenario==='transfer'?'Interest Saved':'Interest If Late', 
+     val: promoScenario==='transfer'?usd(interestSaved):usd(interestIfKept),
+     color: promoScenario==='transfer'?'var(--green)':'var(--red)'},
+  ];
+
+  el.innerHTML = `
+    <div class="promo-result">
+      <div class="promo-result-grid">
+        ${items.map(i=>`
+          <div class="promo-result-item">
+            <div class="promo-result-label">${i.label}</div>
+            <div class="promo-result-val" style="color:${i.color}">${i.val}</div>
+          </div>`).join('')}
+      </div>
+      <div class="promo-verdict ${verdictClass}">${verdict}</div>
+    </div>`;
+}
+
+function trackPromo(){
+  const amount  = parseFloat($('promo-amount').value) || 0;
+  const months  = parseInt($('promo-months').value) || 0;
+  const feeVal  = parseFloat($('promo-fee').value) || 0;
+  const feeType = $('promo-fee-type').value;
+  const rapr    = parseFloat($('promo-regular-apr').value) || 0;
+  if(!amount || !months){ showToast('Enter amount and months first','error'); return; }
+
+  const feeCost       = feeType==='percent'?amount*(feeVal/100):feeType==='fixed'?feeVal:0;
+  const totalOwed     = parseFloat((amount+feeCost).toFixed(2));
+  const monthlyNeeded = parseFloat((totalOwed/months).toFixed(2));
+  const endDate       = new Date(); endDate.setMonth(endDate.getMonth()+months);
+  const endDateStr    = endDate.toISOString().split('T')[0];
+
+  // Set modal title
+  const titles = {promo:'🎁 Track Promo APR', transfer:'🔄 Track Balance Transfer'};
+  const titleEl = $('promo-modal-title');
+  if(titleEl) titleEl.textContent = titles[promoScenario]||'Track Promo';
+  $('promo-modal-scenario').value = promoScenario;
+
+  // Show/hide scenario sections
+  $('promo-apr-fields').style.display      = promoScenario==='promo'    ?'block':'none';
+  $('promo-transfer-fields').style.display = promoScenario==='transfer' ?'block':'none';
+
+  const creditCards = data.bills.filter(b=>b.btype==='creditcard'||b.btype==='loan'||b.btype==='promo');
+  const accounts    = data.accounts||[];
+
+  if(promoScenario==='promo'){
+    // Card selector
+    const cardSel = $('promo-apr-card');
+    if(cardSel) cardSel.innerHTML =
+      '<option value="">-- Select card --</option>'
+      +'<option value="new">+ Create New Card</option>'
+      + creditCards.map(b=>`<option value="${b.id}">${b.name} (${usd(b.balance)} @ ${b.apr}% APR)</option>`).join('');
+    if($('promo-apr-new-fields')) $('promo-apr-new-fields').style.display='none';
+    // Deposit account selector
+    const destSel = $('promo-apr-dest');
+    if(destSel) destSel.innerHTML =
+      '<option value="">-- Select account --</option>'
+      + accounts.map(a=>`<option value="${a.id}">${acTypeIcon[a.type]||''} ${a.name} (${usd(a.balance)})</option>`).join('');
+    const defId = getDefaultAccountId();
+    if(destSel && defId) destSel.value = defId;
+    if($('promo-apr-draw-check')) $('promo-apr-draw-check').checked = false;
+    if($('promo-apr-draw-dest-wrap')) $('promo-apr-draw-dest-wrap').style.display='none';
+    const balLabel = $('promo-bal-label');
+    if(balLabel) balLabel.textContent = 'Balance / Draw Amount ($)';
+  }
+
+  if(promoScenario==='transfer'){
+    const srcWrap = $('promo-transfer-sources');
+    if(srcWrap) srcWrap.innerHTML = creditCards.map(b=>`
+      <div class="promo-card-toggle" id="ptog-${b.id}" onclick="togglePromoCard(${b.id})">
+        <div class="pct-left">
+          <div class="pct-check" id="ptog-check-${b.id}"></div>
+          <div class="pct-info">
+            <div class="pct-name">${b.name}</div>
+            <div class="pct-sub">${b.apr}% APR</div>
+          </div>
+        </div>
+        <div class="pct-bal">${usd(b.balance)}</div>
+      </div>`).join('');
+    // Reset selection state
+    if(typeof _promoSelectedCards !== 'undefined') _promoSelectedCards = new Set();
+    const destSel = $('promo-transfer-dest');
+    if(destSel) destSel.innerHTML =
+      '<option value="">-- Select or create new card --</option>'
+      +'<option value="new">+ Create New Card</option>'
+      + creditCards.map(b=>`<option value="${b.id}">${b.name} (${usd(b.balance)} balance)</option>`).join('');
+    destSel.value='';
+    $('promo-new-card-fields').style.display='none';
+    const balLabel = $('promo-bal-label');
+    if(balLabel) balLabel.textContent = 'Total Transfer Amount ($)';
+  }
+
+  // Pre-fill shared fields
+  $('promo-id').value      = '';
+  $('promo-bal').value     = totalOwed;
+  $('promo-pay').value     = monthlyNeeded;
+  $('promo-papr').value    = 0;
+  $('promo-end').value     = endDateStr;
+  $('promo-rapr').value    = rapr;
+  $('promo-feepaid').value = feeCost>0 ? feeCost.toFixed(2) : '';
+  const note = $('promo-summary-note'); if(note) note.style.display='none';
+  $('modal-promo').classList.add('open');
+}
+
+function togglePromoDrawDest(){
+  const checked = $('promo-apr-draw-check').checked;
+  const wrap = $('promo-apr-draw-dest-wrap');
+  if(wrap) wrap.style.display = checked ? 'block' : 'none';
+}
+
+function onPromoAprCardChange(){
+  const val = $('promo-apr-card').value;
+  if($('promo-apr-new-fields')) $('promo-apr-new-fields').style.display = val==='new'?'block':'none';
+  if(val && val!=='new'){
+    const b = data.bills.find(x=>x.id===parseInt(val));
+    if(b){
+      $('promo-bal').value  = b.balance||0;
+      $('promo-rapr').value = b.regularApr||b.apr||0;
+      const months = parseInt($('promo-months').value)||0;
+      if(months && b.balance) $('promo-pay').value = parseFloat((b.balance/months).toFixed(2));
+    }
+  }
+}
+
+function onPromoTransferDestChange(){
+  const val = $('promo-transfer-dest').value;
+  $('promo-new-card-fields').style.display = val==='new'?'block':'none';
+  updateTransferTotal();
+}
+
+// Legacy - kept for safety
+function onPromoExistingChange(){}
+function onPromoIntroCardChange(){}
+
+let _promoSelectedCards = new Set();
+
+function togglePromoCard(id){
+  const tog = $('ptog-'+id);
+  const chk = $('ptog-check-'+id);
+  if(!tog) return;
+  if(_promoSelectedCards.has(id)){
+    _promoSelectedCards.delete(id);
+    tog.classList.remove('selected');
+    if(chk) chk.textContent = '';
+  } else {
+    _promoSelectedCards.add(id);
+    tog.classList.add('selected');
+    if(chk) chk.textContent = '✓';
+  }
+  updateTransferTotal();
+}
+
+function updateTransferTotal(){
+  let total = 0;
+  const names = [];
+  _promoSelectedCards.forEach(id=>{
+    const b = data.bills.find(x=>x.id===id);
+    if(b){ total += b.balance||0; names.push(b.name); }
+  });
+
+  const feeVal  = parseFloat($('promo-fee').value)||0;
+  const feeType = $('promo-fee-type').value;
+  const fee     = feeType==='percent'?total*(feeVal/100):feeType==='fixed'?feeVal:0;
+  const totalOwed = parseFloat((total+fee).toFixed(2));
+  const months    = parseInt($('promo-months').value)||0;
+
+  if(total>0){
+    $('promo-bal').value = totalOwed;
+    if(months) $('promo-pay').value = parseFloat((totalOwed/months).toFixed(2));
+    const note = $('promo-summary-note');
+    if(note){
+      note.style.display='block';
+      note.innerHTML=`Transferring <strong>${usd(total)}</strong> from ${names.join(', ')}${fee>0?' + <strong>'+usd(fee)+'</strong> fee':''} = <strong>${usd(totalOwed)}</strong> on destination card.`;
+    }
+  } else {
+    const note = $('promo-summary-note'); if(note) note.style.display='none';
+  }
+
+  // ── Credit limit check ──────────────────────────────────────
+  const warn = $('promo-limit-warn');
+  if(!warn){ return; }
+  const destVal = $('promo-transfer-dest').value;
+  let limit = 0;
+  if(destVal === 'new'){
+    limit = parseFloat($('promo-new-card-limit').value)||0;
+  } else if(destVal){
+    const destCard = data.bills.find(b=>b.id===parseInt(destVal));
+    limit = destCard ? (destCard.creditLimit||0) - (destCard.balance||0) : 0;
+  }
+  if(limit>0 && totalOwed>limit){
+    warn.style.display = 'block';
+    warn.textContent = `Total (${usd(totalOwed)}) exceeds available credit (${usd(limit)}) on destination card by ${usd(totalOwed-limit)}.`;
+  } else {
+    warn.style.display = 'none';
+  }
+}
+
+function savePromoDebt(){
+  const scenario = $('promo-modal-scenario').value;
+  const bal      = parseFloat($('promo-bal').value)||0;
+  const pay      = parseFloat($('promo-pay').value)||0;
+  const papr     = parseFloat($('promo-papr').value)||0;
+  const endDate  = $('promo-end').value;
+  const rapr     = parseFloat($('promo-rapr').value)||0;
+  const feePaid  = parseFloat($('promo-feepaid').value)||0;
+  if(!bal)    { showToast('Enter a balance','error'); return; }
+  if(!endDate){ showToast('Enter a promo end date','error'); return; }
+
+  // ── PROMO APR (combined draw + intro) ────────────────────────
+  if(scenario==='promo'){
+    const cardVal = $('promo-apr-card').value;
+    if(!cardVal){ showToast('Select or create a card','error'); return; }
+
+    let card;
+    if(cardVal==='new'){
+      const nm  = ($('promo-apr-new-name').value||'').trim();
+      const lim = parseFloat($('promo-apr-new-limit').value)||0;
+      if(!nm){ showToast('Enter a name for the new card','error'); return; }
+      const nextDue1=(()=>{const d=new Date();d.setMonth(d.getMonth()+1);return d.toISOString().split('T')[0];})();
+      card = {
+        id:Date.now(), name:nm, btype:'creditcard',
+        balance:bal, amount:pay, dueDate:nextDue1,
+        recurring:'Monthly', status:'Pending',
+        apr:papr, creditLimit:lim,
+        promoEndDate:endDate, regularApr:rapr,
+        promoFee:feePaid, promoScenario:'promo',
+        originalBalance:bal,
+      };
+      data.bills.push(card);
+    } else {
+      card = data.bills.find(b=>b.id===parseInt(cardVal));
+      if(!card){ showToast('Card not found','error'); return; }
+      // Store original APR before overwriting
+      if(!card.regularApr) card.regularApr = card.apr;
+      card.apr           = papr;
+      card.promoEndDate  = endDate;
+      card.regularApr    = rapr || card.regularApr || 0;
+      card.promoFee      = feePaid;
+      card.promoScenario = 'promo';
+      card.amount        = pay || card.amount;
+      // Add draw amount to card balance if it's a cash draw
+      const isDraw = $('promo-apr-draw-check').checked;
+      if(isDraw && bal > (card.balance||0)){
+        card.balance = bal; // balance set to draw amount (already includes fee)
+      }
+      if(!card.originalBalance || card.balance > card.originalBalance)
+        card.originalBalance = card.balance;
+    }
+
+    // Cash draw: deposit to account
+    const isDraw = $('promo-apr-draw-check').checked;
+    if(isDraw){
+      const destId = parseInt($('promo-apr-dest').value)||0;
+      if(!destId){ showToast('Select a deposit account','error'); return; }
+      adjustAccountBalance(destId, bal - feePaid);
+      data.transactions.push({
+        id:Date.now(), description:'Cash draw - '+card.name,
+        amount:bal-feePaid, type:'Withdrawal', date:today(),
+        accountId:destId, methodLabel:card.name
+      });
+    }
+
+    updateOriginalBalances();
+    closeModal('promo'); saveData(); renderAll();
+    showToast('Promo applied to '+card.name+'!'); return;
+  }
+
+  // ── BALANCE TRANSFER ─────────────────────────────────────────
+  if(scenario==='transfer'){
+    if(!_promoSelectedCards.size){ showToast('Select at least one source card','error'); return; }
+    const checked = [..._promoSelectedCards].map(id=>({dataset:{id}}));
+    const destVal = $('promo-transfer-dest').value;
+    if(!destVal){ showToast('Select or create a destination card','error'); return; }
+
+    let destCard;
+    if(destVal==='new'){
+      const nm  = ($('promo-new-card-name').value||'').trim();
+      const lim = parseFloat($('promo-new-card-limit').value)||0;
+      if(!nm){ showToast('Enter a name for the new card','error'); return; }
+      const nextDue2=(()=>{const d=new Date();d.setMonth(d.getMonth()+1);return d.toISOString().split('T')[0];})();
+      destCard = {
+        id:Date.now(), name:nm, btype:'creditcard',
+        balance:0, amount:pay, dueDate:nextDue2,
+        recurring:'Monthly', status:'Pending',
+        apr:papr, creditLimit:lim,
+        promoEndDate:endDate, regularApr:rapr,
+        promoFee:feePaid, promoScenario:'transfer',
+        originalBalance:0,
+      };
+      data.bills.push(destCard);
+    } else {
+      destCard = data.bills.find(b=>b.id===parseInt(destVal));
+      if(!destCard){ showToast('Destination card not found','error'); return; }
+      if(!destCard.regularApr) destCard.regularApr = destCard.apr;
+      destCard.apr           = papr;
+      destCard.promoEndDate  = endDate;
+      destCard.regularApr    = rapr || destCard.regularApr || 0;
+      destCard.promoFee      = feePaid;
+      destCard.promoScenario = 'transfer';
+      destCard.amount        = pay || destCard.amount;
+    }
+
+    // Zero out source cards + move balances to destination
+    let totalTransferred = 0;
+    checked.forEach(cb=>{
+      const src = data.bills.find(b=>b.id===(typeof cb==='number'?cb:parseInt(cb.dataset.id)));
+      if(!src) return;
+      totalTransferred += src.balance||0;
+      data.transactions.push({
+        id:Date.now()+Math.random(),
+        description:'Balance transfer to '+destCard.name,
+        amount:parseFloat((src.balance||0).toFixed(2)),
+        type:'Debt Payment', date:today(),
+        accountId:0, methodLabel:destCard.name
+      });
+      src.balance = 0; src.status = 'Paid';
+    });
+
+    destCard.balance = parseFloat((totalTransferred+feePaid).toFixed(2));
+    if(!destCard.originalBalance || destCard.balance > destCard.originalBalance)
+      destCard.originalBalance = destCard.balance;
+
+    updateOriginalBalances();
+    closeModal('promo'); saveData(); renderAll();
+    showToast('Transfer complete - '+usd(totalTransferred)+' moved to '+destCard.name+'!'); return;
+  }
+}
+
+
+// ── AUTO EXPIRE PROMOS ────────────────────────────────────────
+function autoExpirePromos(){
+  const todayStr = today();
+  let changed = false;
+  data.bills.forEach(b=>{
+    // Apply to any bill type that has a promoEndDate set
+    if(!b.promoEndDate || b.promoEndDate > todayStr) return;
+    if(b.regularApr == null || b.apr === b.regularApr) return; // already expired or no promo
+    b.apr = b.regularApr;
+    changed = true;
+  });
+  if(changed) saveData();
+}
+
+// ── PROMO BADGE HELPER ────────────────────────────────────────
+function getPromoBadgeHtml(b){
+  if(!b.promoEndDate || b.regularApr == null) return '';
+  const daysLeft = Math.round((new Date(b.promoEndDate) - new Date()) / 86400000);
+  const monthsLeft = Math.ceil(daysLeft / 30);
+  const monthlyNeeded = monthsLeft > 0 ? b.balance / monthsLeft : b.balance;
+
+  if(daysLeft < 0){
+    return `<div class="promo-badge danger">🔴 Promo EXPIRED - now ${b.regularApr||0}% APR</div>`;
+  }
+  const badgeClass = daysLeft <= 30 ? 'danger' : daysLeft <= 60 ? 'warn' : '';
+  const icon = daysLeft <= 30 ? '🚨' : daysLeft <= 60 ? '⚠️' : '🎁';
+  return `
+    <div class="promo-badge ${badgeClass}">${icon} 0% promo: ${daysLeft}d left (${b.regularApr||0}% after)</div>
+    <div class="promo-needed">Pay ${usd(monthlyNeeded)}/mo to clear before expiry</div>`;
+}
+
+
 function renderAll(){
   updateOriginalBalances();
   renderAlerts();renderDashboard();renderBudget();renderBills();renderDebt();
@@ -4180,6 +5687,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   applyTranslations();
   renderAll();
   showOnboarding();
+  initPWA();
   setTimeout(()=>{
     renderAll();
     const months=parseInt($('chart-months')?$('chart-months').value:3)||3;
@@ -4187,5 +5695,32 @@ document.addEventListener('DOMContentLoaded',()=>{
   },350);
 });
 </script>
+
+
+  <!-- PROMO DEBT MODAL -->
+  <div class="overlay" id="modal-promo">
+  <div class="modal">
+    <div class="modal-header"><span class="modal-title">Track Promo Debt</span><button class="close-btn" onclick="closeModal('promo')">&#x2715;</button></div>
+    <input type="hidden" id="promo-id"/>
+    <!-- Apply to existing card OR create new -->
+    <div class="field">
+      <label>Apply to Existing Card / Loan</label>
+      <select id="promo-existing-bill" onchange="onPromoExistingChange()" style="background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:8px;color:var(--text);font-size:13px;width:100%">
+        <option value="">-- New promo entry --</option>
+      </select>
+    </div>
+    <div id="promo-new-name-wrap" class="field"><label>Name</label><input id="promo-name" placeholder="e.g. PayPal Pay in 6, Chase 0% Offer"/></div>
+    <div class="field"><label>Balance / Amount ($)</label><input id="promo-bal" type="number" placeholder="800"/></div>
+    <div class="field"><label>Min Monthly Payment ($)</label><input id="promo-pay" type="number" placeholder="134"/></div>
+    <div class="field"><label>Promo APR (%)</label><input id="promo-papr" type="number" value="0" step="0.01"/></div>
+    <div class="field"><label>Promo End Date</label><input id="promo-end" type="date"/></div>
+    <div class="field"><label>Regular APR After (%)</label><input id="promo-rapr" type="number" placeholder="24.99" step="0.01"/></div>
+    <div class="field"><label>One-Time Fee Paid ($)</label><input id="promo-feepaid" type="number" placeholder="0" step="0.01"/></div>
+    <div id="promo-existing-note" style="display:none;font-size:12px;color:var(--muted);padding:6px 0;margin-bottom:8px">
+      &#9432; This will update the existing card&#39;s APR to the promo rate and set an expiry date. The original APR will be restored automatically when the promo ends.
+    </div>
+    <button class="btn btn-primary btn-full" onclick="savePromoDebt()">Save Promo</button>
+  </div>
+  </div>
 </body>
 </html>
