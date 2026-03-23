@@ -541,6 +541,115 @@ canvas{width:100%!important;}
 .promo-limit-warn{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);
   border-radius:8px;padding:8px 12px;font-size:12px;color:var(--red);margin-top:8px;display:none;}
 
+
+/* ── PROMO PURCHASE TRACKER ── */
+.promo-toggle-row{display:flex;align-items:center;gap:10px;padding:10px 12px;
+  background:rgba(108,99,255,.06);border:1px solid rgba(108,99,255,.2);
+  border-radius:10px;cursor:pointer;margin-top:2px;}
+.promo-toggle-row input[type=checkbox]{width:18px;height:18px;accent-color:var(--accent);cursor:pointer;flex-shrink:0;}
+.promo-toggle-row label{font-size:13px;color:var(--text);cursor:pointer;flex:1;}
+#pu-promo-fields{display:none;margin-top:10px;padding:12px;background:rgba(108,99,255,.04);
+  border:1px solid rgba(108,99,255,.15);border-radius:10px;}
+.promo-type-toggle{display:flex;gap:6px;margin-bottom:12px;}
+.promo-type-btn{flex:1;padding:7px;border:1.5px solid var(--border2);border-radius:8px;
+  background:var(--surface);color:var(--muted);font-size:12px;font-weight:600;
+  cursor:pointer;font-family:var(--font-b);text-align:center;transition:all .15s;}
+.promo-type-btn.active{border-color:var(--accent);background:rgba(108,99,255,.12);color:var(--accent);}
+
+/* ── PROMO ITEM SUB-ROWS IN BILLS ── */
+.promo-items-wrap{border-top:1px solid var(--border);margin-top:10px;padding-top:8px;}
+.promo-items-header{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;
+  letter-spacing:.6px;margin-bottom:6px;}
+.promo-item-row{display:flex;justify-content:space-between;align-items:flex-start;
+  padding:8px 10px;border-radius:8px;border:1px solid var(--border);margin-bottom:5px;
+  background:rgba(0,0,0,.15);}
+.promo-item-row.deferred{border-left:3px solid var(--yellow);}
+.promo-item-row.installment{border-left:3px solid var(--accent);}
+.promo-item-row.danger{border-left:3px solid var(--red);}
+.pi-left{flex:1;min-width:0;}
+.pi-desc{font-size:12px;font-weight:600;color:var(--text);}
+.pi-sub{font-size:10px;color:var(--muted);margin-top:2px;}
+.pi-deadline{font-size:10px;font-weight:700;margin-top:3px;}
+.pi-right{text-align:right;flex-shrink:0;padding-left:10px;}
+.pi-amount{font-size:13px;font-weight:700;}
+.pi-monthly{font-size:10px;color:var(--muted);margin-top:2px;}
+.pi-progress{height:4px;background:rgba(255,255,255,.08);border-radius:2px;margin-top:5px;width:100%;}
+.pi-progress-fill{height:100%;border-radius:2px;transition:width .3s;}
+.pi-deferred-warn{font-size:10px;font-weight:700;color:var(--red);margin-top:3px;}
+
+
+/* ── SPLIT BALANCE DISPLAY ── */
+.balance-split{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;}
+.balance-bucket{flex:1;min-width:80px;background:rgba(255,255,255,.04);
+  border-radius:8px;padding:7px 10px;border:1px solid var(--border);}
+.balance-bucket.revolving{border-color:rgba(239,68,68,.3);}
+.balance-bucket.promo{border-color:rgba(108,99,255,.3);}
+.bb-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;
+  color:var(--muted);margin-bottom:2px;}
+.bb-val{font-size:14px;font-weight:700;}
+.bb-sub{font-size:10px;color:var(--muted);margin-top:1px;}
+
+/* ── PAYMENT ALLOCATION ── */
+.alloc-section{background:rgba(255,255,255,.03);border-radius:10px;
+  padding:12px;margin-bottom:12px;border:1px solid var(--border);}
+.alloc-title{font-size:11px;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px;}
+.alloc-row{display:flex;align-items:center;justify-content:space-between;
+  gap:10px;margin-bottom:8px;}
+.alloc-row:last-child{margin-bottom:0;}
+.alloc-label{font-size:12px;color:var(--text);flex:1;}
+.alloc-input{width:90px;background:var(--surface);border:1px solid var(--border2);
+  border-radius:8px;padding:6px 8px;color:var(--text);font-size:13px;
+  font-family:var(--font-b);text-align:right;}
+.alloc-total-row{display:flex;justify-content:space-between;padding-top:8px;
+  border-top:1px solid var(--border);font-size:13px;font-weight:700;}
+.alloc-warn{font-size:11px;color:var(--yellow);margin-top:6px;}
+.alloc-promo-breakdown{margin-top:8px;padding-top:8px;border-top:1px solid var(--border);}
+.alloc-promo-item{display:flex;justify-content:space-between;font-size:11px;
+  color:var(--muted);padding:3px 0;}
+.alloc-promo-item.urgent{color:var(--red);font-weight:600;}
+
+
+/* ── PROMO SORT EXPLANATION ── */
+.promo-sort-note{font-size:10px;color:var(--green);background:rgba(34,197,94,.08);
+  border:1px solid rgba(34,197,94,.2);border-radius:6px;padding:3px 8px;
+  margin-top:4px;display:inline-block;}
+
+/* ── BALANCE CORRECTION ── */
+.bal-correct-row{display:flex;align-items:center;gap:8px;margin-top:8px;
+  padding-top:8px;border-top:1px solid var(--border);}
+.bal-correct-input{flex:1;background:var(--surface);border:1px solid var(--border2);
+  border-radius:8px;padding:7px 10px;color:var(--text);font-size:14px;
+  font-family:var(--font-b);}
+.bal-correct-btn{background:var(--accent);color:#fff;border:none;border-radius:8px;
+  padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;
+  font-family:var(--font-b);white-space:nowrap;}
+
+/* ── OVERLAP WARNING ── */
+.overlap-warn{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);
+  border-radius:8px;padding:10px 12px;font-size:12px;color:var(--yellow);
+  margin-bottom:10px;display:none;}
+
+
+/* ── BILL RESET BANNER ── */
+#bill-reset-banner{display:none;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.3);
+  border-radius:10px;padding:12px 14px;margin-bottom:14px;
+  font-size:13px;color:var(--blue);}
+#bill-reset-banner .brb-title{font-weight:700;margin-bottom:4px;}
+#bill-reset-banner .brb-dismiss{float:right;background:none;border:none;
+  color:var(--blue);cursor:pointer;font-size:16px;line-height:1;padding:0;}
+
+/* ── TRANSFER PENDING BANNER ── */
+#transfer-banner{display:none;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);
+  border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:var(--yellow);}
+
+/* ── FIRST TIME ACCOUNT NUDGE ── */
+.no-accounts-nudge{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);
+  border-radius:10px;padding:12px 14px;font-size:12px;color:var(--red);margin-bottom:12px;display:none;}
+
+/* ── INCOME EFFECTIVE MONTHLY ── */
+.income-monthly-note{font-size:10px;color:var(--accent2);font-weight:600;margin-top:2px;}
+
 </style>
 </head>
 <body>
@@ -635,6 +744,14 @@ canvas{width:100%!important;}
       </div>
       <div id="autoprocess-banner"><span id="autoprocess-msg"></span><button class="apb-close" onclick="dismissAutoProcess()">✕</button></div>
       <div id="dash-alerts"></div>
+      <!-- Bill reset notification -->
+      <div id="bill-reset-banner">
+        <button class="brb-dismiss" onclick="dismissBillResetBanner()">&#x2715;</button>
+        <div class="brb-title">&#128197; Bills reset for new month</div>
+        <div id="bill-reset-msg"></div>
+      </div>
+      <!-- Transfer pending notification -->
+      <div id="transfer-banner"></div>
       <div class="card-grid">
         <div class="stat-card"><div class="stat-label" data-i18n="Total Income">Total Income</div><div class="stat-value" id="d-income" style="color:var(--green)">$0.00</div></div>
         <div class="stat-card"><div class="stat-label" data-i18n="Total Expenses">Total Expenses</div><div class="stat-value" id="d-expenses" style="color:var(--yellow)">$0.00</div></div>
@@ -1055,7 +1172,12 @@ canvas{width:100%!important;}
     </div>
     <div class="field"><label data-i18n="Deposit to Account">Deposit to Account</label><select id="i-account"><option value="">-- No account linked --</option></select></div>
     <div class="field"><label data-i18n="Frequency">Frequency</label>
-      <select id="i-freq"><option data-i18n="One-time">One-time</option><option data-i18n="Weekly">Weekly</option><option data-i18n="Bi-weekly">Bi-weekly</option><option selected data-i18n="Monthly">Monthly</option><option data-i18n="Yearly">Yearly</option></select>
+      <select id="i-freq" onchange="onIncomeFreqChange()"><option data-i18n="One-time">One-time</option><option data-i18n="Weekly">Weekly</option><option data-i18n="Bi-weekly">Bi-weekly</option><option selected data-i18n="Monthly">Monthly</option><option data-i18n="Yearly">Yearly</option></select>
+    </div>
+    <div class="field" id="i-lastpay-wrap" style="display:none">
+      <label>Last Paycheck Date</label>
+      <input id="i-lastpay" type="date"/>
+      <div style="font-size:11px;color:var(--muted);margin-top:4px">Used to calculate which months have 2 vs 3 paychecks</div>
     </div>
     <div class="field" id="i-actual-wrap" style="display:none">
       <label data-i18n="This period actual ($)">This period actual ($)</label>
@@ -1071,10 +1193,11 @@ canvas{width:100%!important;}
   <div class="modal">
     <div class="modal-header"><span class="modal-title" id="expense-modal-title" data-i18n="Add Expense">Add Expense</span><button class="close-btn" onclick="closeModal('expense')">✕</button></div>
     <input type="hidden" id="e-id"/>
+    <div class="overlap-warn" id="expense-overlap-warn"></div>
     <div class="field"><label data-i18n="Category">Category</label>
       <select id="e-cat"><option value="" data-i18n="Select category...">Select category...</option><option data-i18n="Housing">Housing</option><option data-i18n="Food">Food</option><option data-i18n="Transport">Transport</option><option data-i18n="Utilities">Utilities</option><option data-i18n="Subscriptions">Subscriptions</option><option data-i18n="Healthcare">Healthcare</option><option data-i18n="Entertainment">Entertainment</option><option data-i18n="Savings">Savings</option><option data-i18n="Other">Other</option></select>
     </div>
-    <div class="field"><label data-i18n="Description (optional)">Description (optional)</label><input id="e-desc" placeholder="Optional detail"/></div>
+    <div class="field"><label data-i18n="Description (optional)">Description (optional)</label><input id="e-desc" oninput="checkBillExpenseOverlap(this.value,'expense-overlap-warn')" placeholder="Optional detail"/></div>
     <div class="field-row">
       <div class="field"><label data-i18n="Amount ($)">Amount ($)</label><input id="e-amount" type="number" inputmode="decimal" placeholder="0.00"/></div>
       <div class="field"><label data-i18n="Date">Date</label><input id="e-date" type="date"/></div>
@@ -1092,7 +1215,8 @@ canvas{width:100%!important;}
   <div class="modal">
     <div class="modal-header"><span class="modal-title" id="bill-modal-title" data-i18n="Add Bill / Debt">Add Bill / Debt</span><button class="close-btn" onclick="closeModal('bill')">✕</button></div>
     <input type="hidden" id="b-id"/>
-    <div class="field"><label data-i18n="Name">Name</label><input id="b-name" placeholder="e.g. Rent, Chase Visa, Student Loan"/></div>
+    <div class="overlap-warn" id="bill-overlap-warn"></div>
+    <div class="field"><label data-i18n="Name">Name</label><input id="b-name" placeholder="e.g. Rent, Chase Visa, Student Loan" oninput="checkBillExpenseOverlap(this.value,'bill-overlap-warn')"/></div>
     <div class="field"><label data-i18n="Type">Type</label>
       <select id="b-type" onchange="toggleDebtFields()">
         <option value="bill" data-i18n="Regular Bill">Regular Bill</option>
@@ -1226,7 +1350,7 @@ canvas{width:100%!important;}
     <div class="modal-header"><span class="modal-title">🛒 New Purchase</span><button class="close-btn" onclick="closeModal('purchase')">✕</button></div>
     <div class="field"><label data-i18n="Description">Description</label><input id="pu-desc" placeholder="e.g. Amazon, Gas Station, Whole Foods"/></div>
     <div class="field-row">
-      <div class="field"><label data-i18n="Amount ($)">Amount ($)</label><input id="pu-amount" type="number" inputmode="decimal" placeholder="0.00" oninput="checkPurchaseOverdraft()"/></div>
+      <div class="field"><label data-i18n="Amount ($)">Amount ($)</label><input id="pu-amount" type="number" inputmode="decimal" placeholder="0.00" oninput="checkPurchaseOverdraft();calcPromoRequired()"/></div>
       <div class="field"><label data-i18n="Date">Date</label><input id="pu-date" type="date"/></div>
     </div>
     <div class="field">
@@ -1247,6 +1371,27 @@ canvas{width:100%!important;}
       </select>
     </div>
     <div id="pu-overdraft-warn" style="display:none;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--red);margin-bottom:10px"></div>
+    <!-- PROMO PURCHASE TOGGLE -->
+    <div class="promo-toggle-row" onclick="togglePromoFields()">
+      <input type="checkbox" id="pu-promo-check" onclick="event.stopPropagation();togglePromoFields()"/>
+      <label for="pu-promo-check">&#127873; This is a promo / no-interest purchase</label>
+    </div>
+    <div id="pu-promo-fields">
+      <div class="promo-type-toggle">
+        <div class="promo-type-btn active" id="ptype-deferred" onclick="setPromoType('deferred')">
+          &#9888;&#65039; Deferred Interest<br/><span style="font-size:10px;font-weight:400">Pay in full or get charged</span>
+        </div>
+        <div class="promo-type-btn" id="ptype-installment" onclick="setPromoType('installment')">
+          &#128197; Installment Plan<br/><span style="font-size:10px;font-weight:400">Fixed monthly, true 0%</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="field" style="margin:0"><label>Promo Months</label><input id="pu-promo-months" type="number" placeholder="6" value="6" oninput="calcPromoRequired()"/></div>
+        <div class="field" style="margin:0" id="pu-deferred-apr-wrap"><label>Interest Rate If Late (%)</label><input id="pu-promo-apr" type="number" placeholder="29.99" step="0.01"/></div>
+      </div>
+      <div id="pu-promo-calc" style="font-size:12px;color:var(--muted);margin-top:8px;padding:8px 10px;background:rgba(0,0,0,.15);border-radius:8px;display:none"></div>
+    </div>
+
     <button class="btn btn-primary btn-full" onclick="confirmPurchase()" data-i18n="Log Purchase">Log Purchase</button>
   </div>
 </div>
@@ -1283,10 +1428,26 @@ canvas{width:100%!important;}
       <button class="close-btn" onclick="closeModal('paydebt')">✕</button>
     </div>
     <div style="background:rgba(255,255,255,.04);border-radius:12px;padding:12px 14px;margin-bottom:16px">
-      <div style="font-size:15px;font-weight:700" id="pd-name"></div>
+      <div class="no-accounts-nudge" id="pd-no-accounts-nudge">
+      &#9888; You have no accounts set up. Add an account in Net Worth first so you can track which account this payment comes from.
+      <br/><button class="btn btn-sm" style="margin-top:6px;background:rgba(239,68,68,.15);color:var(--red)" onclick="closeModal('paydebt');show('networth');setTimeout(()=>openModal('account'),300)">+ Add Account</button>
+    </div>
+    <div style="font-size:15px;font-weight:700" id="pd-name"></div>
       <div style="font-size:12px;color:var(--muted);margin-top:4px">
         Balance: <span id="pd-balance" style="color:var(--red)"></span>
         &nbsp;|&nbsp; APR: <span id="pd-apr" style="color:var(--yellow)"></span>
+      </div>
+      <div class="balance-split" id="pd-balance-split" style="display:none">
+        <div class="balance-bucket revolving">
+          <div class="bb-label">Revolving</div>
+          <div class="bb-val" id="pd-revolving-val" style="color:var(--red)"></div>
+          <div class="bb-sub" id="pd-revolving-interest"></div>
+        </div>
+        <div class="balance-bucket promo">
+          <div class="bb-label">Promo Items</div>
+          <div class="bb-val" id="pd-promo-val" style="color:var(--accent2)"></div>
+          <div class="bb-sub" id="pd-promo-count"></div>
+        </div>
       </div>
     </div>
     <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;font-weight:700" data-i18n="Payment Amount">Payment Amount</div>
@@ -1309,6 +1470,24 @@ canvas{width:100%!important;}
       <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--muted)" data-i18n="Interest portion">Interest portion</span><span id="pd-interest-portion" style="color:var(--red)"></span></div>
       <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--muted)" data-i18n="Principal portion">Principal portion</span><span id="pd-principal-portion" style="color:var(--green)"></span></div>
       <div style="display:flex;justify-content:space-between;padding-top:6px;border-top:1px solid var(--border);font-weight:700"><span data-i18n="New Balance">New Balance</span><span id="pd-new-balance" style="color:var(--accent2)"></span></div>
+    </div>
+    <!-- PAYMENT ALLOCATION -->
+    <div class="alloc-section" id="pd-alloc-section" style="display:none">
+      <div class="alloc-title">Payment Allocation</div>
+      <div class="alloc-row">
+        <div class="alloc-label">
+          <div style="font-weight:600">Revolving Balance</div>
+          <div style="font-size:11px;color:var(--muted)" id="pd-alloc-revolving-hint"></div>
+        </div>
+        <input class="alloc-input" id="pd-alloc-revolving" type="number" inputmode="decimal"
+          placeholder="0.00" oninput="onAllocInput('revolving')"/>
+      </div>
+      <div id="pd-alloc-promo-rows"></div>
+      <div class="alloc-total-row">
+        <span>Total Payment</span>
+        <span id="pd-alloc-total" style="color:var(--accent)"></span>
+      </div>
+      <div class="alloc-warn" id="pd-alloc-warn" style="display:none"></div>
     </div>
     <div class="field"><label data-i18n="Pay from Account">Pay from Account</label><select id="pd-account"><option value="">-- No account linked --</option></select></div>
     <button class="btn btn-primary btn-full" onclick="confirmDebtPayment()" data-i18n="Confirm Payment">Confirm Payment</button>
@@ -1885,6 +2064,11 @@ function loadData(){
     if(!data.assets) data.assets=[];
     if(!data.targets) data.targets=[];
     if(!data.accounts) data.accounts=[];
+    if(!data._pendingTransfers) data._pendingTransfers=[];
+    // Migrate revolvingBalance for existing cards
+    data.bills.forEach(b=>{
+      if(b.btype==='creditcard'||b.btype==='loan'||b.btype==='promo') migrateRevolvingBalance(b);
+    });
     // Auto-reset recurring bills on new month
     autoResetRecurringBills();
     // Auto-expire promo APRs when end date passes
@@ -1905,8 +2089,27 @@ function loadData(){
   catch(e){console.warn(e);}
 }
 // Returns effective income - actual override if set this month, otherwise scheduled
-function getEffectiveIncome(i){
-  return(i.actualAmount&&i.actualMonth===today().slice(0,7))?i.actualAmount:i.amount;
+function getEffectiveIncome(i, yr, mo){
+  // Month context: default to current month
+  const now = new Date();
+  const targetYr = yr != null ? yr : now.getFullYear();
+  const targetMo = mo != null ? mo : now.getMonth();
+  const targetMonthStr = targetYr+'-'+String(targetMo+1).padStart(2,'0');
+
+  // Actual override takes highest priority
+  if(i.actualAmount && i.actualMonth === targetMonthStr) return i.actualAmount;
+
+  // Bi-weekly: use real paycheck count if lastPayDate known
+  if(i.frequency === 'Bi-weekly'){
+    const count = getPaycheckCount(i, targetYr, targetMo);
+    if(count != null) return parseFloat((i.amount * count).toFixed(2));
+    // Fallback to average if no lastPayDate
+    return parseFloat((i.amount * 26/12).toFixed(2));
+  }
+
+  // Other frequencies
+  const map = {'Weekly': 52/12, 'Monthly': 1, 'Yearly': 1/12, 'One-time': 1};
+  return parseFloat((i.amount * (map[i.frequency]||1)).toFixed(2));
 }
 function showToast(msg, type){
   const el=$('toast');
@@ -1931,6 +2134,7 @@ function confirmReset(){
     localStorage.removeItem(STORAGE_KEY);
     localStorage.removeItem(SAVE_TS_KEY);
     localStorage.removeItem(ONBOARD_KEY);
+    localStorage.removeItem(NW_HISTORY_KEY);
     closeModal('settings');
   const si=$('txn-search');if(si)si.value='';
   const sc=$('txn-clear');if(sc)sc.style.display='none';renderAll();updateLastSavedUI();showOnboarding();
@@ -1989,7 +2193,7 @@ function loadDemoData(skipConfirm){
   data={
     // ── INCOME ─────────────────────────────────────────────────
     income:[
-      {id:1001, source:'Salary - SoftNetworks',  amount:4200, frequency:'Bi-weekly',  date:ago(3),  accountId:8001, actualAmount:4850, actualMonth:new Date().getFullYear()+'-'+String(new Date().getMonth()+1).padStart(2,'0')},
+      {id:1001, source:'Salary - SoftNetworks',  amount:4200, frequency:'Bi-weekly',  date:ago(3),  accountId:8001, actualAmount:4850, actualMonth:new Date().getFullYear()+'-'+String(new Date().getMonth()+1).padStart(2,'0'), lastPayDate:ago(3)},
       {id:1002, source:'Freelance Tech Support',  amount:650,  frequency:'Monthly',    date:ago(10), accountId:8001},
       {id:1003, source:'Tax Refund',              amount:1200, frequency:'One-time',   date:ago(20), accountId:8002},
       {id:1004, source:'Rental Income',           amount:800,  frequency:'Monthly',    date:ago(5),  accountId:8002},
@@ -2013,10 +2217,10 @@ function loadDemoData(skipConfirm){
     bills:[
       // Due this week - shows on 7-day timeline + smart bill reminder
       {id:3001, name:'Rent',              amount:1450, dueDate:dt(2),           recurring:'Monthly', status:'Pending',   btype:'bill',       balance:0,     apr:0,     creditLimit:0,     scheduledAmount:null, scheduledAccountId:null},
-      {id:3006, name:'Chase Sapphire',    amount:85,   dueDate:dt(4),           recurring:'Monthly', status:'Pending',   btype:'creditcard', balance:4250,  apr:22.99, creditLimit:10000, scheduledAmount:null, scheduledAccountId:null, originalBalance:5800},
+      {id:3006, name:'Chase Sapphire',    amount:85,   dueDate:dt(4),           recurring:'Monthly', status:'Pending',   btype:'creditcard', balance:4250,  apr:22.99, creditLimit:10000, scheduledAmount:null, scheduledAccountId:null, originalBalance:5800, revolvingBalance:2801},  // 4250 - 999(iPhone) - 450(Dyson)
       {id:3008, name:'Car Loan - Honda',  amount:340,  dueDate:dt(3),           recurring:'Monthly', status:'Pending',   btype:'loan',       balance:9800,  apr:7.49,  creditLimit:0,     scheduledAmount:null, scheduledAccountId:null, originalBalance:14000},
       // Overdue - shows red badge + alert
-      {id:3009, name:'Capital One Card',  amount:35,   dueDate:ago(1),          recurring:'Monthly', status:'Overdue',   btype:'creditcard', balance:1150,  apr:26.99, creditLimit:3000,  scheduledAmount:null, scheduledAccountId:null, originalBalance:2200},
+      {id:3009, name:'Capital One Card',  amount:35,   dueDate:ago(1),          recurring:'Monthly', status:'Overdue',   btype:'creditcard', balance:1150,  apr:26.99, creditLimit:3000,  scheduledAmount:null, scheduledAccountId:null, originalBalance:2200, revolvingBalance:870},  // 1150 - 280(Headphones)
       // Scheduled - shows blue badge
       {id:3002, name:'Electric & Gas',    amount:145,  dueDate:dt(5),           recurring:'Monthly', status:'Scheduled', btype:'bill',       balance:0,     apr:0,     creditLimit:0,     scheduledAmount:145,  scheduledAccountId:8001},
       // Paid - shows checkmark animation
@@ -2074,6 +2278,19 @@ function loadDemoData(skipConfirm){
       {id:5041, description:'Car Loan payment',         amount:340,  type:'Debt Payment',date:ago(5),  accountId:8001, cardId:0,    methodLabel:'Chase Checking'},
       {id:5042, description:'ATM - Chase branch',       amount:100,  type:'Withdrawal',  date:ago(4),  accountId:8001, methodLabel:'Chase Checking'},
       {id:5043, description:'CVS Pharmacy',             amount:45,   type:'Purchase',    date:ago(11), cardId:3006, accountId:0, category:'Healthcare',    methodLabel:'Chase Sapphire'},
+      // Promo purchases showcase
+      {id:5080, description:'iPhone 15 Pro - Apple',    amount:999,  type:'Purchase',    date:monthAgo(1,5), cardId:3006, accountId:0, category:'Electronics', methodLabel:'Chase Sapphire',
+        promoType:'installment', promoMonths:24, promoApr:0,
+        promoEnd:(()=>{const d=new Date();d.setMonth(d.getMonth()+23);return d.toISOString().split('T')[0];})(),
+        monthlyRequired:41.63},
+      {id:5081, description:'PayPal - Dyson Vacuum',    amount:450,  type:'Purchase',    date:ago(45),       cardId:3006, accountId:0, category:'Shopping',    methodLabel:'Chase Sapphire',
+        promoType:'deferred', promoMonths:6, promoApr:29.99,
+        promoEnd:(()=>{const d=new Date();d.setDate(d.getDate()+(180-45));return d.toISOString().split('T')[0];})(),
+        monthlyRequired:75},
+      {id:5082, description:'PayPal - Sony Headphones', amount:280,  type:'Purchase',    date:ago(10),       cardId:3009, accountId:0, category:'Electronics', methodLabel:'Capital One Card',
+        promoType:'deferred', promoMonths:6, promoApr:26.99,
+        promoEnd:(()=>{const d=new Date();d.setMonth(d.getMonth()+6);d.setDate(d.getDate()-10);return d.toISOString().split('T')[0];})(),
+        monthlyRequired:46.67},
     ],
 
     // ── ASSETS ─────────────────────────────────────────────────
@@ -2200,9 +2417,8 @@ function saveAccount(){
 function deleteAccountFromModal(){
   const id=parseInt($('ac-id').value);
   const a=(data.accounts||[]).find(x=>x.id===id);if(!a)return;
-  if(!confirm('Remove "'+a.name+'"? This cannot be undone.'))return;
-  data.accounts=data.accounts.filter(x=>x.id!==id);
-  closeModal('account');saveData();renderAll();showToast(t('Account removed.'));
+  closeModal('account');
+  deleteItem('accounts',id);
 }
 
 // ── NEW PURCHASE ──────────────────────────────────
@@ -2252,6 +2468,11 @@ function confirmPurchase(){
     if(card){
       methodLabel=card.name;
       card.balance=parseFloat((card.balance+amt).toFixed(2));
+      // Track revolving vs promo split
+      if(!(window._pendingPromo&&window._pendingPromo.promoType)){
+        migrateRevolvingBalance(card);
+        card.revolvingBalance=parseFloat(((card.revolvingBalance||0)+amt).toFixed(2));
+      }
       // Flag bill as Pending so user knows to schedule payment
       if(card.status==='Paid') card.status='Pending';
     }
@@ -2311,6 +2532,20 @@ function renderNetWorth(){
         <div style="display:flex;align-items:center;gap:10px">
           <span style="font-family:var(--font-d);font-size:22px;color:${a.balance>=0?'var(--green)':'var(--red)'}">${usd(a.balance)}</span>
           <button class="btn btn-secondary btn-sm" onclick="openEditAccount(${a.id})">✏️</button>
+        </div>
+      </div>
+      <div class="bal-correct-row">
+        <input class="bal-correct-input" type="number" inputmode="decimal"
+          placeholder="Set actual balance..." id="bal-correct-${a.id}"
+          value="${a.balance.toFixed(2)}"/>
+        <button class="bal-correct-btn" onclick="correctBalance(${a.id})">&#x26A1; Correct</button>
+      </div>
+      <div class="bal-correct-row">
+        <input class="bal-correct-input" type="number" inputmode="decimal"
+          placeholder="Set actual balance..." id="bal-correct-${a.id}"
+          value="${a.balance.toFixed(2)}"/>
+        <button class="bal-correct-btn" onclick="correctBalance(${a.id})">⚡ Correct</button>
+      </div>
         </div>
       </div>
     </div>`).join('')
@@ -2521,9 +2756,9 @@ function show(sec,btn){
 
 // ── MODALS ───────────────────────────────────────
 function openModal(type,extra){
-  if(type==='income'){$('income-modal-title').textContent='Add Income';$('i-id').value='';$('i-source').value='';$('i-amount').value='';$('i-date').value=today();$('i-freq').value='Monthly';$('i-account').value='';$('i-actual').value='';$('i-actual-wrap').style.display='none';populateAccountSelects();}
-  if(type==='expense'){$('expense-modal-title').textContent='Add Expense';$('e-id').value='';$('e-cat').value='';$('e-desc').value='';$('e-amount').value='';$('e-date').value=today();$('e-freq').value='One-time';$('e-account').value='';populateAccountSelects();}
-  if(type==='bill'){$('bill-modal-title').textContent='Add Bill / Debt';$('b-id').value='';$('b-name').value='';$('b-amount').value='';$('b-date').value='';$('b-recur').value='No';$('b-type').value='bill';$('b-balance').value='';$('b-apr').value='';$('b-limit').value='';toggleDebtFields();$('bill-delete-wrap').style.display='none';}
+  if(type==='income'){$('income-modal-title').textContent='Add Income';$('i-id').value='';$('i-source').value='';$('i-amount').value='';$('i-date').value=today();$('i-freq').value='Monthly';$('i-account').value='';$('i-actual').value='';$('i-actual-wrap').style.display='none';if($('i-lastpay'))$('i-lastpay').value='';if($('i-lastpay-wrap'))$('i-lastpay-wrap').style.display='none';populateAccountSelects();}
+  if(type==='expense'){clearOverlapWarn('expense-overlap-warn');$('expense-modal-title').textContent='Add Expense';$('e-id').value='';$('e-cat').value='';$('e-desc').value='';$('e-amount').value='';$('e-date').value=today();$('e-freq').value='One-time';$('e-account').value='';populateAccountSelects();}
+  if(type==='bill'){clearOverlapWarn('bill-overlap-warn');$('bill-modal-title').textContent='Add Bill / Debt';$('b-id').value='';$('b-name').value='';$('b-amount').value='';$('b-date').value='';$('b-recur').value='No';$('b-type').value='bill';$('b-balance').value='';$('b-apr').value='';$('b-limit').value='';toggleDebtFields();$('bill-delete-wrap').style.display='none';}
   if(type==='account'){$('account-modal-title').textContent='Add Account';$('ac-id').value='';$('ac-name').value='';$('ac-type').value='checking';$('ac-balance').value='';$('ac-notes').value='';$('ac-default').checked=false;$('account-delete-wrap').style.display='none';}
   if(type==='purchase'){openPurchaseModal();return;}
   if(type==='txn'){openWithdrawal();return;}
@@ -2560,6 +2795,8 @@ function openEditIncome(id){
   $('income-modal-title').textContent='Edit Income';
   $('i-id').value=i.id;$('i-source').value=i.source;$('i-amount').value=i.amount;
   $('i-date').value=i.date||'';$('i-freq').value=i.frequency;
+  onIncomeFreqChange();
+  if($('i-lastpay')) $('i-lastpay').value=i.lastPayDate||'';
   populateAccountSelects();
   $('i-account').value=i.accountId||'';
   // Show actual override field only for recurring income
@@ -2590,11 +2827,8 @@ function deleteBillFromModal(inlineId){
   const id=inlineId||parseInt($('b-id').value);
   const b=data.bills.find(x=>x.id===id);
   if(!b)return;
-  if(!confirm('Remove "'+b.name+'" permanently? This cannot be undone.'))return;
-  data.bills=data.bills.filter(x=>x.id!==id);
   if(!inlineId) closeModal('bill');
-  saveData();renderAll();
-  showToast(t('Removed.'));
+  deleteItem('bills',id);
 }
 function openEditTxn(id){
   const t=data.transactions.find(x=>x.id===id);if(!t)return;
@@ -2610,6 +2844,7 @@ function openEditTxn(id){
 // ── SAVE FUNCTIONS ───────────────────────────────
 function saveIncome(){
   const src=$('i-source').value.trim(),amt=parseFloat($('i-amount').value),freq=$('i-freq').value,dt=$('i-date').value,acId=parseInt($('i-account').value)||0;
+  const lastPayDate=freq==='Bi-weekly'&&$('i-lastpay')?$('i-lastpay').value:null;
   if(!src||!amt)return;
   const eid=parseInt($('i-id').value);
   const prev=eid?data.income.find(i=>i.id===eid):null;
@@ -2620,7 +2855,7 @@ function saveIncome(){
   // Reverse previous account credit if editing
   const prevEffective=prev?(prev.actualAmount||prev.amount):0;
   if(prev&&prev.accountId) adjustAccountBalance(prev.accountId,-prevEffective);
-  const item={id:eid||Date.now(),source:src,amount:amt,frequency:freq,date:dt,accountId:acId,actualAmount,actualMonth};
+  const item={id:eid||Date.now(),source:src,amount:amt,frequency:freq,date:dt,accountId:acId,actualAmount,actualMonth,lastPayDate:lastPayDate||null};
   data.income=eid?data.income.map(i=>i.id===eid?item:i):[...data.income,item];
   // Credit account with effective amount
   const effective=actualAmount||amt;
@@ -2738,7 +2973,7 @@ function initSwipe(wrap, onDeleteFn){
   },{passive:false});
   wrap.addEventListener('touchend',()=>{
     inner.style.transition='';
-    if(dx<-50){inner.style.transform='translateX(-80px)';wrap.classList.add('swiped');swiped=true;haptic('swipe');}
+    if(dx<-50){inner.style.transform='translateX(-80px)';wrap.classList.add('swiped');swiped=true;}
     else{inner.style.transform='';wrap.classList.remove('swiped');swiped=false;}
     dx=0;
   });
@@ -2814,9 +3049,12 @@ function autoProcessScheduledBills(){
     if(acId) adjustAccountBalance(acId,-amt);
     // If debt, reduce balance
     if((b.btype==='creditcard'||b.btype==='loan'||b.btype==='promo')&&b.balance>0){
+      migrateRevolvingBalance(b);
       const monthlyRate=(b.apr||0)/100/12;
-      const interest=b.balance*monthlyRate;
+      // Interest only on revolving portion
+      const interest=parseFloat(((b.revolvingBalance||0)*monthlyRate).toFixed(2));
       const principal=Math.max(0,amt-interest);
+      b.revolvingBalance=parseFloat(Math.max(0,(b.revolvingBalance||0)-principal).toFixed(2));
       b.balance=parseFloat(Math.max(0,b.balance-principal).toFixed(2));
     }
     // Log transaction
@@ -2863,6 +3101,7 @@ function openScheduleBill(id){
   $('sb-min-val').textContent=usd(b.amount);
   $('sb-custom').value='';
   $('sb-custom').placeholder='e.g. '+b.amount;
+  checkNoAccountsNudge('sb-no-accounts-nudge');
   populateAccountSelects();
   $('sb-account').value=getDefaultAccountId()||'';
   _sbAmount=b.amount;
@@ -2923,6 +3162,7 @@ function openPayDebt(id){
   $('pd-custom').value='';
   $('pd-breakdown').style.display='none';
   $('pd-sug-btn').style.display='none';
+  checkNoAccountsNudge('pd-no-accounts-nudge');
   populateAccountSelects();
   $('pd-account').value=getDefaultAccountId()||'';
   // Default select min
@@ -2980,6 +3220,8 @@ function confirmDebtPayment(){
       if(!confirm('Warning: this payment of '+usd(amount)+' would overdraw this account by '+usd(amount-bal)+'. Continue?'))return;
     }
   }
+  // Apply portion to promo items first (soonest expiry)
+  applyGeneralPaymentToPromos(b.id, amount);
   b.scheduledAmount=parseFloat(amount.toFixed(2));
   b.scheduledAccountId=acId;
   b.status='Scheduled';
@@ -3172,7 +3414,7 @@ function renderDebt(){
   $('method-desc').textContent=desc[debtMethod];
 
   // ── CASH FLOW CALCULATION ─────────────────────
-  const totalIncome   = data.income.reduce((s,i)=>s+getEffectiveIncome(i),0);
+  const totalIncome   = data.income.reduce((s,i)=>s+getEffectiveIncome(i,new Date().getFullYear(),new Date().getMonth()),0);
   const totalExpenses = data.expenses.reduce((s,e)=>s+e.amount,0);
   const totalBillsPmt = data.bills.filter(b=>b.btype==='bill').reduce((s,b)=>s+b.amount,0);
   const totalDebtMins = debts.reduce((s,d)=>s+d.amount,0);
@@ -3270,6 +3512,7 @@ function renderDebt(){
           <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px">
             <span class="apr-badge"${d.btype==='promo'?' style="background:rgba(34,197,94,.15);color:var(--green)"':''}>APR ${pct(d.apr)}</span>
             ${promoBadgeHtml}
+            ${getPromoSortNote(d)}
             <span style="font-size:12px;color:var(--muted)">Min: ${usd(d.amount)}/mo</span>
           </div>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px">
@@ -3342,6 +3585,24 @@ function buildAlerts(){
   });
 
   // ── PROMO: expiry warnings ─────────────────────────────────
+  // ── PROMO PURCHASES: per-transaction expiry warnings ───────────
+  data.transactions.filter(tx=>tx.promoType&&tx.promoEnd&&tx.amount>0).forEach(tx=>{
+    const daysLeft=Math.round((new Date(tx.promoEnd)-now)/86400000);
+    const paid=data.transactions.filter(t=>t.promoRef===tx.id).reduce((s,t)=>s+t.amount,0);
+    const remaining=Math.max(0,tx.amount-paid);
+    if(remaining<=0) return; // fully paid
+    if(daysLeft<0){
+      alerts.push({section:'bills',color:'#ef4444',icon:'🚨',
+        msg:`${tx.description} promo EXPIRED - ${usd(remaining)} unpaid${tx.promoType==='deferred'?' (deferred interest may apply)':''}`});
+    } else if(daysLeft<=7){
+      alerts.push({section:'bills',color:'#ef4444',icon:'🚨',
+        msg:`${tx.description} promo expires in ${daysLeft}d - ${usd(remaining)} still due`});
+    } else if(daysLeft<=30){
+      alerts.push({section:'bills',color:'#f59e0b',icon:'⚠️',
+        msg:`${tx.description} promo expires in ${daysLeft}d - ${usd(remaining)} remaining`});
+    }
+  });
+
   data.bills.filter(b=>b.promoEndDate&&b.regularApr!=null&&b.balance>0).forEach(b=>{
     const daysLeft=Math.round((new Date(b.promoEndDate)-now)/86400000);
     if(daysLeft<0){
@@ -3432,6 +3693,8 @@ function renderAlerts(){
 }
 
 function renderDashboard(){
+  checkBillResetNotify();
+  checkTransferBanner();
   // Today display
   const td_el=$('today-display');
   if(td_el){
@@ -3439,10 +3702,10 @@ function renderDashboard(){
     td_el.textContent=now.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
   }
   // Stat cards
-  const ti=data.income.reduce((s,i)=>s+getEffectiveIncome(i),0);
+  const ti=data.income.reduce((s,i)=>s+getEffectiveIncome(i,new Date().getFullYear(),new Date().getMonth()),0);
   const te=data.expenses.reduce((s,e)=>s+e.amount,0);
   const td=data.bills.filter(b=>b.btype==='creditcard'||b.btype==='loan').reduce((s,b)=>s+(b.balance||0),0);
-  const tt=data.transactions.reduce((s,t)=>s+t.amount,0);
+  const tt=data.transactions.filter(t=>!t.promoRef).reduce((s,t)=>s+t.amount,0);
   const net=ti-te-tt;
   $('d-income').textContent=usd(ti);$('d-expenses').textContent=usd(te);
   $('d-debt').textContent=usd(td);$('d-balance').textContent=usd(net);
@@ -3569,7 +3832,7 @@ function renderDashboard(){
 
 function renderBudget(){
   const thisMonth=today().slice(0,7);
-  const ti=data.income.reduce((s,i)=>s+getEffectiveIncome(i),0);
+  const ti=data.income.reduce((s,i)=>s+getEffectiveIncome(i,new Date().getFullYear(),new Date().getMonth()),0);
   const te=data.expenses.reduce((s,e)=>s+e.amount,0);
   const tb=data.bills.reduce((s,b)=>s+b.amount,0);
   const totalOut=te+tb;
@@ -3588,8 +3851,11 @@ function renderBudget(){
 
   // Money In -- income
   $('income-list').innerHTML=data.income.length?data.income.map(i=>{
+    const now2=new Date();
     const eff=getEffectiveIncome(i);
     const hasOverride=i.actualAmount&&i.actualMonth===thisMonth;
+    const payCount=i.frequency==='Bi-weekly'?getPaycheckCount(i,now2.getFullYear(),now2.getMonth()):null;
+    const isThreeCheck=payCount===3;
     const amtDisplay=hasOverride
       ?`<div style="text-align:right">
           <span style="color:var(--muted);text-decoration:line-through;font-size:12px">${usd(i.amount)}</span>
@@ -3598,8 +3864,9 @@ function renderBudget(){
         </div>`
       :`<span style="color:var(--green);font-weight:600">${usd(eff)}</span>`;
     return wrapSwipeable(`<div class="row" style="margin-bottom:0;border-radius:12px"><div>
-      <div class="row-label">${i.source} ${recurBadge(i.frequency)}</div>
+      <div class="row-label">${i.source} ${recurBadge(i.frequency)}${isThreeCheck?'<span style="background:rgba(245,158,11,.15);color:var(--yellow);border-radius:5px;padding:1px 6px;font-size:10px;font-weight:700;margin-left:4px">&#127881; 3 checks</span>':''}</div>
       <div class="row-sub">${[fmtDate(i.date),i.frequency!=='One-time'?i.frequency:'One-time'].filter(Boolean).join(' - ')}</div>
+      ${getIncomeMonthlyNote(i)}
     </div><div class="row-actions">
       ${amtDisplay}
       <button class="btn btn-secondary btn-sm" onclick="openEditIncome(${i.id})">✏️</button>
@@ -3685,9 +3952,10 @@ function renderBills(){
             ${b.btype==='creditcard'?'<span style="background:rgba(239,68,68,.15);color:#ef4444;border-radius:5px;padding:1px 7px;font-size:10px;font-weight:700;margin-left:4px">CARD</span>':b.btype==='loan'?'<span style="background:rgba(251,146,60,.15);color:#fb923c;border-radius:5px;padding:1px 7px;font-size:10px;font-weight:700;margin-left:4px">LOAN</span>':''}
           </div>
           <div style="font-size:12px;color:var(--muted)">Due: ${fmtDate(b.dueDate)} - ${b.recurring}</div>
-          ${isDebt&&b.balance?`<div style="font-size:12px;color:var(--muted)">Balance: ${usd(b.balance)} ${b.apr?'| APR: '+pct(b.apr):''}</div>`:''}
+          ${isDebt&&b.balance?'<div style="font-size:12px;color:var(--muted);margin-top:2px">'+getBalanceSplitHtml(b)+'</div>':''}
           ${b.promoEndDate?`<div style="font-size:11px;color:var(--green);font-weight:600">🎁 Promo ends: ${fmtDate(b.promoEndDate)} - ${pct(b.regularApr||0)} after</div>`:''}
         </div>
+        ${renderPromoItems(b.id)}
         <div class="row-actions">
           <span style="font-family:var(--font-d);font-size:19px">${usd(b.amount)}</span>
           ${actions}
@@ -4111,7 +4379,7 @@ function renderSnapshot(){
   }
 
   // This month
-  const thisIncome   = data.income.filter(i => inMonth(i.date, yr, mo)).reduce((s,i) => s + getEffectiveIncome(i), 0);
+  const thisIncome   = data.income.filter(i => inMonth(i.date, yr, mo)).reduce((s,i) => s + getEffectiveIncome(i, yr, mo), 0);
   const thisExpenses = data.expenses.filter(e => inMonth(e.date, yr, mo)).reduce((s,e) => s + e.amount, 0);
   const thisBillsOut = data.bills.filter(b => inMonth(b.dueDate, yr, mo)).reduce((s,b) => s + b.amount, 0);
   const thisOut      = thisExpenses + thisBillsOut;
@@ -4120,7 +4388,7 @@ function renderSnapshot(){
   const thisBillsTotal = data.bills.filter(b => inMonth(b.dueDate, yr, mo)).length;
 
   // Last month
-  const lastIncome   = data.income.filter(i => inMonth(i.date, prevYr, prevMo)).reduce((s,i) => s + i.amount, 0);
+  const lastIncome   = data.income.filter(i => inMonth(i.date, prevYr, prevMo)).reduce((s,i) => s + getEffectiveIncome(i, prevYr, prevMo), 0);
   const lastExpenses = data.expenses.filter(e => inMonth(e.date, prevYr, prevMo)).reduce((s,e) => s + e.amount, 0);
   const lastBillsOut = data.bills.filter(b => inMonth(b.dueDate, prevYr, prevMo)).reduce((s,b) => s + b.amount, 0);
   const lastOut      = lastExpenses + lastBillsOut;
@@ -4502,13 +4770,13 @@ function showUndoToast(key){
   if(bar){
     bar.style.transition='none';
     bar.style.width='100%';
-    setTimeout(()=>{bar.style.transition='width 4.5s linear';bar.style.width='0%';},50);
+    setTimeout(()=>{bar.style.transition='width 7.5s linear';bar.style.width='0%';},50);
   }
   clearTimeout(_undoTimer);
   _undoTimer=setTimeout(()=>{
     toast.classList.remove('show');
     _undoState=null;
-  },5000);
+  },8000);
 }
 
 function undoDelete(){
@@ -4562,30 +4830,43 @@ function renderProjection(){
     return;
   }
 
-  function monthlyAmount(inc){
-    const map={'Weekly':52/12,'Bi-weekly':26/12,'Monthly':1,'Yearly':1/12};
-    return inc.amount*(map[inc.frequency]||1);
-  }
-
-  const monthlyTotal=recurring.reduce((s,i)=>s+monthlyAmount(i),0);
-  const rows=months.map(d=>{
-    const label=d.toLocaleString('default',{month:'short',year:'2-digit'});
-    return`<div class="proj-bar">
-      <span style="font-size:12px;color:var(--muted)">${label}</span>
-      <span style="font-size:13px;font-weight:700;color:var(--green)">${usd(monthlyTotal)}</span>
-    </div>`;
+  // Per-month totals using actual paycheck dates
+  const monthlyTotals = months.map(d=>{
+    const yr = d.getFullYear(), mo = d.getMonth();
+    return{
+      date: d,
+      total: parseFloat(recurring.reduce((s,i)=>s+getEffectiveIncome(i,yr,mo),0).toFixed(2)),
+      label: d.toLocaleString('default',{month:'short',year:'2-digit'})
+    };
   });
 
-  const total=monthlyTotal*months.length;
-  const endLabel=projWindow==='year'?'end of '+now.getFullYear():(projWindow+' months');
+  const grandTotal = parseFloat(monthlyTotals.reduce((s,m)=>s+m.total,0).toFixed(2));
+  const avgMonthly = parseFloat((grandTotal/months.length).toFixed(2));
+  const maxMonth   = monthlyTotals.reduce((a,b)=>b.total>a.total?b:a);
+  const hasSpike   = monthlyTotals.some(m=>m.total > avgMonthly*1.2);
+
+  const endLabel = projWindow==='year'?'end of '+now.getFullYear():(projWindow+' months');
+
+  const monthRows = hasSpike ? monthlyTotals.map(m=>{
+    const isSpike = m.total > avgMonthly*1.2;
+    return`<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid var(--border)">
+      <span style="font-size:12px;color:var(--muted)">${m.label}</span>
+      <span style="font-size:13px;font-weight:700;color:${isSpike?'var(--yellow)':'var(--green)'}">
+        ${usd(m.total)}${isSpike?' <span style="font-size:9px;font-weight:700;background:rgba(245,158,11,.15);color:var(--yellow);border-radius:4px;padding:1px 4px">3 checks</span>':''}
+      </span>
+    </div>`;
+  }).join('') : '';
+
   el.innerHTML=`
-    <div style="background:rgba(34,197,94,.07);border-radius:8px;padding:10px 12px;">
+    <div style="background:rgba(34,197,94,.07);border-radius:8px;padding:10px 12px;margin-bottom:${hasSpike?'10px':'0'}">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
         <span style="font-size:11px;color:var(--muted)">Expected by ${endLabel}</span>
-        <span style="font-size:18px;font-weight:700;color:var(--green)">${usd(total)}</span>
+        <span style="font-size:18px;font-weight:700;color:var(--green)">${usd(grandTotal)}</span>
       </div>
-      <div style="font-size:11px;color:var(--muted)">${usd(monthlyTotal)} / month &times; ${months.length} months</div>
-    </div>`;
+      <div style="font-size:11px;color:var(--muted)">${usd(avgMonthly)} avg/month &times; ${months.length} months</div>
+      ${hasSpike?`<div style="font-size:11px;color:var(--yellow);margin-top:4px">&#127881; Includes ${monthlyTotals.filter(m=>m.total>avgMonthly*1.2).length} 3-paycheck month${monthlyTotals.filter(m=>m.total>avgMonthly*1.2).length>1?'s':''}</div>`:''}
+    </div>
+    ${hasSpike?`<div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Monthly Breakdown</div>${monthRows}`:''}`;
 }
 
 
@@ -4606,31 +4887,33 @@ function catIcon(cat){
   return icon?icon+' ':'';
 }
 
-// ── HAPTIC FEEDBACK ───────────────────────────────────────────
-function haptic(type){
-  if(!navigator.vibrate) return;
-  if(type==='swipe') navigator.vibrate(15);
-  else if(type==='success') navigator.vibrate([10,50,10]);
-  else if(type==='undo') navigator.vibrate(20);
-}
+// Haptic feedback removed
 
 // ── RECURRING BILL RESET ──────────────────────────────────────
 function autoResetRecurringBills(){
   const currentMonth=today().slice(0,7);
   const lastReset=localStorage.getItem(BILL_RESET_KEY);
-  if(lastReset===currentMonth) return; // Already reset this month
+  if(lastReset===currentMonth) return;
   let changed=0;
+  const resetNames=[];
   data.bills.forEach(b=>{
-    if(b.recurring==='One-time') return; // Skip one-time bills
+    if(b.recurring==='One-time') return;
     if(b.status==='Paid'||b.status==='Scheduled'){
       b.status='Pending';
       b.scheduledAmount=null;
       b.scheduledAccountId=null;
       changed++;
+      resetNames.push(b.name);
     }
   });
   localStorage.setItem(BILL_RESET_KEY, currentMonth);
-  if(changed>0) saveData();
+  if(changed>0){
+    saveData();
+    // Store reset notification for dashboard banner
+    localStorage.setItem('financeOS_billResetNotify', JSON.stringify({
+      month: currentMonth, count: changed, names: resetNames.slice(0,3)
+    }));
+  }
 }
 
 // ── PWA INSTALL PROMPT ────────────────────────────────────────
@@ -4917,7 +5200,7 @@ function renderDebtCountdown(){
   const debts=data.bills.filter(b=>(b.btype==='creditcard'||b.btype==='loan'||b.btype==='promo')&&b.balance>0&&(b.apr>=0));
   if(!debts.length){ wrap.innerHTML=''; return; }
 
-  const extra=Math.max(0,(data.income.reduce((s,i)=>s+getEffectiveIncome(i),0))
+  const extra=Math.max(0,(data.income.reduce((s,i)=>s+getEffectiveIncome(i,new Date().getFullYear(),new Date().getMonth()),0))
     -(data.expenses.reduce((s,e)=>s+e.amount,0))
     -(data.bills.filter(b=>b.btype==='bill').reduce((s,b)=>s+b.amount,0))
     -(debts.reduce((s,b)=>s+b.amount,0)));
@@ -5091,7 +5374,7 @@ function exportToExcel(){
   const wb = XLSX.utils.book_new();
 
   // ── CALCULATED TOTALS ────────────────────────────────────────
-  const totalIncome   = data.income.reduce((s,i)=>s+getEffectiveIncome(i),0);
+  const totalIncome   = data.income.reduce((s,i)=>s+getEffectiveIncome(i,new Date().getFullYear(),new Date().getMonth()),0);
   const totalExpenses = data.expenses.reduce((s,e)=>s+e.amount,0);
   const totalBills    = data.bills.reduce((s,b)=>s+b.amount,0);
   const totalDebt     = data.bills.filter(b=>b.btype==='creditcard'||b.btype==='loan').reduce((s,b)=>s+(b.balance||0),0);
@@ -5624,6 +5907,7 @@ function savePromoDebt(){
         accountId:0, methodLabel:destCard.name
       });
       src.balance = 0; src.status = 'Paid';
+      // Note: in reality transfer takes 3-7 days; balance zeroed immediately for tracking simplicity
     });
 
     destCard.balance = parseFloat((totalTransferred+feePaid).toFixed(2));
@@ -5631,8 +5915,16 @@ function savePromoDebt(){
       destCard.originalBalance = destCard.balance;
 
     updateOriginalBalances();
+    // Store transfer record for pending notification
+    data._pendingTransfers = data._pendingTransfers||[];
+    data._pendingTransfers.push({
+      date: today(), destName: destCard.name,
+      amount: totalTransferred, fee: feePaid,
+      completionDate: (()=>{const d=new Date();d.setDate(d.getDate()+5);return d.toISOString().split('T')[0];})()
+    });
     closeModal('promo'); saveData(); renderAll();
-    showToast('Transfer complete - '+usd(totalTransferred)+' moved to '+destCard.name+'!'); return;
+    showToast('Transfer initiated - '+usd(totalTransferred)+' moving to '+destCard.name+' (3-5 business days)');
+    return;
   }
 }
 
@@ -5667,6 +5959,685 @@ function getPromoBadgeHtml(b){
     <div class="promo-badge ${badgeClass}">${icon} 0% promo: ${daysLeft}d left (${b.regularApr||0}% after)</div>
     <div class="promo-needed">Pay ${usd(monthlyNeeded)}/mo to clear before expiry</div>`;
 }
+
+
+
+// ── PROMO PURCHASE TRACKER ────────────────────────────────────
+
+let _promoType = 'deferred'; // 'deferred' | 'installment'
+
+function togglePromoFields(){
+  const check = $('pu-promo-check');
+  const fields = $('pu-promo-fields');
+  if(!check||!fields) return;
+  // If called from row click, toggle the checkbox manually
+  if(document.activeElement !== check) check.checked = !check.checked;
+  fields.style.display = check.checked ? 'block' : 'none';
+  if(check.checked) calcPromoRequired();
+}
+
+function setPromoType(type){
+  _promoType = type;
+  ['deferred','installment'].forEach(t=>{
+    const btn = $('ptype-'+t);
+    if(btn) btn.classList.toggle('active', t===type);
+  });
+  // Show/hide APR field (deferred only)
+  const aprWrap = $('pu-deferred-apr-wrap');
+  if(aprWrap) aprWrap.style.display = type==='deferred' ? 'block' : 'none';
+  calcPromoRequired();
+}
+
+function calcPromoRequired(){
+  const amt    = parseFloat($('pu-amount').value) || 0;
+  const months = parseInt($('pu-promo-months').value) || 0;
+  const apr    = parseFloat($('pu-promo-apr').value) || 0;
+  const calc   = $('pu-promo-calc');
+  if(!calc) return;
+  if(!amt || !months){ calc.style.display='none'; return; }
+
+  const monthly = parseFloat((amt/months).toFixed(2));
+  const endDate = new Date();
+  endDate.setMonth(endDate.getMonth()+months);
+  const endStr = endDate.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+
+  if(_promoType==='deferred'){
+    const dailyRate = apr/100/365;
+    const projectedInterest = parseFloat((amt * dailyRate * months * 30).toFixed(2));
+    calc.style.display='block';
+    calc.innerHTML = `Pay <strong>${usd(monthly)}/mo</strong> to clear by <strong>${endStr}</strong><br>`
+      + (apr>0 ? `<span style="color:var(--red)">Miss deadline = <strong>${usd(projectedInterest)}</strong> in deferred interest charged retroactively</span>` : '');
+  } else {
+    calc.style.display='block';
+    calc.innerHTML = `Fixed <strong>${usd(monthly)}/mo</strong> for ${months} months &mdash; paid off by <strong>${endStr}</strong>`;
+  }
+}
+
+// ── HOOK INTO openPurchaseModal to reset promo fields ─────────
+const _origOpenPurchaseModal = openPurchaseModal;
+function openPurchaseModal(){
+  _origOpenPurchaseModal();
+  // Reset promo fields
+  const check = $('pu-promo-check'); if(check) check.checked=false;
+  const fields = $('pu-promo-fields'); if(fields) fields.style.display='none';
+  const calc = $('pu-promo-calc'); if(calc) calc.style.display='none';
+  _promoType='deferred';
+  setPromoType('deferred');
+  const months = $('pu-promo-months'); if(months) months.value='6';
+  const apr = $('pu-promo-apr'); if(apr) apr.value='';
+}
+
+// ── PROMO ITEM RENDERING IN BILLS ─────────────────────────────
+function getPromoItemsForCard(cardId){
+  if(!cardId) return [];
+  return data.transactions.filter(tx=>
+    tx.cardId===cardId && tx.promoType && tx.promoEnd
+  );
+}
+
+function renderPromoItems(cardId){
+  const items = getPromoItemsForCard(cardId);
+  if(!items.length) return '';
+
+  const todayStr = today();
+  const rows = items.map(tx=>{
+    const daysLeft = Math.round((new Date(tx.promoEnd)-new Date())/86400000);
+    const monthsLeft = Math.max(1, Math.ceil(daysLeft/30));
+    const paidToward = data.transactions
+      .filter(t=>t.promoRef===tx.id)
+      .reduce((s,t)=>s+t.amount,0);
+    const remaining = Math.max(0, tx.amount - paidToward);
+    const pct = tx.amount>0 ? Math.min(100, Math.round(paidToward/tx.amount*100)) : 0;
+    const monthlyNeeded = monthsLeft>0 ? parseFloat((remaining/monthsLeft).toFixed(2)) : remaining;
+    const isExpired = daysLeft < 0;
+    const isDanger = daysLeft>=0 && daysLeft<=30;
+    const isWarn = daysLeft>30 && daysLeft<=60;
+
+    let rowClass = tx.promoType;
+    if(isExpired||isDanger) rowClass+=' danger';
+
+    let deadlineHtml='';
+    if(isExpired){
+      deadlineHtml=`<div class="pi-deadline" style="color:var(--red)">EXPIRED ${Math.abs(daysLeft)}d ago</div>`;
+      if(tx.promoType==='deferred'&&tx.promoApr>0){
+        const interest = parseFloat((tx.amount*(tx.promoApr/100/365)*Math.abs(daysLeft)).toFixed(2));
+        deadlineHtml+=`<div class="pi-deferred-warn">Est. interest charged: ${usd(interest)}</div>`;
+      }
+    } else if(isDanger){
+      deadlineHtml=`<div class="pi-deadline" style="color:var(--red)">&#128680; ${daysLeft}d left &mdash; pay ${usd(remaining)} now!</div>`;
+    } else if(isWarn){
+      deadlineHtml=`<div class="pi-deadline" style="color:var(--yellow)">&#9888;&#65039; ${daysLeft}d left &mdash; ${usd(monthlyNeeded)}/mo needed</div>`;
+    } else {
+      const endFmt = new Date(tx.promoEnd).toLocaleDateString('en-US',{month:'short',year:'numeric'});
+      deadlineHtml=`<div class="pi-deadline" style="color:var(--muted)">${tx.promoType==='deferred'?'Pay in full by':'Last payment'}: ${endFmt}</div>`;
+    }
+
+    const barColor = isExpired||isDanger?'var(--red)':isWarn?'var(--yellow)':'var(--accent)';
+
+    return `<div class="promo-item-row ${rowClass}">
+      <div class="pi-left">
+        <div class="pi-desc">${tx.promoType==='deferred'?'&#9888;&#65039;':'&#128197;'} ${tx.description}</div>
+        <div class="pi-sub">${fmtDate(tx.date)} &bull; ${tx.promoType==='deferred'?'Deferred Interest':'Installment'} &bull; ${tx.promoMonths||0}mo</div>
+        ${deadlineHtml}
+        <div class="pi-progress"><div class="pi-progress-fill" style="width:${pct}%;background:${barColor}"></div></div>
+      </div>
+      <div class="pi-right">
+        <div class="pi-amount" style="color:${remaining>0?'var(--text)':'var(--green)'}">${usd(remaining)}</div>
+        <div class="pi-monthly">${remaining>0?usd(monthlyNeeded)+'/mo needed':'Paid off!'}</div>
+        <div class="pi-monthly" style="color:var(--muted)">${pct}% paid</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  const totalRemaining = items.reduce((s,tx)=>{
+    const paid = data.transactions.filter(t=>t.promoRef===tx.id).reduce((s2,t)=>s2+t.amount,0);
+    return s + Math.max(0,tx.amount-paid);
+  },0);
+
+  return `<div class="promo-items-wrap">
+    <div class="promo-items-header">&#127873; Promo Purchases &mdash; ${items.length} active &bull; ${usd(totalRemaining)} remaining</div>
+    ${rows}
+  </div>`;
+}
+
+// ── HOOK INTO confirmPurchase to save promo fields ────────────
+const _origConfirmPurchase = confirmPurchase;
+function confirmPurchase(){
+  const check = $('pu-promo-check');
+  const isPromo = check && check.checked;
+
+  if(isPromo){
+    const months = parseInt($('pu-promo-months').value)||0;
+    const apr    = parseFloat($('pu-promo-apr').value)||0;
+    const amt    = parseFloat($('pu-amount').value)||0;
+    const method = $('pu-method').value;
+
+    if(!months){ showToast('Enter promo months','error'); return; }
+    if(_promoType==='deferred' && !method.startsWith('card-')){
+      showToast('Deferred interest requires a credit card','error'); return;
+    }
+
+    const endDate = new Date();
+    endDate.setMonth(endDate.getMonth()+months);
+    const endDateStr = endDate.toISOString().split('T')[0];
+
+    // Temporarily store promo fields so _origConfirmPurchase can use them
+    window._pendingPromo = {
+      promoType: _promoType,
+      promoMonths: months,
+      promoApr: _promoType==='deferred' ? apr : 0,
+      promoEnd: endDateStr,
+      monthlyRequired: parseFloat((amt/months).toFixed(2)),
+    };
+  } else {
+    window._pendingPromo = null;
+  }
+
+  _origConfirmPurchase();
+}
+
+// ── PATCH data.transactions.push INSIDE confirmPurchase ───────
+// We intercept by wrapping push on the array after the original runs
+// Better: patch the transaction object after it's pushed
+// saveData patched below to enrich last transaction with promo data
+const _origSaveData = saveData;
+function saveData(){
+  // Enrich latest transaction with promo data if pending
+  if(window._pendingPromo && data.transactions.length){
+    const last = data.transactions[data.transactions.length-1];
+    if(!last.promoType){
+      Object.assign(last, window._pendingPromo);
+    }
+    window._pendingPromo = null;
+  }
+  _origSaveData();
+}
+
+
+
+// ── SPLIT BALANCE HELPERS ─────────────────────────────────────
+
+function getPromoBalance(billId){
+  // Sum of active (unpaid) promo purchase amounts on this card
+  return data.transactions
+    .filter(tx => tx.cardId===billId && tx.promoType && tx.promoEnd && tx.amount>0)
+    .reduce((s,tx)=>{
+      const paid = data.transactions
+        .filter(t=>t.promoRef===tx.id)
+        .reduce((s2,t)=>s2+t.amount, 0);
+      return s + Math.max(0, tx.amount - paid);
+    }, 0);
+}
+
+function getRevolvingBalance(b){
+  // revolvingBalance stored explicitly, or inferred
+  if(b.revolvingBalance != null) return b.revolvingBalance;
+  // Fallback: total minus promo
+  const promoTotal = getPromoBalance(b.id);
+  return Math.max(0, (b.balance||0) - promoTotal);
+}
+
+function migrateRevolvingBalance(b){
+  // Called on load - set revolvingBalance if not yet set
+  if(b.revolvingBalance == null){
+    b.revolvingBalance = Math.max(0, (b.balance||0) - getPromoBalance(b.id));
+  }
+}
+
+// ── OPEN PAY DEBT - ENHANCED ──────────────────────────────────
+const _origOpenPayDebt = openPayDebt;
+function openPayDebt(id){
+  _origOpenPayDebt(id);
+  const b = data.bills.find(x=>x.id===id);
+  if(!b) return;
+
+  migrateRevolvingBalance(b);
+  const revolving = getRevolvingBalance(b);
+  const promoTotal = Math.max(0, (b.balance||0) - revolving);
+  const hasPromo = promoTotal > 0;
+
+  // Show/hide split balance
+  const splitEl = $('pd-balance-split');
+  if(splitEl) splitEl.style.display = hasPromo ? 'flex' : 'none';
+
+  if(hasPromo){
+    const monthlyRate = (b.apr||0)/100/12;
+    const revInterest = parseFloat((revolving * monthlyRate).toFixed(2));
+    if($('pd-revolving-val')) $('pd-revolving-val').textContent = usd(revolving);
+    if($('pd-revolving-interest')) $('pd-revolving-interest').textContent =
+      revolving>0 ? `~${usd(revInterest)}/mo interest` : 'No revolving balance';
+    if($('pd-promo-val')) $('pd-promo-val').textContent = usd(promoTotal);
+    // Count promo items
+    const promoItems = data.transactions.filter(tx=>tx.cardId===id&&tx.promoType&&tx.promoEnd);
+    const activeItems = promoItems.filter(tx=>{
+      const paid = data.transactions.filter(t=>t.promoRef===tx.id).reduce((s,t)=>s+t.amount,0);
+      return tx.amount-paid > 0.01;
+    });
+    if($('pd-promo-count')) $('pd-promo-count').textContent = activeItems.length+' active item'+(activeItems.length===1?'':'s');
+  }
+
+  // Show allocation section
+  const allocSec = $('pd-alloc-section');
+  if(allocSec) allocSec.style.display = hasPromo ? 'block' : 'none';
+
+  if(hasPromo) buildAllocRows(b);
+}
+
+function buildAllocRows(b){
+  const revolving = getRevolvingBalance(b);
+  const monthlyRate = (b.apr||0)/100/12;
+  const revInterest = parseFloat((revolving * monthlyRate).toFixed(2));
+  const revMinimum = revolving>0 ? parseFloat((revInterest + revolving*0.01).toFixed(2)) : 0;
+
+  // Hint on revolving input
+  if($('pd-alloc-revolving-hint'))
+    $('pd-alloc-revolving-hint').textContent =
+      revolving>0 ? `${usd(revolving)} balance - ${usd(revInterest)}/mo interest` : 'No revolving balance';
+
+  if($('pd-alloc-revolving')) $('pd-alloc-revolving').value = revolving>0 ? revMinimum.toFixed(2) : '0';
+
+  // Promo item rows sorted by soonest expiry
+  const promoItems = data.transactions
+    .filter(tx=>tx.cardId===b.id && tx.promoType && tx.promoEnd)
+    .map(tx=>{
+      const paid = data.transactions.filter(t=>t.promoRef===tx.id).reduce((s,t)=>s+t.amount,0);
+      const remaining = Math.max(0, tx.amount-paid);
+      const daysLeft = Math.round((new Date(tx.promoEnd)-new Date())/86400000);
+      const monthsLeft = Math.max(1, Math.ceil(daysLeft/30));
+      return {...tx, remaining, daysLeft, monthsLeft, monthlyNeeded: parseFloat((remaining/monthsLeft).toFixed(2))};
+    })
+    .filter(tx=>tx.remaining>0.01)
+    .sort((a,b)=>a.daysLeft-b.daysLeft);
+
+  const wrap = $('pd-alloc-promo-rows');
+  if(!wrap) return;
+  wrap.innerHTML = promoItems.map((tx,i)=>{
+    const urgentClass = tx.daysLeft<=30?'urgent':'';
+    const icon = tx.promoType==='deferred'?'&#9888;&#65039;':'&#128197;';
+    return `<div class="alloc-row">
+      <div class="alloc-label">
+        <div class="alloc-promo-item ${urgentClass}">${icon} ${tx.description}</div>
+        <div style="font-size:10px;color:${tx.daysLeft<=30?'var(--red)':'var(--muted)'}">
+          ${tx.daysLeft>0?tx.daysLeft+'d left':'EXPIRED'} &bull; ${usd(tx.remaining)} remaining
+        </div>
+      </div>
+      <input class="alloc-input" id="pd-alloc-promo-${tx.id}" type="number"
+        inputmode="decimal" placeholder="0.00" data-promo-id="${tx.id}"
+        value="${tx.monthlyNeeded.toFixed(2)}"
+        oninput="onAllocInput('promo')"/>
+    </div>`;
+  }).join('');
+
+  updateAllocTotal(b);
+}
+
+function onAllocInput(type){
+  const id = _payDebtId;
+  const b = data.bills.find(x=>x.id===id);
+  if(!b) return;
+  updateAllocTotal(b);
+  // Sync total to pd-custom so existing payment flow works
+  const total = getAllocTotal();
+  if($('pd-custom')) $('pd-custom').value = total>0 ? total.toFixed(2) : '';
+  selectPayAmount('custom');
+}
+
+function getAllocTotal(){
+  const rev = parseFloat($('pd-alloc-revolving')?.value)||0;
+  let promoSum = 0;
+  document.querySelectorAll('[id^="pd-alloc-promo-"]').forEach(inp=>{
+    promoSum += parseFloat(inp.value)||0;
+  });
+  return parseFloat((rev+promoSum).toFixed(2));
+}
+
+function updateAllocTotal(b){
+  const total = getAllocTotal();
+  const totalEl = $('pd-alloc-total');
+  if(totalEl) totalEl.textContent = usd(total);
+
+  const warn = $('pd-alloc-warn');
+  if(!warn) return;
+  if(total > (b.balance||0)){
+    warn.style.display='block';
+    warn.textContent = 'Total exceeds card balance by '+usd(total-(b.balance||0));
+  } else {
+    warn.style.display='none';
+  }
+}
+
+// ── CONFIRM DEBT PAYMENT - ENHANCED ──────────────────────────
+const _origConfirmDebtPayment = confirmDebtPayment;
+function confirmDebtPayment(){
+  const b = data.bills.find(x=>x.id===_payDebtId);
+  if(!b) return;
+  const hasPromo = $('pd-alloc-section') && $('pd-alloc-section').style.display!=='none';
+
+  if(!hasPromo){
+    _origConfirmDebtPayment();
+    return;
+  }
+
+  // Get allocation amounts
+  const toRevolving = parseFloat($('pd-alloc-revolving')?.value)||0;
+  const promoAllocs = [];
+  document.querySelectorAll('[id^="pd-alloc-promo-"]').forEach(inp=>{
+    const pid = parseInt(inp.dataset.promoId);
+    const amt = parseFloat(inp.value)||0;
+    if(amt>0) promoAllocs.push({id:pid, amount:amt});
+  });
+  const total = parseFloat((toRevolving + promoAllocs.reduce((s,p)=>s+p.amount,0)).toFixed(2));
+
+  const acId = parseInt($('pd-account').value)||0;
+  if(!total||total<=0){ showToast(t('Enter a valid amount'),'error'); return; }
+  if(!acId){ showToast(t('Please select a Pay From account'),'error'); return; }
+  if(acId){
+    const bal = getAccountBalance(acId);
+    if(bal!==null && total>bal){
+      if(!confirm('Warning: payment of '+usd(total)+' would overdraw this account by '+usd(total-bal)+'. Continue?')) return;
+    }
+  }
+
+  migrateRevolvingBalance(b);
+
+  // ── Apply revolving payment ────────────────────────────────
+  if(toRevolving>0){
+    const monthlyRate = (b.apr||0)/100/12;
+    const interest = parseFloat(((b.revolvingBalance||0)*monthlyRate).toFixed(2));
+    const principal = Math.max(0, toRevolving-interest);
+    b.revolvingBalance = parseFloat(Math.max(0,(b.revolvingBalance||0)-principal).toFixed(2));
+    b.balance = parseFloat(Math.max(0,(b.balance||0)-principal).toFixed(2));
+    data.transactions.push({
+      id:Date.now()+Math.random(),
+      description:b.name+' - revolving payment',
+      amount:parseFloat(toRevolving.toFixed(2)),
+      type:'Debt Payment', date:today(),
+      accountId:acId, methodLabel:''
+    });
+  }
+
+  // ── Apply promo payments (in order, log as promoRef) ───────
+  promoAllocs.forEach(alloc=>{
+    const txn = data.transactions.find(t=>t.id===alloc.id);
+    if(!txn) return;
+    // Reduce card total balance
+    b.balance = parseFloat(Math.max(0,(b.balance||0)-alloc.amount).toFixed(2));
+    // Log payment referencing the promo item
+    data.transactions.push({
+      id:Date.now()+Math.random(),
+      description:b.name+' - promo: '+txn.description,
+      amount:parseFloat(alloc.amount.toFixed(2)),
+      type:'Debt Payment', date:today(),
+      accountId:acId, methodLabel:'',
+      promoRef:txn.id
+    });
+  });
+
+  // Deduct from account
+  adjustAccountBalance(acId, -total);
+  b.status = b.balance>0.01 ? 'Pending' : 'Paid';
+  b.scheduledAmount = null;
+  b.scheduledAccountId = null;
+
+  closeModal('paydebt');
+  saveData(); renderAll();
+  showToast('Payment of '+usd(total)+' applied!');
+}
+
+
+
+function getBalanceSplitHtml(b){
+  const rev = getRevolvingBalance(b);
+  const promo = Math.max(0,(b.balance||0)-rev);
+  if(promo>0.01){
+    return '<span style="color:var(--red)">Revolving: '+usd(rev)+'</span>'
+      +' &bull; <span style="color:var(--accent2)">Promo: '+usd(promo)+'</span>'
+      +' &bull; Total: '+usd(b.balance)+(b.apr?' | APR: '+pct(b.apr):'');
+  }
+  return 'Balance: '+usd(b.balance)+(b.apr?' | APR: '+pct(b.apr):'');
+}
+
+
+// ── FEATURE 1: PROMO SORT EXPLANATION ────────────────────────
+function getPromoSortNote(d){
+  // d = item from calcDebtPlan - has promoEndDate if it came from a promo card
+  const bill = data.bills.find(b=>b.id===d.id);
+  if(!bill || !bill.promoEndDate) return '';
+  const daysLeft = Math.round((new Date(bill.promoEndDate)-new Date())/86400000);
+  if(daysLeft < 0){
+    return `<div class="promo-sort-note">&#9888; Promo expired - now ${pct(bill.regularApr||0)} APR</div>`;
+  }
+  const endFmt = new Date(bill.promoEndDate).toLocaleDateString('en-US',{month:'short',year:'numeric'});
+  return `<div class="promo-sort-note">&#127873; 0% promo - sorted last intentionally. Expires ${endFmt}, then ${pct(bill.regularApr||0)} APR</div>`;
+}
+
+// ── FEATURE 2: ACCOUNT BALANCE CORRECTION ────────────────────
+function correctBalance(id){
+  const inp = $('bal-correct-'+id);
+  if(!inp) return;
+  const newBal = parseFloat(inp.value);
+  if(isNaN(newBal)){ showToast('Enter a valid balance','error'); return; }
+  const acc = (data.accounts||[]).find(a=>a.id===id);
+  if(!acc) return;
+  const diff = parseFloat((newBal - acc.balance).toFixed(2));
+  acc.balance = parseFloat(newBal.toFixed(2));
+  saveData(); renderAll();
+  const msg = diff===0 ? 'Balance unchanged'
+    : diff>0 ? 'Balance corrected +'+usd(diff)
+    : 'Balance corrected -'+usd(Math.abs(diff));
+  showToast(msg);
+}
+
+// ── FEATURE 3: OVERLAP DETECTION ─────────────────────────────
+function checkBillExpenseOverlap(name, warnId){
+  if(!name || name.length < 3) return false;
+  const nameLower = name.toLowerCase().trim();
+  const warn = $(warnId);
+  if(!warn) return false;
+
+  // Check expenses for similar description
+  const matchingExp = data.expenses.find(e=>{
+    const d = (e.description||'').toLowerCase();
+    const c = (e.category||'').toLowerCase();
+    return d.includes(nameLower) || nameLower.includes(d.split(' ')[0])
+      || c===nameLower || nameLower.includes(c);
+  });
+
+  // Check bills for similar name
+  const matchingBill = data.bills.find(b=>{
+    const n = (b.name||'').toLowerCase();
+    return n.includes(nameLower) || nameLower.includes(n.split(' ')[0]);
+  });
+
+  if(matchingExp && warnId==='bill-overlap-warn'){
+    warn.style.display='block';
+    warn.innerHTML='&#9888; Heads up: "'+matchingExp.description+'" already exists as an expense in Cash Flow. Adding this as a bill too will double-count it in your totals.';
+    return true;
+  }
+  if(matchingBill && warnId==='expense-overlap-warn'){
+    warn.style.display='block';
+    warn.innerHTML='&#9888; Heads up: "'+matchingBill.name+'" already exists as a bill. Adding it as an expense too will double-count it in Cash Flow.';
+    return true;
+  }
+  warn.style.display='none';
+  return false;
+}
+
+function clearOverlapWarn(warnId){
+  const warn = $(warnId);
+  if(warn) warn.style.display='none';
+}
+
+
+
+// ── BI-WEEKLY PAYCHECK CALCULATOR ────────────────────────────
+
+function onIncomeFreqChange(){
+  const freq = $('i-freq').value;
+  const wrap = $('i-lastpay-wrap');
+  const actualWrap = $('i-actual-wrap');
+  if(wrap) wrap.style.display = freq==='Bi-weekly' ? 'block' : 'none';
+  if(actualWrap) actualWrap.style.display = (freq!=='One-time') ? 'block' : 'none';
+}
+
+function getPaycheckDates(income, year, month){
+  // Returns array of Date objects for paychecks in the given year/month
+  if(income.frequency !== 'Bi-weekly' || !income.lastPayDate) return null;
+
+  const anchor = new Date(income.lastPayDate + 'T12:00:00');
+  const monthStart = new Date(year, month, 1);
+  const monthEnd   = new Date(year, month+1, 0); // last day
+
+  // Walk backward from anchor until we're before monthStart
+  let d = new Date(anchor);
+  while(d > monthEnd)   d.setDate(d.getDate() - 14);
+  while(d < monthStart) d.setDate(d.getDate() + 14);
+
+  // Collect all paychecks within the month
+  const dates = [];
+  while(d <= monthEnd){
+    if(d >= monthStart) dates.push(new Date(d));
+    d.setDate(d.getDate() + 14);
+  }
+  return dates;
+}
+
+function getPaycheckCount(income, year, month){
+  const dates = getPaycheckDates(income, year, month);
+  if(!dates) return null; // no lastPayDate, use average
+  return dates.length;
+}
+
+function getNextThreePaycheckMonth(income){
+  // Returns the next month (as Date) that has 3 paychecks, or null
+  if(income.frequency !== 'Bi-weekly' || !income.lastPayDate) return null;
+  const now = new Date();
+  for(let i=0; i<=12; i++){
+    const d = new Date(now.getFullYear(), now.getMonth()+i, 1);
+    const count = getPaycheckCount(income, d.getFullYear(), d.getMonth());
+    if(count === 3) return d;
+  }
+  return null;
+}
+
+
+
+// ── #5 BILL RESET BANNER ─────────────────────────────────────
+function checkBillResetNotify(){
+  const raw = localStorage.getItem('financeOS_billResetNotify');
+  if(!raw) return;
+  try{
+    const n = JSON.parse(raw);
+    const banner = $('bill-reset-banner');
+    const msg = $('bill-reset-msg');
+    if(!banner||!msg) return;
+    const monthFmt = new Date(n.month+'-15').toLocaleString('default',{month:'long',year:'numeric'});
+    const nameList = n.names.join(', ')+(n.count>3?' +more':'');
+    msg.textContent = n.count+' bill'+(n.count>1?'s':'')+' reset to Pending for '+monthFmt+': '+nameList+'. This happens automatically each month so you can track payments.';
+    banner.style.display = 'block';
+  } catch(e){}
+}
+function dismissBillResetBanner(){
+  const banner = $('bill-reset-banner');
+  if(banner) banner.style.display='none';
+  localStorage.removeItem('financeOS_billResetNotify');
+}
+
+// ── #4 TRANSFER PENDING BANNER ────────────────────────────────
+function checkTransferBanner(){
+  const transfers = data._pendingTransfers||[];
+  const banner = $('transfer-banner');
+  if(!banner) return;
+  const pending = transfers.filter(t=>t.completionDate >= today());
+  if(!pending.length){ banner.style.display='none'; return; }
+  banner.style.display='block';
+  banner.innerHTML = pending.map(t=>`
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span>&#8987; <strong>${usd(t.amount)}</strong> transfer to ${t.destName} - completes ~${fmtDate(t.completionDate)}</span>
+      <button onclick="dismissTransfer('${t.date}')" style="background:none;border:none;color:var(--yellow);cursor:pointer;font-size:16px">&#x2715;</button>
+    </div>`).join('');
+}
+function dismissTransfer(date){
+  data._pendingTransfers=(data._pendingTransfers||[]).filter(t=>t.date!==date);
+  saveData(); checkTransferBanner();
+}
+
+// ── #7 PROMO PAYMENT GAP - simple card payment reduces promo items ──
+// Hook into the NON-allocation payment path (original confirmDebtPayment)
+// When hasPromo=false but card has promo items, apply payment to oldest promo first
+function applyGeneralPaymentToPromos(billId, paymentAmount){
+  const promoItems = data.transactions
+    .filter(tx=>tx.cardId===billId && tx.promoType && tx.promoEnd && tx.amount>0)
+    .map(tx=>{
+      const paid = data.transactions.filter(t=>t.promoRef===tx.id).reduce((s,t)=>s+t.amount,0);
+      return {...tx, remaining: Math.max(0, tx.amount-paid)};
+    })
+    .filter(tx=>tx.remaining>0.01)
+    .sort((a,b)=>a.promoEnd.localeCompare(b.promoEnd)); // pay soonest-expiring first
+
+  if(!promoItems.length) return 0;
+  const b = data.bills.find(x=>x.id===billId);
+  if(!b) return 0;
+  migrateRevolvingBalance(b);
+
+  let remaining = paymentAmount;
+  let applied = 0;
+
+  promoItems.forEach(tx=>{
+    if(remaining <= 0) return;
+    const toApply = Math.min(remaining, tx.remaining);
+    if(toApply < 0.01) return;
+    data.transactions.push({
+      id: Date.now()+Math.random(),
+      description: b.name+' - promo: '+tx.description,
+      amount: parseFloat(toApply.toFixed(2)),
+      type: 'Debt Payment', date: today(),
+      accountId: 0, methodLabel: '', promoRef: tx.id
+    });
+    remaining -= toApply;
+    applied += toApply;
+  });
+  return applied;
+}
+
+// ── #8 FIRST-TIME USER: no-accounts nudge in payment modals ──
+function checkNoAccountsNudge(nudgeId){
+  const nudge = $(nudgeId);
+  if(!nudge) return;
+  const hasAccounts = (data.accounts||[]).length > 0;
+  nudge.style.display = hasAccounts ? 'none' : 'block';
+}
+
+// ── #9 INCOME EFFECTIVE MONTHLY IN CASH FLOW ─────────────────
+function getIncomeMonthlyNote(i){
+  const now = new Date();
+  const yr = now.getFullYear(), mo = now.getMonth();
+  const eff = getEffectiveIncome(i, yr, mo);
+
+  if(i.frequency === 'One-time') return '';
+  if(i.frequency === 'Monthly') return '';
+
+  const map = {'Weekly': 52/12, 'Bi-weekly': 26/12, 'Yearly': 1/12};
+  const avg = parseFloat((i.amount*(map[i.frequency]||1)).toFixed(2));
+
+  // For bi-weekly with known paycheck dates
+  if(i.frequency === 'Bi-weekly' && i.lastPayDate){
+    const count = getPaycheckCount(i, yr, mo);
+    if(count === 3) return ''; // already shown as badge
+    return `<div class="income-monthly-note">&#126; ${usd(avg)} effective/mo (${i.amount}/paycheck &times; 26/12)</div>`;
+  }
+
+  if(i.frequency === 'Weekly'){
+    return `<div class="income-monthly-note">&#126; ${usd(avg)}/mo (${usd(i.amount)}/wk &times; 52/12)</div>`;
+  }
+  if(i.frequency === 'Yearly'){
+    return `<div class="income-monthly-note">&#126; ${usd(avg)}/mo (${usd(i.amount)}/yr)</div>`;
+  }
+  return '';
+}
+
+// ── #10 CLEAR NW HISTORY ON RESET ────────────────────────────
+// (wired into confirmReset below via patch)
 
 
 function renderAll(){
