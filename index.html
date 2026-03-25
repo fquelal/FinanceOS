@@ -650,6 +650,176 @@ canvas{width:100%!important;}
 /* ── INCOME EFFECTIVE MONTHLY ── */
 .income-monthly-note{font-size:10px;color:var(--accent2);font-weight:600;margin-top:2px;}
 
+
+/* ── SAVINGS GOALS ── */
+.goal-card{background:var(--surface);border:1px solid var(--border2);border-radius:12px;
+  padding:14px 16px;margin-bottom:12px;}
+.goal-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+.goal-name{font-size:14px;font-weight:700;color:var(--text);}
+.goal-meta{font-size:11px;color:var(--muted);margin-top:2px;}
+.goal-amounts{text-align:right;}
+.goal-saved{font-size:18px;font-weight:700;color:var(--green);}
+.goal-target{font-size:11px;color:var(--muted);}
+.goal-bar-bg{height:8px;background:rgba(255,255,255,.07);border-radius:4px;margin:8px 0;}
+.goal-bar-fill{height:100%;border-radius:4px;transition:width .4s ease;}
+.goal-footer{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--muted);}
+.goal-monthly{color:var(--accent2);font-weight:600;}
+.goal-complete{color:var(--green);font-weight:700;}
+
+/* ── BILL CALENDAR ── */
+.bill-calendar{display:none;}
+.bill-calendar.active{display:block;}
+#bill-list.calendar-mode{display:none;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-top:8px;}
+.cal-day-header{text-align:center;font-size:10px;font-weight:700;color:var(--muted);
+  padding:4px 0;text-transform:uppercase;}
+.cal-day{min-height:52px;background:rgba(255,255,255,.03);border-radius:6px;
+  padding:4px;border:1px solid transparent;position:relative;}
+.cal-day.today{border-color:var(--accent);background:rgba(108,99,255,.08);}
+.cal-day.other-month{opacity:.3;}
+.cal-day-num{font-size:10px;color:var(--muted);margin-bottom:2px;font-weight:600;}
+.cal-bill-dot{font-size:9px;font-weight:700;border-radius:4px;padding:1px 4px;
+  margin-bottom:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;}
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.cal-nav-btn{background:rgba(255,255,255,.06);border:none;border-radius:8px;
+  padding:6px 12px;color:var(--text);cursor:pointer;font-size:13px;}
+.cal-nav-label{font-size:14px;font-weight:700;color:var(--text);}
+.view-toggle{display:flex;gap:6px;margin-bottom:12px;}
+.view-btn{background:rgba(255,255,255,.06);border:1px solid var(--border2);border-radius:8px;
+  padding:5px 14px;font-size:11px;font-weight:600;color:var(--muted);cursor:pointer;
+  font-family:var(--font-b);transition:all .15s;}
+.view-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+
+/* ── DEFERRED INTEREST ACCUMULATING ── */
+.pi-interest-accruing{font-size:10px;color:var(--yellow);margin-top:2px;font-weight:600;}
+.pi-interest-bomb{font-size:11px;font-weight:700;color:var(--red);
+  background:rgba(239,68,68,.1);border-radius:6px;padding:4px 8px;margin-top:4px;}
+
+
+/* ── RECONCILIATION ── */
+.recon-summary{background:rgba(255,255,255,.04);border-radius:12px;
+  padding:14px 16px;margin-bottom:14px;}
+.recon-row{display:flex;justify-content:space-between;align-items:center;
+  padding:5px 0;font-size:13px;}
+.recon-row.total{border-top:1px solid var(--border);margin-top:6px;
+  padding-top:10px;font-weight:700;font-size:15px;}
+.recon-diff-zero{color:var(--green);}
+.recon-diff-pos{color:var(--yellow);}
+.recon-diff-neg{color:var(--red);}
+.recon-suggestions{margin-bottom:14px;}
+.recon-suggestion-title{font-size:11px;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;}
+.recon-suggestion-item{display:flex;justify-content:space-between;align-items:center;
+  padding:8px 10px;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);
+  border-radius:8px;margin-bottom:6px;font-size:12px;}
+.recon-suggestion-item .rsi-left{flex:1;min-width:0;}
+.recon-suggestion-item .rsi-desc{font-weight:600;color:var(--text);}
+.recon-suggestion-item .rsi-sub{color:var(--muted);font-size:10px;margin-top:1px;}
+.recon-suggestion-item .rsi-amount{color:var(--yellow);font-weight:700;flex-shrink:0;padding-left:8px;}
+.recon-adj{background:rgba(255,255,255,.03);border:1px solid var(--border);
+  border-radius:10px;padding:12px;margin-bottom:12px;}
+.recon-adj-title{font-size:11px;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;}
+.recon-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(34,197,94,.12);
+  color:var(--green);border:1px solid rgba(34,197,94,.25);border-radius:6px;
+  padding:2px 8px;font-size:10px;font-weight:700;margin-top:4px;}
+.recon-history{font-size:11px;color:var(--muted);margin-top:3px;}
+
+
+/* ── SPENDING TRENDS ── */
+#trends-wrap{padding-top:4px;}
+.trends-cat-select{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+.trend-cat-btn{padding:5px 12px;border-radius:20px;border:1.5px solid var(--border2);
+  background:var(--surface);color:var(--muted);font-size:11px;font-weight:600;
+  cursor:pointer;font-family:var(--font-b);transition:all .15s;white-space:nowrap;}
+.trend-cat-btn.active{border-color:var(--accent);background:rgba(108,99,255,.15);color:var(--accent);}
+.trend-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.trend-bar-label{font-size:11px;color:var(--muted);width:48px;flex-shrink:0;text-align:right;}
+.trend-bar-bg{flex:1;height:22px;background:rgba(255,255,255,.05);border-radius:6px;
+  position:relative;overflow:hidden;}
+.trend-bar-fill{height:100%;border-radius:6px;transition:width .4s ease;
+  display:flex;align-items:center;padding:0 6px;}
+.trend-bar-val{font-size:11px;font-weight:700;color:#fff;white-space:nowrap;}
+.trend-avg-line{border-top:1px dashed rgba(255,255,255,.2);margin:10px 0 6px;
+  padding-top:8px;font-size:11px;color:var(--muted);display:flex;justify-content:space-between;}
+.trend-summary{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;}
+.trend-stat{background:rgba(255,255,255,.04);border-radius:8px;padding:8px 10px;
+  border:1px solid var(--border);}
+.trend-stat-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;}
+.trend-stat-val{font-size:14px;font-weight:700;margin-top:2px;}
+
+/* ── TRANSACTION NOTES / TAGS ── */
+.txn-note{font-size:10px;color:var(--muted);margin-top:2px;
+  font-style:italic;display:-webkit-box;-webkit-line-clamp:1;
+  -webkit-box-orient:vertical;overflow:hidden;}
+.txn-tags{display:flex;flex-wrap:wrap;gap:3px;margin-top:3px;}
+.txn-tag{display:inline-block;background:rgba(108,99,255,.12);color:var(--accent2);
+  border-radius:4px;padding:1px 6px;font-size:9px;font-weight:700;}
+.tag-input-wrap{display:flex;flex-wrap:wrap;gap:4px;
+  background:var(--surface);border:1px solid var(--border2);border-radius:8px;
+  padding:6px 8px;min-height:36px;cursor:text;align-items:center;}
+.tag-chip{display:inline-flex;align-items:center;gap:3px;background:rgba(108,99,255,.15);
+  color:var(--accent);border-radius:4px;padding:2px 6px;font-size:11px;font-weight:600;}
+.tag-chip button{background:none;border:none;color:var(--accent);cursor:pointer;
+  font-size:12px;line-height:1;padding:0;}
+.tag-input{border:none;background:transparent;color:var(--text);font-size:13px;
+  font-family:var(--font-b);outline:none;min-width:60px;flex:1;}
+
+
+/* ── TREND ENHANCEMENTS ── */
+.trend-compare-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.trend-compare-label{font-size:11px;color:var(--muted);flex-shrink:0;}
+.trend-change-badge{font-size:10px;font-weight:700;border-radius:5px;padding:2px 6px;
+  display:inline-block;margin-left:6px;}
+.trend-change-up{background:rgba(239,68,68,.12);color:var(--red);}
+.trend-change-down{background:rgba(34,197,94,.12);color:var(--green);}
+.trend-change-flat{background:rgba(255,255,255,.06);color:var(--muted);}
+.trend-bar-compare{height:4px;border-radius:3px;margin-top:2px;background:rgba(59,130,246,.5);}
+
+/* ── TAG FILTER STRIP ── */
+.tag-filter-strip{display:flex;flex-wrap:wrap;gap:5px;padding:0 0 10px 0;
+  min-height:0;overflow:hidden;}
+.tag-filter-chip{display:inline-flex;align-items:center;gap:3px;
+  background:rgba(108,99,255,.1);border:1.5px solid rgba(108,99,255,.2);
+  color:var(--accent2);border-radius:20px;padding:3px 10px;
+  font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;}
+.tag-filter-chip.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+.tag-filter-chip:hover{border-color:var(--accent);}
+
+/* ── TXN NOTE IMPROVED ── */
+.txn-note{font-size:11px;color:var(--accent2);margin-top:3px;
+  font-style:italic;opacity:.85;}
+.txn-tag{display:inline-flex;align-items:center;background:rgba(108,99,255,.12);
+  color:var(--accent2);border-radius:12px;padding:1px 8px;
+  font-size:10px;font-weight:600;cursor:pointer;border:1px solid rgba(108,99,255,.2);
+  transition:all .12s;}
+.txn-tag:hover{background:var(--accent);color:#fff;}
+.txn-tag.active-filter{background:var(--accent);color:#fff;}
+
+
+/* ── ONBOARDING INLINE FORMS ── */
+.ob-form{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;text-align:left;}
+.ob-field{display:flex;flex-direction:column;gap:4px;}
+.ob-field label{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;
+  letter-spacing:.5px;}
+.ob-input{background:rgba(255,255,255,.07);border:1.5px solid var(--border2);border-radius:10px;
+  padding:11px 14px;color:var(--text);font-size:15px;font-family:var(--font-b);width:100%;
+  box-sizing:border-box;transition:border-color .15s;}
+.ob-input:focus{outline:none;border-color:var(--accent);}
+.ob-input-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.ob-select{background:rgba(255,255,255,.07);border:1.5px solid var(--border2);border-radius:10px;
+  padding:11px 14px;color:var(--text);font-size:14px;font-family:var(--font-b);width:100%;
+  box-sizing:border-box;}
+.ob-insight{background:rgba(108,99,255,.08);border:1px solid rgba(108,99,255,.2);
+  border-radius:12px;padding:14px 16px;margin-bottom:20px;text-align:left;}
+.ob-insight-row{display:flex;justify-content:space-between;align-items:center;
+  padding:5px 0;font-size:13px;}
+.ob-insight-row:not(:last-child){border-bottom:1px solid rgba(108,99,255,.1);}
+.ob-insight-label{color:var(--muted);}
+.ob-insight-val{font-weight:700;}
+.ob-skip-label{font-size:11px;color:var(--border2);margin-top:6px;text-align:center;}
+[data-theme=light] .ob-input,[data-theme=light] .ob-select{background:rgba(0,0,0,.04);}
+
 </style>
 </head>
 <body>
@@ -667,15 +837,17 @@ canvas{width:100%!important;}
 <div id="undo-toast"><span id="undo-msg">Deleted</span><button class="undo-btn" onclick="undoDelete()">Undo</button><div class="undo-progress" id="undo-progress"></div></div>
 <div id="onboarding-overlay" class="hidden">
   <div class="ob-card">
-    <div class="ob-steps"><div class="ob-step-dot active" id="ob-dot-0"></div><div class="ob-step-dot" id="ob-dot-1"></div><div class="ob-step-dot" id="ob-dot-2"></div><div class="ob-step-dot" id="ob-dot-3"></div><div class="ob-step-dot" id="ob-dot-4"></div><div class="ob-step-dot" id="ob-dot-5"></div></div>
+    <div class="ob-steps"><div class="ob-step-dot active" id="ob-dot-0"></div><div class="ob-step-dot" id="ob-dot-1"></div><div class="ob-step-dot" id="ob-dot-2"></div><div class="ob-step-dot" id="ob-dot-3"></div><div class="ob-step-dot" id="ob-dot-4"></div></div>
     <div class="ob-icon" id="ob-icon">👋</div>
     <div class="ob-title" id="ob-title">Welcome to FinanceOS</div>
-    <div class="ob-desc" id="ob-desc">Your personal finance app. Everything stays private on your device - nothing is ever sent anywhere. Let's get you set up in 3 quick steps.</div>
+    <div class="ob-desc" id="ob-desc">Your personal finance app. Everything stays on your device.</div>
+    <div id="ob-form-area"></div>
     <div class="ob-btns">
-      <button class="ob-skip" onclick="skipOnboarding()">Skip</button>
-      <button class="btn btn-secondary" onclick="obDemo()" id="ob-demo-btn" style="padding:10px 18px;display:none">🎭 Demo Mode</button>
+      <button class="ob-skip" onclick="skipOnboarding()">Skip setup</button>
+      <button class="btn btn-secondary" onclick="obDemo()" id="ob-demo-btn" style="padding:10px 18px;display:none">&#127917; Try Demo</button>
       <button class="btn btn-primary" onclick="obNext()" id="ob-next-btn" style="padding:10px 28px">Get Started</button>
     </div>
+    <div class="ob-skip-label" id="ob-skip-label"></div>
   </div>
 </div>
 <button id="hamburger" onclick="toggleSidebar()">&#9776;</button>
@@ -816,12 +988,24 @@ canvas{width:100%!important;}
       </div>
       <div id="bills-alerts"></div>
       <div id="smart-bills-wrap" style="margin-bottom:4px"></div>
+      <div class="view-toggle">
+        <button class="view-btn active" id="bill-view-list" onclick="setBillView('list')">☰ List</button>
+        <button class="view-btn" id="bill-view-cal" onclick="setBillView('calendar')">📅 Calendar</button>
+      </div>
       <div class="sort-bar" id="bill-sort-bar">
         <button class="sort-btn active" onclick="setBillSort('date')" id="bs-date" data-i18n="Due Date">Due Date</button>
         <button class="sort-btn" onclick="setBillSort('status')" id="bs-status" data-i18n="Status">Status</button>
         <button class="sort-btn" onclick="setBillSort('amount')" id="bs-amount" data-i18n="Amount">Amount</button>
       </div>
       <div id="bill-list"></div>
+      <div class="bill-calendar" id="bill-calendar">
+        <div class="cal-nav">
+          <button class="cal-nav-btn" onclick="shiftCalMonth(-1)">&#8249;</button>
+          <div class="cal-nav-label" id="cal-month-label"></div>
+          <button class="cal-nav-btn" onclick="shiftCalMonth(1)">&#8250;</button>
+        </div>
+        <div class="cal-grid" id="cal-grid"></div>
+      </div>
     </div>
 
     <!-- DEBT PLANNER -->
@@ -948,6 +1132,14 @@ canvas{width:100%!important;}
         <div id="account-list"></div>
       </div>
 
+      <!-- Savings Goals subsection -->
+      <div class="card" style="margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+          <div class="section-label" style="color:var(--green);margin-bottom:0" data-i18n="Savings Goals">Savings Goals</div>
+          <button class="btn btn-primary btn-sm" onclick="openModal('goal')">+ Goal</button>
+        </div>
+        <div id="goals-list"></div>
+      </div>
       <!-- Assets subsection -->
       <div class="card">
         <div class="section-label" style="color:var(--muted)" data-i18n="Assets">Assets</div>
@@ -987,12 +1179,14 @@ canvas{width:100%!important;}
             <div class="plan-toggle" style="margin-bottom:0">
               <button id="tab-categories" class="active" onclick="setInsightsTab('categories')" data-i18n="Categories">Categories</button>
               <button id="tab-cards" onclick="setInsightsTab('cards')" data-i18n="Cards">Cards</button>
+              <button id="tab-trends" onclick="setInsightsTab('trends')">&#128200; Trends</button>
             </div>
             <button class="btn btn-secondary btn-sm" id="add-target-btn" onclick="openAddTarget()">+ Set Target</button>
           </div>
         </div>
         <div id="anomaly-wrap"></div>
       <div id="budget-targets"></div>
+      <div id="trends-wrap" style="display:none"></div>
       </div>
       <!-- Monthly Snapshot -->
       <div class="card" id="snapshot-card" style="margin-top:4px">
@@ -1085,9 +1279,10 @@ canvas{width:100%!important;}
         <div id="txn-summary"></div>
         <div class="search-bar">
           <span class="search-icon">🔍</span>
-          <input id="txn-search" type="text" placeholder="Search transactions..." oninput="setTxnSearch(this.value)"/>
+          <input id="txn-search" type="text" placeholder="Search or #tag..." oninput="setTxnSearch(this.value)"/>
           <button class="clear-btn" onclick="clearTxnSearch()" id="txn-clear" style="display:none">✕</button>
         </div>
+        <div class="tag-filter-strip" id="tag-filter-strip" style="display:none"></div>
         <div id="txn-list"></div>
       </div>
     </div>
@@ -1371,6 +1566,29 @@ canvas{width:100%!important;}
       </select>
     </div>
     <div id="pu-overdraft-warn" style="display:none;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--red);margin-bottom:10px"></div>
+    <div class="field"><label>Note (optional)</label>
+      <input id="pu-note" placeholder="e.g. Birthday gift, one-time expense..."/>
+    </div>
+    <div class="field"><label>Tags (optional)</label>
+      <div class="tag-input-wrap" id="pu-tags-wrap" onclick="$('pu-tag-input').focus()">
+        <span id="pu-tags-display"></span>
+        <input class="tag-input" id="pu-tag-input" placeholder="Add tag, press Enter"
+          onkeydown="handlePuTagInput(event)"/>
+      </div>
+      <div style="font-size:10px;color:var(--muted);margin-top:4px">e.g. one-time, reimbursable, business, gift</div>
+    </div>
+    <div class="field" id="pu-note-wrap">
+      <label>Note (optional)</label>
+      <input id="pu-note" placeholder="e.g. One-time splurge, reimbursable..."/>
+    </div>
+    <div class="field" id="pu-tags-wrap">
+      <label>Tags (optional)</label>
+      <div class="tag-input-wrap" id="pu-tags-display-wrap" onclick="$('pu-tag-input').focus()">
+        <span id="pu-tags-display"></span>
+        <input class="tag-input" id="pu-tag-input" placeholder="Add tag, press Enter"
+          onkeydown="handlePuTagInput(event)"/>
+      </div>
+    </div>
     <!-- PROMO PURCHASE TOGGLE -->
     <div class="promo-toggle-row" onclick="togglePromoFields()">
       <input type="checkbox" id="pu-promo-check" onclick="event.stopPropagation();togglePromoFields()"/>
@@ -1545,6 +1763,17 @@ canvas{width:100%!important;}
       <select id="t-account" onchange="checkWithdrawalOverdraft()"><option value="">-- No account linked --</option></select>
     </div>
     <div id="t-overdraft-warn" style="display:none;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--red);margin-bottom:10px"></div>
+    <div class="field"><label>Note (optional)</label>
+      <input id="t-note" placeholder="e.g. Stocked up for party, one-time..."/>
+    </div>
+    <div class="field"><label>Tags (optional)</label>
+      <div class="tag-input-wrap" id="t-tags-wrap" onclick="$('t-tag-input').focus()">
+        <span id="t-tags-display"></span>
+        <input class="tag-input" id="t-tag-input" placeholder="Add tag, press Enter"
+          onkeydown="handleTagInput(event)"/>
+      </div>
+      <div style="font-size:10px;color:var(--muted);margin-top:4px">e.g. one-time, reimbursable, business, gift</div>
+    </div>
     <button class="btn btn-primary btn-full" onclick="saveTxn()" data-i18n="Log Withdrawal">Log Withdrawal</button>
   </div>
 </div>
@@ -1620,6 +1849,96 @@ canvas{width:100%!important;}
   </div>
   </div>
 
+
+<!-- GOAL MODAL -->
+  <div class="overlay" id="modal-goal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="goal-modal-title">Add Savings Goal</span>
+      <button class="close-btn" onclick="closeModal('goal')">&#x2715;</button>
+    </div>
+    <input type="hidden" id="g-id"/>
+    <div class="field"><label>Goal Name</label><input id="g-name" placeholder="e.g. Emergency Fund, Vacation, New Car"/></div>
+    <div class="field"><label>Target Amount ($)</label><input id="g-target" type="number" inputmode="decimal" placeholder="5000"/></div>
+    <div class="field"><label>Target Date</label><input id="g-date" type="date"/></div>
+    <div class="field"><label>Linked Account (tracks balance)</label>
+      <select id="g-account" style="background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:8px;color:var(--text);font-size:13px;width:100%">
+        <option value="">-- No account linked --</option>
+      </select>
+    </div>
+    <div class="field"><label>Current Saved ($)</label><input id="g-saved" type="number" inputmode="decimal" placeholder="0" value="0"/></div>
+    <div class="field"><label>Notes (optional)</label><input id="g-notes" placeholder="e.g. Keep in high-yield savings"/></div>
+    <button class="btn btn-primary btn-full" onclick="saveGoal()">Save Goal</button>
+  </div>
+  </div>
+
+<!-- RECONCILIATION MODAL -->
+  <div class="overlay" id="modal-recon">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">&#9878; Reconcile Account</span>
+      <button class="close-btn" onclick="closeModal('recon')">&#x2715;</button>
+    </div>
+    <input type="hidden" id="recon-account-id"/>
+    <div id="recon-account-name" style="font-size:13px;font-weight:600;color:var(--muted);margin-bottom:14px"></div>
+
+    <!-- Step 1: Enter bank balance -->
+    <div id="recon-step1">
+      <div class="field">
+        <label>Your Bank Statement Balance ($)</label>
+        <input id="recon-bank-bal" type="number" inputmode="decimal" placeholder="0.00"
+          oninput="updateReconDiff()"/>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px">
+          Enter the current balance shown in your bank app or statement
+        </div>
+      </div>
+      <div class="recon-summary" id="recon-summary" style="display:none">
+        <div class="recon-row">
+          <span style="color:var(--muted)">App balance</span>
+          <span id="recon-app-bal" style="font-weight:600"></span>
+        </div>
+        <div class="recon-row">
+          <span style="color:var(--muted)">Your bank balance</span>
+          <span id="recon-bank-display" style="font-weight:600"></span>
+        </div>
+        <div class="recon-row total">
+          <span>Difference</span>
+          <span id="recon-diff-display"></span>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="runReconAnalysis()" id="recon-analyze-btn" style="display:none">
+        Analyze Difference
+      </button>
+    </div>
+
+    <!-- Step 2: Suggestions + adjustment -->
+    <div id="recon-step2" style="display:none">
+      <div class="recon-suggestions" id="recon-suggestions"></div>
+      <div class="recon-adj">
+        <div class="recon-adj-title">Log Adjustment</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:10px" id="recon-adj-hint"></div>
+        <div class="field" style="margin-bottom:10px">
+          <label>Reason</label>
+          <select id="recon-adj-reason" style="background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:8px;color:var(--text);font-size:13px;width:100%">
+            <option value="Bank fee">Bank fee not logged</option>
+            <option value="Interest earned">Interest earned</option>
+            <option value="Missing purchase">Missing purchase</option>
+            <option value="Missing deposit">Missing deposit</option>
+            <option value="Rounding error">Rounding / small error</option>
+            <option value="Unknown">Unknown</option>
+          </select>
+        </div>
+        <div class="field" style="margin:0">
+          <label>Adjustment Amount ($) <span id="recon-adj-auto" style="color:var(--accent2);font-size:10px"></span></label>
+          <input id="recon-adj-amount" type="number" inputmode="decimal" placeholder="0.00"/>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="confirmReconcile()">
+        &#10003; Mark as Reconciled
+      </button>
+    </div>
+  </div>
+  </div>
 
 <script>
 'use strict';
@@ -2065,6 +2384,9 @@ function loadData(){
     if(!data.targets) data.targets=[];
     if(!data.accounts) data.accounts=[];
     if(!data._pendingTransfers) data._pendingTransfers=[];
+    if(!data.goals) data.goals=[];
+    // Ensure reconciliation fields on accounts
+    (data.accounts||[]).forEach(a=>{ if(!a.lastReconciled) a.lastReconciled=null; });
     // Migrate revolvingBalance for existing cards
     data.bills.forEach(b=>{
       if(b.btype==='creditcard'||b.btype==='loan'||b.btype==='promo') migrateRevolvingBalance(b);
@@ -2130,11 +2452,15 @@ function showToast(msg, type){
 }
 function confirmReset(){
   if(confirm('Reset ALL data? Cannot be undone.')){
-    data={income:[],expenses:[],bills:[],cards:[],transactions:[]};
+    data={income:[],expenses:[],bills:[],cards:[],transactions:[],goals:[],_pendingTransfers:[]};
     localStorage.removeItem(STORAGE_KEY);
     localStorage.removeItem(SAVE_TS_KEY);
     localStorage.removeItem(ONBOARD_KEY);
     localStorage.removeItem(NW_HISTORY_KEY);
+    localStorage.removeItem(THEME_KEY);
+    appTheme='auto';
+    applyTheme('auto');
+    updateThemeButtons();
     closeModal('settings');
   const si=$('txn-search');if(si)si.value='';
   const sc=$('txn-clear');if(sc)sc.style.display='none';renderAll();updateLastSavedUI();showOnboarding();
@@ -2242,8 +2568,8 @@ function loadDemoData(skipConfirm){
     // ── TRANSACTIONS (3 months - showcases anomaly detection) ──
     transactions:[
       // ── 2 months ago (lower baseline for anomalies) ──────────
-      {id:5001, description:'ATM - Chase branch',       amount:200,  type:'Withdrawal',  date:monthAgo(2,15), accountId:8001, methodLabel:'Chase Checking'},
-      {id:5050, description:'Whole Foods',              amount:95,   type:'Purchase',    date:monthAgo(2,8),  cardId:3006, accountId:0, category:'Food',          methodLabel:'Chase Sapphire'},
+      {id:5001, description:'ATM - Chase branch',       amount:200,  type:'Withdrawal',  date:monthAgo(2,15), accountId:8001, methodLabel:'Chase Checking', tags:['cash','atm']},
+      {id:5050, description:'Whole Foods',              amount:95,   type:'Purchase',    date:monthAgo(2,8),  cardId:3006, accountId:0, category:'Food',  tags:['groceries'], note:'Weekly grocery run',          methodLabel:'Chase Sapphire'},
       {id:5051, description:'Shell Gas Station',        amount:45,   type:'Purchase',    date:monthAgo(2,12), cardId:3006, accountId:0, category:'Transport',     methodLabel:'Chase Sapphire'},
       {id:5052, description:'Netflix',                  amount:18,   type:'Purchase',    date:monthAgo(2,5),  cardId:3006, accountId:0, category:'Subscriptions', methodLabel:'Chase Sapphire'},
       {id:5053, description:'Chipotle',                 amount:32,   type:'Purchase',    date:monthAgo(2,18), cardId:3009, accountId:0, category:'Dining',        methodLabel:'Capital One Card'},
@@ -2258,7 +2584,7 @@ function loadDemoData(skipConfirm){
       {id:5063, description:'Shell Gas Station',        amount:52,   type:'Purchase',    date:monthAgo(1,12), cardId:3006, accountId:0, category:'Transport',     methodLabel:'Chase Sapphire'},
       {id:5064, description:'Capital One payment',      amount:150,  type:'Debt Payment',date:monthAgo(1,20), accountId:8001, cardId:3009, methodLabel:'Chase Checking'},
       {id:5065, description:'Student Loan payment',     amount:210,  type:'Debt Payment',date:monthAgo(1,15), accountId:8001, methodLabel:'Chase Checking'},
-      {id:5066, description:'Phone Bill (auto)',         amount:65,   type:'Bill Payment',date:monthAgo(1,2),  accountId:8001, methodLabel:'Chase Checking'},
+      {id:5066, description:'Phone Bill (auto)',         amount:65,   type:'Bill Payment',date:monthAgo(1,2),  accountId:8001, methodLabel:'Chase Checking', tags:['recurring']},
       {id:5067, description:'Broadway show tickets',    amount:95,   type:'Purchase',    date:monthAgo(1,14), cardId:3006, accountId:0, category:'Entertainment', methodLabel:'Chase Sapphire'},
       {id:5068, description:'H&M clothing',             amount:88,   type:'Purchase',    date:monthAgo(1,18), cardId:3009, accountId:0, category:'Shopping',      methodLabel:'Capital One Card'},
       // ── This month (higher - triggers anomaly detection) ──────
@@ -2310,6 +2636,13 @@ function loadDemoData(skipConfirm){
       {id:7005, type:'category', category:'Subscriptions', amount:60},
       {id:7006, type:'card',     cardId:3006,              amount:400},
       {id:7007, type:'card',     cardId:3009,              amount:150},
+    ],
+
+    // ── SAVINGS GOALS ──────────────────────────────────────────────
+    goals:[
+      {id:9001, name:'Emergency Fund',  target:15000, date:nextMonth(8,1),  accountId:8002, saved:8500, notes:'3-6 months expenses', createdAt:monthAgo(3,1)},
+      {id:9002, name:'Vacation - Japan',target:4500,  date:nextMonth(10,1), accountId:0,    saved:800,  notes:'Flights + hotel + spending', createdAt:monthAgo(2,1)},
+      {id:9003, name:'New MacBook',     target:2499,  date:nextMonth(4,1),  accountId:0,    saved:2499, notes:'Fully funded!', createdAt:monthAgo(6,1)},
     ],
 
     // ── ACCOUNTS ───────────────────────────────────────────────
@@ -2425,6 +2758,8 @@ function deleteAccountFromModal(){
 function openPurchaseModal(){
   $('pu-desc').value='';$('pu-amount').value='';$('pu-date').value=today();
   $('pu-category').value='';
+  if($('pu-note'))$('pu-note').value='';
+  _puTags=[];renderTagChips(_puTags,'pu-tags-display','pu-tag-input');
   const defAcId=getDefaultAccountId();
   $('pu-method').value=defAcId?'acc-'+defAcId:'';
   $('pu-overdraft-warn').style.display='none';
@@ -2489,6 +2824,8 @@ function confirmPurchase(){
     }
   }
 
+  const puNote=$('pu-note')?$('pu-note').value.trim():'';
+  const puTags=[..._puTags];
   data.transactions.push({
     id:Date.now(),
     description:desc,
@@ -2498,7 +2835,9 @@ function confirmPurchase(){
     accountId:acId,
     cardId,
     category,
-    methodLabel
+    methodLabel,
+    note:puNote,
+    tags:puTags
   });
   // Reset inactive card reminder if purchase was on a credit card
   resetInactiveCardForPurchase(cardId);
@@ -2508,6 +2847,7 @@ function confirmPurchase(){
 
 function renderNetWorth(){
   if(!$('nw-assets'))return;
+  renderGoals();
   const assets=data.assets||[];
   const accs=data.accounts||[];
   const totalAccounts=accs.reduce((s,a)=>s+a.balance,0);
@@ -2531,9 +2871,11 @@ function renderNetWorth(){
         </div>
         <div style="display:flex;align-items:center;gap:10px">
           <span style="font-family:var(--font-d);font-size:22px;color:${a.balance>=0?'var(--green)':'var(--red)'}">${usd(a.balance)}</span>
+          <button class="btn btn-secondary btn-sm" onclick="openReconcile(${a.id})" title="Reconcile with bank statement">⚖️</button>
           <button class="btn btn-secondary btn-sm" onclick="openEditAccount(${a.id})">✏️</button>
         </div>
       </div>
+      ${a.lastReconciled?`<div class="recon-badge">&#10003; Reconciled ${fmtDate(a.lastReconciled)}</div><div class="recon-history">Bank: ${usd(a.lastReconciledBal||0)} confirmed</div>`:''}
       <div class="bal-correct-row">
         <input class="bal-correct-input" type="number" inputmode="decimal"
           placeholder="Set actual balance..." id="bal-correct-${a.id}"
@@ -2756,12 +3098,14 @@ function show(sec,btn){
 
 // ── MODALS ───────────────────────────────────────
 function openModal(type,extra){
-  if(type==='income'){$('income-modal-title').textContent='Add Income';$('i-id').value='';$('i-source').value='';$('i-amount').value='';$('i-date').value=today();$('i-freq').value='Monthly';$('i-account').value='';$('i-actual').value='';$('i-actual-wrap').style.display='none';if($('i-lastpay'))$('i-lastpay').value='';if($('i-lastpay-wrap'))$('i-lastpay-wrap').style.display='none';populateAccountSelects();}
+  if(type==='goal'){openModal_goal();return;}
+  if(type==='income'){$('i-id').value='';$('i-source').value='';$('i-amount').value='';$('i-date').value=today();$('i-freq').value='Monthly';$('i-account').value='';$('i-actual').value='';$('i-actual-wrap').style.display='none';if($('i-lastpay'))$('i-lastpay').value='';if($('i-lastpay-wrap'))$('i-lastpay-wrap').style.display='none';populateAccountSelects();}
   if(type==='expense'){clearOverlapWarn('expense-overlap-warn');$('expense-modal-title').textContent='Add Expense';$('e-id').value='';$('e-cat').value='';$('e-desc').value='';$('e-amount').value='';$('e-date').value=today();$('e-freq').value='One-time';$('e-account').value='';populateAccountSelects();}
   if(type==='bill'){clearOverlapWarn('bill-overlap-warn');$('bill-modal-title').textContent='Add Bill / Debt';$('b-id').value='';$('b-name').value='';$('b-amount').value='';$('b-date').value='';$('b-recur').value='No';$('b-type').value='bill';$('b-balance').value='';$('b-apr').value='';$('b-limit').value='';toggleDebtFields();$('bill-delete-wrap').style.display='none';}
   if(type==='account'){$('account-modal-title').textContent='Add Account';$('ac-id').value='';$('ac-name').value='';$('ac-type').value='checking';$('ac-balance').value='';$('ac-notes').value='';$('ac-default').checked=false;$('account-delete-wrap').style.display='none';}
   if(type==='purchase'){openPurchaseModal();return;}
   if(type==='txn'){openWithdrawal();return;}
+  if(type==='goal'){openModal_goal();return;}
   if(type==='asset'){$('asset-modal-title').textContent='Add Asset';$('a-id').value='';$('a-name').value='';$('a-cat').value='cash';$('a-value').value='';$('a-notes').value='';}
   if(type==='target'){openAddTarget();return;}
   if(type==='settings'){
@@ -2835,6 +3179,10 @@ function openEditTxn(id){
   currentTxnType=t.type;
   $('txn-title').textContent='Edit: '+t.type;
   $('t-id').value=t.id;$('t-desc').value=t.description;$('t-amount').value=t.amount;$('t-date').value=t.date||today();
+  $('t-note').value=t.note||'';
+  _txnTags=t.tags?[...t.tags]:[];
+  renderTagChips(_txnTags,'t-tags-display','t-tag-input');
+  if($('t-tag-input')) $('t-tag-input').value='';
   $('t-overdraft-warn').style.display='none';
   populateAccountSelects();
   $('t-account').value=t.accountId||'';
@@ -2933,6 +3281,8 @@ function checkWithdrawalOverdraft(){
 function saveTxn(){
   const desc=$('t-desc').value.trim(),amt=parseFloat($('t-amount').value),dt=$('t-date').value||today();
   const acId=parseInt($('t-account').value)||0;
+  const note=$('t-note')?$('t-note').value.trim():'';
+  const tags=[..._txnTags];
   if(!desc||!amt)return;
   if(!acId){showToast(t('Please select a Pay From account'),'error');return;}
   // Overdraft check
@@ -2948,7 +3298,7 @@ function saveTxn(){
     const prev=data.transactions.find(t=>t.id===eid);
     if(prev&&prev.accountId) adjustAccountBalance(prev.accountId,prev.amount);
   }
-  const item={id:eid||Date.now(),description:desc,amount:amt,type:'Withdrawal',date:dt,accountId:acId};
+  const item={id:eid||Date.now(),description:desc,amount:amt,type:'Withdrawal',date:dt,accountId:acId,note,tags};
   data.transactions=eid?data.transactions.map(t=>t.id===eid?item:t):[...data.transactions,item];
   // Deduct from account
   if(acId) adjustAccountBalance(acId,-amt);
@@ -4140,7 +4490,7 @@ function renderTxns(){
     nextBtn.style.pointerEvents=isCurrentMonth?'none':'auto';
   }
 
-  const excluded=['Bill Payment','Debt Payment'];
+  const excluded=['Bill Payment','Debt Payment','Reconciliation'];
 
   // All transactions for selected month
   const monthAll=[...data.transactions].filter(tx=>{
@@ -4157,9 +4507,16 @@ function renderTxns(){
       const method=tx.methodLabel||'';
       return (tx.description||'').toLowerCase().includes(txnSearch)
         ||(tx.category||'').toLowerCase().includes(txnSearch)
-        ||method.toLowerCase().includes(txnSearch);
+        ||method.toLowerCase().includes(txnSearch)
+        ||(tx.note||'').toLowerCase().includes(txnSearch)
+        ||(tx.tags||[]).some(tag=>('#'+tag).includes(txnSearch)||tag.includes(txnSearch.replace('#','')));
     });
   }
+  // Apply tag filter
+  if(_activeTxnTagFilter){
+    filtered=filtered.filter(tx=>(tx.tags||[]).includes(_activeTxnTagFilter));
+  }
+  renderTagFilterStrip();
 
   // Monthly summary bar
   const sumEl=$('txn-summary');
@@ -4203,6 +4560,8 @@ function renderTxns(){
       <div>
         <div class="row-label">${tx.description}</div>
         <div class="row-sub">${sub}</div>
+        ${tx.note?`<div class="txn-note">&#128203; ${tx.note}</div>`:''}
+        ${tx.tags&&tx.tags.length?`<div class="txn-tags">${tx.tags.map(g=>`<span class="txn-tag${_activeTxnTagFilter===g?' active-filter':''}" onclick="setTagFilter(_activeTxnTagFilter==='${g}'?null:'${g}')">#${g}</span>`).join('')}</div>`:''}
       </div>
       <div class="row-actions">
         <span style="color:${color};font-weight:600">-${usd(tx.amount)}</span>
@@ -4217,9 +4576,10 @@ function renderTxns(){
 
 function setInsightsTab(tab){
   insightsTab=tab;
-  const cats=$('tab-categories'),cards=$('tab-cards');
+  const cats=$('tab-categories'),cards=$('tab-cards'),trends=$('tab-trends');
   if(cats) cats.classList.toggle('active',tab==='categories');
   if(cards) cards.classList.toggle('active',tab==='cards');
+  if(trends) trends.classList.toggle('active',tab==='trends');
   renderInsights();
 }
 
@@ -4252,6 +4612,19 @@ function renderInsights(){
   const targets=data.targets||[];
   const now=new Date();
   const tab=insightsTab||'categories';
+
+  // Show/hide trends vs budget view
+  const trendsWrap = $('trends-wrap');
+  const budgetTargets = $('budget-targets');
+  if(tab==='trends'){
+    if(trendsWrap) trendsWrap.style.display='block';
+    if(budgetTargets) budgetTargets.style.display='none';
+    renderSpendingTrends();
+    return;
+  } else {
+    if(trendsWrap) trendsWrap.style.display='none';
+    if(budgetTargets) budgetTargets.style.display='block';
+  }
 
   // Filter targets by active tab
   const catTargets=targets.filter(tg=>!tg.type||tg.type==='category');
@@ -4645,21 +5018,76 @@ const BILL_RESET_KEY='financeOS_billResetMonth';
 const PWA_PROMPT_KEY='financeOS_pwaPromptDismissed';
 const NW_HISTORY_KEY='financeOS_nwHistory';
 const OB_STEPS_EN=[
-  {icon:'👋',title:'Welcome to FinanceOS',desc:"Your personal finance app. Everything stays private on your device - nothing is ever sent anywhere. Let's get you set up in 3 quick steps.",btn:'Get Started',color:null},
-  {icon:'🏦',title:'Add Your Accounts',desc:'Start by adding your checking, savings, and cash accounts with their current balances. This keeps your finances accurate as you track spending.',btn:'Next',color:null},
-  {icon:'💰',title:'Set Up Cash Flow',desc:"Add your income sources and monthly expenses in Cash Flow. Then add bills for rent, subscriptions, and loan payments.",btn:"See What's Inside",color:null},
-  {icon:'📉',title:'Debt Planner',desc:"Choose Avalanche or Snowball strategy and see exactly when you'll be debt-free. The planner auto-calculates your available cash from your real income and expenses.",btn:'Next',color:'#ef4444'},
-  {icon:'📈',title:'Insights',desc:'Track spending trends with charts, set budget targets per category, and see your monthly snapshot with savings rate and income projections.',btn:'Next',color:'#6c63ff'},
-  {icon:'⚡',title:'Quick Update',desc:'Log cash withdrawals and purchases in seconds. Swipe left on any transaction to delete. Search and browse by month to keep things organized.',btn:"Let's Get Started!",color:'#f59e0b'},
+  { id:'welcome',
+    icon:'👋', title:'Welcome to FinanceOS',
+    desc:'Your personal finance co-pilot. Everything stays private on your device - nothing is ever sent anywhere.',
+    btn:'Get Started', color:null, form:null,
+    skipLabel:'or try demo mode below' },
+
+  { id:'account',
+    icon:'🏦', title:'Step 1 of 3 - Your Main Account',
+    desc:'What bank account do you use most? Enter its current balance and we\'ll track it from here.',
+    btn:'Save & Continue', color:null,
+    form:'account',
+    skipLabel:'skip - I\'ll add this later' },
+
+  { id:'income',
+    icon:'💰', title:'Step 2 of 3 - Your Income',
+    desc:'Add your primary income source. This powers the Debt Planner, Cash Flow, and monthly projections.',
+    btn:'Save & Continue', color:null,
+    form:'income',
+    skipLabel:'skip - I\'ll add this later' },
+
+  { id:'bill',
+    icon:'📋', title:'Step 3 of 3 - Your Biggest Bill',
+    desc:'Add your largest recurring expense - rent, mortgage, or a loan payment. You can add more later.',
+    btn:'Save & Continue', color:null,
+    form:'bill',
+    skipLabel:'skip - I\'ll add this later' },
+
+  { id:'done',
+    icon:'🎉', title:'You\'re all set!',
+    desc:'Here\'s your starting picture. Head to any section to explore - or load demo data to see FinanceOS with realistic numbers.',
+    btn:'Open FinanceOS', color:'#22c55e',
+    form:'summary',
+    skipLabel:'' },
 ];
 const OB_STEPS_ES=[
-  {icon:'👋',title:'Bienvenido a FinanceOS',desc:"Tu app de finanzas personales. Todo se queda en tu dispositivo - nada se envia a ningun servidor. Te guiamos en 3 pasos rapidos.",btn:'Comenzar',color:null},
-  {icon:'🏦',title:'Agrega tus Cuentas',desc:'Comienza agregando tus cuentas de cheques, ahorros y efectivo con sus saldos actuales. Esto mantiene tus finanzas precisas.',btn:'Siguiente',color:null},
-  {icon:'💰',title:'Configura tu Flujo',desc:"Agrega tus fuentes de ingresos y gastos mensuales. Luego agrega facturas para renta, suscripciones y prestamos.",btn:"Ver Funciones",color:null},
-  {icon:'📉',title:'Planificador de Deudas',desc:"Elige la estrategia Avalancha o Bola de Nieve y mira exactamente cuando quedas libre de deudas.",btn:'Siguiente',color:'#ef4444'},
-  {icon:'📈',title:'Perspectivas',desc:'Rastrea tendencias de gastos con graficas, establece presupuestos por categoria y ve tu resumen mensual con proyecciones.',btn:'Siguiente',color:'#6c63ff'},
-  {icon:'⚡',title:'Actualizacion Rapida',desc:'Registra retiros y compras en segundos. Desliza para eliminar. Busca y navega por mes para mantenerte organizado.',btn:"A Comenzar!",color:'#f59e0b'},
+  { id:'welcome',
+    icon:'👋', title:'Bienvenido a FinanceOS',
+    desc:'Tu co-piloto de finanzas personales. Todo se queda en tu dispositivo - nada se envia a ningun servidor.',
+    btn:'Comenzar', color:null, form:null,
+    skipLabel:'o prueba el modo demo abajo' },
+
+  { id:'account',
+    icon:'🏦', title:'Paso 1 de 3 - Tu Cuenta Principal',
+    desc:'Cual cuenta bancaria usas mas? Ingresa su saldo actual y lo rastrearemos desde aqui.',
+    btn:'Guardar y Continuar', color:null,
+    form:'account',
+    skipLabel:'saltar - lo agrego despues' },
+
+  { id:'income',
+    icon:'💰', title:'Paso 2 de 3 - Tus Ingresos',
+    desc:'Agrega tu fuente de ingreso principal. Esto impulsa el Planificador de Deudas y las proyecciones.',
+    btn:'Guardar y Continuar', color:null,
+    form:'income',
+    skipLabel:'saltar - lo agrego despues' },
+
+  { id:'bill',
+    icon:'📋', title:'Paso 3 de 3 - Tu Gasto Mayor',
+    desc:'Agrega tu gasto recurrente mas grande: renta, hipoteca o un prestamo. Puedes agregar mas despues.',
+    btn:'Guardar y Continuar', color:null,
+    form:'bill',
+    skipLabel:'saltar - lo agrego despues' },
+
+  { id:'done',
+    icon:'🎉', title:'Listo!',
+    desc:'Aqui esta tu panorama inicial. Explora cualquier seccion o carga datos de demo para ver FinanceOS con numeros reales.',
+    btn:'Abrir FinanceOS', color:'#22c55e',
+    form:'summary',
+    skipLabel:'' },
 ];
+
 const OB_STEPS=()=>appLang==='es'?OB_STEPS_ES:OB_STEPS_EN;
 let obStep=0;
 
@@ -4672,34 +5100,220 @@ function showOnboarding(){
 }
 
 function renderObStep(){
-  const s=OB_STEPS()[obStep];
-  const icon=$('ob-icon'),title=$('ob-title'),desc=$('ob-desc'),btn=$('ob-next-btn');
-  const card=document.querySelector('.ob-card');
-  if(icon) icon.textContent=s.icon;
-  if(title) title.textContent=s.title;
-  if(desc) desc.textContent=s.desc;
-  if(btn) btn.textContent=s.btn;
-  // Colored border for feature highlight steps
+  const steps = OB_STEPS();
+  const s = steps[obStep];
+  const icon  = $('ob-icon'), title = $('ob-title'), desc = $('ob-desc'), btn = $('ob-next-btn');
+  const card  = document.querySelector('.ob-card');
+  const formArea = $('ob-form-area');
+  const skipLabel = $('ob-skip-label');
+  const demoBtn = $('ob-demo-btn');
+
+  if(icon)  icon.textContent  = s.icon;
+  if(title) title.textContent = s.title;
+  if(desc)  desc.textContent  = s.desc;
+  if(btn)   btn.textContent   = s.btn;
+
   if(card){
-    card.style.borderColor=s.color||'var(--border2)';
-    card.style.boxShadow=s.color?'0 0 32px '+s.color+'33':'none';
+    card.style.borderColor = s.color||'var(--border2)';
+    card.style.boxShadow   = s.color?'0 0 32px '+s.color+'33':'none';
   }
-  // Show demo button only on last step
-  const demoBtn=$('ob-demo-btn');
-  if(demoBtn) demoBtn.style.display=(obStep===OB_STEPS().length-1)?'inline-flex':'none';
+
+  // Demo button only on welcome step
+  if(demoBtn) demoBtn.style.display = s.id==='welcome' ? 'inline-flex' : 'none';
+
+  // Skip label
+  if(skipLabel) skipLabel.textContent = s.skipLabel||'';
+
   // Update dots
-  OB_STEPS().forEach((_,i)=>{
-    const dot=$('ob-dot-'+i);
-    if(dot) dot.classList.toggle('active',i===obStep);
+  steps.forEach((_,i)=>{
+    const dot = $('ob-dot-'+i);
+    if(dot) dot.classList.toggle('active', i===obStep);
   });
+
+  // Render inline form
+  if(formArea) formArea.innerHTML = obBuildForm(s.form);
+}
+
+function obBuildForm(formType){
+  if(!formType || formType===null) return '';
+
+  if(formType==='account'){
+    return `<div class="ob-form">
+      <div class="ob-field">
+        <label>Account Name</label>
+        <input class="ob-input" id="ob-ac-name" placeholder="e.g. Chase Checking" value="Checking Account"/>
+      </div>
+      <div class="ob-input-row">
+        <div class="ob-field">
+          <label>Type</label>
+          <select class="ob-select" id="ob-ac-type">
+            <option value="checking">Checking</option>
+            <option value="savings">Savings</option>
+            <option value="cash">Cash</option>
+          </select>
+        </div>
+        <div class="ob-field">
+          <label>Current Balance ($)</label>
+          <input class="ob-input" id="ob-ac-bal" type="number" inputmode="decimal" placeholder="0.00"/>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  if(formType==='income'){
+    return `<div class="ob-form">
+      <div class="ob-field">
+        <label>Income Source</label>
+        <input class="ob-input" id="ob-inc-source" placeholder="e.g. Salary, Freelance, Part-time"/>
+      </div>
+      <div class="ob-input-row">
+        <div class="ob-field">
+          <label>Amount ($)</label>
+          <input class="ob-input" id="ob-inc-amount" type="number" inputmode="decimal" placeholder="0.00" oninput="obUpdateSummary()"/>
+        </div>
+        <div class="ob-field">
+          <label>Frequency</label>
+          <select class="ob-select" id="ob-inc-freq" onchange="obUpdateSummary()">
+            <option value="Monthly">Monthly</option>
+            <option value="Bi-weekly">Bi-weekly</option>
+            <option value="Weekly">Weekly</option>
+            <option value="Yearly">Yearly</option>
+          </select>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  if(formType==='bill'){
+    return `<div class="ob-form">
+      <div class="ob-field">
+        <label>Bill Name</label>
+        <input class="ob-input" id="ob-bill-name" placeholder="e.g. Rent, Mortgage, Car Loan"/>
+      </div>
+      <div class="ob-input-row">
+        <div class="ob-field">
+          <label>Monthly Amount ($)</label>
+          <input class="ob-input" id="ob-bill-amount" type="number" inputmode="decimal" placeholder="0.00" oninput="obUpdateSummary()"/>
+        </div>
+        <div class="ob-field">
+          <label>Due Day of Month</label>
+          <input class="ob-input" id="ob-bill-day" type="number" placeholder="1" min="1" max="31" value="1"/>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  if(formType==='summary'){
+    return obBuildSummary();
+  }
+
+  return '';
+}
+
+function obBuildSummary(){
+  const accs = data.accounts||[];
+  const inc  = data.income||[];
+  const bills = data.bills||[];
+  const totalBalance = accs.reduce((s,a)=>s+a.balance,0);
+  const now = new Date();
+  const monthlyIncome = inc.reduce((s,i)=>s+getEffectiveIncome(i,now.getFullYear(),now.getMonth()),0);
+  const monthlyBills  = bills.filter(b=>b.btype!=='creditcard'&&b.btype!=='loan').reduce((s,b)=>s+b.amount,0);
+  const leftover = monthlyIncome - monthlyBills;
+  const hasData = accs.length || inc.length || bills.length;
+
+  if(!hasData) return '<div class="ob-insight" style="text-align:center;color:var(--muted);font-size:13px">No data entered yet - you can set everything up inside the app.</div>';
+
+  const rows = [];
+  if(totalBalance>0) rows.push(['Account Balance', usd(totalBalance), 'var(--green)']);
+  if(monthlyIncome>0) rows.push(['Monthly Income', usd(monthlyIncome), 'var(--green)']);
+  if(monthlyBills>0) rows.push(['Monthly Bills', usd(monthlyBills), 'var(--red)']);
+  if(monthlyIncome>0 && monthlyBills>0){
+    rows.push(['Left Over', usd(leftover), leftover>=0?'var(--green)':'var(--red)']);
+  }
+
+  if(!rows.length) return '';
+
+  return `<div class="ob-insight">
+    ${rows.map(([label,val,color])=>`
+      <div class="ob-insight-row">
+        <span class="ob-insight-label">${label}</span>
+        <span class="ob-insight-val" style="color:${color}">${val}</span>
+      </div>`).join('')}
+  </div>`;
+}
+
+function obUpdateSummary(){
+  // Live update summary if we're on the done step
+  if(OB_STEPS()[obStep].id==='done'){
+    const fa=$('ob-form-area');
+    if(fa) fa.innerHTML=obBuildSummary();
+  }
+}
+
+function obSaveStep(stepId){
+  // Save data from the current inline form
+  if(stepId==='account'){
+    const name = ($('ob-ac-name')||{}).value?.trim() || 'Checking Account';
+    const type = ($('ob-ac-type')||{}).value || 'checking';
+    const bal  = parseFloat(($('ob-ac-bal')||{}).value)||0;
+    if(bal>0 || name){
+      if(!data.accounts) data.accounts=[];
+      data.accounts.push({
+        id:Date.now(), name, type, balance:bal,
+        notes:'', isDefault:data.accounts.length===0
+      });
+    }
+  }
+
+  if(stepId==='income'){
+    const source = ($('ob-inc-source')||{}).value?.trim() || 'Salary';
+    const amount = parseFloat(($('ob-inc-amount')||{}).value)||0;
+    const freq   = ($('ob-inc-freq')||{}).value || 'Monthly';
+    if(amount>0){
+      if(!data.income) data.income=[];
+      data.income.push({
+        id:Date.now(), source:source||'Income', amount, frequency:freq,
+        date:today(), accountId:data.accounts?.[0]?.id||0
+      });
+    }
+  }
+
+  if(stepId==='bill'){
+    const name   = ($('ob-bill-name')||{}).value?.trim();
+    const amount = parseFloat(($('ob-bill-amount')||{}).value)||0;
+    const day    = parseInt(($('ob-bill-day')||{}).value)||1;
+    if(name && amount>0){
+      if(!data.bills) data.bills=[];
+      const dueDate = (()=>{
+        const d=new Date(); d.setDate(day);
+        if(d<new Date()) d.setMonth(d.getMonth()+1);
+        return d.toISOString().split('T')[0];
+      })();
+      data.bills.push({
+        id:Date.now(), name, amount, dueDate, recurring:'Monthly',
+        status:'Pending', btype:'bill', balance:0, apr:0, creditLimit:0,
+        scheduledAmount:null, scheduledAccountId:null
+      });
+    }
+  }
+
+  saveData();
 }
 
 function obNext(){
+  const steps = OB_STEPS();
+  const current = steps[obStep];
+
+  // Save inline form data if this step has a form (not summary, not null)
+  if(current.form && current.form !== 'summary' && current.form !== null){
+    obSaveStep(current.form);
+  }
+
   obStep++;
-  if(obStep>=OB_STEPS().length){
+  if(obStep >= steps.length){
     skipOnboarding();
-    show('networth',document.querySelector('.nav-item:nth-child(5)'));
-    setTimeout(()=>openModal('account'),400);
+    renderAll();
+    show('dashboard', document.querySelector('.nav-item'));
     return;
   }
   renderObStep();
@@ -4715,6 +5329,7 @@ function skipOnboarding(){
   const overlay=$('onboarding-overlay');
   if(overlay) overlay.classList.add('hidden');
 }
+
 
 // ── AUTO-PROCESS NOTIFICATION ────────────────────────────────
 let _autoProcessCount=0;
@@ -6019,6 +6634,12 @@ function openPurchaseModal(){
   _origOpenPurchaseModal();
   // Reset promo fields
   const check = $('pu-promo-check'); if(check) check.checked=false;
+  _puTags=[];
+  if($('pu-tag-input')) $('pu-tag-input').value='';
+  if($('pu-note')) $('pu-note').value='';
+  if($('pu-tags-display')) renderTagChips([],'pu-tags-display','pu-tag-input');
+  if($('pu-note')) $('pu-note').value='';
+  renderTagChips([],'pu-tags-display','pu-tag-input');
   const fields = $('pu-promo-fields'); if(fields) fields.style.display='none';
   const calc = $('pu-promo-calc'); if(calc) calc.style.display='none';
   _promoType='deferred';
@@ -6059,13 +6680,12 @@ function renderPromoItems(cardId){
     let deadlineHtml='';
     if(isExpired){
       deadlineHtml=`<div class="pi-deadline" style="color:var(--red)">EXPIRED ${Math.abs(daysLeft)}d ago</div>`;
-      if(tx.promoType==='deferred'&&tx.promoApr>0){
-        const interest = parseFloat((tx.amount*(tx.promoApr/100/365)*Math.abs(daysLeft)).toFixed(2));
-        deadlineHtml+=`<div class="pi-deferred-warn">Est. interest charged: ${usd(interest)}</div>`;
-      }
+      deadlineHtml += getDeferredInterestWarning(tx, remaining, daysLeft);
     } else if(isDanger){
-      deadlineHtml=`<div class="pi-deadline" style="color:var(--red)">&#128680; ${daysLeft}d left &mdash; pay ${usd(remaining)} now!</div>`;
+      deadlineHtml=`<div class="pi-deadline" style="color:var(--red)">&#128680; ${daysLeft}d left - pay ${usd(remaining)} now!</div>`;
+      deadlineHtml += getDeferredInterestWarning(tx, remaining, daysLeft);
     } else if(isWarn){
+      deadlineHtml += getDeferredInterestWarning(tx, remaining, daysLeft);
       deadlineHtml=`<div class="pi-deadline" style="color:var(--yellow)">&#9888;&#65039; ${daysLeft}d left &mdash; ${usd(monthlyNeeded)}/mo needed</div>`;
     } else {
       const endFmt = new Date(tx.promoEnd).toLocaleDateString('en-US',{month:'short',year:'numeric'});
@@ -6640,6 +7260,734 @@ function getIncomeMonthlyNote(i){
 // (wired into confirmReset below via patch)
 
 
+
+// ══════════════════════════════════════════════════════════════
+// FEATURE 12: DEFERRED INTEREST RETROACTIVE WARNING (enhanced)
+// ══════════════════════════════════════════════════════════════
+
+function calcDeferredInterest(tx, daysElapsed){
+  // Deferred interest = full original amount x daily rate x days
+  // (issuer charges interest on the ORIGINAL amount from day 1)
+  if(tx.promoType !== 'deferred' || !tx.promoApr || tx.promoApr <= 0) return 0;
+  const dailyRate = tx.promoApr / 100 / 365;
+  return parseFloat((tx.amount * dailyRate * daysElapsed).toFixed(2));
+}
+
+function getDeferredInterestWarning(tx, remaining, daysLeft){
+  if(tx.promoType !== 'deferred') return '';
+  const apr = tx.promoApr || 0;
+  if(!apr) return '';
+
+  if(daysLeft < 0){
+    // Already expired - show retroactive interest on unpaid portion
+    const daysLate = Math.abs(daysLeft);
+    // Interest accrues on whatever was unpaid at expiry
+    const interest = calcDeferredInterest({...tx, amount: remaining + (tx.amount - tx.amount)}, 
+      Math.abs(daysLeft) + (tx.promoMonths||6)*30);
+    const retroInterest = parseFloat((tx.amount * (apr/100/365) * ((tx.promoMonths||6)*30)).toFixed(2));
+    return `<div class="pi-interest-bomb">
+      &#9888; Retroactive interest: ~${usd(retroInterest)} charged on original ${usd(tx.amount)} at ${apr}% APR from day 1
+    </div>`;
+  }
+
+  if(daysLeft <= 30 && remaining > 0){
+    // Approaching deadline - show what happens if not cleared
+    const totalDays = (tx.promoMonths||6) * 30;
+    const retroInterest = parseFloat((tx.amount * (apr/100/365) * totalDays).toFixed(2));
+    return `<div class="pi-interest-bomb">
+      &#128680; Miss deadline = ~${usd(retroInterest)} retroactive interest on ${usd(tx.amount)} at ${apr}% APR
+    </div>`;
+  }
+
+  if(remaining > 0){
+    // Show accumulating interest as a heads-up
+    const totalDays = (tx.promoMonths||6) * 30;
+    const retroInterest = parseFloat((tx.amount * (apr/100/365) * totalDays).toFixed(2));
+    return `<div class="pi-interest-accruing">
+      If unpaid by deadline: ~${usd(retroInterest)} interest will be charged retroactively
+    </div>`;
+  }
+  return '';
+}
+
+// ══════════════════════════════════════════════════════════════
+// FEATURE 5: BILL CALENDAR VIEW
+// ══════════════════════════════════════════════════════════════
+
+let _calMonth = null; // {year, month} object
+let _billView = 'list';
+
+function setBillView(view){
+  _billView = view;
+  const listEl = $('bill-list');
+  const calEl  = $('bill-calendar');
+  const sortBar = $('bill-sort-bar');
+  const listBtn = $('bill-view-list');
+  const calBtn  = $('bill-view-cal');
+
+  if(view === 'calendar'){
+    if(listEl) listEl.classList.add('calendar-mode');
+    if(calEl)  calEl.classList.add('active');
+    if(sortBar) sortBar.style.display = 'none';
+    if(listBtn) listBtn.classList.remove('active');
+    if(calBtn)  calBtn.classList.add('active');
+    renderBillCalendar();
+  } else {
+    if(listEl) listEl.classList.remove('calendar-mode');
+    if(calEl)  calEl.classList.remove('active');
+    if(sortBar) sortBar.style.display = '';
+    if(listBtn) listBtn.classList.add('active');
+    if(calBtn)  calBtn.classList.remove('active');
+  }
+}
+
+function shiftCalMonth(dir){
+  if(!_calMonth){
+    const now = new Date();
+    _calMonth = {year: now.getFullYear(), month: now.getMonth()};
+  }
+  _calMonth.month += dir;
+  if(_calMonth.month > 11){ _calMonth.month = 0; _calMonth.year++; }
+  if(_calMonth.month < 0){  _calMonth.month = 11; _calMonth.year--; }
+  renderBillCalendar();
+}
+
+function renderBillCalendar(){
+  const grid = $('cal-grid');
+  const label = $('cal-month-label');
+  if(!grid) return;
+
+  const now = new Date();
+  if(!_calMonth) _calMonth = {year: now.getFullYear(), month: now.getMonth()};
+  const {year, month} = _calMonth;
+
+  if(label) label.textContent = new Date(year, month, 1)
+    .toLocaleString('default', {month:'long', year:'numeric'});
+
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month+1, 0).getDate();
+  const todayStr = today();
+
+  // Day headers
+  const dayHeaders = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
+    .map(d=>`<div class="cal-day-header">${d}</div>`).join('');
+
+  // Build day cells
+  let cells = '';
+  // Leading empty cells
+  for(let i=0; i<firstDay; i++){
+    cells += '<div class="cal-day other-month"></div>';
+  }
+
+  // Day cells with bills
+  for(let d=1; d<=daysInMonth; d++){
+    const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isToday = dateStr === todayStr;
+    const bills = data.bills.filter(b=>b.dueDate===dateStr);
+
+    const billDots = bills.map(b=>{
+      let eff = b.status;
+      if(eff!=='Paid'&&eff!=='Scheduled'&&b.dueDate<todayStr) eff='Overdue';
+      const colors = {Paid:'#22c55e',Scheduled:'#3b82f6',Pending:'#f59e0b',Overdue:'#ef4444'};
+      const bg = colors[eff]||'#888';
+      return `<div class="cal-bill-dot" style="background:${bg}22;color:${bg};border:1px solid ${bg}44"
+        title="${b.name} - ${usd(b.amount)}"
+        onclick="event.stopPropagation();setBillView('list');setTimeout(()=>setBillSort('date'),50)">
+        ${b.name.length>10?b.name.slice(0,9)+'…':b.name}
+      </div>`;
+    }).join('');
+
+    cells += `<div class="cal-day${isToday?' today':''}">
+      <div class="cal-day-num">${d}</div>
+      ${billDots}
+    </div>`;
+  }
+
+  // Trailing empty cells to complete grid
+  const total = firstDay + daysInMonth;
+  const trailing = total%7===0 ? 0 : 7-(total%7);
+  for(let i=0; i<trailing; i++){
+    cells += '<div class="cal-day other-month"></div>';
+  }
+
+  grid.innerHTML = dayHeaders + cells;
+}
+
+// ══════════════════════════════════════════════════════════════
+// FEATURE 6: SAVINGS GOALS
+// ══════════════════════════════════════════════════════════════
+
+function openModal_goal(){
+  $('goal-modal-title').textContent = 'Add Savings Goal';
+  $('g-id').value=''; $('g-name').value=''; $('g-target').value='';
+  $('g-date').value=''; $('g-notes').value=''; $('g-saved').value='0';
+  const sel = $('g-account');
+  if(sel){
+    sel.innerHTML = '<option value="">-- No account linked --</option>'
+      + (data.accounts||[]).map(a=>`<option value="${a.id}">${acTypeIcon[a.type]||''} ${a.name} (${usd(a.balance)})</option>`).join('');
+  }
+  $('modal-goal').classList.add('open');
+}
+
+function openEditGoal(id){
+  const g = (data.goals||[]).find(x=>x.id===id); if(!g)return;
+  $('goal-modal-title').textContent = 'Edit Goal';
+  $('g-id').value=g.id; $('g-name').value=g.name; $('g-target').value=g.target;
+  $('g-date').value=g.date||''; $('g-notes').value=g.notes||'';
+  $('g-saved').value=g.saved||0;
+  const sel = $('g-account');
+  if(sel){
+    sel.innerHTML = '<option value="">-- No account linked --</option>'
+      + (data.accounts||[]).map(a=>`<option value="${a.id}">${acTypeIcon[a.type]||''} ${a.name} (${usd(a.balance)})</option>`).join('');
+    sel.value = g.accountId||'';
+  }
+  $('modal-goal').classList.add('open');
+}
+
+function saveGoal(){
+  const name   = $('g-name').value.trim();
+  const target = parseFloat($('g-target').value)||0;
+  const date   = $('g-date').value;
+  const notes  = $('g-notes').value.trim();
+  const acId   = parseInt($('g-account').value)||0;
+  const saved  = parseFloat($('g-saved').value)||0;
+  if(!name||!target){ showToast('Enter a name and target amount','error'); return; }
+
+  if(!data.goals) data.goals=[];
+  const eid = parseInt($('g-id').value);
+  const item = {id:eid||Date.now(), name, target, date, notes, accountId:acId, saved, createdAt:eid?undefined:today()};
+  if(eid) item.createdAt = (data.goals.find(g=>g.id===eid)||{}).createdAt;
+  data.goals = eid ? data.goals.map(g=>g.id===eid?item:g) : [...data.goals, item];
+  closeModal('goal'); saveData(); renderAll();
+  showToast(eid?'Goal updated!':'Goal added!');
+}
+
+function renderGoals(){
+  const el = $('goals-list');
+  if(!el) return;
+  if(!(data.goals||[]).length){
+    el.innerHTML = emptyState('🎯','No savings goals yet',
+      'Set a goal - emergency fund, vacation, down payment - and track your progress.','+ Add Goal',"openModal('goal')");
+    return;
+  }
+  const now = new Date();
+  el.innerHTML = (data.goals||[]).map(g=>{
+    // Get saved amount - use linked account balance if set, else manual
+    const acc = (data.accounts||[]).find(a=>a.id===g.accountId);
+    const saved = acc ? Math.min(acc.balance, g.target) : (g.saved||0);
+    const pct = g.target>0 ? Math.min(100, Math.round(saved/g.target*100)) : 0;
+    const remaining = Math.max(0, g.target-saved);
+    const isComplete = saved >= g.target;
+
+    // Monthly contribution needed
+    let monthlyNote = '';
+    if(!isComplete && g.date){
+      const months = Math.max(1, Math.round((new Date(g.date)-now)/2592000000));
+      const monthly = parseFloat((remaining/months).toFixed(2));
+      monthlyNote = `Save ${usd(monthly)}/mo to reach goal`;
+    }
+
+    // Target date display
+    const dateStr = g.date
+      ? new Date(g.date+'T12:00:00').toLocaleDateString('en-US',{month:'short',year:'numeric'})
+      : '';
+
+    // Bar color
+    const barColor = isComplete?'var(--green)':pct>=80?'var(--yellow)':'var(--accent)';
+
+    return `<div class="goal-card">
+      <div class="goal-header">
+        <div>
+          <div class="goal-name">🎯 ${g.name}</div>
+          <div class="goal-meta">${dateStr?'By '+dateStr:'No deadline'}${acc?' · '+acc.name:''}</div>
+          ${g.notes?`<div class="goal-meta" style="font-style:italic">${g.notes}</div>`:''}
+        </div>
+        <div class="goal-amounts">
+          <div class="goal-saved">${usd(saved)}</div>
+          <div class="goal-target">of ${usd(g.target)}</div>
+        </div>
+      </div>
+      <div class="goal-bar-bg"><div class="goal-bar-fill" style="width:${pct}%;background:${barColor}"></div></div>
+      <div class="goal-footer">
+        <span class="${isComplete?'goal-complete':'goal-monthly'}">
+          ${isComplete?'&#127881; Goal reached!':monthlyNote||pct+'% saved'}
+        </span>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-secondary btn-sm" onclick="openEditGoal(${g.id})">✏️</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteItem('goals',${g.id})">✕</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+
+
+// ══════════════════════════════════════════════════════════════
+// BANK RECONCILIATION
+// ══════════════════════════════════════════════════════════════
+
+let _reconAccountId = null;
+
+function openReconcile(id){
+  const a = (data.accounts||[]).find(x=>x.id===id);
+  if(!a) return;
+  _reconAccountId = id;
+
+  $('recon-account-id').value = id;
+  $('recon-account-name').textContent = (acTypeIcon[a.type]||'') + ' ' + a.name;
+  $('recon-bank-bal').value = '';
+  $('recon-summary').style.display = 'none';
+  $('recon-analyze-btn').style.display = 'none';
+  $('recon-step2').style.display = 'none';
+  $('recon-step1').style.display = 'block';
+  $('modal-recon').classList.add('open');
+}
+
+function updateReconDiff(){
+  const id = _reconAccountId;
+  const a = (data.accounts||[]).find(x=>x.id===id);
+  if(!a) return;
+  const bankBal = parseFloat($('recon-bank-bal').value);
+  if(isNaN(bankBal)){
+    $('recon-summary').style.display='none';
+    $('recon-analyze-btn').style.display='none';
+    return;
+  }
+
+  const appBal = a.balance||0;
+  const diff   = parseFloat((bankBal - appBal).toFixed(2));
+
+  $('recon-app-bal').textContent    = usd(appBal);
+  $('recon-bank-display').textContent = usd(bankBal);
+
+  const diffEl = $('recon-diff-display');
+  if(diff===0){
+    diffEl.textContent   = 'None - perfectly balanced!';
+    diffEl.className     = 'recon-diff-zero';
+  } else {
+    diffEl.textContent   = (diff>0?'+':'')+usd(diff);
+    diffEl.className     = diff>0?'recon-diff-pos':'recon-diff-neg';
+  }
+
+  $('recon-summary').style.display   = 'block';
+  $('recon-analyze-btn').style.display = 'block';
+  $('recon-analyze-btn').textContent  = diff===0
+    ? '✓ Confirm Reconciliation'
+    : 'Analyze Difference';
+}
+
+function runReconAnalysis(){
+  const id     = _reconAccountId;
+  const a      = (data.accounts||[]).find(x=>x.id===id);
+  if(!a) return;
+  const bankBal = parseFloat($('recon-bank-bal').value)||0;
+  const diff    = parseFloat((bankBal - (a.balance||0)).toFixed(2));
+
+  // Perfect balance - skip analysis
+  if(diff===0){ confirmReconcile(); return; }
+
+  // ── Pattern-match for likely missing transactions ─────────
+  const suggestions = [];
+  const now = new Date();
+  const thisMonth = today().slice(0,7);
+
+  // 1. Bills marked Paid/Scheduled this month but no matching debit transaction on this account
+  data.bills.forEach(b=>{
+    if(b.btype==='creditcard'||b.btype==='loan'||b.btype==='promo') return;
+    if(b.status!=='Paid'&&b.status!=='Scheduled') return;
+    const billMonth = b.dueDate?b.dueDate.slice(0,7):'';
+    if(billMonth!==thisMonth) return;
+    // Check if a payment transaction exists for this bill on this account this month
+    const hasTxn = data.transactions.some(t=>
+      t.accountId===id &&
+      t.date&&t.date.slice(0,7)===thisMonth &&
+      t.amount===b.amount &&
+      (t.type==='Bill Payment'||t.description.toLowerCase().includes(b.name.toLowerCase()))
+    );
+    if(!hasTxn){
+      suggestions.push({
+        desc: b.name+' payment',
+        sub: 'Bill marked '+b.status+' but no debit found on this account',
+        amount: b.amount,
+        type: 'debit'
+      });
+    }
+  });
+
+  // 2. Income entries this month with deposit to this account but no matching credit
+  data.income.forEach(i=>{
+    if(i.accountId!==id) return;
+    const incMonth = i.date?i.date.slice(0,7):'';
+    if(incMonth!==thisMonth) return;
+    const hasTxn = data.transactions.some(t=>
+      t.accountId===id &&
+      t.date&&t.date.slice(0,7)===thisMonth &&
+      t.type==='Income' &&
+      Math.abs(t.amount - getEffectiveIncome(i, now.getFullYear(), now.getMonth())) < 1
+    );
+    if(!hasTxn){
+      const eff = getEffectiveIncome(i, now.getFullYear(), now.getMonth());
+      suggestions.push({
+        desc: i.source+' deposit',
+        sub: 'Income entry found but no matching deposit transaction',
+        amount: eff,
+        type: 'credit'
+      });
+    }
+  });
+
+  // 3. Scheduled bills auto-processed this month
+  data.transactions.filter(t=>
+    t.accountId===id &&
+    t.date&&t.date.slice(0,7)===thisMonth &&
+    t.description&&t.description.includes('auto-processed')
+  ).forEach(t=>{
+    suggestions.push({
+      desc: t.description,
+      sub: 'Auto-processed payment - verify it cleared your bank',
+      amount: t.amount,
+      type: 'debit'
+    });
+  });
+
+  // 4. Large round-number gap hints
+  if(Math.abs(diff)>=5 && Math.abs(diff)<=50 && Math.round(diff)===diff){
+    suggestions.push({
+      desc: 'Bank fee or small charge',
+      sub: usd(Math.abs(diff))+' is a common bank fee or rounding amount',
+      amount: Math.abs(diff),
+      type: diff<0?'debit':'credit'
+    });
+  }
+
+  // Build suggestions HTML
+  const suggWrap = $('recon-suggestions');
+  if(suggestions.length){
+    suggWrap.innerHTML = `
+      <div class="recon-suggestion-title">Possible explanations (${suggestions.length} found)</div>
+      ${suggestions.map(s=>`
+        <div class="recon-suggestion-item">
+          <div class="rsi-left">
+            <div class="rsi-desc">${s.type==='debit'?'&#8595;':'&#8593;'} ${s.desc}</div>
+            <div class="rsi-sub">${s.sub}</div>
+          </div>
+          <div class="rsi-amount">${s.type==='debit'?'-':'+'} ${usd(s.amount)}</div>
+        </div>`).join('')}`;
+  } else {
+    suggWrap.innerHTML = `<div class="recon-suggestion-title">No obvious patterns found</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:10px">
+        Log an adjustment below to close the gap and mark this account reconciled.
+      </div>`;
+  }
+
+  // Pre-fill adjustment amount with the difference
+  const adjHint = $('recon-adj-hint');
+  if(adjHint) adjHint.textContent = diff<0
+    ? `App shows ${usd(Math.abs(diff))} more than your bank. Log a debit adjustment to match.`
+    : `Your bank shows ${usd(diff)} more than the app. Log a credit adjustment to match.`;
+
+  const adjAuto = $('recon-adj-auto');
+  if(adjAuto) adjAuto.textContent = '(auto-filled: '+usd(Math.abs(diff))+')';
+
+  $('recon-adj-amount').value = Math.abs(diff).toFixed(2);
+
+  $('recon-step1').style.display = 'none';
+  $('recon-step2').style.display = 'block';
+}
+
+function confirmReconcile(){
+  const id      = _reconAccountId;
+  const a       = (data.accounts||[]).find(x=>x.id===id);
+  if(!a) return;
+  const bankBal  = parseFloat($('recon-bank-bal').value)||0;
+  const diff     = parseFloat((bankBal - (a.balance||0)).toFixed(2));
+  const adjAmt   = parseFloat($('recon-adj-amount').value)||0;
+  const reason   = $('recon-adj-reason')?$('recon-adj-reason').value:'Unknown';
+
+  // Apply adjustment if non-zero and step2 was shown
+  if($('recon-step2').style.display!=='none' && adjAmt>0){
+    adjustAccountBalance(id, diff); // bring app balance in line with bank
+    data.transactions.push({
+      id: Date.now(),
+      description: 'Reconciliation adjustment: '+reason,
+      amount: parseFloat(Math.abs(diff).toFixed(2)),
+      type: 'Reconciliation',
+      date: today(),
+      accountId: id,
+      methodLabel: a.name,
+      category: 'Reconciliation'
+    });
+  } else if(diff!==0){
+    // Direct confirm without step2 - still adjust
+    adjustAccountBalance(id, diff);
+    data.transactions.push({
+      id: Date.now(),
+      description: 'Reconciliation - balance confirmed',
+      amount: 0,
+      type: 'Reconciliation',
+      date: today(),
+      accountId: id,
+      methodLabel: a.name
+    });
+  }
+
+  // Mark account as reconciled
+  a.lastReconciled    = today();
+  a.lastReconciledBal = bankBal;
+
+  closeModal('recon');
+  saveData(); renderAll();
+  showToast('Account reconciled!');
+}
+
+
+
+// ══════════════════════════════════════════════════════════════
+// FEATURE: SPENDING TRENDS BY CATEGORY
+// ══════════════════════════════════════════════════════════════
+
+let _trendCat = null; // selected category, null = all
+let _txnTags  = []; // working set for txn edit modal
+let _puTags   = []; // working set for purchase modal
+
+
+function renderTagChips(tags, displayId, inputId){
+  const display = $(displayId);
+  if(!display) return;
+  display.innerHTML = tags.map((tag,i)=>
+    `<span class="tag-chip">#${tag}<button onclick="_removeTag(${i},'${displayId}','${inputId}')" tabindex="-1">&#x2715;</button></span>`
+  ).join('');
+}
+
+function _removeTag(i, displayId, inputId){
+  if(displayId==='t-tags-display') _txnTags.splice(i,1), renderTagChips(_txnTags,'t-tags-display','t-tag-input');
+  else _puTags.splice(i,1), renderTagChips(_puTags,'pu-tags-display','pu-tag-input');
+}
+
+function handleTagInput(e){
+  if(e.key==='Enter'||e.key===','||e.key===' '){
+    e.preventDefault();
+    const val = $('t-tag-input').value.replace(/[,#\s]/g,'').toLowerCase().trim();
+    if(val && !_txnTags.includes(val)){
+      _txnTags.push(val);
+      renderTagChips(_txnTags,'t-tags-display','t-tag-input');
+    }
+    $('t-tag-input').value='';
+  }
+  if(e.key==='Backspace' && !$('t-tag-input').value && _txnTags.length){
+    _txnTags.pop();
+    renderTagChips(_txnTags,'t-tags-display','t-tag-input');
+  }
+}
+
+
+function openPurchaseModal(){
+  _origOpenPurchaseModal2();
+  _puTags = [];
+  if($('pu-note')) $('pu-note').value='';
+  if($('pu-tags-display')) $('pu-tags-display').innerHTML='';
+  if($('pu-tag-input')) $('pu-tag-input').value='';
+}
+
+
+
+// ══════════════════════════════════════════════════════════════
+// FEATURE 4: SPENDING TRENDS - ENHANCED
+// ══════════════════════════════════════════════════════════════
+
+let _trendCat2 = null; // second category for comparison
+
+function getCategoryTotal(cat, monthStr){
+  const txnTotal = data.transactions
+    .filter(t=>t.category===cat && t.type==='Purchase' && t.date && t.date.slice(0,7)===monthStr)
+    .reduce((s,t)=>s+t.amount, 0);
+  const expTotal = data.expenses
+    .filter(e=>e.category===cat && e.date && e.date.slice(0,7)===monthStr)
+    .reduce((s,e)=>s+e.amount, 0);
+  return parseFloat((txnTotal+expTotal).toFixed(2));
+}
+
+function renderSpendingTrends(){
+  const el = $('trends-wrap');
+  if(!el) return;
+
+  const months = parseInt($('chart-months')?$('chart-months').value:6)||6;
+
+  // All categories from transactions + expenses
+  const allCats = [...new Set([
+    ...data.transactions.filter(t=>t.category&&t.type==='Purchase').map(t=>t.category),
+    ...data.expenses.map(e=>e.category).filter(Boolean)
+  ])].sort();
+
+  if(!allCats.length){
+    el.innerHTML = '<div style="font-size:13px;color:var(--muted);text-align:center;padding:20px">No categorized spending found. Add categories to your transactions.</div>';
+    return;
+  }
+
+  if(!_trendCat || !allCats.includes(_trendCat)) _trendCat = allCats[0];
+
+  // Build month buckets for primary + optional compare category
+  const now = new Date();
+  const buckets = [];
+  for(let i=months-1; i>=0; i--){
+    const d = new Date(now.getFullYear(), now.getMonth()-i, 1);
+    const yr = d.getFullYear(), mo = d.getMonth();
+    const label = d.toLocaleString('default',{month:'short', year:'2-digit'});
+    const monthStr = `${yr}-${String(mo+1).padStart(2,'0')}`;
+    const total1 = getCategoryTotal(_trendCat, monthStr);
+    const total2 = _trendCat2 ? getCategoryTotal(_trendCat2, monthStr) : null;
+    buckets.push({label, total:total1, total2, monthStr});
+  }
+
+  const vals1   = buckets.map(b=>b.total);
+  const vals2   = _trendCat2 ? buckets.map(b=>b.total2||0) : [];
+  const maxVal  = Math.max(...vals1, ...vals2, 1);
+  const avg1    = parseFloat((vals1.reduce((s,v)=>s+v,0)/vals1.length).toFixed(2));
+  const avg2    = _trendCat2 ? parseFloat((vals2.reduce((s,v)=>s+v,0)/vals2.length).toFixed(2)) : null;
+  const highest = buckets.reduce((a,b)=>b.total>a.total?b:a);
+
+  // Month-over-month change for most recent month
+  const lastTotal  = vals1[vals1.length-1];
+  const prevTotal  = vals1[vals1.length-2]||0;
+  const momChange  = prevTotal>0 ? parseFloat(((lastTotal-prevTotal)/prevTotal*100).toFixed(1)) : null;
+  const momBadge   = momChange===null ? ''
+    : momChange===0 ? `<span class="trend-change-badge trend-change-flat">Flat</span>`
+    : momChange>0   ? `<span class="trend-change-badge trend-change-up">+${momChange}% vs prev mo</span>`
+    :                 `<span class="trend-change-badge trend-change-down">${momChange}% vs prev mo</span>`;
+
+  // Category pills - primary
+  const catPills = allCats.map(c=>`
+    <button class="trend-cat-btn${c===_trendCat?' active':''}"
+      onclick="_trendCat='${c}';renderSpendingTrends()">
+      ${c}
+    </button>`).join('');
+
+  // Compare select
+  const compareOpts = ['<option value="">-- Compare with --</option>']
+    .concat(allCats.filter(c=>c!==_trendCat).map(c=>
+      `<option value="${c}"${c===_trendCat2?' selected':''}>${c}</option>`
+    )).join('');
+
+  // Bar rows
+  const bars = buckets.map((b,i)=>{
+    const w1 = maxVal>0 ? Math.round(b.total/maxVal*100) : 0;
+    const w2 = (_trendCat2&&maxVal>0) ? Math.round((b.total2||0)/maxVal*100) : 0;
+    const isHighest = b.total===highest.total && b.total>0;
+    const barColor = isHighest?'var(--red)':b.total>avg1?'var(--yellow)':'var(--accent)';
+
+    // MoM badge on bars
+    const prevB = buckets[i-1];
+    const barMom = (prevB&&prevB.total>0&&b.total>0)
+      ? parseFloat(((b.total-prevB.total)/prevB.total*100).toFixed(0)) : null;
+    const barMomStr = barMom===null?''
+      : `<span style="font-size:9px;color:${barMom>0?'var(--red)':'var(--green)'};margin-left:4px">${barMom>0?'+':''}${barMom}%</span>`;
+
+    return `<div class="trend-bar-row">
+      <div class="trend-bar-label">${b.label}</div>
+      <div style="flex:1">
+        <div class="trend-bar-bg">
+          <div class="trend-bar-fill" style="width:${w1}%;background:${barColor}">
+            ${w1>20?`<div class="trend-bar-val">${usd(b.total)}</div>`:''}
+          </div>
+          ${w1<=20&&b.total>0?`<span style="font-size:11px;color:var(--muted);margin-left:${w1+1}%">${usd(b.total)}${barMomStr}</span>`:''}
+          ${b.total===0?`<span style="font-size:11px;color:var(--border2);padding-left:8px">$0</span>`:''}
+        </div>
+        ${_trendCat2&&b.total2>0?`<div class="trend-bar-compare" style="width:${w2}%;background:rgba(59,130,246,.6);max-width:100%"></div>`:''}
+      </div>
+      ${w1>20?barMomStr:''}
+    </div>`;
+  }).join('');
+
+  // Summary stats
+  const trendDir = vals1[vals1.length-1] > vals1[0] ? 'up' : 'down';
+  const trendPct = vals1[0]>0 ? parseFloat(((vals1[vals1.length-1]-vals1[0])/vals1[0]*100).toFixed(1)) : null;
+
+  el.innerHTML = `
+    <div style="margin-bottom:12px">
+      <div style="font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;
+        letter-spacing:.5px;margin-bottom:6px">Primary Category ${momBadge}</div>
+      <div class="trends-cat-select">${catPills}</div>
+    </div>
+    <div class="trend-compare-row">
+      <span class="trend-compare-label">Compare with:</span>
+      <select style="background:var(--surface);border:1px solid var(--border2);border-radius:8px;
+        padding:5px 10px;color:var(--text);font-size:12px;flex:1"
+        onchange="_trendCat2=this.value||null;renderSpendingTrends()">
+        ${compareOpts}
+      </select>
+      ${_trendCat2?`<span style="display:inline-block;width:16px;height:4px;background:rgba(59,130,246,.6);border-radius:2px"></span> ${_trendCat2}`:''}
+    </div>
+    <div style="margin-bottom:10px">${bars}</div>
+    <div class="trend-avg-line">
+      <span style="font-size:11px;color:var(--muted)">Avg: <strong>${usd(avg1)}/mo</strong>${_trendCat2?` &nbsp;|&nbsp; ${_trendCat2} avg: <strong>${usd(avg2)}/mo</strong>`:''}</span>
+    </div>
+    <div class="trend-summary">
+      <div class="trend-stat">
+        <div class="trend-stat-label">Avg / month</div>
+        <div class="trend-stat-val">${usd(avg1)}</div>
+      </div>
+      <div class="trend-stat">
+        <div class="trend-stat-label">Highest</div>
+        <div class="trend-stat-val" style="color:var(--red)">${usd(highest.total)}<div style="font-size:9px;color:var(--muted)">${highest.label}</div></div>
+      </div>
+      <div class="trend-stat">
+        <div class="trend-stat-label">${months}-mo trend</div>
+        <div class="trend-stat-val" style="color:${trendDir==='up'?'var(--red)':'var(--green)'}">
+          ${trendPct!==null?(trendDir==='up'?'+':'')+trendPct+'%':'N/A'}
+        </div>
+      </div>
+    </div>`;
+}
+
+// ══════════════════════════════════════════════════════════════
+// FEATURE 8: NOTES & TAGS - ENHANCED
+// ══════════════════════════════════════════════════════════════
+
+let _activeTxnTagFilter = null;
+
+function handlePuTagInput(e){
+  if(e.key==='Enter'||e.key===','||e.key===' '){
+    e.preventDefault();
+    const val = $('pu-tag-input').value.replace(/[,#\s]/g,'').toLowerCase().trim();
+    if(val && !_puTags.includes(val) && _puTags.length<8){
+      _puTags.push(val);
+      renderTagChips(_puTags,'pu-tags-display','pu-tag-input');
+    }
+    $('pu-tag-input').value='';
+  }
+}
+
+function getAllTagsForMonth(monthStr){
+  return [...new Set(
+    data.transactions
+      .filter(t=>t.tags&&t.tags.length&&t.date&&t.date.slice(0,7)===monthStr)
+      .flatMap(t=>t.tags)
+  )].sort();
+}
+
+function renderTagFilterStrip(){
+  const strip = $('tag-filter-strip');
+  if(!strip) return;
+  const tags = getAllTagsForMonth(txnMonth);
+  if(!tags.length){ strip.style.display='none'; return; }
+  strip.style.display='flex';
+  strip.innerHTML = `<span style="font-size:10px;color:var(--muted);padding:4px 2px;flex-shrink:0">Filter:</span>`
+    + tags.map(tag=>`
+    <button class="tag-filter-chip${_activeTxnTagFilter===tag?' active':''}"
+      onclick="setTagFilter('${tag}')">
+      #${tag}
+    </button>`).join('')
+    + (_activeTxnTagFilter?`<button class="tag-filter-chip" style="border-color:var(--red);color:var(--red)"
+      onclick="setTagFilter(null)">&#x2715; Clear</button>`:'');
+}
+
+function setTagFilter(tag){
+  _activeTxnTagFilter = tag;
+  renderTxns();
+}
+
+
 function renderAll(){
   updateOriginalBalances();
   renderAlerts();renderDashboard();renderBudget();renderBills();renderDebt();
@@ -6693,5 +8041,9 @@ document.addEventListener('DOMContentLoaded',()=>{
     <button class="btn btn-primary btn-full" onclick="savePromoDebt()">Save Promo</button>
   </div>
   </div>
+
+  
+
+  
 </body>
 </html>
