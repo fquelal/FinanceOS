@@ -2,7 +2,7 @@
 // Strategy: Network first, cache fallback
 // Scope: /FinanceOS/
 
-const CACHE_NAME = 'financeos-v1.5.0';
+const CACHE_NAME = 'financeos-v1.5.1';
 const CACHED_URLS = [
   '/FinanceOS/',
   '/FinanceOS/index.html',
