@@ -11,6 +11,30 @@
 <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236c63ff'/><text y='.9em' font-size='80' x='10'>💰</text></svg>"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <title>FinanceOS</title>
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/FinanceOS/sw.js', { scope: '/FinanceOS/' })
+      .then(reg => {
+        // Check for updates every time the page loads
+        reg.update();
+        // When a new SW is waiting, reload to activate it
+        reg.addEventListener('updatefound', () => {
+          const newSW = reg.installing;
+          newSW.addEventListener('statechange', () => {
+            if(newSW.state === 'installed' && navigator.serviceWorker.controller){
+              // New version available — reload silently so user always has latest
+              navigator.serviceWorker.addEventListener('controllerchange', () => {
+                window.location.reload();
+              });
+            }
+          });
+        });
+      })
+      .catch(err => console.warn('SW registration failed:', err));
+  });
+}
+</script>
 <style>
 :root {
   --bg:#080812; --surface:#0f0f1e; --border:#1e1e3a; --border2:#2d2d50;
@@ -893,8 +917,7 @@ canvas{width:100%!important;}
   border-radius:10px;padding:12px 16px;margin-bottom:10px;font-size:12px;
   color:var(--text);line-height:1.6;}
 .about-tip strong{color:var(--yellow);}
-.about-version{text-align:center;font-size:11px;color:var(--border2);margin-top:24px;
-  padding-top:16px;border-top:1px solid var(--border);}
+.about-version{text-align:center;font-size:11px;color:var(--border2);margin-top:24px;padding-top:16px;border-top:1px solid var(--border);}
 
 </style>
 </head>
@@ -8397,6 +8420,7 @@ function renderAll(){
 
 // ── INIT ─────────────────────────────────────────
 setInterval(updateLastSavedUI, 60000);
+
 document.addEventListener('DOMContentLoaded',()=>{
   // Stamp version into About page
   const av=$('about-version-text'); if(av) av.textContent=`FinanceOS \u2022 Built for personal use \u2022 Data never leaves your device \u2022 ${APP_VERSION} \u2022 2026`;
