@@ -166,7 +166,7 @@ main{max-width:900px;padding:20px 20px 60px;}
 hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
 
 /* ── MODAL ── */
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:100;align-items:flex-end;justify-content:center;}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:300;align-items:flex-end;justify-content:center;}
 .overlay.open{display:flex;}
 .modal{background:#15152a;border:1px solid var(--border2);border-radius:20px 20px 0 0;padding:24px 20px 36px;width:100%;max-width:500px;animation:slideUp .22s ease;max-height:92vh;overflow-y:auto;}
 @keyframes slideUp{from{transform:translateY(50px);opacity:0;}to{transform:translateY(0);opacity:1;}}
@@ -358,6 +358,7 @@ canvas{width:100%!important;}
 [data-theme="light"] .plan-toggle{ background:#f0f0fa; border-color:#ddddf0; }
 [data-theme="light"] .plan-toggle button{ color:#6b6b88; }
 [data-theme="light"] #mob-header,[data-theme="light"] #mobile-header{ background:#ffffff; border-color:#ddddf0; }
+[data-theme="light"] #mobile-page-title{ color:#1a1a2e; }
 [data-theme="light"] .section-label{ color:#6b6b88; }
 [data-theme="light"] .row{ border-color:#ededfa; }
 
@@ -1184,12 +1185,8 @@ canvas{width:100%!important;}
 
     <!-- NET WORTH -->
     <div id="networth" class="section">
-      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:18px">
+      <div style="margin-bottom:18px">
         <h2 class="sec-title" data-i18n="Net Worth">Net Worth</h2>
-        <div style="display:flex;gap:8px">
-          <button class="btn btn-secondary btn-sm" onclick="openModal('account')">+ Account</button>
-          <button class="btn btn-primary btn-sm" onclick="openModal('asset')">+ Asset</button>
-        </div>
       </div>
 
       <div id="networth-alerts"></div>
@@ -1220,6 +1217,7 @@ canvas{width:100%!important;}
       <div class="card" style="margin-bottom:16px">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
           <div class="section-label" style="color:var(--blue);margin-bottom:0" data-i18n="Accounts">Accounts</div>
+          <button class="btn btn-secondary btn-sm" onclick="openModal('account')">+ Account</button>
         </div>
         <div id="account-list"></div>
       </div>
@@ -1234,7 +1232,10 @@ canvas{width:100%!important;}
       </div>
       <!-- Assets subsection -->
       <div class="card">
-        <div class="section-label" style="color:var(--muted)" data-i18n="Assets">Assets</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <div class="section-label" style="color:var(--muted);margin-bottom:0" data-i18n="Assets">Assets</div>
+          <button class="btn btn-primary btn-sm" onclick="openModal('asset')">+ Asset</button>
+        </div>
         <div id="asset-list"></div>
       </div>
     </div>
@@ -2204,7 +2205,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v1.5.1';
+const APP_VERSION='v1.5.0';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -2991,6 +2992,8 @@ function adjustAccountBalance(id,delta){
 }
 
 function openEditAccount(id){
+  const obOv=$('onboarding-overlay');
+  if(obOv&&!obOv.classList.contains('hidden')) obSkipOnboarding();
   const a=(data.accounts||[]).find(x=>x.id===id);if(!a)return;
   $('account-modal-title').textContent='Edit Account';
   $('ac-id').value=a.id;$('ac-name').value=a.name;$('ac-type').value=a.type;
@@ -3149,12 +3152,6 @@ function renderNetWorth(){
           placeholder="Set actual balance..." id="bal-correct-${a.id}"
           value="${a.balance.toFixed(2)}"/>
         <button class="bal-correct-btn" onclick="correctBalance(${a.id})">&#x26A1; Correct</button>
-      </div>
-      <div class="bal-correct-row">
-        <input class="bal-correct-input" type="number" inputmode="decimal"
-          placeholder="Set actual balance..." id="bal-correct-${a.id}"
-          value="${a.balance.toFixed(2)}"/>
-        <button class="bal-correct-btn" onclick="correctBalance(${a.id})">⚡ Correct</button>
       </div>
         </div>
       </div>
@@ -3366,9 +3363,12 @@ function show(sec,btn){
 
 // ── MODALS ───────────────────────────────────────
 function openModal(type,extra){
+  // If onboarding overlay is still visible, dismiss it — modals take priority
+  const obOv=$('onboarding-overlay');
+  if(obOv&&!obOv.classList.contains('hidden')) obSkipOnboarding();
   if(type==='goal'){openModal_goal();return;}
-  if(type==='income'){$('i-id').value='';$('i-source').value='';$('i-amount').value='';$('i-date').value=today();$('i-freq').value='Monthly';$('i-account').value='';$('i-actual').value='';$('i-actual-wrap').style.display='none';if($('i-lastpay'))$('i-lastpay').value='';if($('i-lastpay-wrap'))$('i-lastpay-wrap').style.display='none';populateAccountSelects();}
-  if(type==='expense'){clearOverlapWarn('expense-overlap-warn');$('expense-modal-title').textContent='Add Expense';$('e-id').value='';$('e-cat').value='';$('e-desc').value='';if($('e-autolog'))$('e-autolog').checked=false;if($('autolog-account-wrap'))$('autolog-account-wrap').style.display='none';$('e-amount').value='';$('e-date').value=today();$('e-freq').value='One-time';$('e-account').value='';populateAccountSelects();}
+  if(type==='income'){$('i-id').value='';$('i-source').value='';$('i-amount').value='';$('i-date').value=today();$('i-freq').value='Monthly';$('i-actual').value='';$('i-actual-wrap').style.display='none';if($('i-lastpay'))$('i-lastpay').value='';if($('i-lastpay-wrap'))$('i-lastpay-wrap').style.display='none';populateAccountSelects();$('i-account').value=getDefaultAccountId()||'';}
+  if(type==='expense'){clearOverlapWarn('expense-overlap-warn');$('expense-modal-title').textContent='Add Expense';$('e-id').value='';$('e-cat').value='';$('e-desc').value='';if($('e-autolog'))$('e-autolog').checked=false;if($('autolog-account-wrap'))$('autolog-account-wrap').style.display='none';$('e-amount').value='';$('e-date').value=today();$('e-freq').value='One-time';populateAccountSelects();$('e-account').value=getDefaultAccountId()||'';}
   if(type==='bill'){clearOverlapWarn('bill-overlap-warn');$('bill-modal-title').textContent='Add Bill / Debt';$('b-id').value='';$('b-name').value='';if($('b-autolog'))$('b-autolog').checked=false;if($('b-autolog-wrap'))$('b-autolog-wrap').style.display='none';if($('b-autolog-account-wrap'))$('b-autolog-account-wrap').style.display='none';$('b-amount').value='';$('b-date').value='';$('b-recur').value='No';$('b-type').value='bill';$('b-balance').value='';$('b-apr').value='';$('b-limit').value='';toggleDebtFields();$('bill-delete-wrap').style.display='none';}
   if(type==='account'){$('account-modal-title').textContent='Add Account';$('ac-id').value='';$('ac-name').value='';$('ac-type').value='checking';$('ac-balance').value='';$('ac-notes').value='';$('ac-default').checked=false;$('account-delete-wrap').style.display='none';}
   if(type==='purchase'){openPurchaseModal();return;}
