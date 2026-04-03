@@ -166,6 +166,7 @@ hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
 /* ── SECTIONS ── */
 .section{display:none;}
 .section.active{display:block;}
+#advisor.active{display:flex;flex-direction:column;height:calc(100vh - 56px);}
 
 /* ── TOAST ── */
 #toast{position:fixed;top:16px;left:50%;transform:translateX(-50%) translateY(-80px);background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.35);color:var(--green);border-radius:20px;padding:8px 18px;font-size:13px;font-weight:600;transition:transform .28s ease,opacity .28s ease;opacity:0;z-index:400;white-space:nowrap;pointer-events:none;}
@@ -1330,32 +1331,47 @@ canvas{width:100%!important;}
     <!-- QUICK UPDATE -->
     <!-- MY ADVISOR -->
     <div id="advisor" class="section">
-      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 24px 36px;text-align:center;gap:0">
-        <div style="font-size:64px;margin-bottom:20px;filter:drop-shadow(0 0 24px rgba(108,99,255,.4))">🤖</div>
-        <h2 style="font-size:24px;font-weight:800;color:var(--text);margin-bottom:10px;letter-spacing:-.3px">Your Personal AI Financial Advisor</h2>
-        <p style="font-size:14px;color:var(--muted);line-height:1.7;max-width:320px;margin-bottom:32px">Powered by your real financial data — ask anything about your spending, debt payoff strategy, savings goals, or how to improve your net worth.</p>
-        <div style="background:rgba(108,99,255,.08);border:1px solid rgba(108,99,255,.2);border-radius:16px;padding:20px 24px;max-width:360px;width:100%;margin-bottom:28px">
-          <div style="font-size:11px;font-weight:700;color:var(--accent2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px">Coming Soon</div>
-          <div style="display:flex;flex-direction:column;gap:10px">
-            <div style="display:flex;align-items:center;gap:10px;text-align:left">
-              <span style="font-size:18px">💬</span>
-              <span style="font-size:13px;color:var(--muted)">"Should I pay off my credit card or build my emergency fund first?"</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:10px;text-align:left">
-              <span style="font-size:18px">📊</span>
-              <span style="font-size:13px;color:var(--muted)">"Where am I overspending compared to last month?"</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:10px;text-align:left">
-              <span style="font-size:18px">🎯</span>
-              <span style="font-size:13px;color:var(--muted)">"How long until I can afford the Japan trip at my current savings rate?"</span>
+
+      <!-- API Key Setup Screen -->
+      <div id="advisor-key-screen" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:48px 24px;text-align:center;flex:1">
+        <div style="font-size:56px;margin-bottom:18px;filter:drop-shadow(0 0 24px rgba(108,99,255,.4))">🤖</div>
+        <h2 style="font-size:22px;font-weight:800;color:var(--text);margin-bottom:8px;letter-spacing:-.3px">Your Personal AI Financial Advisor</h2>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7;max-width:300px;margin-bottom:28px">Powered by your real data. Enter your Anthropic API key to get started — stored locally, never shared.</p>
+        <div style="width:100%;max-width:360px;display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
+          <input id="advisor-api-key-input" type="password" placeholder="sk-ant-api03-..." autocomplete="off" style="width:100%;background:#0a0a1a;border:1px solid var(--border2);border-radius:10px;padding:12px 14px;color:var(--text);font-size:14px;outline:none;font-family:var(--font-b)" onkeydown="if(event.key==='Enter')advisorSetKey()">
+          <button class="btn btn-primary" onclick="advisorSetKey()" style="width:100%;justify-content:center;padding:12px">Connect Advisor</button>
+        </div>
+        <a href="https://console.anthropic.com/settings/keys" target="_blank" style="font-size:12px;color:var(--accent2);text-decoration:none">Get an API key at console.anthropic.com →</a>
+        <p style="font-size:11px;color:var(--muted);margin-top:20px;max-width:300px;line-height:1.6">Your key is stored only in this browser's localStorage. API calls go directly to Anthropic — no third-party server involved.</p>
+      </div>
+
+      <!-- Chat Screen -->
+      <div id="advisor-chat-screen" style="display:none;flex-direction:column;flex:1;height:100%;overflow:hidden">
+        <!-- Header -->
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border);flex-shrink:0">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:22px">🤖</span>
+            <div>
+              <div style="font-size:14px;font-weight:700;color:var(--text)">AI Financial Advisor</div>
+              <div style="font-size:11px;color:var(--green);display:flex;align-items:center;gap:4px"><span style="width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block"></span>Live — reading your data</div>
             </div>
           </div>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-secondary" onclick="advisorClearHistory()" style="font-size:11px;padding:5px 10px">Clear Chat</button>
+            <button class="btn btn-secondary" onclick="advisorClearKey()" style="font-size:11px;padding:5px 10px">Disconnect</button>
+          </div>
         </div>
-        <div style="font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px">
-          <span style="width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block;animation:pulse 2s infinite"></span>
-          100% private — your data never leaves this device
+
+        <!-- Messages -->
+        <div id="advisor-messages" style="flex:1;overflow-y:auto;padding:16px 18px;display:flex;flex-direction:column"></div>
+
+        <!-- Input Bar -->
+        <div style="padding:12px 18px 20px;border-top:1px solid var(--border);flex-shrink:0;display:flex;gap:10px;align-items:flex-end">
+          <textarea id="advisor-input" placeholder="Ask anything about your finances…" rows="1" onkeydown="advisorKeyPress(event)" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px'" style="flex:1;background:#0a0a1a;border:1px solid var(--border2);border-radius:10px;padding:11px 13px;color:var(--text);font-size:14px;outline:none;font-family:var(--font-b);resize:none;line-height:1.5;overflow:hidden"></textarea>
+          <button id="advisor-send-btn" class="btn btn-primary" onclick="advisorSend()" style="padding:11px 16px;flex-shrink:0">Send</button>
         </div>
       </div>
+
     </div>
 
     <!-- QUICK UPDATE -->
@@ -3649,6 +3665,7 @@ function show(sec,btn){
   }
   if(sec==='cards') setTimeout(()=>renderCards(),50);
   if(sec==='quick') setTimeout(()=>renderTxns(),50);
+  if(sec==='advisor') setTimeout(()=>renderAdvisor(),50);
 }
 
 // ── MODALS ───────────────────────────────────────
@@ -8785,6 +8802,200 @@ document.addEventListener('DOMContentLoaded',()=>{
     drawChart(getMonthlyExpenses(months));
   },350);
 });
+
+// ── AI ADVISOR ─────────────────────────────────────────
+let advisorHistory = [];
+
+function buildFinancialContext() {
+  const d = data;
+  const fmt = n => '$' + Math.abs(n || 0).toLocaleString('en-US', {minimumFractionDigits:0, maximumFractionDigits:0});
+
+  // Accounts
+  const accounts = (d.accounts||[]).map(a =>
+    a.name + ' (' + a.type + '): ' + fmt(a.balance) + (a.apy ? ' @ ' + a.apy + '% APY' : '')
+  ).join(', ') || 'None';
+
+  // Monthly income estimate
+  const monthlyIncome = (d.income||[]).reduce(function(sum, i) {
+    var m = i.amount || 0;
+    if (i.frequency === 'Bi-weekly') m = m * 26 / 12;
+    else if (i.frequency === 'Weekly') m = m * 52 / 12;
+    else if (i.frequency === 'Annual') m = m / 12;
+    return sum + m;
+  }, 0);
+
+  // Expenses by category
+  var expCats = {};
+  (d.expenses||[]).forEach(function(e) {
+    var m = e.amount || 0;
+    if (e.frequency === 'Bi-weekly') m = m * 26 / 12;
+    else if (e.frequency === 'Weekly') m = m * 52 / 12;
+    else if (e.frequency === 'Annual') m = m / 12;
+    expCats[e.category] = (expCats[e.category] || 0) + m;
+  });
+  var topExpenses = Object.entries(expCats)
+    .sort(function(a,b){return b[1]-a[1];})
+    .map(function(x){return x[0] + ': ' + fmt(x[1]) + '/mo';})
+    .join(', ') || 'None logged';
+
+  // Bills (non-debt)
+  var billList = (d.bills||[])
+    .filter(function(b){return b.btype === 'bill';})
+    .map(function(b){return b.name + ': ' + fmt(b.amount) + ' due ' + (b.dueDate||'?');})
+    .join(', ') || 'None';
+
+  // Debt (credit cards + loans)
+  var debtList = (d.bills||[])
+    .filter(function(b){return b.btype === 'creditcard' || b.btype === 'loan' || b.btype === 'promo';})
+    .map(function(b){
+      var s = b.name + ' (' + b.btype + '): ' + fmt(b.balance||0) + ' balance';
+      if (b.apr) s += ' @ ' + b.apr + '% APR';
+      if (b.creditLimit) s += ', limit ' + fmt(b.creditLimit);
+      if (b.originalLoanAmount) s += ', original loan ' + fmt(b.originalLoanAmount);
+      return s;
+    }).join('\n') || 'None';
+
+  // Goals
+  var goalList = (d.goals||[])
+    .map(function(g){
+      return g.name + ': ' + fmt(g.saved||0) + ' saved of ' + fmt(g.target) + ' target' + (g.date ? ' by ' + g.date : '');
+    }).join('\n') || 'None';
+
+  // Net worth
+  var totalAssets = (d.accounts||[]).reduce(function(s,a){return s+(a.balance||0);},0)
+    + (d.assets||[]).reduce(function(s,a){return s+(a.value||0);},0);
+  var totalDebt = (d.bills||[])
+    .filter(function(b){return b.btype==='creditcard'||b.btype==='loan'||b.btype==='promo';})
+    .reduce(function(s,b){return s+(b.balance||0);},0);
+
+  // Recent spending (last 30 days from transactions)
+  var cutoff = new Date(); cutoff.setDate(cutoff.getDate()-30);
+  var cutoffStr = cutoff.toISOString().split('T')[0];
+  var recentSpend = (d.transactions||[])
+    .filter(function(t){return t.date >= cutoffStr && (t.type==='Purchase'||t.type==='Withdrawal') && !t.promoRef;})
+    .reduce(function(s,t){return s+(t.amount||0);},0);
+
+  return 'You are a personal AI financial advisor with direct access to the user\'s real financial data from their FinanceOS app. Be concise, specific, and actionable. Reference their actual numbers when relevant. Do not give generic advice.\n\nUSER\'S FINANCIAL SNAPSHOT:\n\nACCOUNTS: ' + accounts + '\n\nMONTHLY INCOME (estimated): ' + fmt(monthlyIncome) + '/mo\n\nMONTHLY EXPENSES by category: ' + topExpenses + '\n\nBILLS: ' + billList + '\n\nDEBT:\n' + debtList + '\n\nSAVINGS GOALS:\n' + goalList + '\n\nNET WORTH: ' + fmt(totalAssets) + ' total assets - ' + fmt(totalDebt) + ' total debt = ' + fmt(totalAssets - totalDebt) + '\n\nSPENDING (last 30 days): ' + fmt(recentSpend) + '\n\nToday: ' + new Date().toLocaleDateString('en-US', {month:'long', day:'numeric', year:'numeric'});
+}
+
+function renderAdvisor() {
+  var keyScreen = document.getElementById('advisor-key-screen');
+  var chatScreen = document.getElementById('advisor-chat-screen');
+  if (!keyScreen || !chatScreen) return;
+  var apiKey = localStorage.getItem('financeOS_apiKey') || '';
+  if (!apiKey) {
+    keyScreen.style.display = 'flex';
+    chatScreen.style.display = 'none';
+  } else {
+    keyScreen.style.display = 'none';
+    chatScreen.style.display = 'flex';
+    renderAdvisorMessages();
+  }
+}
+
+function advisorSetKey() {
+  var inp = document.getElementById('advisor-api-key-input');
+  var key = (inp ? inp.value : '').trim();
+  if (!key.startsWith('sk-ant-')) { showToast('Invalid API key — must start with sk-ant-'); return; }
+  localStorage.setItem('financeOS_apiKey', key);
+  if (inp) inp.value = '';
+  advisorHistory = [];
+  renderAdvisor();
+}
+
+function advisorClearKey() {
+  localStorage.removeItem('financeOS_apiKey');
+  advisorHistory = [];
+  renderAdvisor();
+}
+
+function advisorClearHistory() {
+  advisorHistory = [];
+  renderAdvisorMessages();
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function renderAdvisorMessages() {
+  var wrap = document.getElementById('advisor-messages');
+  if (!wrap) return;
+  if (advisorHistory.length === 0) {
+    wrap.innerHTML = '<div style="text-align:center;padding:48px 20px;color:var(--muted);font-size:13px"><div style="font-size:40px;margin-bottom:14px">🤖</div><div style="font-weight:700;color:var(--text);margin-bottom:6px;font-size:15px">Ready to advise</div><div>Ask me anything about your finances.</div></div>';
+    return;
+  }
+  wrap.innerHTML = advisorHistory.map(function(m) {
+    var isUser = m.role === 'user';
+    return '<div style="display:flex;justify-content:' + (isUser?'flex-end':'flex-start') + ';margin-bottom:10px">' +
+      '<div style="max-width:84%;padding:10px 14px;border-radius:' + (isUser?'16px 16px 4px 16px':'16px 16px 16px 4px') + ';background:' + (isUser?'var(--accent)':'var(--surface)') + ';border:' + (isUser?'none':'1px solid var(--border)') + ';font-size:13px;line-height:1.6;color:var(--text);white-space:pre-wrap;word-break:break-word">' +
+      escHtml(m.content) + '</div></div>';
+  }).join('');
+  wrap.scrollTop = wrap.scrollHeight;
+}
+
+async function advisorSend() {
+  var inp = document.getElementById('advisor-input');
+  var msg = inp ? inp.value.trim() : '';
+  if (!msg) return;
+  var apiKey = localStorage.getItem('financeOS_apiKey');
+  if (!apiKey) { renderAdvisor(); return; }
+
+  inp.value = '';
+  inp.style.height = 'auto';
+  advisorHistory.push({role:'user', content:msg});
+  renderAdvisorMessages();
+
+  // Loading indicator
+  var wrap = document.getElementById('advisor-messages');
+  var loadDiv = document.createElement('div');
+  loadDiv.id = 'advisor-loading';
+  loadDiv.style.cssText = 'display:flex;justify-content:flex-start;margin-bottom:10px';
+  loadDiv.innerHTML = '<div style="padding:10px 14px;border-radius:16px 16px 16px 4px;background:var(--surface);border:1px solid var(--border);font-size:13px;color:var(--muted)">Thinking…</div>';
+  wrap.appendChild(loadDiv);
+  wrap.scrollTop = wrap.scrollHeight;
+
+  var sendBtn = document.getElementById('advisor-send-btn');
+  if (sendBtn) sendBtn.disabled = true;
+
+  try {
+    var resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-calls': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 1024,
+        system: buildFinancialContext(),
+        messages: advisorHistory
+      })
+    });
+    var result = await resp.json();
+    var loadEl = document.getElementById('advisor-loading');
+    if (loadEl) loadEl.remove();
+    if (result.error) {
+      advisorHistory.push({role:'assistant', content:'⚠️ API Error: ' + result.error.message});
+    } else {
+      var text = (result.content && result.content[0] && result.content[0].text) ? result.content[0].text : '(no response)';
+      advisorHistory.push({role:'assistant', content:text});
+    }
+  } catch(err) {
+    var loadEl2 = document.getElementById('advisor-loading');
+    if (loadEl2) loadEl2.remove();
+    advisorHistory.push({role:'assistant', content:'⚠️ Connection error. Check your internet and try again.'});
+  }
+
+  if (sendBtn) sendBtn.disabled = false;
+  renderAdvisorMessages();
+}
+
+function advisorKeyPress(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); advisorSend(); }
+}
 </script>
 
 </body>
