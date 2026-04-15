@@ -2304,7 +2304,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v1.6.1';
+const APP_VERSION='v1.6.2';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -5009,7 +5009,7 @@ function renderBudget(){
   });
 
   const billTypeIcon={bill:'📋',creditcard:'💳',loan:'🏦',promo:'🎁'};
-  const billRows=data.bills.map(b=>`
+  const billRows=data.bills.filter(b=>b.amount>0).map(b=>`
     <div class="row"><div>
       <div class="row-label">${billTypeIcon[b.btype]||'📋'} ${b.name}
         ${b.btype==='creditcard'?'<span style="background:rgba(239,68,68,.15);color:#ef4444;border-radius:5px;padding:1px 6px;font-size:10px;font-weight:700;margin-left:4px">CARD</span>':
@@ -5066,6 +5066,8 @@ function renderBills(){
     } else if(eff==='Overdue'){
       actions=`<span class="badge" style="background:${sc}22;color:${sc};font-size:12px">${t('Overdue')}</span>
         <button class="btn btn-sm" style="background:rgba(239,68,68,.15);color:var(--red)" onclick="${isDebt?`openPayDebt(${b.id})`:`openScheduleBill(${b.id})`}">${t('Schedule Now')}</button>`;
+    } else if(isDebt && !b.balance && !b.amount){
+      actions=`<span class="badge" style="background:rgba(85,85,102,.2);color:var(--muted);font-size:12px">No Balance</span>`;
     } else {
       actions=`<span class="badge" style="background:${sc}22;color:${sc};font-size:12px">${t('Pending')}</span>
         <button class="btn btn-sm" style="background:rgba(59,130,246,.15);color:var(--blue)" onclick="${isDebt?`openPayDebt(${b.id})`:`openScheduleBill(${b.id})`}">${t('Schedule')}</button>`;
