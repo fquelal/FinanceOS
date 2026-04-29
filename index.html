@@ -79,27 +79,36 @@ main{max-width:900px;padding:20px 20px 60px;}
 }
 #overlay-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:55;}
 #hamburger{display:none;}
-/* ── BOTTOM TAB BAR ── */
+/* ── BOTTOM PILL STRIP ── */
 #bottom-tab-bar{
   display:none;
   position:fixed;bottom:0;left:0;right:0;
-  background:var(--surface);border-top:1px solid var(--border);
-  z-index:52;padding:6px 0 env(safe-area-inset-bottom,10px);
-  justify-content:space-around;align-items:center;
+  background:var(--surface);
+  border-top:0.5px solid var(--border);
+  z-index:52;
+  flex-direction:column;
 }
+.pill-strip{
+  display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;
+  scrollbar-width:none;padding:7px 10px;gap:4px;
+  padding-bottom:calc(7px + env(safe-area-inset-bottom, 8px));
+}
+.pill-strip::-webkit-scrollbar{display:none;}
 .btb-item{
   display:flex;flex-direction:column;align-items:center;gap:3px;
-  padding:4px 8px;border:none;background:none;cursor:pointer;
-  min-width:52px;color:var(--muted);font-family:var(--font-b);
-  transition:color .15s;-webkit-tap-highlight-color:transparent;
+  padding:6px 14px;border-radius:20px;flex-shrink:0;
+  border:none;background:none;cursor:pointer;
+  color:var(--muted);font-family:var(--font-b);
+  transition:background .15s,color .15s;
+  -webkit-tap-highlight-color:transparent;min-width:0;
 }
-.btb-item.active{color:var(--accent);}
-.btb-icon{font-size:22px;line-height:1;}
-.btb-label{font-size:10px;font-weight:600;letter-spacing:.2px;}
+.btb-item.active{background:rgba(108,99,255,.14);color:var(--accent);}
+.btb-icon{font-size:20px;line-height:1;}
+.btb-label{font-size:10px;font-weight:600;letter-spacing:.2px;white-space:nowrap;}
 
 /* ── FAB ── */
 #fab{
-  display:none;position:fixed;bottom:76px;right:18px;
+  display:none;position:fixed;bottom:74px;right:18px;
   width:52px;height:52px;background:var(--accent);
   border-radius:50%;border:none;color:#fff;font-size:26px;
   line-height:1;cursor:pointer;z-index:51;
@@ -133,11 +142,11 @@ main{max-width:900px;padding:20px 20px 60px;}
   #overlay-bg.show{display:block;}
   #content{margin-left:0;}
   #alerts-bar{padding-top:4px;}
-  main{padding:16px 14px 100px;}
+  main{padding:16px 14px 110px;}
   .sec-title{display:none;}
   #bottom-tab-bar{display:flex;}
   #fab{display:flex;}
-  #advisor.active{height:calc(100vh - 56px - 68px);}
+  #advisor.active{height:calc(100vh - 56px - 72px);}
 }
 
 /* ── ALERTS ── */
@@ -1032,23 +1041,40 @@ canvas{width:100%!important;}
   </div>
 </div>
 
-<!-- ── BOTTOM TAB BAR (mobile only) ── -->
+<!-- ── BOTTOM PILL STRIP (mobile only) ── -->
 <div id="bottom-tab-bar">
-  <button class="btb-item active" id="tab-home" onclick="show('dashboard',null)">
-    <span class="btb-icon">🏠</span><span class="btb-label">Home</span>
-  </button>
-  <button class="btb-item" id="tab-money" onclick="show('budget',null)">
-    <span class="btb-icon">💰</span><span class="btb-label">Money</span>
-  </button>
-  <button class="btb-item" id="tab-bills" onclick="show('bills',null)">
-    <span class="btb-icon">📋</span><span class="btb-label">Bills</span>
-  </button>
-  <button class="btb-item" id="tab-accounts" onclick="show('networth',null)">
-    <span class="btb-icon">🏦</span><span class="btb-label">Accounts</span>
-  </button>
-  <button class="btb-item" id="tab-more" onclick="openModal('more')">
-    <span class="btb-icon">&#8943;</span><span class="btb-label">More</span>
-  </button>
+  <div class="pill-strip">
+    <button class="btb-item active" id="tab-dashboard" onclick="show('dashboard',null)">
+      <span class="btb-icon">🏠</span><span class="btb-label">Home</span>
+    </button>
+    <button class="btb-item" id="tab-budget" onclick="show('budget',null)">
+      <span class="btb-icon">💰</span><span class="btb-label">Cash Flow</span>
+    </button>
+    <button class="btb-item" id="tab-bills" onclick="show('bills',null)">
+      <span class="btb-icon">📋</span><span class="btb-label">Bills</span>
+    </button>
+    <button class="btb-item" id="tab-networth" onclick="show('networth',null)">
+      <span class="btb-icon">🏦</span><span class="btb-label">Accounts</span>
+    </button>
+    <button class="btb-item" id="tab-quick" onclick="show('quick',null)">
+      <span class="btb-icon">⚡</span><span class="btb-label">Transactions</span>
+    </button>
+    <button class="btb-item" id="tab-insights" onclick="show('insights',null)">
+      <span class="btb-icon">📈</span><span class="btb-label">Insights</span>
+    </button>
+    <button class="btb-item" id="tab-debt" onclick="show('debt',null)">
+      <span class="btb-icon">📉</span><span class="btb-label">Debt</span>
+    </button>
+    <button class="btb-item" id="tab-cards" onclick="show('cards',null)">
+      <span class="btb-icon">💳</span><span class="btb-label">Cards</span>
+    </button>
+    <button class="btb-item" id="tab-advisor" onclick="show('advisor',null)">
+      <span class="btb-icon">🤖</span><span class="btb-label">Advisor</span>
+    </button>
+    <button class="btb-item" id="tab-about" onclick="show('about',null)">
+      <span class="btb-icon">ℹ️</span><span class="btb-label">About</span>
+    </button>
+  </div>
 </div>
 
 <!-- ── FAB ── -->
@@ -1074,47 +1100,12 @@ canvas{width:100%!important;}
   </div>
 </div>
 
-<!-- MORE DRAWER -->
-<div class="overlay" id="modal-more">
-  <div class="modal" style="padding-bottom:36px">
-    <div style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:14px;text-align:center">More</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
-      <button class="btn btn-secondary" style="flex-direction:column;gap:6px;padding:16px 10px;justify-content:center;align-items:center" onclick="closeModal('more');show('quick',null)">
-        <span style="font-size:22px">⚡</span><span style="font-size:12px;font-weight:600">Quick Update</span>
-      </button>
-      <button class="btn btn-secondary" style="flex-direction:column;gap:6px;padding:16px 10px;justify-content:center;align-items:center" onclick="closeModal('more');show('debt',null)">
-        <span style="font-size:22px">📉</span><span style="font-size:12px;font-weight:600">Debt Planner</span>
-      </button>
-      <button class="btn btn-secondary" style="flex-direction:column;gap:6px;padding:16px 10px;justify-content:center;align-items:center" onclick="closeModal('more');show('insights',null)">
-        <span style="font-size:22px">📈</span><span style="font-size:12px;font-weight:600">Insights</span>
-      </button>
-      <button class="btn btn-secondary" style="flex-direction:column;gap:6px;padding:16px 10px;justify-content:center;align-items:center" onclick="closeModal('more');show('cards',null)">
-        <span style="font-size:22px">💳</span><span style="font-size:12px;font-weight:600">Cards</span>
-      </button>
-      <button class="btn btn-secondary" style="flex-direction:column;gap:6px;padding:16px 10px;justify-content:center;align-items:center" onclick="closeModal('more');show('advisor',null)">
-        <span style="font-size:22px">🤖</span><span style="font-size:12px;font-weight:600">My Advisor</span>
-      </button>
-      <button class="btn btn-secondary" style="flex-direction:column;gap:6px;padding:16px 10px;justify-content:center;align-items:center" onclick="closeModal('more');show('about',null)">
-        <span style="font-size:22px">ℹ️</span><span style="font-size:12px;font-weight:600">About</span>
-      </button>
-    </div>
-    <div style="display:flex;gap:10px">
-      <button class="btn btn-secondary" style="flex:1;justify-content:center;gap:8px" onclick="closeModal('more');openModal('settings')">
-        <span>⚙️</span><span style="font-size:13px;font-weight:600">Settings</span>
-      </button>
-      <button class="btn btn-secondary" id="more-lock-btn" style="flex:1;justify-content:center;gap:8px;display:none" onclick="closeModal('more');lockApp()">
-        <span>🔒</span><span style="font-size:13px;font-weight:600">Lock App</span>
-      </button>
-    </div>
-    <button class="btn btn-secondary btn-full" style="color:var(--accent2);margin-top:10px" onclick="closeModal('more')">Cancel</button>
-  </div>
-</div>
-
 <!-- ── CONTENT ── -->
 <div id="content">
   <!-- Mobile top bar -->
   <div id="mobile-header">
-    <span id="mobile-page-title" style="font-size:17px;font-weight:700;color:var(--text);flex:1">Dashboard</span>
+    <button onclick="toggleSidebar()" style="background:none;border:none;color:var(--text);font-size:22px;cursor:pointer;padding:2px 4px;flex-shrink:0;line-height:1;">&#9776;</button>
+    <span id="mobile-page-title" style="font-size:17px;font-weight:700;color:var(--text);flex:1;padding-left:10px">Dashboard</span>
     <button id="mobile-bell" onclick="openNotifDrawer()" title="Notifications">🔔<span id="mobile-bell-badge"></span></button>
   </div>
   <main>
@@ -2464,7 +2455,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v1.8.0';
+const APP_VERSION='v1.8.1';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -3824,11 +3815,13 @@ function show(sec,btn){
   $(sec).classList.add('active');
   if(btn) btn.classList.add('active');
   const mob=$('mobile-page-title');if(mob) mob.textContent=t(pageTitles[sec]||'');
-  // Sync bottom tab bar
-  const tabMap={dashboard:'tab-home',budget:'tab-money',bills:'tab-bills',networth:'tab-accounts'};
+  // Sync bottom pill strip
   document.querySelectorAll('.btb-item').forEach(b=>b.classList.remove('active'));
-  const activeTabId=tabMap[sec]||'tab-more';
-  const activeTab=$(activeTabId);if(activeTab)activeTab.classList.add('active');
+  const activeTab=$('tab-'+sec);
+  if(activeTab){
+    activeTab.classList.add('active');
+    activeTab.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+  }
   // Sync More lock button visibility with sidebar lock button
   const moreLock=$('more-lock-btn');
   const sidebarLock=$('lock-nav-btn');
