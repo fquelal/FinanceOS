@@ -1258,9 +1258,9 @@ canvas{width:100%!important;}
 
       <!-- Budget vs Actual -->
       <div class="card" style="margin-bottom:16px">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;flex-wrap:wrap;gap:10px">
           <div class="section-label" style="color:var(--muted);margin-bottom:0" data-i18n="Budget vs Actual">Budget vs Actual</div>
-          <div style="display:flex;gap:8px;align-items:center">
+          <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:flex-end;min-width:0">
             <div class="plan-toggle" style="margin-bottom:0">
               <button id="tab-categories" class="active" onclick="setInsightsTab('categories')" data-i18n="Categories">Categories</button>
               <button id="tab-cards" onclick="setInsightsTab('cards')" data-i18n="Cards">Cards</button>
@@ -1755,7 +1755,7 @@ canvas{width:100%!important;}
     <div class="modal-header"><span class="modal-title" id="bill-modal-title" data-i18n="Add Bill / Debt">Add Bill / Debt</span><button class="close-btn" onclick="closeModal('bill')">✕</button></div>
     <input type="hidden" id="b-id"/>
     <div class="overlap-warn" id="bill-overlap-warn"></div>
-    <div class="field"><label data-i18n="Name">Name</label><input id="b-name" placeholder="e.g. Rent, Chase Visa, Student Loan" oninput="checkBillExpenseOverlap(this.value,'bill-overlap-warn')"/></div>
+    <div class="field"><label data-i18n="Name">Name</label><input id="b-name" placeholder="e.g. Rent, Chase Visa, Student Loan" oninput="checkBillExpenseOverlap(this.value,'bill-overlap-warn');autofillBillUrl()"/></div>
     <div class="field"><label data-i18n="Type">Type</label>
       <select id="b-type" onchange="toggleDebtFields()">
         <option value="bill" data-i18n="Regular Bill">Regular Bill</option>
@@ -1791,6 +1791,9 @@ canvas{width:100%!important;}
           <option value="">-- Select account --</option>
         </select>
       </div>
+    </div>
+    <div class="field"><label>Website (optional)</label><input id="b-url" placeholder="e.g. chase.com or netflix.com" oninput="onBillUrlInput(this.value)"/>
+      <div style="font-size:11px;color:var(--muted);margin-top:4px">Tap to go directly to this biller's site or app when paying.</div>
     </div>
     <button class="btn btn-primary btn-full" onclick="saveBill()" data-i18n="Save">Save</button>
     <div id="bill-delete-wrap" style="display:none;margin-top:10px">
@@ -1898,6 +1901,32 @@ canvas{width:100%!important;}
   </div>
 </div>
 
+<!-- LINK ACTION SHEET -->
+<div class="overlay" id="modal-link-sheet" style="align-items:flex-end">
+  <div class="modal" style="border-radius:20px 20px 0 0;padding:16px 20px 36px">
+    <div style="width:36px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 16px"></div>
+    <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px" id="link-sheet-title"></div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:16px" id="link-sheet-host"></div>
+    <button class="btn btn-secondary btn-full" style="justify-content:flex-start;gap:14px;padding:14px 16px;margin-bottom:10px;text-align:left" onclick="doOpenLink()">
+      <span style="font-size:20px">🚀</span>
+      <span style="flex:1">
+        <span style="display:block;font-size:14px;font-weight:600;color:var(--text)">Open website</span>
+        <span style="display:block;font-size:11px;color:var(--muted);margin-top:2px" id="link-sheet-open-sub"></span>
+      </span>
+      <span style="color:var(--muted);font-size:16px">›</span>
+    </button>
+    <button class="btn btn-secondary btn-full" style="justify-content:flex-start;gap:14px;padding:14px 16px;margin-bottom:10px;text-align:left" onclick="doCopyLink()">
+      <span style="font-size:20px">📋</span>
+      <span style="flex:1">
+        <span style="display:block;font-size:14px;font-weight:600;color:var(--text)">Copy link</span>
+        <span style="display:block;font-size:11px;color:var(--muted);margin-top:2px">Paste in Safari for saved passwords &amp; app redirect</span>
+      </span>
+      <span style="color:var(--muted);font-size:16px">›</span>
+    </button>
+    <button class="btn btn-secondary btn-full" style="color:var(--accent2);margin-top:4px" onclick="closeModal('link-sheet')">Cancel</button>
+  </div>
+</div>
+
 <!-- ACCOUNT -->
 <div class="overlay" id="modal-account">
   <div class="modal">
@@ -1920,6 +1949,9 @@ canvas{width:100%!important;}
     </div>
     <div class="field"><label data-i18n="Current Balance ($)">Current Balance ($)</label><input id="ac-balance" type="number" inputmode="decimal" placeholder="0.00"/></div>
     <div class="field"><label data-i18n="Notes (optional)">Notes (optional)</label><input id="ac-notes" placeholder="e.g. Primary checking account"/></div>
+    <div class="field" id="ac-url-wrap"><label>Online Banking URL (optional)</label><input id="ac-url" placeholder="e.g. pnc.com or ally.com"/>
+      <div style="font-size:11px;color:var(--muted);margin-top:4px">Tap to jump directly to your bank's website or app.</div>
+    </div>
     <button class="btn btn-primary btn-full" onclick="saveAccount()" data-i18n="Save Account">Save Account</button>
     <div id="account-delete-wrap" style="display:none;margin-top:10px">
       <button class="btn btn-danger btn-full" onclick="deleteAccountFromModal()">🗑️ Remove Account</button>
@@ -2323,7 +2355,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v1.6.6';
+const APP_VERSION='v1.7.0';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -3111,6 +3143,7 @@ function openEditAccount(id){
   $('ac-id').value=a.id;$('ac-name').value=a.name;$('ac-type').value=a.type;
   $('ac-balance').value=a.balance;$('ac-notes').value=a.notes||'';
   $('ac-apy').value=a.apy||'';
+  if($('ac-url'))$('ac-url').value=a.url||'';
   $('ac-default').checked=a.isDefault||false;
   toggleAcApyField();
   $('account-delete-wrap').style.display='block';
@@ -3120,15 +3153,17 @@ function openEditAccount(id){
 function saveAccount(){
   const name=$('ac-name').value.trim(),type=$('ac-type').value,bal=parseFloat($('ac-balance').value)||0,notes=$('ac-notes').value.trim();
   const apy=(type==='cash')?0:(parseFloat($('ac-apy').value)||0);
+  const rawUrl=($('ac-url')&&$('ac-url').value.trim())||'';
+  const acUrl=rawUrl?normUrl(rawUrl):'';
   if(!name)return;
   if(!data.accounts)data.accounts=[];
   const isDefault=$('ac-default').checked;
   const eid=parseInt($('ac-id').value);
-  const item={id:eid||Date.now(),name,type,balance:bal,notes,isDefault,apy};
+  const item={id:eid||Date.now(),name,type,balance:bal,notes,isDefault,apy,url:acUrl||undefined};
   // If this is default, clear isDefault on all others
   if(isDefault) (data.accounts||[]).forEach(a=>{ if(a.id!==item.id) a.isDefault=false; });
   data.accounts=eid?data.accounts.map(a=>a.id===eid?item:a):[...data.accounts,item];
-  $('ac-name').value='';$('ac-balance').value='';$('ac-notes').value='';$('ac-apy').value='';$('ac-id').value='';
+  $('ac-name').value='';$('ac-balance').value='';$('ac-notes').value='';$('ac-apy').value='';$('ac-id').value='';if($('ac-url'))$('ac-url').value='';
   $('account-delete-wrap').style.display='none';
   closeModal('account');saveData();renderAll();
 }
@@ -3367,6 +3402,9 @@ function renderNetWorth(){
         <span style="font-size:11px;color:var(--muted)">·</span>
         <span style="font-size:11px;color:var(--muted)">~${usd(parseFloat((a.balance*a.apy/100).toFixed(2)))} projected / yr</span>
       </div>`:''}
+      ${a.url?`<button class="btn btn-secondary btn-sm" style="margin-top:8px;width:100%;justify-content:flex-start;gap:8px;padding:8px 12px;border:1px solid rgba(108,99,255,.2);background:rgba(108,99,255,.07)" onclick="openLinkSheet('${a.url}','${a.name.replace(/'/g,'&#39;')}')">
+        <span>🌐</span><span style="font-size:12px;color:var(--accent2)">${linkHost(a.url)}</span><span style="margin-left:auto;color:var(--muted);font-size:13px">›</span>
+      </button>`:''}
       <div class="bal-correct-row">
         <input class="bal-correct-input" type="number" inputmode="decimal"
           placeholder="Set actual balance..." id="bal-correct-${a.id}"
@@ -3692,8 +3730,8 @@ function openModal(type,extra){
   if(type==='goal'){openModal_goal();return;}
   if(type==='income'){$('i-id').value='';$('i-source').value='';$('i-amount').value='';$('i-date').value=today();$('i-freq').value='Monthly';$('i-account').value='';$('i-actual').value='';$('i-actual-wrap').style.display='none';if($('i-lastpay'))$('i-lastpay').value='';if($('i-lastpay-wrap'))$('i-lastpay-wrap').style.display='none';populateAccountSelects();}
   if(type==='expense'){clearOverlapWarn('expense-overlap-warn');$('expense-modal-title').textContent='Add Expense';$('e-id').value='';$('e-cat').value='';$('e-desc').value='';if($('e-autolog'))$('e-autolog').checked=false;if($('autolog-account-wrap'))$('autolog-account-wrap').style.display='none';$('e-amount').value='';$('e-date').value=today();$('e-freq').value='One-time';$('e-account').value='';populateAccountSelects();}
-  if(type==='bill'){clearOverlapWarn('bill-overlap-warn');$('bill-modal-title').textContent='Add Bill / Debt';$('b-id').value='';$('b-name').value='';if($('b-autolog'))$('b-autolog').checked=false;if($('b-autolog-wrap'))$('b-autolog-wrap').style.display='none';if($('b-autolog-account-wrap'))$('b-autolog-account-wrap').style.display='none';$('b-amount').value='';$('b-date').value='';$('b-recur').value='No';$('b-type').value='bill';$('b-balance').value='';$('b-apr').value='';$('b-limit').value='';$('b-original').value='';toggleDebtFields();$('bill-delete-wrap').style.display='none';}
-  if(type==='account'){$('account-modal-title').textContent='Add Account';$('ac-id').value='';$('ac-name').value='';$('ac-type').value='checking';$('ac-balance').value='';$('ac-notes').value='';$('ac-apy').value='';$('ac-default').checked=false;$('account-delete-wrap').style.display='none';toggleAcApyField();}
+  if(type==='bill'){clearOverlapWarn('bill-overlap-warn');$('bill-modal-title').textContent='Add Bill / Debt';$('b-id').value='';$('b-name').value='';if($('b-autolog'))$('b-autolog').checked=false;if($('b-autolog-wrap'))$('b-autolog-wrap').style.display='none';if($('b-autolog-account-wrap'))$('b-autolog-account-wrap').style.display='none';$('b-amount').value='';$('b-date').value='';$('b-recur').value='No';$('b-type').value='bill';$('b-balance').value='';$('b-apr').value='';$('b-limit').value='';$('b-original').value='';if($('b-url'))$('b-url').value='';toggleDebtFields();$('bill-delete-wrap').style.display='none';}
+  if(type==='account'){$('account-modal-title').textContent='Add Account';$('ac-id').value='';$('ac-name').value='';$('ac-type').value='checking';$('ac-balance').value='';$('ac-notes').value='';$('ac-apy').value='';if($('ac-url'))$('ac-url').value='';$('ac-default').checked=false;$('account-delete-wrap').style.display='none';toggleAcApyField();}
   if(type==='purchase'){openPurchaseModal();return;}
   if(type==='txn'){openWithdrawal();return;}
   if(type==='goal'){openModal_goal();return;}
@@ -3760,6 +3798,7 @@ function openEditBill(id){
   $('bill-modal-title').textContent='Edit Bill / Debt';
   $('b-id').value=b.id;$('b-name').value=b.name;$('b-amount').value=b.amount;$('b-date').value=b.dueDate;$('b-recur').value=b.recurring;
   $('b-type').value=b.btype||'bill';$('b-balance').value=b.balance||'';$('b-apr').value=b.apr||'';$('b-limit').value=b.creditLimit||'';$('b-original').value=b.originalLoanAmount||'';
+  if($('b-url'))$('b-url').value=b.url||'';
   toggleDebtFields();
   $('bill-delete-wrap').style.display='block';
   // Wire auto-log fields
@@ -3860,6 +3899,112 @@ function saveExpense(){
 // Strip non-numeric chars from pasted values (%, $, commas, spaces, etc.)
 const sanitizeNum = s => parseFloat(String(s).replace(/[^0-9.\-]/g,'')) || 0;
 
+// ── PAYMENT LINKS ─────────────────────────────────────────────────────────────
+const BILLER_URLS = {
+  'chase':              'https://chase.com',
+  'pnc':               'https://pnc.com',
+  'bank of america':   'https://bankofamerica.com',
+  'boa':               'https://bankofamerica.com',
+  'wells fargo':       'https://wellsfargo.com',
+  'capital one':       'https://capitalone.com',
+  'citi':              'https://citi.com',
+  'citibank':          'https://citi.com',
+  'us bank':           'https://usbank.com',
+  'usbank':            'https://usbank.com',
+  'discover':          'https://discover.com',
+  'amex':              'https://americanexpress.com',
+  'american express':  'https://americanexpress.com',
+  'synchrony':         'https://mysynchrony.com',
+  'paypal':            'https://paypal.com',
+  'venmo':             'https://venmo.com',
+  'sofi':              'https://sofi.com',
+  'ally':              'https://ally.com',
+  'marcus':            'https://marcus.com',
+  'sallie mae':        'https://salliemae.com',
+  'navient':           'https://navient.com',
+  'mohela':            'https://mohela.com',
+  'nelnet':            'https://nelnet.com',
+  'netflix':           'https://netflix.com',
+  'hulu':              'https://hulu.com',
+  'disney':            'https://disneyplus.com',
+  'spotify':           'https://spotify.com',
+  'apple':             'https://appleid.apple.com',
+  'amazon':            'https://amazon.com',
+  'google':            'https://myaccount.google.com',
+  'youtube':           'https://youtube.com/premium',
+  'microsoft':         'https://account.microsoft.com',
+  'xbox':              'https://account.microsoft.com',
+  'playstation':       'https://account.playstation.com',
+  'comcast':           'https://xfinity.com',
+  'xfinity':           'https://xfinity.com',
+  'verizon':           'https://verizon.com',
+  't-mobile':          'https://t-mobile.com',
+  'tmobile':           'https://t-mobile.com',
+  'att':               'https://att.com',
+  'at&t':              'https://att.com',
+  'pseg':              'https://pseg.com',
+  'con edison':        'https://coned.com',
+  'conedison':         'https://coned.com',
+  'geico':             'https://geico.com',
+  'progressive':       'https://progressive.com',
+  'state farm':        'https://statefarm.com',
+  'allstate':          'https://allstate.com',
+};
+
+function linkHost(url){
+  if(!url)return '';
+  try{return new URL(url.startsWith('http')?url:'https://'+url).hostname.replace('www.','');}
+  catch{return url;}
+}
+
+function normUrl(url){
+  if(!url)return '';
+  return url.startsWith('http')?url:'https://'+url;
+}
+
+function suggestBillerUrl(query){
+  if(!query||query.length<2)return null;
+  const q=query.toLowerCase();
+  for(const[k,v] of Object.entries(BILLER_URLS)){
+    if(q.includes(k)||k.includes(q))return v;
+  }
+  return null;
+}
+
+function openLinkSheet(url, label){
+  if(!url)return;
+  const cleanUrl=normUrl(url);
+  const host=linkHost(cleanUrl);
+  const sheet=$('modal-link-sheet');
+  if(!sheet)return;
+  $('link-sheet-title').textContent=(label||host);
+  $('link-sheet-host').textContent=host;
+  $('link-sheet-open-sub').textContent='Opens in browser · may redirect to '+host+' app';
+  sheet._url=cleanUrl;
+  sheet.classList.add('open');
+}
+
+function doOpenLink(){
+  const sheet=$('modal-link-sheet');
+  if(!sheet||!sheet._url)return;
+  window.open(sheet._url,'_blank','noopener,noreferrer');
+  sheet.classList.remove('open');
+}
+
+function doCopyLink(){
+  const sheet=$('modal-link-sheet');
+  if(!sheet||!sheet._url)return;
+  const url=sheet._url;
+  sheet.classList.remove('open');
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(url)
+      .then(()=>showToast('Link copied — paste in Safari','info'))
+      .catch(()=>prompt('Copy this link:',url));
+  } else {
+    prompt('Copy this link:',url);
+  }
+}
+
 function saveBill(){
   const autoLog = $('b-autolog') ? $('b-autolog').checked : false;
   const autoLogAccountId = sanitizeNum($('b-autolog-account')?.value);
@@ -3868,6 +4013,8 @@ function saveBill(){
   const apr=sanitizeNum($('b-apr').value);
   const creditLimit=btype==='creditcard'?sanitizeNum($('b-limit').value):0;
   const originalLoanAmount=btype==='loan'?(sanitizeNum($('b-original').value)||0):0;
+  const rawUrl=($('b-url')&&$('b-url').value.trim())||'';
+  const billUrl=rawUrl?normUrl(rawUrl):'';
   if(!name || (!amt && btype !== 'creditcard' && btype !== 'loan'))return;
   // Validate original loan amount
   if(btype==='loan' && originalLoanAmount>0 && originalLoanAmount<balance){
@@ -3888,10 +4035,28 @@ function saveBill(){
     originalBalance:isDebt?computedOriginalBalance:0,
     autoLog,autoLogAccountId,
     scheduledAmount:prev?prev.scheduledAmount:null,
-    scheduledAccountId:prev?prev.scheduledAccountId:null
+    scheduledAccountId:prev?prev.scheduledAccountId:null,
+    url:billUrl||undefined
   };
   data.bills=eid?data.bills.map(b=>b.id===eid?item:b):[...data.bills,item];
   closeModal('bill');updateOriginalBalances();saveData();renderAll();
+}
+
+function onBillUrlInput(val){
+  // Auto-suggest a URL when the bill name field drives input, or user types in url field
+  const urlField=$('b-url');
+  if(!urlField||urlField.value.trim())return; // don't overwrite if user already typed something
+  const suggested=suggestBillerUrl(val);
+  if(suggested) urlField.value=suggested;
+}
+
+function autofillBillUrl(){
+  // Called when bill name changes — try to auto-fill url if empty
+  const nameVal=$('b-name')&&$('b-name').value.trim();
+  const urlField=$('b-url');
+  if(!urlField||!nameVal||urlField.value.trim())return;
+  const suggested=suggestBillerUrl(nameVal);
+  if(suggested) urlField.value=suggested;
 }
 
 function saveCard(){
@@ -4689,6 +4854,8 @@ function buildAlerts(){
   // ── BILLS: overdue + due within 7 days ──────────────────────
   data.bills.forEach(b=>{
     const d=daysUntil(b.dueDate);
+    const isZeroBalance=(b.btype==='creditcard'||b.btype==='loan')&&!b.balance&&!b.amount;
+    if(isZeroBalance) return;
     if(b.status!=='Paid'&&b.status!=='Scheduled'&&d<0){
       alerts.push({
         section:'bills', color:'#ef4444', icon:'📋',
@@ -5086,7 +5253,7 @@ function renderBills(){
           <div style="font-size:15px;font-weight:600;margin-bottom:3px">${b.name}${b.autoLog?'<span class="autolog-badge">&#128259; auto</span>':''}
             ${b.btype==='creditcard'?'<span style="background:rgba(239,68,68,.15);color:#ef4444;border-radius:5px;padding:1px 7px;font-size:10px;font-weight:700;margin-left:4px">CARD</span>':b.btype==='loan'?'<span style="background:rgba(251,146,60,.15);color:#fb923c;border-radius:5px;padding:1px 7px;font-size:10px;font-weight:700;margin-left:4px">LOAN</span>':''}
           </div>
-          <div style="font-size:12px;color:var(--muted)">Due: ${fmtDate(b.dueDate)} - ${b.recurring}</div>
+          <div style="font-size:12px;color:var(--muted)">Due: ${fmtDate(b.dueDate)} - ${b.recurring}${b.url?` · <span style="color:var(--accent2)">${linkHost(b.url)}</span>`:''}</div>
           ${isDebt&&b.balance?'<div style="font-size:12px;color:var(--muted);margin-top:2px">'+getBalanceSplitHtml(b)+'</div>':''}
           ${b.promoEndDate?`<div style="font-size:11px;color:var(--green);font-weight:600">🎁 Promo ends: ${fmtDate(b.promoEndDate)} - ${pct(b.regularApr||0)} after</div>`:''}
         </div>
@@ -5094,6 +5261,7 @@ function renderBills(){
         <div class="row-actions">
           <span style="font-family:var(--font-d);font-size:19px">${usd(b.amount)}</span>
           ${actions}
+          ${b.url?`<button class="btn btn-secondary btn-sm" onclick="openLinkSheet('${b.url}','${b.name.replace(/'/g,'&#39;')}')" title="Open ${linkHost(b.url)}">🌐</button>`:''}
           <button class="btn btn-secondary btn-sm" onclick="openEditBill(${b.id})">✏️</button>
           ${b.dueDate?`<button class="btn btn-secondary btn-sm" onclick="addToCalendar('${b.name} Payment','${b.dueDate}','Min: ${usd(b.amount)}')">📅</button>`:''}
           <button class="btn btn-danger btn-sm show-desktop" onclick="deleteBillFromModal(${b.id})">✕</button>
@@ -6654,6 +6822,7 @@ function renderSmartBillReminder(){
   const upcoming=data.bills.filter(b=>{
     if(b.status==='Paid'||b.status==='Scheduled') return false;
     if(!b.dueDate) return false;
+    if((b.btype==='creditcard'||b.btype==='loan')&&!b.balance&&!b.amount) return false;
     return b.dueDate>=todayStr&&b.dueDate<=in30Str || b.dueDate<todayStr; // include overdue
   }).sort((a,b)=>a.dueDate.localeCompare(b.dueDate));
 
