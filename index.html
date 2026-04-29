@@ -1576,6 +1576,12 @@ canvas{width:100%!important;}
             <button class="about-card-goto" onclick="show('networth',null);closeSidebar()">Go to Net Worth &#8594;</button>
           </div>
           <div class="about-card">
+            <div class="about-card-top"><div class="about-card-icon">&#127760;</div><div><div class="about-card-title">Payment Links</div></div></div>
+            <div class="about-card-desc">Add a website URL to any bill or account. A 🌐 globe button appears on the card — tap it to jump straight to your bank or biller's website in a new tab. If you use Safari with saved passwords, it auto-fills your login via Face ID.</div>
+            <div class="about-card-q">"How do I get to Chase to pay my credit card?"</div>
+            <button class="about-card-goto" onclick="show('bills',null);closeSidebar()">Go to Bills &#8594;</button>
+          </div>
+          <div class="about-card">
             <div class="about-card-top"><div class="about-card-icon">&#9878;</div><div><div class="about-card-title">Bank Reconciliation</div></div></div>
             <div class="about-card-desc">Enter your real bank balance and FinanceOS finds the difference. It scans for likely causes - bills paid but not logged, missing deposits - and lets you log an adjustment.</div>
             <div class="about-card-q">"My app balance doesn't match my bank - how do I fix it?"</div>
@@ -1592,6 +1598,7 @@ canvas{width:100%!important;}
 
       <div class="about-group">
         <div class="about-group-title">Pro Tips</div>
+        <div class="about-tip">&#128161; <strong>Add a website to any bill or account for one-tap access.</strong> Edit a bill or account and fill in the Website field — type "Chase" and it auto-suggests chase.com. The 🌐 button then appears on the card. Safari users get Face ID autofill automatically.</div>
         <div class="about-tip">&#128161; <strong>Start with accounts first.</strong> Add your checking account balance before anything else. Every payment modal pre-selects the default account, overdraft warnings only work when balances are set, and the Smart Bill Reminder compares your balance to what's due.</div>
         <div class="about-tip">&#128161; <strong>Set a default account.</strong> In Net Worth → Accounts, the default account shows a purple DEFAULT badge. Edit any account to change it — all payment modals pre-select it automatically.</div>
         <div class="about-tip">&#128161; <strong>Use transfers for savings contributions.</strong> Moving money to your emergency fund or HYSA? Use the Transfer tile in Quick Update — it moves the balance correctly and won't inflate your spending stats.</div>
@@ -1898,32 +1905,6 @@ canvas{width:100%!important;}
     <div id="pinsetup-error" style="color:var(--red);font-size:12px;min-height:16px;margin-bottom:10px"></div>
     <button class="btn btn-primary btn-full" onclick="savePinSetup()" data-i18n="Save PIN">Save PIN</button>
     <button class="btn btn-danger btn-full" id="pin-remove-btn" style="margin-top:8px;display:none" onclick="removePin()" data-i18n="Remove PIN Lock">Remove PIN Lock</button>
-  </div>
-</div>
-
-<!-- LINK ACTION SHEET -->
-<div class="overlay" id="modal-link-sheet" style="align-items:flex-end">
-  <div class="modal" style="border-radius:20px 20px 0 0;padding:16px 20px 36px">
-    <div style="width:36px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 16px"></div>
-    <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px" id="link-sheet-title"></div>
-    <div style="font-size:11px;color:var(--muted);margin-bottom:16px" id="link-sheet-host"></div>
-    <button class="btn btn-secondary btn-full" style="justify-content:flex-start;gap:14px;padding:14px 16px;margin-bottom:10px;text-align:left" onclick="doOpenLink()">
-      <span style="font-size:20px">🚀</span>
-      <span style="flex:1">
-        <span style="display:block;font-size:14px;font-weight:600;color:var(--text)">Open website</span>
-        <span style="display:block;font-size:11px;color:var(--muted);margin-top:2px" id="link-sheet-open-sub"></span>
-      </span>
-      <span style="color:var(--muted);font-size:16px">›</span>
-    </button>
-    <button class="btn btn-secondary btn-full" style="justify-content:flex-start;gap:14px;padding:14px 16px;margin-bottom:10px;text-align:left" onclick="doCopyLink()">
-      <span style="font-size:20px">📋</span>
-      <span style="flex:1">
-        <span style="display:block;font-size:14px;font-weight:600;color:var(--text)">Copy link</span>
-        <span style="display:block;font-size:11px;color:var(--muted);margin-top:2px">Paste in Safari for saved passwords &amp; app redirect</span>
-      </span>
-      <span style="color:var(--muted);font-size:16px">›</span>
-    </button>
-    <button class="btn btn-secondary btn-full" style="color:var(--accent2);margin-top:4px" onclick="closeModal('link-sheet')">Cancel</button>
   </div>
 </div>
 
@@ -2355,7 +2336,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v1.7.0';
+const APP_VERSION='v1.7.1';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -2969,19 +2950,19 @@ function loadDemoData(skipConfirm){
     // ── BILLS ──────────────────────────────────────────────────
     bills:[
       // Pending — shows on 7-day timeline
-      {id:3001, name:'Phone Bill',        amount:65,   dueDate:dt(3),           recurring:'Monthly', status:'Pending',   btype:'bill',       balance:0,    apr:0,     creditLimit:0,    scheduledAmount:null, scheduledAccountId:null},
+      {id:3001, name:'Phone Bill',        amount:65,   dueDate:dt(3),           recurring:'Monthly', status:'Pending',   btype:'bill',       balance:0,    apr:0,     creditLimit:0,    scheduledAmount:null, scheduledAccountId:null, url:'https://verizon.com'},
       // Scheduled — blue badge
-      {id:3002, name:'Internet',          amount:79,   dueDate:dt(5),           recurring:'Monthly', status:'Scheduled', btype:'bill',       balance:0,    apr:0,     creditLimit:0,    scheduledAmount:79,   scheduledAccountId:8001},
+      {id:3002, name:'Internet',          amount:79,   dueDate:dt(5),           recurring:'Monthly', status:'Scheduled', btype:'bill',       balance:0,    apr:0,     creditLimit:0,    scheduledAmount:79,   scheduledAccountId:8001, url:'https://xfinity.com'},
       // Paid — checkmark
-      {id:3003, name:'Car Insurance',     amount:187,  dueDate:ago(3),          recurring:'Monthly', status:'Paid',      btype:'bill',       balance:0,    apr:0,     creditLimit:0,    scheduledAmount:null, scheduledAccountId:null},
+      {id:3003, name:'Car Insurance',     amount:187,  dueDate:ago(3),          recurring:'Monthly', status:'Paid',      btype:'bill',       balance:0,    apr:0,     creditLimit:0,    scheduledAmount:null, scheduledAccountId:null, url:'https://geico.com'},
       // Overdue — red alert
       {id:3004, name:'Gym Membership',    amount:45,   dueDate:ago(2),          recurring:'Monthly', status:'Overdue',   btype:'bill',       balance:0,    apr:0,     creditLimit:0,    scheduledAmount:null, scheduledAccountId:null},
       // Credit card — shows revolving + promo split, APR badge, utilization
-      {id:3005, name:'Chase Sapphire',    amount:85,   dueDate:dt(4),           recurring:'Monthly', status:'Pending',   btype:'creditcard', balance:2801, apr:22.99, creditLimit:10000,scheduledAmount:null, scheduledAccountId:null, originalBalance:5800, revolvingBalance:2801},
+      {id:3005, name:'Chase Sapphire',    amount:85,   dueDate:dt(4),           recurring:'Monthly', status:'Pending',   btype:'creditcard', balance:2801, apr:22.99, creditLimit:10000,scheduledAmount:null, scheduledAccountId:null, originalBalance:5800, revolvingBalance:2801, url:'https://chase.com'},
       // Loan with original amount → payoff progress bar in Debt Planner
-      {id:3006, name:'Car Loan',          amount:340,  dueDate:dt(2),           recurring:'Monthly', status:'Pending',   btype:'loan',       balance:9800, apr:7.49,  creditLimit:0,    scheduledAmount:null, scheduledAccountId:null, originalBalance:14000, originalLoanAmount:14000},
+      {id:3006, name:'Car Loan',          amount:340,  dueDate:dt(2),           recurring:'Monthly', status:'Pending',   btype:'loan',       balance:9800, apr:7.49,  creditLimit:0,    scheduledAmount:null, scheduledAccountId:null, originalBalance:14000, originalLoanAmount:14000, url:'https://pnc.com'},
       // Loan with same-day scheduled → processes immediately
-      {id:3007, name:'Student Loan',      amount:210,  dueDate:today(),         recurring:'Monthly', status:'Scheduled', btype:'loan',       balance:18400,apr:5.75,  creditLimit:0,    scheduledAmount:210,  scheduledAccountId:8001, originalBalance:24000, originalLoanAmount:24000},
+      {id:3007, name:'Student Loan',      amount:210,  dueDate:today(),         recurring:'Monthly', status:'Scheduled', btype:'loan',       balance:18400,apr:5.75,  creditLimit:0,    scheduledAmount:210,  scheduledAccountId:8001, originalBalance:24000, originalLoanAmount:24000, url:'https://mohela.com'},
       // Next-month bills → month divider in calendar view
       {id:3008, name:'Rent',              amount:1450, dueDate:nextMonth(1,1),  recurring:'Monthly', status:'Pending',   btype:'bill',       balance:0,    apr:0,     creditLimit:0,    scheduledAmount:null, scheduledAccountId:null},
     ],
@@ -3055,8 +3036,8 @@ function loadDemoData(skipConfirm){
 
     // ── ACCOUNTS (with APY on savings) ─────────────────────────
     accounts:[
-      {id:8001, name:'Chase Checking',      type:'checking', balance:5100, notes:'Primary',        isDefault:true,  apy:0},
-      {id:8002, name:'Marcus Savings',      type:'savings',  balance:9200, notes:'Emergency fund', isDefault:false, apy:4.6},
+      {id:8001, name:'Chase Checking',      type:'checking', balance:5100, notes:'Primary',        isDefault:true,  apy:0,   url:'https://chase.com'},
+      {id:8002, name:'Marcus Savings',      type:'savings',  balance:9200, notes:'Emergency fund', isDefault:false, apy:4.6, url:'https://marcus.com'},
       {id:8003, name:'Cash Wallet',         type:'cash',     balance:120,  notes:'',              isDefault:false, apy:0},
     ]
   };
@@ -3402,7 +3383,7 @@ function renderNetWorth(){
         <span style="font-size:11px;color:var(--muted)">·</span>
         <span style="font-size:11px;color:var(--muted)">~${usd(parseFloat((a.balance*a.apy/100).toFixed(2)))} projected / yr</span>
       </div>`:''}
-      ${a.url?`<button class="btn btn-secondary btn-sm" style="margin-top:8px;width:100%;justify-content:flex-start;gap:8px;padding:8px 12px;border:1px solid rgba(108,99,255,.2);background:rgba(108,99,255,.07)" onclick="openLinkSheet('${a.url}','${a.name.replace(/'/g,'&#39;')}')">
+      ${a.url?`<button class="btn btn-secondary btn-sm" style="margin-top:8px;width:100%;justify-content:flex-start;gap:8px;padding:8px 12px;border:1px solid rgba(108,99,255,.2);background:rgba(108,99,255,.07)" onclick="openLink('${a.url}')">
         <span>🌐</span><span style="font-size:12px;color:var(--accent2)">${linkHost(a.url)}</span><span style="margin-left:auto;color:var(--muted);font-size:13px">›</span>
       </button>`:''}
       <div class="bal-correct-row">
@@ -3971,38 +3952,9 @@ function suggestBillerUrl(query){
   return null;
 }
 
-function openLinkSheet(url, label){
+function openLink(url){
   if(!url)return;
-  const cleanUrl=normUrl(url);
-  const host=linkHost(cleanUrl);
-  const sheet=$('modal-link-sheet');
-  if(!sheet)return;
-  $('link-sheet-title').textContent=(label||host);
-  $('link-sheet-host').textContent=host;
-  $('link-sheet-open-sub').textContent='Opens in browser · may redirect to '+host+' app';
-  sheet._url=cleanUrl;
-  sheet.classList.add('open');
-}
-
-function doOpenLink(){
-  const sheet=$('modal-link-sheet');
-  if(!sheet||!sheet._url)return;
-  window.open(sheet._url,'_blank','noopener,noreferrer');
-  sheet.classList.remove('open');
-}
-
-function doCopyLink(){
-  const sheet=$('modal-link-sheet');
-  if(!sheet||!sheet._url)return;
-  const url=sheet._url;
-  sheet.classList.remove('open');
-  if(navigator.clipboard&&navigator.clipboard.writeText){
-    navigator.clipboard.writeText(url)
-      .then(()=>showToast('Link copied — paste in Safari','info'))
-      .catch(()=>prompt('Copy this link:',url));
-  } else {
-    prompt('Copy this link:',url);
-  }
+  window.open(normUrl(url),'_blank','noopener,noreferrer');
 }
 
 function saveBill(){
@@ -5261,7 +5213,7 @@ function renderBills(){
         <div class="row-actions">
           <span style="font-family:var(--font-d);font-size:19px">${usd(b.amount)}</span>
           ${actions}
-          ${b.url?`<button class="btn btn-secondary btn-sm" onclick="openLinkSheet('${b.url}','${b.name.replace(/'/g,'&#39;')}')" title="Open ${linkHost(b.url)}">🌐</button>`:''}
+          ${b.url?`<button class="btn btn-secondary btn-sm" onclick="openLink('${b.url}')" title="Open ${linkHost(b.url)}">🌐</button>`:''}
           <button class="btn btn-secondary btn-sm" onclick="openEditBill(${b.id})">✏️</button>
           ${b.dueDate?`<button class="btn btn-secondary btn-sm" onclick="addToCalendar('${b.name} Payment','${b.dueDate}','Min: ${usd(b.amount)}')">📅</button>`:''}
           <button class="btn btn-danger btn-sm show-desktop" onclick="deleteBillFromModal(${b.id})">✕</button>
