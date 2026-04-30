@@ -63,41 +63,61 @@ main{max-width:900px;padding:20px 20px 60px;}
 /* ── MOBILE HEADER BAR ── */
 #mobile-header{
   display:none;
-  align-items:center;
-  gap:12px;
+  flex-direction:column;
   background:var(--surface);
   border-bottom:1px solid var(--border);
-  padding:12px 16px;
   position:sticky;top:0;z-index:50;
 }
-#mobile-header button{
+#mobile-header-top{
+  display:flex;align-items:center;gap:8px;
+  padding:7px 14px;
+}
+#mobile-brand{
+  font-family:var(--font-d);font-size:26px;font-weight:700;
+  color:var(--accent);flex:1;letter-spacing:-0.5px;
+}
+#mobile-add-btn{
+  background:none;border:none;cursor:pointer;flex-shrink:0;
+  font-size:22px;font-weight:300;color:var(--accent);
+  line-height:1;padding:2px 4px;
+  -webkit-tap-highlight-color:transparent;
+}
+#mobile-bell{
+  position:relative;background:none;
+  border:none;font-size:22px;cursor:pointer;
+  padding:2px 4px;line-height:1;color:var(--text);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+#mobile-bell-badge{
+  display:none;position:absolute;top:1px;right:1px;
+  width:7px;height:7px;background:var(--red);border-radius:50%;
+  border:1.5px solid var(--surface);
+}
+#mobile-ham{
   background:none;border:none;color:var(--text);
-  font-size:20px;cursor:pointer;padding:2px 4px;flex-shrink:0;line-height:1;
+  font-size:20px;cursor:pointer;padding:2px 4px;
+  flex-shrink:0;line-height:1;
+  -webkit-tap-highlight-color:transparent;
 }
-#mobile-page-title{
-  font-family:var(--font-d);font-size:19px;color:#c4c0ff;
+/* Tab strip */
+#mobile-tabs{
+  display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;
+  scrollbar-width:none;padding:0 10px;gap:0;
 }
+#mobile-tabs::-webkit-scrollbar{display:none;}
+.mtab{
+  padding:7px 11px 6px;font-size:12px;font-weight:600;
+  color:var(--muted);white-space:nowrap;
+  border-bottom:2px solid transparent;
+  cursor:pointer;flex-shrink:0;
+  transition:color .15s,border-color .15s;
+  background:none;border-top:none;border-left:none;border-right:none;
+  font-family:var(--font-b);
+  -webkit-tap-highlight-color:transparent;
+}
+.mtab.active{color:var(--accent);border-bottom-color:var(--accent);}
 #overlay-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:55;}
 #hamburger{display:none;}
-/* ── BOTTOM PILL STRIP ── */
-/* ── SWIPE PAGE DOTS ── */
-#page-dots{
-  display:none;
-  position:fixed;
-  bottom:calc(10px + env(safe-area-inset-bottom,0px));
-  left:50%;transform:translateX(-50%);
-  gap:6px;align-items:center;z-index:50;pointer-events:none;
-}
-.pdot{
-  width:6px;height:6px;border-radius:50%;
-  background:rgba(128,128,128,.35);
-  transition:all .25s ease;flex-shrink:0;
-}
-.pdot.active{
-  width:20px;border-radius:3px;
-  background:var(--accent);
-}
-
 /* ── SWIPE TRANSITIONS ── */
 @keyframes swipeInRight{from{opacity:0;transform:translateX(28px);}to{opacity:1;transform:translateX(0);}}
 @keyframes swipeInLeft{from{opacity:0;transform:translateX(-28px);}to{opacity:1;transform:translateX(0);}}
@@ -107,14 +127,14 @@ main{max-width:900px;padding:20px 20px 60px;}
 /* ── MOBILE BELL ── */
 #mobile-bell{
   position:relative;background:rgba(255,255,255,.07);
-  border:none;font-size:18px;cursor:pointer;
-  padding:6px;line-height:1;color:var(--text);
-  border-radius:50%;width:34px;height:34px;
+  border:none;font-size:15px;cursor:pointer;
+  padding:4px;line-height:1;color:var(--text);
+  border-radius:50%;width:28px;height:28px;
   display:flex;align-items:center;justify-content:center;flex-shrink:0;
 }
 #mobile-bell-badge{
-  display:none;position:absolute;top:2px;right:2px;
-  width:8px;height:8px;background:var(--red);border-radius:50%;
+  display:none;position:absolute;top:1px;right:1px;
+  width:7px;height:7px;background:var(--red);border-radius:50%;
   border:1.5px solid var(--surface);
 }
 
@@ -128,9 +148,8 @@ main{max-width:900px;padding:20px 20px 60px;}
   #overlay-bg.show{display:block;}
   #content{margin-left:0;}
   #alerts-bar{padding-top:4px;}
-  main{padding:16px 14px 48px;}
+  main{padding:16px 14px 24px;}
   .sec-title{display:none;}
-  #page-dots{display:flex;}
   #advisor.active{height:calc(100vh - 56px - 40px);}
 }
 
@@ -368,6 +387,7 @@ canvas{width:100%!important;}
 #notif-pill.nc-clear{background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);color:var(--green);cursor:default;}
 #notif-pill.nc-warn{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);color:var(--yellow);}
 #notif-pill.nc-urgent{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:var(--red);}
+@media(max-width:680px){#notif-pill{display:none!important;}}
 .nc-group-header{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;
   color:var(--muted);margin:14px 0 8px;padding-bottom:5px;border-bottom:1px solid var(--border);}
 .nc-group-header:first-child{margin-top:0;}
@@ -1026,27 +1046,51 @@ canvas{width:100%!important;}
   </div>
 </div>
 
-<!-- ── PAGE DOTS (mobile only) ── -->
-<div id="page-dots">
-  <span class="pdot active" data-sec="dashboard"></span>
-  <span class="pdot" data-sec="bills"></span>
-  <span class="pdot" data-sec="networth"></span>
-  <span class="pdot" data-sec="budget"></span>
-  <span class="pdot" data-sec="quick"></span>
-  <span class="pdot" data-sec="insights"></span>
-  <span class="pdot" data-sec="debt"></span>
-  <span class="pdot" data-sec="cards"></span>
-  <span class="pdot" data-sec="advisor"></span>
-</div>
+
 
 <!-- ── CONTENT ── -->
 <div id="content">
-  <!-- Mobile top bar -->
+  <!-- Mobile header (two-row: brand row + tab strip) -->
   <div id="mobile-header">
-    <button onclick="toggleSidebar()" style="background:none;border:none;color:var(--text);font-size:22px;cursor:pointer;padding:2px 4px;flex-shrink:0;line-height:1;">&#9776;</button>
-    <span id="mobile-page-title" style="font-size:17px;font-weight:700;color:var(--text);flex:1;padding-left:10px">Dashboard</span>
-    <button id="mobile-bell" onclick="openNotifDrawer()" title="Notifications">🔔<span id="mobile-bell-badge"></span></button>
+    <div id="mobile-header-top">
+      <span id="mobile-brand">FinanceOS</span>
+      <button id="mobile-add-btn" onclick="openModal('fab')" title="Quick add">+</button>
+      <button id="mobile-bell" onclick="openNotifDrawer()" title="Notifications">🔔<span id="mobile-bell-badge"></span></button>
+      <button id="mobile-ham" onclick="toggleSidebar()">&#9776;</button>
+    </div>
+    <div id="mobile-tabs">
+      <button class="mtab active" id="mtab-dashboard" onclick="show('dashboard',null)">Dashboard</button>
+      <button class="mtab" id="mtab-bills" onclick="show('bills',null)">Bills</button>
+      <button class="mtab" id="mtab-networth" onclick="show('networth',null)">Accounts</button>
+      <button class="mtab" id="mtab-budget" onclick="show('budget',null)">Money</button>
+      <button class="mtab" id="mtab-quick" onclick="show('quick',null)">Transactions</button>
+      <button class="mtab" id="mtab-insights" onclick="show('insights',null)">Insights</button>
+      <button class="mtab" id="mtab-debt" onclick="show('debt',null)">Debt</button>
+      <button class="mtab" id="mtab-cards" onclick="show('cards',null)">Cards</button>
+      <button class="mtab" id="mtab-advisor" onclick="show('advisor',null)">Advisor</button>
+    </div>
   </div>
+
+  <!-- FAB action sheet -->
+  <div class="overlay" id="modal-fab">
+    <div class="modal" style="padding-bottom:36px">
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:14px;text-align:center">Quick Add</div>
+      <button class="btn btn-secondary btn-full" style="justify-content:flex-start;gap:14px;padding:14px 16px;margin-bottom:8px" onclick="closeModal('fab');openModal('income')">
+        <span style="font-size:20px">💵</span><span style="font-size:14px;font-weight:600">Log Income</span>
+      </button>
+      <button class="btn btn-secondary btn-full" style="justify-content:flex-start;gap:14px;padding:14px 16px;margin-bottom:8px" onclick="closeModal('fab');openModal('expense')">
+        <span style="font-size:20px">🧾</span><span style="font-size:14px;font-weight:600">Log Expense</span>
+      </button>
+      <button class="btn btn-secondary btn-full" style="justify-content:flex-start;gap:14px;padding:14px 16px;margin-bottom:8px" onclick="closeModal('fab');openModal('purchase')">
+        <span style="font-size:20px">🛒</span><span style="font-size:14px;font-weight:600">Log Transaction</span>
+      </button>
+      <button class="btn btn-secondary btn-full" style="justify-content:flex-start;gap:14px;padding:14px 16px;margin-bottom:8px" onclick="closeModal('fab');openModal('bill')">
+        <span style="font-size:20px">📋</span><span style="font-size:14px;font-weight:600">Add Bill</span>
+      </button>
+      <button class="btn btn-secondary btn-full" style="color:var(--accent2);margin-top:4px" onclick="closeModal('fab')">Cancel</button>
+    </div>
+  </div>
+
   <main>
 
     <!-- DASHBOARD -->
@@ -2394,7 +2438,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v1.8.4';
+const APP_VERSION='v1.9.2';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -3137,7 +3181,7 @@ function loadDemoData(skipConfirm){
   document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
   $('dashboard').classList.add('active');
   document.querySelector('.nav-item').classList.add('active');
-  const mob=$('mobile-page-title'); if(mob) mob.textContent='Dashboard';
+  const mob=$('mobile-brand'); if(mob) mob.textContent='FinanceOS';
   renderAll();
   showToast(t('Demo data loaded!'));
 }
@@ -3797,11 +3841,17 @@ function show(sec,btn){
     setTimeout(()=>el.classList.remove('swipe-in-right','swipe-in-left'),280);
   }
   if(btn) btn.classList.add('active');
-  const mob=$('mobile-page-title');if(mob) mob.textContent=t(pageTitles[sec]||'');
-  // Sync page dots
-  document.querySelectorAll('.pdot').forEach(d=>{
-    d.classList.toggle('active',d.dataset.sec===sec);
-  });
+  // Sync mobile tab strip
+  document.querySelectorAll('.mtab').forEach(t=>t.classList.remove('active'));
+  const activeTab=$('mtab-'+sec);
+  if(activeTab){
+    activeTab.classList.add('active');
+    const strip=$('mobile-tabs');
+    if(strip){
+      const tabCenter=activeTab.offsetLeft+activeTab.offsetWidth/2;
+      strip.scrollTo({left:tabCenter-strip.offsetWidth/2,behavior:'smooth'});
+    }
+  }
   _currentSec=sec;
   closeSidebar();
   renderAll();
