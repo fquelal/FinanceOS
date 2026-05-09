@@ -5636,7 +5636,7 @@ function renderBills(){
         </div>
       </div>
     </div>`;
-    return divider+wrapSwipeable(cardHtml,'bills',b.id);
+    return divider+wrapSwipeable(cardHtml,'bills',b.id,`openEditBill(${b.id})`);
   });
   $('bill-list').innerHTML=rows.join('');
   setTimeout(attachSwipes,50);
