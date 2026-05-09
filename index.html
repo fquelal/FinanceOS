@@ -101,12 +101,12 @@ main{max-width:900px;padding:20px 20px 60px;}
 }
 /* Tab strip */
 #mobile-tabs{
-  display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;
-  scrollbar-width:none;padding:0 10px;gap:0;
+  display:flex;overflow-x:hidden;
+  padding:0;gap:0;
 }
 #mobile-tabs::-webkit-scrollbar{display:none;}
 .mtab{
-  padding:7px 11px 6px;font-size:13px;font-weight:600;
+  flex:1;padding:7px 4px 6px;font-size:13px;font-weight:600;
   color:var(--muted);white-space:nowrap;
   border-bottom:2px solid transparent;
   cursor:pointer;flex-shrink:0;
@@ -1086,7 +1086,7 @@ canvas{width:100%!important;}
       <button id="mobile-ham" onclick="toggleSidebar()">&#9776;</button>
     </div>
     <div id="mobile-tabs">
-      <button class="mtab active" id="mtab-dashboard" onclick="show('dashboard',null)">Home</button>
+      <button class="mtab active" id="mtab-dashboard" onclick="show('dashboard',null)">Dashboard</button>
       <button class="mtab" id="mtab-bills" onclick="show('bills',null)">Bills</button>
       <button class="mtab" id="mtab-money" onclick="show('budget',null)">Money</button>
       <button class="mtab" id="mtab-networth" onclick="show('networth',null)">Accounts</button>
@@ -2524,7 +2524,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v2.0.1';
+const APP_VERSION='v2.0.2';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
