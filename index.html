@@ -1166,7 +1166,7 @@ canvas{width:100%!important;}
       </div>
       <div id="budget-alerts"></div>
       <div class="card-grid" style="margin-bottom:18px">
-        <div class="stat-card"><div class="stat-label" data-i18n="Money In">Money In</div><div class="stat-value" id="cf-in" style="color:var(--teal)">$0.00</div></div>
+        <div class="stat-card"><div class="stat-label" data-i18n="Money In">Money In</div><div class="stat-value" id="cf-in" style="color:var(--green)">$0.00</div></div>
         <div class="stat-card"><div class="stat-label" data-i18n="Money Out">Money Out</div><div class="stat-value" id="cf-out" style="color:var(--red)">$0.00</div></div>
         <div class="stat-card"><div class="stat-label" data-i18n="Net Cash Flow">Net Cash Flow</div><div class="stat-value" id="cf-net">$0.00</div></div>
       </div>
@@ -1174,11 +1174,11 @@ canvas{width:100%!important;}
         <!-- MONEY IN -->
         <div class="card">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-            <div class="section-label" style="color:var(--teal);margin-bottom:0" data-i18n="Money In">Money In</div>
+            <div class="section-label" style="color:var(--green);margin-bottom:0" data-i18n="Money In">Money In</div>
             <button class="btn btn-primary btn-sm" onclick="openModal('income')">+ Income</button>
           </div>
           <div id="income-list"></div>
-          <div class="total-row" style="color:var(--teal)"><span data-i18n="Total">Total</span><span id="income-total">$0.00</span></div>
+          <div class="total-row" style="color:var(--green)"><span data-i18n="Total">Total</span><span id="income-total">$0.00</span></div>
         </div>
         <!-- MONEY OUT -->
         <div class="card">
@@ -2524,7 +2524,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v2.0.3';
+const APP_VERSION='v2.0.4';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -3554,36 +3554,28 @@ function renderNetWorth(){
   // Render accounts in Net Worth section
   const acList=$('account-list');
   if(acList){
-    acList.innerHTML=accs.length?accs.map(a=>`
-    <div class="card" style="margin-bottom:11px">
-      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
-        <div>
-          <div style="font-size:15px;font-weight:600;margin-bottom:3px">${acTypeIcon[a.type]||'🏦'} ${a.name}${a.isDefault?'<span style="margin-left:7px;font-size:10px;font-weight:700;background:rgba(80,112,240,.18);color:var(--accent);border-radius:5px;padding:2px 7px;vertical-align:middle;letter-spacing:.3px">DEFAULT</span>':''}</div>
-          <div style="font-size:12px;color:var(--muted)">${acTypeLabel[a.type]||a.type}${a.notes?' - '+a.notes:''}</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:10px">
-          <span style="font-family:var(--font-d);font-size:22px;color:${a.balance>=0?'var(--green)':'var(--red)'}">${usd(a.balance)}</span>
-          <button class="btn btn-secondary btn-sm" onclick="openReconcile(${a.id})" title="Reconcile with bank statement">⚖️</button>
-          <button class="btn btn-secondary btn-sm" onclick="openEditAccount(${a.id})">✏️</button>
-        </div>
-      </div>
-      ${a.lastReconciled?`<div class="recon-badge">&#10003; Reconciled ${fmtDate(a.lastReconciled)}</div><div class="recon-history">Bank: ${usd(a.lastReconciledBal||0)} confirmed</div>`:''}
-      ${(a.apy>0)?`<div style="display:flex;align-items:center;gap:10px;margin-top:8px;padding:7px 10px;background:rgba(34,197,94,.07);border-radius:8px;border:1px solid rgba(34,197,94,.15)">
-        <span style="font-size:11px;font-weight:700;color:var(--green)">APY ${a.apy.toFixed(2)}%</span>
-        <span style="font-size:11px;color:var(--muted)">·</span>
-        <span style="font-size:11px;color:var(--muted)">~${usd(parseFloat((a.balance*a.apy/100).toFixed(2)))} projected / yr</span>
-      </div>`:''}
-      ${a.url?`<button class="btn btn-secondary btn-sm" style="margin-top:8px;width:100%;justify-content:flex-start;gap:8px;padding:8px 12px;border:1px solid rgba(80,112,240,.2);background:rgba(80,112,240,.07)" onclick="openLink('${a.url}')">
-        <span>🌐</span><span style="font-size:12px;color:var(--accent2)">${linkHost(a.url)}</span><span style="margin-left:auto;color:var(--muted);font-size:13px">›</span>
-      </button>`:''}
-      <div class="bal-correct-row">
-        <input class="bal-correct-input" type="number" inputmode="decimal"
-          placeholder="Set actual balance..." id="bal-correct-${a.id}"
-          value="${a.balance.toFixed(2)}"/>
-        <button class="bal-correct-btn" onclick="correctBalance(${a.id})">⚡ Correct</button>
-      </div>
-    </div>`).join('')
+    const acTypeColor={checking:'#5070f0',savings:'#1aa8d8',cash:'#22c55e'};
+    acList.innerHTML=accs.length?accs.map(a=>{
+      const ac=acTypeColor[a.type]||'#5070f0';
+      const defaultBadge=a.isDefault?'<span style="margin-left:7px;font-size:10px;font-weight:700;background:rgba(80,112,240,.18);color:var(--accent);border-radius:5px;padding:2px 7px;vertical-align:middle">DEFAULT</span>':'';
+      const reconHtml=a.lastReconciled?'<div class="recon-badge">&#10003; Reconciled '+fmtDate(a.lastReconciled)+'</div><div class="recon-history">Bank: '+usd(a.lastReconciledBal||0)+' confirmed</div>':'';
+      const apyHtml=a.apy>0?'<div style="display:flex;align-items:center;gap:8px;margin-top:8px;padding:7px 10px;background:rgba(34,197,94,.07);border-radius:8px;border:1px solid rgba(34,197,94,.15)"><span style="font-size:11px;font-weight:700;color:var(--green)">APY '+a.apy.toFixed(2)+'%</span><span style="font-size:11px;color:var(--muted)">· ~'+usd(parseFloat((a.balance*a.apy/100).toFixed(2)))+' / yr</span></div>':'';
+      const urlHtml=a.url?'<button class="btn btn-secondary btn-sm" style="margin-top:8px;width:100%;justify-content:flex-start;gap:8px;padding:8px 12px;border:1px solid rgba(80,112,240,.2);background:rgba(80,112,240,.07)" onclick="openLink(this.dataset.url)" data-url="'+a.url+'"><span>🌐</span><span style="font-size:12px;color:var(--accent2)">'+linkHost(a.url)+'</span><span style="margin-left:auto;color:var(--muted);font-size:13px">›</span></button>':'';
+      const balCorrect='<div class="bal-correct-row"><input class="bal-correct-input" type="number" inputmode="decimal" placeholder="Set actual balance..." id="bal-correct-'+a.id+'" value="'+a.balance.toFixed(2)+'"/><button class="bal-correct-btn" onclick="correctBalance('+a.id+')">⚡ Correct</button></div>';
+      const cardHtml='<div class="card" style="margin-bottom:0;border-color:'+ac+'44;border-radius:12px;">'
+        +'<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">'
+        +'<div><div style="font-size:15px;font-weight:600;margin-bottom:3px">'+(acTypeIcon[a.type]||'🏦')+' '+a.name+defaultBadge+'</div>'
+        +'<div style="font-size:12px;color:var(--muted)">'+(acTypeLabel[a.type]||a.type)+(a.notes?' - '+a.notes:'')+'</div></div>'
+        +'<div style="display:flex;align-items:center;gap:10px">'
+        +'<span style="font-family:var(--font-d);font-size:22px;color:'+(a.balance>=0?'var(--green)':'var(--red)')+'">'+usd(a.balance)+'</span>'
+        +'<button class="btn btn-secondary btn-sm" onclick="openReconcile('+a.id+')" title="Reconcile">⚖️</button>'
+        +'</div></div>'
+        +reconHtml+apyHtml+urlHtml+balCorrect
+        +'</div>';
+      return wrapSwipeable(cardHtml,'accounts',a.id,'openEditAccount('+a.id+')');
+    }).join('')
     :emptyState('🏦','No accounts yet','Add your checking, savings, and cash accounts to track live balances.','+ Add Account',"openModal('account')");
+    setTimeout(attachSwipes,50);
   }
   const catIcon={cash:'💵',invest:'📈',property:'🏠',vehicle:'🚗'};
   const catLabel={cash:'Savings / Cash',invest:'Investments',property:'Property',vehicle:'Vehicle'};
@@ -3619,21 +3611,19 @@ function renderNetWorth(){
         </div>`;
       }
     }
-    return `<div class="row" style="flex-direction:column;align-items:stretch;gap:0">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <div>
-          <div class="row-label">${catIcon[a.category]||'💼'} ${a.name}</div>
-          <div class="row-sub">${catLabel[a.category]||a.category}${a.notes?' · '+a.notes:''}</div>
-        </div>
-        <div class="row-actions">
-          <span style="color:var(--green);font-weight:600">${usd(a.value)}</span>
-          <button class="btn btn-secondary btn-sm" onclick="openEditAsset(${a.id})">✏️</button>
-          <button class="btn btn-danger btn-sm" onclick="deleteItem('assets',${a.id})">✕</button>
-        </div>
-      </div>
-      ${deprHtml}${equityHtml}
-    </div>`;
+    const assetColor={cash:'#1aa8d8',invest:'#5070f0',property:'#f59e0b',vehicle:'#fb923c'};
+    const ac2=assetColor[a.category]||'#5070f0';
+    const innerHtml='<div style="display:flex;justify-content:space-between;align-items:center">'
+      +'<div><div class="row-label">'+(catIcon[a.category]||'💼')+' '+a.name+'</div>'
+      +'<div class="row-sub">'+(catLabel[a.category]||a.category)+(a.notes?' · '+a.notes:'')+'</div></div>'
+      +'<div class="row-actions">'
+      +'<span style="color:var(--green);font-weight:600">'+usd(a.value)+'</span>'
+      +'</div></div>'
+      +deprHtml+equityHtml;
+    const assetCard='<div class="card" style="margin-bottom:0;border-color:'+ac2+'44;border-radius:12px;">'+innerHtml+'</div>';
+    return wrapSwipeable(assetCard,'assets',a.id,'openEditAsset('+a.id+')');
   }).join(''):emptyState('📈','No assets yet','Add investments, property, and vehicles to see your full net worth.','+ Add Asset',"openModal('asset')");
+  setTimeout(attachSwipes,50);
   // Dashboard accounts widget
   const wrap=$('d-accounts-wrap'),grid=$('d-accounts');
   if(wrap&&grid){
@@ -4931,6 +4921,7 @@ function toggleSchedule(id){
 
 // ── VISUAL HELPERS ───────────────────────────────
 function statusColor(s){return{Paid:'#22c55e',Scheduled:'#3b82f6',Pending:'#f59e0b',Overdue:'#ef4444'}[s]||'#888';}
+function freqBorderColor(f){return{Weekly:'#06b6d4','Bi-weekly':'#8b5cf6',Monthly:'#5070f0',Yearly:'#f59e0b'}[f]||'#555566';}
 function recurBadge(freq){
   if(!freq||freq==='One-time')return'';
   const map={Weekly:['#06b6d4','🔁'],'Bi-weekly':['#8b5cf6','🔁'],Monthly:['#5070f0','🔄'],Yearly:['#f59e0b','📆']};
@@ -5525,7 +5516,8 @@ function renderBudget(){
           <div style="font-size:10px;color:var(--accent2);font-weight:700">ACTUAL</div>
         </div>`
       :`<span style="color:var(--green);font-weight:600">${usd(eff)}</span>`;
-    return wrapSwipeable(`<div class="row" style="margin-bottom:0;border-radius:12px"><div>
+    const ifc=freqBorderColor(i.frequency);
+    return wrapSwipeable(`<div class="row" style="margin-bottom:0;border-radius:12px;border:1px solid ${ifc}44;background:var(--surface);padding:12px 14px;"><div>
       <div class="row-label">${i.source} ${recurBadge(i.frequency)}</div>
       <div class="row-sub">${[fmtDate(i.date),i.frequency!=='One-time'?i.frequency:'One-time'].filter(Boolean).join(' - ')}</div>
       
@@ -5539,7 +5531,8 @@ function renderBudget(){
   // Money Out -- expenses + bills combined
   const expRows=data.expenses.map(e=>{
     const isPaid=e.paidMonth===thisMonth;
-    return wrapSwipeable(`<div class="row" style="margin-bottom:0;border-radius:12px${isPaid?';opacity:.6':''}"><div>
+    const efc=freqBorderColor(e.frequency);
+    return wrapSwipeable(`<div class="row" style="margin-bottom:0;border-radius:12px;border:1px solid ${efc}44;background:var(--surface);padding:12px 14px;${isPaid?'opacity:.6':''}"><div>
       <div class="row-label">${catIcon(e.category)}${e.category} ${recurBadge(e.frequency)}${e.autoLog?'<span class="autolog-badge">&#128259; auto</span>':''}${isPaid?'<span style="margin-left:6px;font-size:10px;font-weight:700;background:rgba(34,197,94,.15);color:var(--green);border-radius:5px;padding:2px 7px">✓ PAID</span>':''}</div>
       <div class="row-sub">${[e.description,fmtDate(e.date)].filter(Boolean).join(' - ')}</div>
     </div><div class="row-actions">
@@ -5551,20 +5544,13 @@ function renderBudget(){
   });
 
   const billTypeIcon={bill:'📋',creditcard:'💳',loan:'🏦',promo:'🎁'};
-  const billRows=data.bills.filter(b=>b.amount>0).map(b=>`
-    <div class="row"><div>
-      <div class="row-label">${billTypeIcon[b.btype]||'📋'} ${b.name}
-        ${b.btype==='creditcard'?'<span style="background:rgba(239,68,68,.15);color:#ef4444;border-radius:5px;padding:1px 6px;font-size:10px;font-weight:700;margin-left:4px">CARD</span>':
-          b.btype==='loan'?'<span style="background:rgba(251,146,60,.15);color:#fb923c;border-radius:5px;padding:1px 6px;font-size:10px;font-weight:700;margin-left:4px">LOAN</span>':
-          b.promoEndDate?'<span style="background:rgba(34,197,94,.15);color:var(--green);border-radius:5px;padding:1px 6px;font-size:10px;font-weight:700;margin-left:4px">PROMO</span>':''}
-      </div>
-      <div class="row-sub">${b.recurring!=='No'?b.recurring+' payment':''} ${b.dueDate?'- Due '+fmtDate(b.dueDate):''}</div>
-    </div><div class="row-actions">
-      <span style="color:var(--red);font-weight:600">${usd(b.amount)}</span>
-      <button class="btn btn-secondary btn-sm" onclick="openEditBill(${b.id})">✏️</button>
-      <button class="btn btn-danger btn-sm" onclick="deleteBillFromModal(${b.id})">✕</button>
-    </div></div>`);
-
+  const billRows=data.bills.filter(b=>b.amount>0).map(b=>{
+    const bfc=freqBorderColor(b.recurring&&b.recurring!=='No'?b.recurring:'One-time');
+    const btypeBadge=b.btype==='creditcard'?'<span style="background:rgba(239,68,68,.15);color:#ef4444;border-radius:5px;padding:1px 6px;font-size:10px;font-weight:700;margin-left:4px">CARD</span>':b.btype==='loan'?'<span style="background:rgba(251,146,60,.15);color:#fb923c;border-radius:5px;padding:1px 6px;font-size:10px;font-weight:700;margin-left:4px">LOAN</span>':b.promoEndDate?'<span style="background:rgba(34,197,94,.15);color:var(--green);border-radius:5px;padding:1px 6px;font-size:10px;font-weight:700;margin-left:4px">PROMO</span>':'';
+    const bIcon=billTypeIcon[b.btype]||'📋';
+    const bSub=(b.recurring!=='No'?b.recurring+' payment':'')+(b.dueDate?' - Due '+fmtDate(b.dueDate):'');
+    return wrapSwipeable('<div class="row" style="margin-bottom:0;border-radius:12px;border:1px solid '+bfc+'44;background:var(--surface);padding:12px 14px;"><div><div class="row-label">'+bIcon+' '+b.name+btypeBadge+'</div><div class="row-sub">'+bSub+'</div></div><div class="row-actions"><span style="color:var(--red);font-weight:600">'+usd(b.amount)+'</span><button class="btn btn-secondary btn-sm" onclick="openEditBill('+b.id+')">✏️</button><button class="btn btn-danger btn-sm" onclick="deleteBillFromModal('+b.id+')">✕</button></div></div>','bills',b.id,'openEditBill('+b.id+')');
+  });
   const allOut=[...expRows,...billRows];
   $('expense-list').innerHTML=allOut.length?allOut.join(''):emptyState('💸','No outgoings yet','Add your monthly expenses and bills to see your full cash flow picture.','+ Add Expense',"openModal('expense')");
   renderPaycheckCalendar();
