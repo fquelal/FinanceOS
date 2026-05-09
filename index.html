@@ -2524,7 +2524,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v2.0.2';
+const APP_VERSION='v2.0.3';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -3963,6 +3963,7 @@ function _initSwipe(){
   el.addEventListener('touchend',e=>{
     if(_touchLocked)return;
     if(window.innerWidth>680)return; // desktop — don't intercept
+    if(e.target.closest('.swipe-wrap'))return; // item swipe in progress — don't navigate
     const dx=e.changedTouches[0].clientX-_touchStartX;
     const dy=e.changedTouches[0].clientY-_touchStartY;
     if(Math.abs(dx)<48||Math.abs(dx)<Math.abs(dy)*1.4)return;
