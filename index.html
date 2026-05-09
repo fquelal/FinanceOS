@@ -70,11 +70,12 @@ main{max-width:900px;padding:20px 20px 60px;}
 }
 #mobile-header-top{
   display:flex;align-items:center;gap:8px;
-  padding:7px 14px;
+  padding:4px 14px;
 }
 #mobile-brand{
-  font-family:var(--font-d);font-size:26px;font-weight:700;
+  font-family:var(--font-d);font-size:22px;font-weight:700;
   color:var(--accent);flex:1;letter-spacing:-0.5px;
+  display:flex;flex-direction:column;gap:1px;
 }
 #mobile-add-btn{
   background:none;border:none;cursor:pointer;flex-shrink:0;
@@ -1053,12 +1054,11 @@ canvas{width:100%!important;}
 
 <!-- ── SIDEBAR ── -->
 <div id="sidebar">
-  <div class="brand">💼 FinanceOS<span data-i18n="Personal Finance Tools">Personal Finance Tools</span></div>
+  <div class="brand">💼 FinanceOS</div>
   <button class="nav-item active" onclick="show('dashboard',this)"><span class="ni">📊</span><span data-i18n="Dashboard">Dashboard</span></button>
-  <button class="nav-item" onclick="show('budget',this)"><span class="ni">💰</span><span data-i18n="Cash Flow">Cash Flow</span></button>
-  <button class="nav-item" onclick="show('bills',this)"><span class="ni">📋</span><span data-i18n="Bills">Bills</span><span id="bills-badge" class="nav-badge red" style="display:none"></span></button>
+  <button class="nav-item" onclick="show('bills',this)"><span class="ni">💰</span><span>Money</span><span id="bills-badge" class="nav-badge red" style="display:none"></span></button>
   <button class="nav-item" onclick="show('debt',this)"><span class="ni">📉</span><span data-i18n="Debt Planner">Debt Planner</span></button>
-  <button class="nav-item" onclick="show('networth',this)"><span class="ni">🏦</span><span data-i18n="Net Worth">Net Worth</span></button>
+  <button class="nav-item" onclick="show('networth',this)"><span class="ni">🏦</span><span>Accounts</span></button>
   <button class="nav-item" onclick="show('insights',this)"><span class="ni">📈</span><span data-i18n="Insights">Insights</span><span id="insights-badge" class="nav-badge" style="display:none"></span></button>
   <button class="nav-item" onclick="show('cards',this)"><span class="ni">💳</span><span data-i18n="Cards">Cards</span></button>
   <button class="nav-item" onclick="show('advisor',this)"><span class="ni">🤖</span><span>My Advisor</span></button>
@@ -1070,6 +1070,7 @@ canvas{width:100%!important;}
     <button class="nav-item" onclick="lockApp()" id="lock-nav-btn" style="display:none"><span class="ni">🔒</span><span data-i18n="Lock App">Lock App</span></button>
     <button class="nav-item" onclick="show('about',this)"><span class="ni">&#8505;&#65039;</span><span>About</span></button>
     <button class="nav-item" onclick="openModal('settings')"><span class="ni">⚙️</span><span data-i18n="Settings">Settings</span></button>
+    <div style="text-align:center;padding:4px 0 8px;font-size:10px;color:#333350;font-weight:600;letter-spacing:.04em;font-family:-apple-system,sans-serif;" id="sidebar-version"></div>
   </div>
 </div>
 
@@ -1080,15 +1081,14 @@ canvas{width:100%!important;}
   <!-- Mobile header (two-row: brand row + tab strip) -->
   <div id="mobile-header">
     <div id="mobile-header-top">
-      <span id="mobile-brand">FinanceOS</span>
+      <div id="mobile-brand"><span>FinanceOS</span></div>
       <button id="mobile-add-btn" onclick="openModal('fab')" title="Quick add">+</button>
       <button id="mobile-bell" onclick="openNotifDrawer()" title="Notifications">🔔<span id="mobile-bell-badge"></span></button>
       <button id="mobile-ham" onclick="toggleSidebar()">&#9776;</button>
     </div>
     <div id="mobile-tabs">
       <button class="mtab active" id="mtab-dashboard" onclick="show('dashboard',null)">Dashboard</button>
-      <button class="mtab" id="mtab-bills" onclick="show('bills',null)">Bills</button>
-      <button class="mtab" id="mtab-money" onclick="show('budget',null)">Money</button>
+      <button class="mtab" id="mtab-bills" onclick="show('bills',null)">Money</button>
       <button class="mtab" id="mtab-networth" onclick="show('networth',null)">Accounts</button>
       <button class="mtab" id="mtab-insights" onclick="show('insights',null)">Insights</button>
       <button class="mtab" id="mtab-advisor" onclick="show('advisor',null)">Advisor</button>
@@ -1158,12 +1158,7 @@ canvas{width:100%!important;}
 
     <!-- BUDGET -->
     <div id="budget" class="section">
-      <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
-        <div class="plan-toggle" style="margin-bottom:0">
-          <button id="sub-money-overview" class="active" onclick="showSub('budget','budget')">Overview</button>
-          <button id="sub-money-log" onclick="showSub('quick','budget')">Log</button>
-        </div>
-      </div>
+
       <div id="budget-alerts"></div>
       <div class="card-grid" style="margin-bottom:18px">
         <div class="stat-card"><div class="stat-label" data-i18n="Money In">Money In</div><div class="stat-value" id="cf-in" style="color:var(--green)">$0.00</div></div>
@@ -1209,8 +1204,7 @@ canvas{width:100%!important;}
       <div class="sec-header">
         <h2 class="sec-title" data-i18n="Bills &amp; Payments">Bills &amp; Payments</h2>
       </div>
-      <div id="bills-alerts"></div>
-      <div id="smart-bills-wrap" style="margin-bottom:4px"></div>
+      <div id="money-summary-cards" style="margin-bottom:14px"></div>
       <div class="view-toggle">
         <button class="view-btn active" id="bill-view-list" onclick="setBillView('list')">☰ List</button>
         <button class="view-btn" id="bill-view-cal" onclick="setBillView('calendar')">📅 Calendar</button>
@@ -1219,6 +1213,7 @@ canvas{width:100%!important;}
         <button class="sort-btn active" onclick="setBillSort('date')" id="bs-date" data-i18n="Due Date">Due Date</button>
         <button class="sort-btn" onclick="setBillSort('status')" id="bs-status" data-i18n="Status">Status</button>
         <button class="sort-btn" onclick="setBillSort('amount')" id="bs-amount" data-i18n="Amount">Amount</button>
+        <button class="sort-btn" onclick="setBillSort('type')" id="bs-type">Type</button>
       </div>
       <div id="bill-list"></div>
       <div class="bill-calendar" id="bill-calendar">
@@ -1235,8 +1230,9 @@ canvas{width:100%!important;}
     <div id="debt" class="section">
       <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
         <div class="plan-toggle" style="margin-bottom:0">
+          <button id="sub-debt-cashflow" onclick="showSub('cashflow','insights')">Cash Flow</button>
+          <button id="sub-debt-debt"     class="active" onclick="showSub('debt','insights')">Debt</button>
           <button id="sub-debt-spending" onclick="showSub('insights','insights')">Spending</button>
-          <button id="sub-debt-debt" class="active" onclick="showSub('debt','insights')">Debt</button>
         </div>
       </div>
       <div id="debt-alerts"></div>
@@ -1388,11 +1384,36 @@ canvas{width:100%!important;}
     </div>
 
     <!-- INSIGHTS -->
+    <!-- CASH FLOW (Insights sub-view) -->
+    <div id="cashflow" class="section">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
+        <div class="plan-toggle" style="margin-bottom:0">
+          <button id="sub-cf-cashflow" class="active" onclick="showSub('cashflow','insights')">Cash Flow</button>
+          <button id="sub-cf-debt"     onclick="showSub('debt','insights')">Debt</button>
+          <button id="sub-cf-spending" onclick="showSub('insights','insights')">Spending</button>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+          <div class="section-label" style="color:var(--muted);margin-bottom:0">Monthly Cash Flow</div>
+          <select id="cf-chart-months" onchange="renderCashFlow()" style="background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:5px 10px;color:var(--text);font-size:12px;-webkit-appearance:none">
+            <option value="3" selected>Last 3 months</option>
+            <option value="6">Last 6 months</option>
+            <option value="12">Last 12 months</option>
+          </select>
+        </div>
+        <div class="chart-wrap"><canvas id="cf-chart"></canvas></div>
+        <div style="font-size:10px;color:var(--muted);text-align:center;margin-top:6px;opacity:.7">Tap any point to see values</div>
+      </div>
+      <div id="cashflow-content"></div>
+    </div>
+
     <div id="insights" class="section">
       <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
         <div class="plan-toggle" style="margin-bottom:0">
+          <button id="sub-ins-cashflow" onclick="showSub('cashflow','insights')">Cash Flow</button>
+          <button id="sub-ins-debt"     onclick="showSub('debt','insights')">Debt</button>
           <button id="sub-ins-spending" class="active" onclick="showSub('insights','insights')">Spending</button>
-          <button id="sub-ins-debt" onclick="showSub('debt','insights')">Debt</button>
         </div>
       </div>
       <div id="insights-alerts"></div>
@@ -1545,12 +1566,7 @@ canvas{width:100%!important;}
 
     <!-- QUICK UPDATE -->
     <div id="quick" class="section">
-      <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
-        <div class="plan-toggle" style="margin-bottom:0">
-          <button id="sub-log-overview" onclick="showSub('budget','budget')">Overview</button>
-          <button id="sub-log-log" class="active" onclick="showSub('quick','budget')">Log</button>
-        </div>
-      </div>
+
       <div id="quick-alerts"></div>
       <p style="color:var(--muted);font-size:13px;margin-bottom:20px">Log cash withdrawals and purchases. Bill and debt payments are handled in Bills &amp; Payments.</p>
       <div class="quick-grid">
@@ -1902,6 +1918,27 @@ canvas{width:100%!important;}
   </div>
 </div>
 
+<!-- OCCURRENCE OVERRIDE -->
+<div class="overlay" id="modal-occurrence">
+  <div class="modal">
+    <div class="modal-header"><span class="modal-title">Update This Payment</span><button class="close-btn" onclick="closeModal('occurrence')">✕</button></div>
+    <input type="hidden" id="occ-income-id"/>
+    <input type="hidden" id="occ-date"/>
+    <div style="background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:12px 14px;margin-bottom:14px;">
+      <div style="font-size:13px;font-weight:700;color:var(--text)" id="occ-source-label"></div>
+      <div style="font-size:12px;color:var(--muted);margin-top:3px" id="occ-date-label"></div>
+      <div style="font-size:12px;color:var(--muted);margin-top:2px">Scheduled: <span style="color:var(--green);font-weight:600" id="occ-scheduled"></span></div>
+    </div>
+    <div class="field">
+      <label>Actual Amount ($)</label>
+      <input id="occ-amount" type="number" inputmode="decimal" placeholder="Leave blank to use scheduled amount"/>
+      <div style="font-size:11px;color:var(--muted);margin-top:4px">Overrides the scheduled amount for this specific payment only. Leave blank to revert to scheduled.</div>
+    </div>
+    <button class="btn btn-primary btn-full" onclick="saveOccurrenceOverride()">Save</button>
+    <button class="btn btn-danger btn-full" onclick="clearOccurrenceOverride()" style="margin-top:8px;background:transparent;border:1px solid rgba(239,68,68,.3);">Clear Override</button>
+  </div>
+</div>
+
 <!-- EXPENSE -->
 <div class="overlay" id="modal-expense">
   <div class="modal">
@@ -2210,9 +2247,18 @@ canvas{width:100%!important;}
       <span class="modal-title">📅 Schedule Payment</span>
       <button class="close-btn" onclick="closeModal('schedulebill')">✕</button>
     </div>
-    <div style="background:rgba(255,255,255,.04);border-radius:12px;padding:12px 14px;margin-bottom:16px">
+    <div style="background:rgba(255,255,255,.04);border-radius:12px;padding:12px 14px;margin-bottom:12px">
+      <div class="no-accounts-nudge" id="sb-no-accounts-nudge" style="display:none;margin-bottom:8px">&#9888; No accounts set up. Add an account in Accounts first so you can track which account this payment comes from.</div>
       <div style="font-size:15px;font-weight:700" id="sb-name"></div>
       <div style="font-size:12px;color:var(--muted);margin-top:3px" id="sb-due"></div>
+    </div>
+    <div id="sb-website-wrap" style="display:none;margin-bottom:14px">
+      <a id="sb-website-btn" href="#" target="_blank" rel="noopener"
+        style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:11px;background:rgba(80,112,240,.12);color:var(--accent2);border:1px solid rgba(80,112,240,.3);border-radius:12px;font-size:14px;font-weight:700;text-decoration:none;box-sizing:border-box"
+        onclick="this.style.background='rgba(80,112,240,.22)'">
+        🌐 Go to Website &nbsp;→
+      </a>
+      <div style="font-size:11px;color:var(--muted);text-align:center;margin-top:6px">Come back here after paying to confirm the schedule.</div>
     </div>
     <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;font-weight:700" data-i18n="Payment Amount">Payment Amount</div>
     <button id="sb-min-btn" class="btn btn-full" style="background:rgba(80,112,240,.12);color:var(--accent2);padding:12px;justify-content:space-between;margin-bottom:10px" onclick="sbSelect('min')">
@@ -2243,6 +2289,12 @@ canvas{width:100%!important;}
       <div style="font-size:12px;color:var(--muted);margin-top:4px">
         Balance: <span id="pd-balance" style="color:var(--red)"></span>
         &nbsp;|&nbsp; APR: <span id="pd-apr" style="color:var(--yellow)"></span>
+      </div>
+      <div id="pd-website-wrap" style="display:none;margin-top:10px">
+        <a id="pd-website-btn" href="#" target="_blank" rel="noopener"
+          style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:9px;background:rgba(80,112,240,.12);color:var(--accent2);border:1px solid rgba(80,112,240,.3);border-radius:10px;font-size:13px;font-weight:700;text-decoration:none;box-sizing:border-box">
+          🌐 Go to Website &nbsp;→
+        </a>
       </div>
       <div class="balance-split" id="pd-balance-split" style="display:none">
         <div class="balance-bucket revolving">
@@ -2524,7 +2576,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v2.0.4';
+const APP_VERSION='v2.0.8';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -3006,17 +3058,63 @@ function loadData(){
   catch(e){console.warn(e);}
 }
 // Returns effective income - actual override if set this month, otherwise scheduled
+function getIncomeOccurrences(income, yr, mo){
+  // Returns [{date:'YYYY-MM-DD', amount:number}] for every occurrence in the given month
+  const now = new Date();
+  const targetYr = yr != null ? yr : now.getFullYear();
+  const targetMo = mo != null ? mo : now.getMonth();
+  const base = parseFloat((income.amount||0).toFixed(2));
+  const monthStart = new Date(targetYr, targetMo, 1);
+  const monthEnd   = new Date(targetYr, targetMo+1, 0);
+
+  // Helper: resolve amount for a date (checks occurrenceOverrides)
+  const resolveAmt = (dateStr) => {
+    const ov = (income.occurrenceOverrides || {})[dateStr];
+    return ov != null ? parseFloat(ov) : base;
+  };
+
+  if(income.frequency === 'Weekly'){
+    const anchorStr = income.date || new Date().toISOString().split('T')[0];
+    const anchor = new Date(anchorStr + 'T12:00:00');
+    let d = new Date(anchor);
+    // Walk to vicinity of month
+    while(d > monthEnd)   d.setDate(d.getDate() - 7);
+    while(d < monthStart) d.setDate(d.getDate() + 7);
+    const dates = [];
+    while(d <= monthEnd){
+      const ds = d.toISOString().split('T')[0];
+      if(d >= monthStart) dates.push({ date: ds, amount: resolveAmt(ds) });
+      d = new Date(d);
+      d.setDate(d.getDate() + 7);
+    }
+    return dates;
+  }
+
+  if(income.frequency === 'Bi-weekly'){
+    // Use lastPayDate if set, otherwise fall back to income.date as anchor
+    const anchorStr = income.lastPayDate || income.date;
+    const tempIncome = Object.assign({}, income, { lastPayDate: anchorStr });
+    const paycheckDates = getPaycheckDates(tempIncome, targetYr, targetMo) || [];
+    return paycheckDates.map(d => {
+      const ds = d.toISOString().split('T')[0];
+      return { date: ds, amount: resolveAmt(ds) };
+    });
+  }
+
+  // Monthly, One-time, Yearly — single entry using recorded date
+  return [{ date: income.date || new Date().toISOString().split('T')[0], amount: base }];
+}
+
 function getEffectiveIncome(i, yr, mo){
-  // Actual override takes highest priority
   const now = new Date();
   const targetYr = yr != null ? yr : now.getFullYear();
   const targetMo = mo != null ? mo : now.getMonth();
   const targetMonthStr = targetYr+'-'+String(targetMo+1).padStart(2,'0');
+  // Actual override takes highest priority
   if(i.actualAmount && i.actualMonth === targetMonthStr) return i.actualAmount;
-
-  // Return the per-paycheck/per-entry amount as-entered.
-  // The "update" (actual) field is how you record what actually posted.
-  return parseFloat((i.amount||0).toFixed(2));
+  // Sum all occurrences in the month
+  const occs = getIncomeOccurrences(i, targetYr, targetMo);
+  return parseFloat(occs.reduce((s,o) => s + o.amount, 0).toFixed(2));
 }
 function haptic(type){try{navigator.vibrate&&navigator.vibrate(type==='heavy'?20:type==='medium'?12:6);}catch(e){}}
 function showToast(msg, type){
@@ -3914,7 +4012,7 @@ function chartShowTooltip(canvas,tapX){
 }
 
 const PAGE_ORDER=['dashboard','bills','budget','networth','insights','advisor'];
-const TAB_MAP={dashboard:'dashboard',bills:'bills',budget:'money',quick:'money',networth:'networth',cards:'networth',insights:'insights',debt:'insights',advisor:'advisor'};
+const TAB_MAP={dashboard:'dashboard',bills:'bills',networth:'networth',cards:'networth',insights:'insights',debt:'insights',cashflow:'insights',advisor:'advisor'};
 let _currentSec='dashboard';
 let _swipeDir=null;
 let _touchStartX=0,_touchStartY=0,_touchLocked=false;
@@ -3929,6 +4027,7 @@ function showSub(sec,parentSec){
   if(mt) mt.classList.add('active');
   renderAll();
   if(sec==='insights'){const months=parseInt($('chart-months')?$('chart-months').value:3)||3;setTimeout(()=>drawChart(getMonthlyExpenses(months)),80);}
+  if(sec==='cashflow') renderCashFlow();
   if(sec==='cards') setTimeout(()=>renderCards(),50);
   if(sec==='quick') setTimeout(()=>renderTxns(),50);
 }
@@ -4184,12 +4283,149 @@ function saveIncome(){
   // Reverse previous account credit if editing
   const prevEffective=prev?(prev.actualAmount||prev.amount):0;
   if(prev&&prev.accountId) adjustAccountBalance(prev.accountId,-prevEffective);
-  const item={id:eid||Date.now(),source:src,amount:amt,frequency:freq,date:dt,accountId:acId,actualAmount,actualMonth,lastPayDate:lastPayDate||null};
+  const item={id:eid||Date.now(),source:src,amount:amt,frequency:freq,date:dt,accountId:acId,actualAmount,actualMonth,lastPayDate:lastPayDate||null,occurrenceOverrides:prev&&prev.occurrenceOverrides?prev.occurrenceOverrides:{},incomeStatusOverrides:prev&&prev.incomeStatusOverrides?prev.incomeStatusOverrides:{}};
   data.income=eid?data.income.map(i=>i.id===eid?item:i):[...data.income,item];
   // Credit account with effective amount
   const effective=actualAmount||amt;
   if(acId) adjustAccountBalance(acId,effective);
   closeModal('income');saveData();renderAll();
+}
+
+// ── OCCURRENCE OVERRIDE ───────────────────────────────────────
+function openOccurrenceModal(incomeId, date, scheduledAmount){
+  const i=data.income.find(x=>x.id===incomeId);
+  if(!i) return;
+  $('occ-income-id').value=incomeId;
+  $('occ-date').value=date;
+  $('occ-source-label').textContent=i.source;
+  $('occ-date-label').textContent=fmtDate(date);
+  $('occ-scheduled').textContent=usd(scheduledAmount);
+  const existing=(i.occurrenceOverrides||{})[date];
+  $('occ-amount').value=existing!=null?existing:'';
+  $('modal-occurrence').classList.add('open');
+}
+function saveOccurrenceOverride(){
+  const id=parseInt($('occ-income-id').value);
+  const date=$('occ-date').value;
+  const raw=$('occ-amount').value.trim();
+  const val=parseFloat(raw);
+  const i=data.income.find(x=>x.id===id);
+  if(!i) return;
+  if(!i.occurrenceOverrides) i.occurrenceOverrides={};
+  if(raw===''||isNaN(val)||val<0){
+    delete i.occurrenceOverrides[date];
+  } else {
+    i.occurrenceOverrides[date]=parseFloat(val.toFixed(2));
+  }
+  saveData();closeModal('occurrence');renderAll();
+  showToast('Payment updated');
+}
+function clearOccurrenceOverride(){
+  const id=parseInt($('occ-income-id').value);
+  const date=$('occ-date').value;
+  const i=data.income.find(x=>x.id===id);
+  if(i&&i.occurrenceOverrides) delete i.occurrenceOverrides[date];
+  saveData();closeModal('occurrence');renderAll();
+  showToast('Override cleared');
+}
+
+
+
+// ── TAP TO EXPAND CARDS ───────────────────────────────────────
+function toggleCardExpand(id){
+  const panel=$('cact-'+id);
+  const chev=$('cchev-'+id);
+  if(!panel) return;
+  const open=panel.style.display==='flex';
+  panel.style.display=open?'none':'flex';
+  if(chev) chev.innerHTML=open?'&#9662;':'&#9652;';
+}
+
+// ── INCOME STATUS (in Bills view) ────────────────────────────
+function getIncomeOccurrenceStatus(income, date){
+  return (income.incomeStatusOverrides||{})[date]||'Expected';
+}
+function setIncomeOccurrenceStatus(incomeId, date, status){
+  const i=data.income.find(x=>x.id===incomeId);
+  if(!i) return;
+  if(!i.incomeStatusOverrides) i.incomeStatusOverrides={};
+  if(status==='Expected') delete i.incomeStatusOverrides[date];
+  else i.incomeStatusOverrides[date]=status;
+  saveData(); renderBills(); renderDashboard();
+}
+function incomeStatusColor(s){
+  return{Expected:'#f59e0b',Received:'#22c55e',Missed:'#ef4444'}[s]||'#888';
+}
+
+function renderIncomeCard(income, occ, idx, total){
+  const cid='inc'+income.id+'d'+occ.date.replace(/-/g,'');
+  const status=getIncomeOccurrenceStatus(income,occ.date);
+  const sc=incomeStatusColor(status);
+  const isFirst=idx===0;
+  const isRecurring=income.frequency==='Weekly'||income.frequency==='Bi-weekly';
+  const occLabel=income.frequency==='Weekly'?'Week':'Paycheck';
+  const hasOccOverride=(income.occurrenceOverrides||{})[occ.date]!=null;
+  const subLine=isRecurring
+    ?(fmtDate(occ.date)+' \u00b7 '+occLabel+' '+(idx+1)+' of '+total)
+    :(fmtDate(occ.date)+' \u00b7 '+income.frequency);
+  const amtStr=hasOccOverride
+    ?('<span style="color:var(--muted);text-decoration:line-through;font-size:11px">'+usd(income.amount)+'</span>'
+      +' <span style="font-weight:700;color:var(--accent2)">'+usd(occ.amount)+'</span>')
+    :('<span style="font-weight:700;color:var(--green)">'+usd(occ.amount)+'</span>');
+  const statusBadge='<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;'
+    +'background:'+sc+'22;color:'+sc+'">'+status+'</span>';
+  let actionBtns='';
+  if(status==='Received'){
+    actionBtns='<button class="btn btn-sm" style="background:rgba(34,197,94,.15);color:var(--green)"'
+      +' onclick="event.stopPropagation();setIncomeOccurrenceStatus('+income.id+',\''+occ.date+'\',\'Expected\')">'
+      +'&#x2713; Received</button>'
+      +'<button class="btn btn-sm" style="background:rgba(239,68,68,.1);color:var(--red)"'
+      +' onclick="event.stopPropagation();setIncomeOccurrenceStatus('+income.id+',\''+occ.date+'\',\'Missed\')">'
+      +'&#x2715; Missed</button>';
+  } else if(status==='Missed'){
+    actionBtns='<button class="btn btn-sm" style="background:rgba(34,197,94,.15);color:var(--green)"'
+      +' onclick="event.stopPropagation();setIncomeOccurrenceStatus('+income.id+',\''+occ.date+'\',\'Received\')">'
+      +'&#x2713; Received</button>'
+      +'<button class="btn btn-sm" style="background:rgba(255,255,255,.06);color:var(--muted)"'
+      +' onclick="event.stopPropagation();setIncomeOccurrenceStatus('+income.id+',\''+occ.date+'\',\'Expected\')">'
+      +'Undo</button>';
+  } else {
+    actionBtns='<button class="btn btn-sm" style="background:rgba(34,197,94,.15);color:var(--green)"'
+      +' onclick="event.stopPropagation();setIncomeOccurrenceStatus('+income.id+',\''+occ.date+'\',\'Received\')">'
+      +'&#x2713; Received</button>'
+      +'<button class="btn btn-sm" style="background:rgba(239,68,68,.1);color:var(--red)"'
+      +' onclick="event.stopPropagation();setIncomeOccurrenceStatus('+income.id+',\''+occ.date+'\',\'Missed\')">'
+      +'&#x2715; Missed</button>';
+  }
+  if(isFirst){
+    actionBtns+='<button class="btn btn-secondary btn-sm"'
+      +' onclick="event.stopPropagation();openEditIncome('+income.id+')">&#x270f; Edit</button>'
+      +'<button class="btn btn-danger btn-sm"'
+      +' onclick="event.stopPropagation();deleteItem(\'income\','+income.id+')">&#x2715;</button>';
+  } else {
+    actionBtns+='<button class="btn btn-sm"'
+      +' style="background:rgba(80,112,240,.12);color:var(--accent2);border:1px solid rgba(80,112,240,.25);font-size:11px;font-weight:700;"'
+      +' onclick="event.stopPropagation();openOccurrenceModal('+income.id+',\''+occ.date+'\','+income.amount+')">$ Update</button>';
+  }
+  return '<div class="card" style="margin-bottom:8px;border-color:'+sc+'44;border-radius:12px;cursor:pointer"'
+    +' onclick="toggleCardExpand(\''+cid+'\')">'
+    +'<div style="display:flex;align-items:center;justify-content:space-between;gap:8px">'
+    +'<div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1">'
+    +'<div style="width:34px;height:34px;border-radius:9px;background:rgba(34,197,94,.15);'
+    +'display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:17px">&#x1F4B0;</div>'
+    +'<div style="min-width:0">'
+    +'<div style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'
+    +income.source+(isFirst?' '+recurBadge(income.frequency):'')+' </div>'
+    +'<div style="font-size:11px;color:var(--muted)">'+subLine+'</div>'
+    +'</div></div>'
+    +'<div style="display:flex;align-items:center;gap:6px;flex-shrink:0">'
+    +amtStr+statusBadge
+    +'<span id="cchev-'+cid+'" style="color:var(--muted);font-size:11px">&#9662;</span>'
+    +'</div></div>'
+    +'<div id="cact-'+cid+'"'
+    +' style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);flex-wrap:wrap;gap:6px">'
+    +actionBtns+'</div>'
+    +'</div>';
 }
 function saveExpense(){
   const autoLog = $('e-autolog') ? $('e-autolog').checked : false;
@@ -4492,7 +4728,7 @@ function attachSwipes(){
 // ── BILL SORT ─────────────────────────────────────────
 function setBillSort(s){
   billSort=s;
-  ['date','status','amount'].forEach(k=>{
+  ['date','status','amount','type'].forEach(k=>{
     const b=$('bs-'+k);if(b)b.classList.toggle('active',k===s);
   });
   renderBills();
@@ -4628,6 +4864,13 @@ function openScheduleBill(id){
   $('sb-account').value=getDefaultAccountId()||'';
   _sbAmount=b.amount;
   $('sb-min-btn').style.outline='2px solid var(--accent)';
+  // Website button
+  const sbWrap=$('sb-website-wrap'), sbBtn=$('sb-website-btn');
+  if(sbWrap&&sbBtn){
+    const url=b.url?normUrl(b.url):'';
+    sbWrap.style.display=url?'block':'none';
+    if(url){ sbBtn.href='https://'+url.replace(/^https?:\/\//,''); sbBtn.textContent=''; sbBtn.innerHTML='🌐 Go to '+url+' &nbsp;→'; }
+  }
   $('modal-schedulebill').classList.add('open');
 }
 let _sbAmount=0;
@@ -4714,6 +4957,13 @@ function openPayDebt(id){
   const allocSec=$('pd-alloc-section');
   if(allocSec) allocSec.style.display=hasPromo?'block':'none';
   if(hasPromo) buildAllocRows(b);
+  // Website button
+  const pdWrap=$('pd-website-wrap'), pdBtn=$('pd-website-btn');
+  if(pdWrap&&pdBtn){
+    const url=b.url?normUrl(b.url):'';
+    pdWrap.style.display=url?'block':'none';
+    if(url){ pdBtn.href='https://'+url.replace(/^https?:\/\//,''); pdBtn.innerHTML='🌐 Go to '+url+' &nbsp;→'; }
+  }
   $('modal-paydebt').classList.add('open');
 }
 
@@ -5295,7 +5545,7 @@ function renderAlerts(){
   };
 
   // ── Per-section: only relevant alerts ────────────────────────
-  ['bills','cards','insights','budget','debt','networth','quick'].forEach(sec=>{
+  ['cards','insights','budget','debt','networth','quick'].forEach(sec=>{
     const el=$(sec+'-alerts');
     if(!el) return;
     const relevant=alerts.filter(a=>a.section===sec);
@@ -5505,27 +5755,66 @@ function renderBudget(){
   // Money In -- income
   $('income-list').innerHTML=data.income.length?data.income.map(i=>{
     const now2=new Date();
-    const eff=getEffectiveIncome(i);
     const hasOverride=i.actualAmount&&i.actualMonth===thisMonth;
-    const payCount=i.frequency==='Bi-weekly'?getPaycheckCount(i,now2.getFullYear(),now2.getMonth()):null;
-    const isThreeCheck=payCount===3;
-    const amtDisplay=hasOverride
-      ?`<div style="text-align:right">
-          <span style="color:var(--muted);text-decoration:line-through;font-size:12px">${usd(i.amount)}</span>
-          <span style="color:var(--green);font-weight:700;margin-left:4px">${usd(eff)}</span>
-          <div style="font-size:10px;color:var(--accent2);font-weight:700">ACTUAL</div>
-        </div>`
-      :`<span style="color:var(--green);font-weight:600">${usd(eff)}</span>`;
+    const eff=getEffectiveIncome(i,now2.getFullYear(),now2.getMonth());
     const ifc=freqBorderColor(i.frequency);
-    return wrapSwipeable(`<div class="row" style="margin-bottom:0;border-radius:12px;border:1px solid ${ifc}44;background:var(--surface);padding:12px 14px;"><div>
-      <div class="row-label">${i.source} ${recurBadge(i.frequency)}</div>
-      <div class="row-sub">${[fmtDate(i.date),i.frequency!=='One-time'?i.frequency:'One-time'].filter(Boolean).join(' - ')}</div>
-      
-    </div><div class="row-actions">
-      ${amtDisplay}
-      <button class="btn btn-secondary btn-sm show-desktop" onclick="openEditIncome(${i.id})">✏️</button>
-      <button class="btn btn-danger btn-sm show-desktop" onclick="deleteItem('income',${i.id})">✕</button>
-    </div></div>`,'income',i.id,`openEditIncome(${i.id})`);
+
+    // Weekly and Bi-weekly: expand into one row per occurrence this month
+    if((i.frequency==='Weekly'||i.frequency==='Bi-weekly')&&!hasOverride){
+      const occs=getIncomeOccurrences(i,now2.getFullYear(),now2.getMonth());
+      const occLabel=i.frequency==='Weekly'?'Week':'Paycheck';
+      return occs.map((occ,idx)=>{
+        const isFirst=idx===0;
+        const badge=isFirst?' '+recurBadge(i.frequency):'';
+        const hasOccOverride=(i.occurrenceOverrides||{})[occ.date]!=null;
+        const amtStyle=hasOccOverride?'color:var(--accent2);font-weight:700':'color:var(--green);font-weight:600';
+        const amtLabel=hasOccOverride
+          ?('<span style="'+amtStyle+'">'+usd(occ.amount)+'</span><div style="font-size:9px;color:var(--accent2);font-weight:700;text-align:right">UPDATED</div>')
+          :('<span style="'+amtStyle+'">'+usd(occ.amount)+'</span>');
+        if(isFirst){
+          // First occurrence: edit + delete, swipeable
+          return wrapSwipeable(
+            '<div class="row" style="margin-bottom:0;border-radius:12px;border:1px solid '+ifc+'44;background:var(--surface);padding:12px 14px;">'
+            +'<div><div class="row-label">'+i.source+badge+'</div>'
+            +'<div class="row-sub">'+fmtDate(occ.date)+' · '+occLabel+' 1 of '+occs.length+'</div></div>'
+            +'<div class="row-actions">'
+            +amtLabel
+            +'<button class="btn btn-secondary btn-sm show-desktop" onclick="openEditIncome('+i.id+')">✏️</button>'
+            +'<button class="btn btn-danger btn-sm show-desktop" onclick="deleteItem(\'income\','+i.id+')">&#x2715;</button>'
+            +'</div></div>',
+            'income',i.id,'openEditIncome('+i.id+')');
+        }
+        // Subsequent occurrences: balance button only, not swipeable
+        return '<div class="swipe-wrap">'
+          +'<div class="row" style="margin-bottom:0;border-radius:12px;border:1px solid '+ifc+'44;background:var(--surface);padding:12px 14px;">'
+          +'<div><div class="row-label">'+i.source+badge+'</div>'
+          +'<div class="row-sub">'+fmtDate(occ.date)+' · '+occLabel+' '+(idx+1)+' of '+occs.length+'</div></div>'
+          +'<div class="row-actions">'
+          +amtLabel
+          +'<button class="btn btn-sm show-desktop" style="background:rgba(80,112,240,.12);color:var(--accent2);border:1px solid rgba(80,112,240,.25);font-size:11px;font-weight:700;padding:4px 8px;" '
+          +'onclick="openOccurrenceModal('+i.id+',\''+occ.date+'\','+i.amount+')">$ Update</button>'
+          +'</div></div>'
+          +'</div>';
+      }).join('');
+    }
+
+    // Single-row for monthly, one-time, yearly (or when actual override is set)
+    const amtDisplay=hasOverride
+      ?('<div style="text-align:right">'
+        +'<span style="color:var(--muted);text-decoration:line-through;font-size:12px">'+usd(i.amount)+'</span>'
+        +'<span style="color:var(--green);font-weight:700;margin-left:4px">'+usd(eff)+'</span>'
+        +'<div style="font-size:10px;color:var(--accent2);font-weight:700">ACTUAL</div></div>')
+      :('<span style="color:var(--green);font-weight:600">'+usd(eff)+'</span>');
+    return wrapSwipeable(
+      '<div class="row" style="margin-bottom:0;border-radius:12px;border:1px solid '+ifc+'44;background:var(--surface);padding:12px 14px;"><div>'
+      +'<div class="row-label">'+i.source+' '+recurBadge(i.frequency)+'</div>'
+      +'<div class="row-sub">'+[fmtDate(i.date),i.frequency!=='One-time'?i.frequency:'One-time'].filter(Boolean).join(' - ')+'</div>'
+      +'</div><div class="row-actions">'
+      +amtDisplay
+      +'<button class="btn btn-secondary btn-sm show-desktop" onclick="openEditIncome('+i.id+')">✏️</button>'
+      +'<button class="btn btn-danger btn-sm show-desktop" onclick="deleteItem(\'income\','+i.id+')">&#x2715;</button>'
+      +'</div></div>',
+      'income',i.id,'openEditIncome('+i.id+')');
   }).join(''): emptyState('💰','No income yet','Add your salary, freelance work, or any other income sources.','+ Add Income',"openModal('income')");
 
   // Money Out -- expenses + bills combined
@@ -5556,78 +5845,251 @@ function renderBudget(){
   renderPaycheckCalendar();
 }
 
+
+// ── MONEY SUMMARY CARDS ───────────────────────────────────────
+function renderMoneySummaryCards(){
+  const el=$('money-summary-cards');
+  if(!el) return;
+  const now=new Date();
+  const yr=now.getFullYear(), mo=now.getMonth();
+  const monthName=now.toLocaleString('default',{month:'long'});
+  const todayStr=today();
+
+  // Expected Income — sum of all income sources for current month
+  const expectedIncome=data.income.reduce((s,i)=>s+getEffectiveIncome(i,yr,mo),0);
+
+  // Available Now — total account balances
+  const accounts=data.accounts||[];
+  const availableNow=accounts.reduce((s,a)=>s+(a.balance||0),0);
+  const acctCount=accounts.length;
+  const acctSub=acctCount>0?acctCount+' account'+(acctCount===1?'':'s'):'No accounts linked';
+
+  // ── Monthly Health ─────────────────────────────
+  const overdue=data.bills.filter(b=>{
+    if(b.status==='Paid'||b.status==='Scheduled') return false;
+    if(!b.dueDate) return false;
+    if((b.btype==='creditcard'||b.btype==='loan')&&!b.balance&&!b.amount) return false;
+    return b.dueDate<todayStr;
+  });
+  const in7=new Date(now); in7.setDate(in7.getDate()+7);
+  const in7Str=in7.toISOString().slice(0,10);
+  const dueSoon=data.bills.filter(b=>{
+    if(b.status==='Paid'||b.status==='Scheduled') return false;
+    if(!b.dueDate) return false;
+    return b.dueDate>=todayStr&&b.dueDate<=in7Str;
+  });
+  const totalBillsOut=data.bills.filter(b=>b.amount>0).reduce((s,b)=>s+b.amount,0);
+  const netMonth=expectedIncome-totalBillsOut-data.expenses.reduce((s,e)=>s+e.amount,0);
+  const overdueAmt=overdue.reduce((s,b)=>s+b.amount,0);
+
+  // Health verdict
+  let healthStatus, healthColor, healthIcon, healthMsg;
+  if(overdue.length===0&&netMonth>=0&&availableNow>=totalBillsOut*0.5){
+    healthStatus='Healthy'; healthColor='var(--green)'; healthIcon='✅';
+    healthMsg=dueSoon.length
+      ?dueSoon.length+' bill'+(dueSoon.length>1?'s':'')+' due this week totaling '+usd(dueSoon.reduce((s,b)=>s+b.amount,0))+'. You are on track.'
+      :'No overdue bills and positive cash flow. Looking good this month.';
+  } else if(overdue.length<=2&&netMonth>=-200){
+    healthStatus='Caution'; healthColor='var(--yellow)'; healthIcon='⚠️';
+    healthMsg=overdue.length
+      ?overdue.length+' overdue bill'+(overdue.length>1?'s':'')+' totaling '+usd(overdueAmt)+'. Take care of '+(overdue.length>1?'these':'this')+' soon.'
+      :'Cash flow is tight this month. Watch your spending.';
+  } else {
+    healthStatus='At Risk'; healthColor='var(--red)'; healthIcon='🔴';
+    healthMsg=overdue.length
+      ?overdue.length+' overdue bill'+(overdue.length>1?'s':'')+' totaling '+usd(overdueAmt)+'. Immediate attention needed.'
+      :'Spending exceeds income this month. Review your bills and expenses.';
+  }
+
+  const statPill=(label,val,col)=>
+    '<div style="flex:1;text-align:center;padding:8px 4px;background:rgba(255,255,255,.03);border-radius:8px">'
+    +'<div style="font-size:16px;font-weight:800;color:'+col+'">'+val+'</div>'
+    +'<div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-top:2px">'+label+'</div>'
+    +'</div>';
+
+  el.innerHTML=
+    // Health card full width
+    '<div style="background:var(--surface);border:1px solid '+healthColor+'44;border-radius:14px;padding:14px 16px;position:relative;overflow:hidden">'
+    +'<div style="position:absolute;inset:0;background:linear-gradient(135deg,'+healthColor+'08,transparent);pointer-events:none"></div>'
+    +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">'
+    +'<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:'+healthColor+'">Monthly Health</div>'
+    +'<div style="font-size:11px;font-weight:800;color:'+healthColor+';background:'+healthColor+'18;border:1px solid '+healthColor+'33;border-radius:20px;padding:2px 10px">'+healthIcon+' '+healthStatus+'</div>'
+    +'</div>'
+    +'<div style="display:flex;gap:6px;margin-bottom:10px">'
+    +statPill('Overdue',overdue.length,overdue.length>0?'var(--red)':'var(--green)')
+    +statPill('Due Soon',dueSoon.length,dueSoon.length>0?'var(--yellow)':'var(--green)')
+    +statPill('Net Month',(netMonth>=0?'+':'')+usd(netMonth),netMonth>=0?'var(--green)':'var(--red)')
+    +'</div>'
+    +'<div style="font-size:12px;color:var(--muted);line-height:1.5;border-top:1px solid var(--border);padding-top:8px">'+healthMsg+'</div>'
+    +'</div>';
+}
+
 function renderBills(){
   autoProcessScheduledBillsWithNotify();
-  renderSmartBillReminder();
-  if(!data.bills.length){
-    $('bill-list').innerHTML=emptyState('📋','No bills yet','Add your recurring bills, credit cards, and loans to track due dates and payments.',"+ Add a Bill","openModal('bill')");
+  renderMoneySummaryCards();
+
+  const now=new Date();
+  const yr=now.getFullYear(), mo=now.getMonth();
+
+  // Build income occurrence items for current month
+  const incomeItems=[];
+  data.income.forEach(inc=>{
+    const occs=getIncomeOccurrences(inc,yr,mo);
+    occs.forEach((occ,idx)=>{
+      incomeItems.push({
+        _kind:'income', income:inc, occ, idx, total:occs.length,
+        _date:occ.date, _amount:occ.amount,
+        _status:getIncomeOccurrenceStatus(inc,occ.date)
+      });
+    });
+  });
+
+  if(!data.bills.length && !incomeItems.length){
+    $('bill-list').innerHTML=emptyState('📋','No bills or income yet','Add bills, loans, credit cards, and income to track everything in one place.',"+ Add a Bill","openModal('bill')");
     return;
   }
-  const statusOrder={'Overdue':0,'Pending':1,'Scheduled':2,'Paid':3};
-  let sorted=[...data.bills];
-  if(billSort==='date') sorted.sort((a,b)=>new Date(a.dueDate)-new Date(b.dueDate));
-  else if(billSort==='status') sorted.sort((a,b)=>(statusOrder[a.status]??9)-(statusOrder[b.status]??9));
-  else if(billSort==='amount') sorted.sort((a,b)=>b.amount-a.amount);
-  let lastMonth='';
-  const rows=sorted.map(b=>{
-    let divider='';
-    if(billSort==='date'){
-      const monthKey=b.dueDate?b.dueDate.slice(0,7):'';
-      if(monthKey&&monthKey!==lastMonth){
-        lastMonth=monthKey;
-        const label=b.dueDate?new Date(b.dueDate+'T12:00:00').toLocaleDateString('en-US',{month:'long',year:'numeric'}):'';
-        divider='<div style="display:flex;align-items:center;gap:10px;margin:'+(sorted.indexOf(b)===0?'0':'18px')+' 0 12px"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--accent2);white-space:nowrap">'+label+'</div><div style="flex:1;height:1px;background:linear-gradient(to right,var(--border2),transparent)"></div></div>';
-      }
-    }
+
+  // Helper: render a bill card (Option B - tap to expand)
+  function renderBillCard(b, isFirst){
+    const cid='bill'+b.id;
     const d=daysUntil(b.dueDate);
     const isDebt=b.btype==='creditcard'||b.btype==='loan'||b.btype==='promo';
     let eff=b.status;
     const isZeroBalance=isDebt&&!b.balance&&!b.amount;
     if(eff!=='Paid'&&eff!=='Scheduled'&&d<0&&!isZeroBalance) eff='Overdue';
     const sc=statusColor(eff);
-    const scheduledAmt=b.scheduledAmount?' - '+usd(b.scheduledAmount):'';
-    let actions='';
+    // Icon + bg by type
+    const typeIcon=b.btype==='creditcard'?'&#x1F4B3;':b.btype==='loan'?'&#x1F3E6;':'&#x1F4CB;';
+    const typeBg=b.btype==='creditcard'?'rgba(239,68,68,.15)':b.btype==='loan'?'rgba(59,130,246,.15)':'rgba(245,158,11,.15)';
+    // Sub line
+    const subLine='Due: '+fmtDate(b.dueDate)+(b.recurring&&b.recurring!=='No'?' \u00b7 '+b.recurring:'');
+    // Type badge
+    const typeBadge=b.btype==='creditcard'?'<span style="font-size:9px;font-weight:700;padding:1px 6px;border-radius:20px;background:rgba(239,68,68,.15);color:#ef4444">CARD</span>'
+      :b.btype==='loan'?'<span style="font-size:9px;font-weight:700;padding:1px 6px;border-radius:20px;background:rgba(59,130,246,.15);color:#3b82f6">LOAN</span>':'';
+    const scheduledAmt=b.scheduledAmount?' \u00b7 '+usd(b.scheduledAmount):'';
+    const statusBadge='<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:'+sc+'22;color:'+sc+'">'+eff+'</span>';
+    // Action buttons
+    let actionBtns='';
     if(eff==='Paid'){
-      actions=`<span class="badge" style="background:${sc}22;color:${sc};font-size:12px;display:inline-flex;align-items:center;gap:5px"><span class="bill-check">${checkmarkSVG()}</span>${t('Paid')}${scheduledAmt}</span>`;
+      actionBtns='<span style="font-size:12px;color:var(--green);font-weight:700">&#x2713; Paid'+scheduledAmt+'</span>';
     } else if(eff==='Scheduled'){
-      actions=`<span class="badge" style="background:${sc}22;color:${sc};font-size:12px">${t('Scheduled')}${scheduledAmt}</span>
-        <button class="btn btn-sm" style="background:rgba(255,255,255,.06);color:var(--muted);font-size:11px" onclick="revertToPending(${b.id})">Cancel</button>`;
-    } else if(eff==='Overdue'){
-      actions=`<span class="badge" style="background:${sc}22;color:${sc};font-size:12px">${t('Overdue')}</span>
-        <button class="btn btn-sm" style="background:rgba(239,68,68,.15);color:var(--red)" onclick="${isDebt?`openPayDebt(${b.id})`:`openScheduleBill(${b.id})`}">${t('Schedule Now')}</button>`;
+      actionBtns='<span style="font-size:12px;color:var(--blue);font-weight:700">Scheduled'+scheduledAmt+'</span>'
+        +'<button class="btn btn-sm" style="background:rgba(255,255,255,.06);color:var(--muted);font-size:11px"'
+        +' onclick="event.stopPropagation();revertToPending('+b.id+')">Cancel</button>';
     } else if(isZeroBalance){
-      actions=`<span class="badge" style="background:rgba(85,85,102,.2);color:var(--muted);font-size:12px">No Balance</span>`;
+      actionBtns='<span style="font-size:12px;color:var(--muted)">No balance</span>';
     } else {
-      actions=`<span class="badge" style="background:${sc}22;color:${sc};font-size:12px">${t('Pending')}</span>
-        <button class="btn btn-sm" style="background:rgba(59,130,246,.15);color:var(--blue)" onclick="${isDebt?`openPayDebt(${b.id})`:`openScheduleBill(${b.id})`}">${t('Schedule')}</button>`;
+      const schedLabel=eff==='Overdue'?'Schedule Now':'Schedule';
+      actionBtns='<button class="btn btn-sm" style="background:rgba(59,130,246,.15);color:var(--blue)"'
+        +' onclick="event.stopPropagation();'+(isDebt?'openPayDebt('+b.id+')':'openScheduleBill('+b.id+')')+'">'
+        +schedLabel+'</button>';
     }
-    const cardHtml=`<div class="card" style="margin-bottom:0;border-color:${sc}44;border-radius:12px">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px">
-        <div>
-          <div style="font-size:15px;font-weight:600;margin-bottom:3px">${b.name}${b.autoLog?'<span class="autolog-badge">&#128259; auto</span>':''}
-            ${b.btype==='creditcard'?'<span style="background:rgba(239,68,68,.15);color:#ef4444;border-radius:5px;padding:1px 7px;font-size:10px;font-weight:700;margin-left:4px">CARD</span>':b.btype==='loan'?'<span style="background:rgba(251,146,60,.15);color:#fb923c;border-radius:5px;padding:1px 7px;font-size:10px;font-weight:700;margin-left:4px">LOAN</span>':''}
-          </div>
-          <div style="font-size:12px;color:var(--muted)">Due: ${fmtDate(b.dueDate)} - ${b.recurring}${b.url?` · <span style="color:var(--accent2)">${linkHost(b.url)}</span>`:''}</div>
-          ${isDebt&&b.balance?'<div style="font-size:12px;color:var(--muted);margin-top:2px">'+getBalanceSplitHtml(b)+'</div>':''}
-          ${b.promoEndDate?`<div style="font-size:11px;color:var(--green);font-weight:600">🎁 Promo ends: ${fmtDate(b.promoEndDate)} - ${pct(b.regularApr||0)} after</div>`:''}
-        </div>
-        ${renderPromoItems(b.id)}
-        <div class="row-actions">
-          <span style="font-family:var(--font-d);font-size:19px">${usd(b.amount)}</span>
-          ${actions}
-          ${b.url?`<button class="btn btn-secondary btn-sm" onclick="openLink('${b.url}')" title="Open ${linkHost(b.url)}">🌐</button>`:''}
-          <button class="btn btn-secondary btn-sm show-desktop" onclick="openEditBill(${b.id})">✏️</button>
-          ${b.dueDate?`<button class="btn btn-secondary btn-sm" onclick="addToCalendar('${b.name} Payment','${b.dueDate}','Min: ${usd(b.amount)}')">📅</button>`:''}
-          <button class="btn btn-danger btn-sm show-desktop" onclick="deleteBillFromModal(${b.id})">✕</button>
-        </div>
-      </div>
-    </div>`;
-    return divider+wrapSwipeable(cardHtml,'bills',b.id,`openEditBill(${b.id})`);
-  });
-  $('bill-list').innerHTML=rows.join('');
+    actionBtns+='<button class="btn btn-secondary btn-sm"'
+      +' onclick="event.stopPropagation();openEditBill('+b.id+')">&#x270f; Edit</button>';
+    if(b.dueDate) actionBtns+='<button class="btn btn-secondary btn-sm"'
+      +' onclick="event.stopPropagation();addToCalendar(\''+b.name+' Payment\',\''+b.dueDate+'\',\'Min: '+usd(b.amount)+'\')">&#x1F4C5;</button>';
+    actionBtns+='<button class="btn btn-danger btn-sm"'
+      +' onclick="event.stopPropagation();deleteBillFromModal('+b.id+')">&#x2715;</button>';
+
+    return '<div class="card" style="margin-bottom:8px;border-color:'+sc+'44;border-radius:12px;cursor:pointer"'
+      +' onclick="toggleCardExpand(\''+cid+'\')">'
+      +'<div style="display:flex;align-items:center;justify-content:space-between;gap:8px">'
+      +'<div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1">'
+      +'<div style="width:34px;height:34px;border-radius:9px;'+typeBg+';display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:17px">'+typeIcon+'</div>'
+      +'<div style="min-width:0">'
+      +'<div style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'
+      +b.name+(b.autoLog?'<span class="autolog-badge">&#128259; auto</span>':'')+typeBadge+'</div>'
+      +'<div style="font-size:11px;color:var(--muted)">'+subLine+'</div>'
+      +(isDebt&&b.balance?'<div style="font-size:11px;color:var(--muted)">'+getBalanceSplitHtml(b)+'</div>':'')
+      +'</div></div>'
+      +'<div style="display:flex;align-items:center;gap:6px;flex-shrink:0">'
+      +'<span style="font-weight:700;font-size:15px">'+usd(b.amount)+'</span>'
+      +statusBadge
+      +'<span id="cchev-'+cid+'" style="color:var(--muted);font-size:11px">&#9662;</span>'
+      +'</div></div>'
+      +(isDebt?renderPromoItems(b.id):'')
+    +'<div id="cact-'+cid+'"'
+      +' style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);flex-wrap:wrap;gap:6px">'
+      +actionBtns+'</div>'
+      +'</div>';
+  }
+
+  // Helper: section divider
+  function sectionDiv(label, idx){
+    return '<div style="display:flex;align-items:center;gap:10px;margin:'+(idx===0?'0':'18px')+' 0 12px">'
+      +'<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--accent2);white-space:nowrap">'+label+'</div>'
+      +'<div style="flex:1;height:1px;background:linear-gradient(to right,var(--border2),transparent)"></div></div>';
+  }
+
+  let html='';
+
+  if(billSort==='type'){
+    // ── GROUP BY TYPE ──────────────────────────────
+    const incomeCards=incomeItems.map(it=>renderIncomeCard(it.income,it.occ,it.idx,it.total));
+    const billCards=data.bills.filter(b=>b.btype==='bill').map((b,i)=>renderBillCard(b,i===0));
+    const loanCards=data.bills.filter(b=>b.btype==='loan'||b.btype==='promo').map((b,i)=>renderBillCard(b,i===0));
+    const cardCards=data.bills.filter(b=>b.btype==='creditcard').map((b,i)=>renderBillCard(b,i===0));
+
+    if(incomeCards.length){
+      html+=sectionDiv('💰 Income',0);
+      html+=incomeCards.join('<div style="margin-bottom:8px"></div>');
+    }
+    if(billCards.length){
+      html+=sectionDiv('📋 Bills',incomeCards.length?1:0);
+      html+=billCards.join('<div style="margin-bottom:8px"></div>');
+    }
+    if(loanCards.length){
+      html+=sectionDiv('🏦 Loans',incomeCards.length+billCards.length?1:0);
+      html+=loanCards.join('<div style="margin-bottom:8px"></div>');
+    }
+    if(cardCards.length){
+      html+=sectionDiv('💳 Credit Cards',1);
+      html+=cardCards.join('<div style="margin-bottom:8px"></div>');
+    }
+
+  } else {
+    // ── SORTED COMBINED LIST ───────────────────────
+    const statusOrder={'Overdue':0,'Missed':0,'Pending':1,'Expected':1,'Scheduled':2,'Paid':3,'Received':3};
+
+    // Normalise all items to sortable shape
+    const allItems=[
+      ...data.bills.map(b=>{
+        const d=daysUntil(b.dueDate);
+        const isDebt=b.btype==='creditcard'||b.btype==='loan'||b.btype==='promo';
+        const isZeroBalance=isDebt&&!b.balance&&!b.amount;
+        let eff=b.status;
+        if(eff!=='Paid'&&eff!=='Scheduled'&&d<0&&!isZeroBalance) eff='Overdue';
+        return{_kind:'bill',bill:b,_date:b.dueDate||'',_amount:b.amount,_status:eff};
+      }),
+      ...incomeItems
+    ];
+
+    if(billSort==='date') allItems.sort((a,b)=>new Date(a._date||'9999')-new Date(b._date||'9999'));
+    else if(billSort==='amount') allItems.sort((a,b)=>b._amount-a._amount);
+    else if(billSort==='status') allItems.sort((a,b)=>(statusOrder[a._status]??9)-(statusOrder[b._status]??9));
+
+    let lastMonthKey='';
+    allItems.forEach((item,idx)=>{
+      if(billSort==='date'){
+        const monthKey=item._date?item._date.slice(0,7):'';
+        if(monthKey&&monthKey!==lastMonthKey){
+          lastMonthKey=monthKey;
+          const label=item._date?new Date(item._date+'T12:00:00').toLocaleDateString('en-US',{month:'long',year:'numeric'}):'';
+          html+=sectionDiv(label, idx);
+        }
+      }
+      if(item._kind==='bill'){
+        html+=renderBillCard(item.bill,false);
+      } else {
+        html+=renderIncomeCard(item.income,item.occ,item.idx,item.total);
+      }
+      html+='<div style="margin-bottom:8px"></div>';
+    });
+  }
+
+  $('bill-list').innerHTML=html||emptyState('📋','Nothing here yet','Add bills, loans, credit cards, and income to get started.',"+ Add a Bill","openModal('bill')");
   setTimeout(attachSwipes,50);
-  // Swipe peek — show once ever
-  if(!localStorage.getItem('financeOS_swipePeeked')&&rows.length>0){
+  if(!localStorage.getItem('financeOS_swipePeeked')&&html){
     localStorage.setItem('financeOS_swipePeeked','1');
     setTimeout(()=>{
       const bl=$('bill-list');if(bl)bl.classList.add('swipe-peek-anim');
@@ -6654,8 +7116,6 @@ function obFinish(){
 
 
 // ── AUTO-PROCESS NOTIFICATION ────────────────────────────────
-let _autoProcessCount=0;
-
 function autoProcessScheduledBillsWithNotify(){
   autoProcessScheduledBills();
   const processed=data.transactions.filter(tx=>{
@@ -8293,11 +8753,6 @@ function getPaycheckDates(income, year, month){
   return dates;
 }
 
-function getPaycheckCount(income, year, month){
-  const dates = getPaycheckDates(income, year, month);
-  if(!dates) return null; // no lastPayDate, use average
-  return dates.length;
-}
 
 let _paycheckCalOpen = true;
 
@@ -8590,7 +9045,17 @@ function renderBillCalendar(){
     cells += '<div class="cal-day other-month"></div>';
   }
 
-  // Day cells with bills
+  // Build income occurrence map for this month
+  const incomeByDate = {};
+  data.income.forEach(inc => {
+    const occs = getIncomeOccurrences(inc, year, month);
+    occs.forEach((occ, idx) => {
+      if(!incomeByDate[occ.date]) incomeByDate[occ.date] = [];
+      incomeByDate[occ.date].push({ inc, occ, idx, total: occs.length });
+    });
+  });
+
+  // Day cells with bills + income
   for(let d=1; d<=daysInMonth; d++){
     const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
     const isToday = dateStr === todayStr;
@@ -8599,18 +9064,30 @@ function renderBillCalendar(){
     const billDots = bills.map(b=>{
       let eff = b.status;
       if(eff!=='Paid'&&eff!=='Scheduled'&&b.dueDate<todayStr) eff='Overdue';
-      const colors = {Paid:'#22c55e',Scheduled:'#3b82f6',Pending:'#f59e0b',Overdue:'#ef4444'};
-      const bg = colors[eff]||'#888';
-      return `<div class="cal-bill-dot" style="background:${bg}22;color:${bg};border:1px solid ${bg}44"
-        title="${b.name} - ${usd(b.amount)}"
-        onclick="event.stopPropagation();setBillView('list');setTimeout(()=>setBillSort('date'),50)">
-        ${b.name.length>10?b.name.slice(0,9)+'…':b.name}
-      </div>`;
+      const sc = {Paid:'#22c55e',Scheduled:'#3b82f6',Pending:'#f59e0b',Overdue:'#ef4444'}[eff]||'#888';
+      const typeIcon = b.btype==='creditcard'?'$ ':b.btype==='loan'?'$ ':'';
+      const name = b.name.length>9?b.name.slice(0,8)+'…':b.name;
+      return '<div class="cal-bill-dot" style="background:'+sc+'28;color:'+sc+';border:1.5px solid '+sc+'55"'
+        +' title="'+b.name+' - '+usd(b.amount)+' · '+eff+'"'
+        +' onclick="event.stopPropagation();setBillView(\'list\');setTimeout(()=>setBillSort(\'date\'),50)">'
+        +name+'</div>';
+    }).join('');
+
+    const incomeDots = (incomeByDate[dateStr]||[]).map(({inc, occ, idx, total})=>{
+      const status = getIncomeOccurrenceStatus(inc, dateStr);
+      const sc = incomeStatusColor(status);
+      const isRecurring = inc.frequency==='Weekly'||inc.frequency==='Bi-weekly';
+      const occLabel = isRecurring ? ' ('+(idx+1)+'/'+total+')' : '';
+      const label = (inc.source.length>8?inc.source.slice(0,7)+'…':inc.source)+occLabel;
+      return '<div class="cal-bill-dot" style="background:'+sc+'28;color:'+sc+';border:1.5px solid '+sc+'66;font-weight:800"'
+        +' title="Income: '+inc.source+' '+usd(occ.amount)+' · '+status+'"'
+        +' onclick="event.stopPropagation();setBillView(\'list\');setTimeout(()=>setBillSort(\'date\'),50)">'
+        +'$ '+label+'</div>';
     }).join('');
 
     cells += `<div class="cal-day${isToday?' today':''}">
       <div class="cal-day-num">${d}</div>
-      ${billDots}
+      ${incomeDots}${billDots}
     </div>`;
   }
 
@@ -9555,10 +10032,207 @@ function checkBillResetNotify(){ /* handled by renderNotificationCenter */ }
 function checkTransferBanner(){ /* handled by renderNotificationCenter */ }
 function checkAutoLogBanner(){ /* handled by renderNotificationCenter */ }
 
+
+
+// ── CASH FLOW CHART ───────────────────────────────────────────
+function getCashFlowMonths(months){
+  const result=[];
+  for(let i=months-1;i>=0;i--){
+    const d=new Date(); d.setDate(1); d.setMonth(d.getMonth()-i);
+    const yr=d.getFullYear(), mo=d.getMonth();
+    const label=d.toLocaleString('default',{month:'short',year:'2-digit'});
+    const totalIn=data.income.reduce((s,inc)=>s+getEffectiveIncome(inc,yr,mo),0);
+    const totalOut=data.expenses.reduce((s,e)=>s+e.amount,0)
+      +data.bills.filter(b=>b.amount>0).reduce((s,b)=>s+b.amount,0);
+    result.push({label,totalIn,totalOut});
+  }
+  return result;
+}
+
+function drawCashFlowChart(pts){
+  const canvas=$('cf-chart'); if(!canvas) return;
+  const W=canvas.parentElement.offsetWidth||0;
+  if(W===0){setTimeout(()=>drawCashFlowChart(pts),150);return;}
+  const H=220;
+  canvas.width=W; canvas.height=H;
+  const ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,W,H);
+  const pad={t:28,r:20,b:36,l:56};
+  const cw=W-pad.l-pad.r, ch=H-pad.t-pad.b;
+  const maxVal=Math.max(...pts.map(p=>Math.max(p.totalIn,p.totalOut)),1);
+  const xStep=cw/(pts.length-1||1);
+
+  canvas._cfPts=pts; canvas._cfPad=pad; canvas._cfH=H;
+
+  // Legend
+  ctx.font='10px -apple-system,sans-serif';
+  ctx.fillStyle='#22c55e'; ctx.fillRect(pad.l,6,10,8);
+  ctx.fillStyle='#777777'; ctx.textAlign='left'; ctx.fillText('Money In',pad.l+13,14);
+  ctx.fillStyle='#ef4444'; ctx.fillRect(pad.l+80,6,10,8);
+  ctx.fillStyle='#777777'; ctx.fillText('Money Out',pad.l+93,14);
+
+  // Grid lines
+  ctx.strokeStyle='#2a2a2a'; ctx.lineWidth=1;
+  for(let i=0;i<=4;i++){
+    const y=pad.t+ch-(ch*i/4);
+    ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(pad.l+cw,y); ctx.stroke();
+    ctx.fillStyle='#777777'; ctx.font='11px -apple-system,sans-serif';
+    ctx.textAlign='right';
+    ctx.fillText('$'+(maxVal*i/4>=1000?((maxVal*i/4)/1000).toFixed(0)+'k':(maxVal*i/4).toFixed(0)),pad.l-6,y+4);
+  }
+
+  function drawLine(key,color,dash){
+    ctx.beginPath(); ctx.strokeStyle=color; ctx.lineWidth=2.5;
+    ctx.lineJoin='round'; if(dash) ctx.setLineDash([4,3]);
+    pts.forEach((p,i)=>{
+      const x=pad.l+i*xStep, y=pad.t+ch-(ch*p[key]/maxVal);
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    });
+    ctx.stroke(); ctx.setLineDash([]);
+    pts.forEach((p,i)=>{
+      const x=pad.l+i*xStep, y=pad.t+ch-(ch*p[key]/maxVal);
+      ctx.beginPath(); ctx.arc(x,y,3.5,0,Math.PI*2);
+      ctx.fillStyle=color; ctx.fill();
+      ctx.strokeStyle='#111111'; ctx.lineWidth=1.5; ctx.stroke();
+    });
+  }
+
+  // Fill area between lines
+  ctx.beginPath();
+  pts.forEach((p,i)=>{ const x=pad.l+i*xStep,y=pad.t+ch-(ch*p.totalIn/maxVal); i===0?ctx.moveTo(x,y):ctx.lineTo(x,y); });
+  pts.slice().reverse().forEach((p,i)=>{ const x=pad.l+(pts.length-1-i)*xStep,y=pad.t+ch-(ch*p.totalOut/maxVal); ctx.lineTo(x,y); });
+  ctx.closePath();
+  const grad=ctx.createLinearGradient(0,pad.t,0,pad.t+ch);
+  grad.addColorStop(0,'rgba(34,197,94,0.08)'); grad.addColorStop(1,'rgba(239,68,68,0.04)');
+  ctx.fillStyle=grad; ctx.fill();
+
+  drawLine('totalOut','#ef4444',false);
+  drawLine('totalIn','#22c55e',false);
+
+  // X labels
+  pts.forEach((p,i)=>{
+    ctx.fillStyle='#777777'; ctx.font='10px -apple-system,sans-serif';
+    ctx.textAlign='center';
+    ctx.fillText(p.label,pad.l+i*xStep,H-8);
+  });
+
+  // Touch / click tooltip
+  if(!canvas._cfTouchBound){
+    canvas._cfTouchBound=true;
+    const handler=e=>{
+      e.preventDefault();
+      const rect=canvas.getBoundingClientRect();
+      const tx=(e.touches?e.touches[0].clientX:e.clientX)-rect.left;
+      cfChartTooltip(canvas,tx);
+    };
+    canvas.addEventListener('touchstart',handler,{passive:false});
+    canvas.addEventListener('click',handler);
+  }
+}
+
+function cfChartTooltip(canvas,tapX){
+  const pts=canvas._cfPts, pad=canvas._cfPad;
+  if(!pts||pts.length<2) return;
+  const cw=canvas.width-pad.l-pad.r;
+  const xStep=cw/(pts.length-1);
+  let nearest=0,minDist=Infinity;
+  pts.forEach((p,i)=>{ const d=Math.abs(tapX-(pad.l+i*xStep)); if(d<minDist){minDist=d;nearest=i;} });
+  const p=pts[nearest];
+  let tip=$('cf-chart-tooltip');
+  if(!tip){
+    tip=document.createElement('div'); tip.id='cf-chart-tooltip';
+    tip.style.cssText='position:absolute;background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:8px 12px;font-size:12px;pointer-events:none;z-index:10;box-shadow:0 4px 16px rgba(0,0,0,.3);min-width:140px;';
+    canvas.parentElement.style.position='relative';
+    canvas.parentElement.appendChild(tip);
+  }
+  const net=p.totalIn-p.totalOut;
+  tip.innerHTML='<div style="font-weight:700;color:var(--text);margin-bottom:4px">'+p.label+'</div>'
+    +'<div style="color:#22c55e">In: <strong>'+usd(p.totalIn)+'</strong></div>'
+    +'<div style="color:#ef4444">Out: <strong>'+usd(p.totalOut)+'</strong></div>'
+    +'<div style="color:'+(net>=0?'#22c55e':'#ef4444')+';margin-top:3px;border-top:1px solid var(--border);padding-top:3px">Net: <strong>'+(net>=0?'+':'')+usd(net)+'</strong></div>';
+  const xPos=pad.l+(nearest*cw/(pts.length-1));
+  tip.style.left=Math.min(xPos,canvas.width-160)+'px';
+  tip.style.top=(pad.t-10)+'px';
+  setTimeout(()=>{ if(tip)tip.remove(); },2800);
+}
+
+// ── CASH FLOW VIEW (Insights sub-view) ───────────────────────
+function renderCashFlow(){
+  // Set sidebar version
+  const vEl=$('sidebar-version');
+  if(vEl) vEl.textContent=APP_VERSION;
+  // Draw chart
+  const cfMonths=parseInt($('cf-chart-months')?$('cf-chart-months').value:3)||3;
+  const cfPts=getCashFlowMonths(cfMonths);
+  setTimeout(()=>drawCashFlowChart(cfPts),60);
+
+  const el=$('cashflow-content');
+  if(!el) return;
+  const now=new Date();
+  const yr=now.getFullYear(), mo=now.getMonth();
+  const monthName=now.toLocaleString('default',{month:'long',year:'numeric'});
+
+  // ── Money In ──────────────────────────────────
+  const incomeRows=data.income.map(i=>{
+    const amt=getEffectiveIncome(i,yr,mo);
+    const freqLabel=i.frequency!=='One-time'?' · '+i.frequency:'';
+    return{label:i.source,sub:freqLabel,amt,color:'var(--green)'};
+  });
+  const totalIn=incomeRows.reduce((s,r)=>s+r.amt,0);
+
+  // ── Money Out ─────────────────────────────────
+  const expenseRows=data.expenses.map(e=>({
+    label:e.description||e.category,
+    sub:' · '+e.category+(e.frequency&&e.frequency!=='One-time'?' · '+e.frequency:''),
+    amt:e.amount, color:'var(--red)'
+  }));
+  const billRows=data.bills.filter(b=>b.amount>0).map(b=>({
+    label:b.name,
+    sub:' · '+(b.btype==='creditcard'?'Credit Card':b.btype==='loan'?'Loan':'Bill')+(b.recurring&&b.recurring!=='No'?' · '+b.recurring:''),
+    amt:b.amount, color:'var(--red)'
+  }));
+  const outRows=[...expenseRows,...billRows];
+  const totalOut=outRows.reduce((s,r)=>s+r.amt,0);
+  const net=totalIn-totalOut;
+  const netColor=net>=0?'var(--green)':'var(--red)';
+
+  function rowHtml(r){
+    return '<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)">'
+      +'<div style="min-width:0;flex:1;padding-right:12px">'
+      +'<div style="font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+r.label+'</div>'
+      +(r.sub?'<div style="font-size:11px;color:var(--muted)">'+r.sub+'</div>':'')
+      +'</div>'
+      +'<div style="font-size:14px;font-weight:700;color:'+r.color+';white-space:nowrap">'+usd(r.amt)+'</div>'
+      +'</div>';
+  }
+
+  function sectionHtml(title, rows, total, totalColor){
+    return '<div style="margin-bottom:16px">'
+      +'<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:6px">'+title+'</div>'
+      +(rows.length
+        ? rows.map(rowHtml).join('')
+        : '<div style="font-size:13px;color:var(--muted);padding:8px 0;border-bottom:1px solid var(--border)">None added yet</div>')
+      +'<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;margin-top:2px">'
+      +'<div style="font-size:12px;font-weight:700;color:var(--muted)">TOTAL</div>'
+      +'<div style="font-size:15px;font-weight:800;color:'+totalColor+'">'+usd(total)+'</div>'
+      +'</div></div>';
+  }
+
+  el.innerHTML='<div class="card">'
+    +'<div style="font-size:13px;font-weight:700;color:var(--muted);margin-bottom:16px;text-transform:uppercase;letter-spacing:.5px">'+monthName+'</div>'
+    +sectionHtml('Money In', incomeRows, totalIn, 'var(--green)')
+    +sectionHtml('Money Out', outRows, totalOut, 'var(--red)')
+    +'<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-top:2px solid var(--border2);margin-top:4px">'
+    +'<div style="font-size:13px;font-weight:800;color:var(--text)">NET</div>'
+    +'<div style="font-size:18px;font-weight:800;color:'+netColor+'">'+(net>=0?'+':'')+usd(net)+'</div>'
+    +'</div>'
+    +'</div>';
+}
+
 function renderAll(){
   updateOriginalBalances();
   renderAlerts();renderDashboard();renderBudget();renderBills();renderDebt();
-  renderNetWorth();renderInsights();renderCards();renderTxns();
+  renderNetWorth();renderInsights();renderCashFlow();renderCards();renderTxns();
   renderSnapshot();updateInsightsBadge();updateBillsBadge();
   updateLastSavedUI();checkBackupReminder();
   setTimeout(attachSwipes,50);
@@ -9568,6 +10242,7 @@ function renderAll(){
 setInterval(updateLastSavedUI, 60000);
 
 document.addEventListener('DOMContentLoaded',()=>{
+  const vEl=$('sidebar-version'); if(vEl) vEl.textContent=APP_VERSION;
   const av=$('about-version-text'); if(av) av.textContent=`FinanceOS \u2022 Built for personal use \u2022 Data never leaves your device \u2022 ${APP_VERSION} \u2022 2026`;
   loadTheme();
   toggleDebtFields();
