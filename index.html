@@ -5523,7 +5523,7 @@ function renderBudget(){
       
     </div><div class="row-actions">
       ${amtDisplay}
-      <button class="btn btn-secondary btn-sm" onclick="openEditIncome(${i.id})">✏️</button>
+      <button class="btn btn-secondary btn-sm show-desktop" onclick="openEditIncome(${i.id})">✏️</button>
       <button class="btn btn-danger btn-sm show-desktop" onclick="deleteItem('income',${i.id})">✕</button>
     </div></div>`,'income',i.id,`openEditIncome(${i.id})`);
   }).join(''): emptyState('💰','No income yet','Add your salary, freelance work, or any other income sources.','+ Add Income',"openModal('income')");
@@ -5538,7 +5538,7 @@ function renderBudget(){
     </div><div class="row-actions">
       <span style="color:var(--red);font-weight:600">${usd(e.amount)}</span>
       <button class="btn btn-sm" style="background:${isPaid?'rgba(34,197,94,.15)':'rgba(255,255,255,.06)'};color:${isPaid?'var(--green)':'var(--muted)'};border:1px solid ${isPaid?'rgba(34,197,94,.3)':'var(--border2)'};" onclick="toggleExpensePaid(${e.id})" title="${isPaid?'Mark unpaid':'Mark paid'}">${isPaid?'✓':'○'}</button>
-      <button class="btn btn-secondary btn-sm" onclick="openEditExpense(${e.id})">✏️</button>
+      <button class="btn btn-secondary btn-sm show-desktop" onclick="openEditExpense(${e.id})">✏️</button>
       <button class="btn btn-danger btn-sm show-desktop" onclick="deleteItem('expenses',${e.id})">✕</button>
     </div></div>`,'expenses',e.id,`openEditExpense(${e.id})`);
   });
@@ -5549,7 +5549,7 @@ function renderBudget(){
     const btypeBadge=b.btype==='creditcard'?'<span style="background:rgba(239,68,68,.15);color:#ef4444;border-radius:5px;padding:1px 6px;font-size:10px;font-weight:700;margin-left:4px">CARD</span>':b.btype==='loan'?'<span style="background:rgba(251,146,60,.15);color:#fb923c;border-radius:5px;padding:1px 6px;font-size:10px;font-weight:700;margin-left:4px">LOAN</span>':b.promoEndDate?'<span style="background:rgba(34,197,94,.15);color:var(--green);border-radius:5px;padding:1px 6px;font-size:10px;font-weight:700;margin-left:4px">PROMO</span>':'';
     const bIcon=billTypeIcon[b.btype]||'📋';
     const bSub=(b.recurring!=='No'?b.recurring+' payment':'')+(b.dueDate?' - Due '+fmtDate(b.dueDate):'');
-    return wrapSwipeable('<div class="row" style="margin-bottom:0;border-radius:12px;border:1px solid '+bfc+'44;background:var(--surface);padding:12px 14px;"><div><div class="row-label">'+bIcon+' '+b.name+btypeBadge+'</div><div class="row-sub">'+bSub+'</div></div><div class="row-actions"><span style="color:var(--red);font-weight:600">'+usd(b.amount)+'</span><button class="btn btn-secondary btn-sm" onclick="openEditBill('+b.id+')">✏️</button><button class="btn btn-danger btn-sm" onclick="deleteBillFromModal('+b.id+')">✕</button></div></div>','bills',b.id,'openEditBill('+b.id+')');
+    return wrapSwipeable('<div class="row" style="margin-bottom:0;border-radius:12px;border:1px solid '+bfc+'44;background:var(--surface);padding:12px 14px;"><div><div class="row-label">'+bIcon+' '+b.name+btypeBadge+'</div><div class="row-sub">'+bSub+'</div></div><div class="row-actions"><span style="color:var(--red);font-weight:600">'+usd(b.amount)+'</span><button class="btn btn-secondary btn-sm show-desktop" onclick="openEditBill('+b.id+')">✏️</button><button class="btn btn-danger btn-sm show-desktop" onclick="deleteBillFromModal('+b.id+')">✕</button></div></div>','bills',b.id,'openEditBill('+b.id+')');
   });
   const allOut=[...expRows,...billRows];
   $('expense-list').innerHTML=allOut.length?allOut.join(''):emptyState('💸','No outgoings yet','Add your monthly expenses and bills to see your full cash flow picture.','+ Add Expense',"openModal('expense')");
@@ -5616,7 +5616,7 @@ function renderBills(){
           <span style="font-family:var(--font-d);font-size:19px">${usd(b.amount)}</span>
           ${actions}
           ${b.url?`<button class="btn btn-secondary btn-sm" onclick="openLink('${b.url}')" title="Open ${linkHost(b.url)}">🌐</button>`:''}
-          <button class="btn btn-secondary btn-sm" onclick="openEditBill(${b.id})">✏️</button>
+          <button class="btn btn-secondary btn-sm show-desktop" onclick="openEditBill(${b.id})">✏️</button>
           ${b.dueDate?`<button class="btn btn-secondary btn-sm" onclick="addToCalendar('${b.name} Payment','${b.dueDate}','Min: ${usd(b.amount)}')">📅</button>`:''}
           <button class="btn btn-danger btn-sm show-desktop" onclick="deleteBillFromModal(${b.id})">✕</button>
         </div>
@@ -5902,7 +5902,7 @@ function renderTxns(){
       </div>
       <div class="row-actions">
         <span style="color:${color};font-weight:600">${tx.type==='Transfer'?'→ ':'- '}${usd(tx.amount)}</span>
-        <button class="btn btn-secondary btn-sm" onclick="openEditTxn(${tx.id})">✏️</button>
+        <button class="btn btn-secondary btn-sm show-desktop" onclick="openEditTxn(${tx.id})">✏️</button>
         <button class="btn btn-danger btn-sm show-desktop" onclick="deleteItem('transactions',${tx.id})">✕</button>
       </div>
     </div>`;
@@ -8708,7 +8708,7 @@ function renderGoals(){
     const filled=circ*(1-pct/100);
     const ringColor=isComplete?'#22c55e':pct>=80?'#f59e0b':'#5070f0';
 
-    return `<div class="goal-card">
+    const goalCardHtml = `<div class="goal-card" style="margin-bottom:0;border-color:${ringColor}44">
       <div class="goal-header">
         <div>
           <div class="goal-name">🎯 ${g.name}</div>
@@ -8736,13 +8736,15 @@ function renderGoals(){
       </div>
       <div class="goal-footer">
         <span></span>
-        <div style="display:flex;gap:6px">
+        <div style="display:flex;gap:6px" class="show-desktop">
           <button class="btn btn-secondary btn-sm" onclick="openEditGoal(${g.id})">✏️</button>
           <button class="btn btn-danger btn-sm" onclick="deleteItem('goals',${g.id})">✕</button>
         </div>
       </div>
     </div>`;
+    return wrapSwipeable(goalCardHtml,'goals',g.id,'openEditGoal('+g.id+')');
   }).join('');
+  setTimeout(attachSwipes,50);
 }
 
 
