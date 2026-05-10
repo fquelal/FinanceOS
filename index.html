@@ -456,6 +456,7 @@ canvas{width:100%!important;}
 [data-theme="light"] .quick-tile{ background:#f0f0fa; border-color:#ddddf0; }
 [data-theme="light"] .plan-toggle{ background:#f0f0fa; border-color:#ddddf0; }
 [data-theme="light"] .plan-toggle button{ color:#6b6b88; }
+[data-theme="light"] .plan-toggle button.active{ color:#fff; }
 [data-theme="light"] #mob-header,[data-theme="light"] #mobile-header{ background:#ffffff; border-color:#ddddf0; }
 [data-theme="light"] .section-label{ color:#6b6b88; }
 [data-theme="light"] .row{ border-color:#ededfa; }
@@ -570,28 +571,6 @@ canvas{width:100%!important;}
   cursor:pointer;font-family:var(--font-b);transition:all .15s;}
 .nwh-btn.active{background:var(--accent);color:#fff;}
 
-
-/* ── CARD DROPDOWN MENU ── */
-.card-menu-btn{background:rgba(255,255,255,.08);border:none;color:var(--muted);font-size:20px;
-  cursor:pointer;width:30px;height:30px;border-radius:8px;display:flex;align-items:center;
-  justify-content:center;flex-shrink:0;line-height:1;font-family:var(--font-b);transition:background .15s;}
-.card-menu-btn:hover{background:rgba(255,255,255,.15);color:var(--text);}
-.card-menu-wrap{position:relative;display:inline-flex;}
-.card-dropdown{display:none;position:absolute;right:0;top:calc(100% + 5px);
-  background:#252525;border:1px solid var(--border2);border-radius:10px;
-  overflow:hidden;z-index:30;min-width:130px;box-shadow:0 8px 24px rgba(0,0,0,.4);}
-.card-dropdown.open{display:block;}
-.card-dropdown-item{display:flex;align-items:center;gap:8px;width:100%;
-  padding:10px 14px;background:none;border:none;color:var(--text);
-  font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-b);text-align:left;transition:background .12s;}
-.card-dropdown-item:hover{background:rgba(255,255,255,.07);}
-.card-dropdown-item.danger{color:var(--red);}
-.card-dropdown-item.danger:hover{background:rgba(239,68,68,.09);}
-[data-theme="light"] .card-dropdown{background:#fff;border-color:#ddddf0;box-shadow:0 8px 24px rgba(0,0,0,.12);}
-[data-theme="light"] .card-dropdown-item{color:#1a1a2e;}
-[data-theme="light"] .card-dropdown-item:hover{background:rgba(0,0,0,.04);}
-[data-theme="light"] .card-menu-btn{background:rgba(0,0,0,.06);color:#6b6b88;}
-[data-theme="light"] .card-menu-btn:hover{background:rgba(0,0,0,.1);color:#1a1a2e;}
 
 /* ── SMART BILL REMINDER ── */
 #smart-bills-wrap{margin-bottom:20px;}
@@ -1181,6 +1160,12 @@ canvas{width:100%!important;}
 
     <!-- BILLS -->
     <div id="bills" class="section">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
+        <div class="plan-toggle" style="margin-bottom:0">
+          <button id="sub-money-bills" class="active" onclick="showSub('bills','bills')">Bills</button>
+          <button id="sub-money-log"   onclick="showSub('quick','bills')">Log</button>
+        </div>
+      </div>
       <div class="sec-header">
         <h2 class="sec-title" data-i18n="Bills &amp; Payments">Bills &amp; Payments</h2>
       </div>
@@ -1546,6 +1531,12 @@ canvas{width:100%!important;}
 
     <!-- QUICK UPDATE -->
     <div id="quick" class="section">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
+        <div class="plan-toggle" style="margin-bottom:0">
+          <button id="sub-quick-bills" onclick="showSub('bills','bills')">Bills</button>
+          <button id="sub-quick-log"   class="active">Log</button>
+        </div>
+      </div>
 
       <div id="quick-alerts"></div>
       <p style="color:var(--muted);font-size:13px;margin-bottom:20px">Log cash withdrawals and purchases. Bill and debt payments are handled in Bills &amp; Payments.</p>
@@ -2528,7 +2519,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v2.0.8';
+const APP_VERSION='v2.1.0';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -3152,6 +3143,36 @@ function importData(){
   input.click();
 }
 
+function obImportBackup(){
+  const input=document.createElement('input');
+  input.type='file';input.accept='.json';
+  input.style.cssText='position:fixed;top:-9999px;left:-9999px;opacity:0;pointer-events:none;';
+  input.onchange=e=>{
+    document.body.removeChild(input);
+    const file=e.target.files[0];if(!file)return;
+    const reader=new FileReader();
+    reader.onload=ev=>{
+      try{
+        const parsed=JSON.parse(ev.target.result);
+        if(typeof parsed!=='object'||Array.isArray(parsed)) throw new Error('Invalid file format');
+        const valid={income:[],expenses:[],bills:[],cards:[],transactions:[]};
+        Object.keys(valid).forEach(k=>{ if(Array.isArray(parsed[k])) valid[k]=parsed[k]; });
+        ['assets','targets','accounts','goals','_pendingTransfers'].forEach(k=>{
+          if(Array.isArray(parsed[k])) valid[k]=parsed[k];
+        });
+        data=valid;
+        saveData();
+        document.getElementById('onboarding-overlay').classList.add('hidden');
+        renderAll();
+        showToast('Backup restored!');
+      }catch(err){alert('Restore failed - invalid backup file.\n'+err.message);}
+    };
+    reader.readAsText(file);
+  };
+  document.body.appendChild(input);
+  input.click();
+}
+
 function loadDemoData(skipConfirm){
   if(!skipConfirm&&!confirm('Load demo data? This will replace your current data with realistic sample data.\n\nTip: Export a backup first if you have real data to keep.')) return;
   const now=new Date();
@@ -3622,25 +3643,20 @@ function renderNetWorth(){
       const apyHtml=a.apy>0?'<div style="display:flex;align-items:center;gap:8px;margin-top:8px;padding:7px 10px;background:rgba(34,197,94,.07);border-radius:8px;border:1px solid rgba(34,197,94,.15)"><span style="font-size:11px;font-weight:700;color:var(--green)">APY '+a.apy.toFixed(2)+'%</span><span style="font-size:11px;color:var(--muted)">· ~'+usd(parseFloat((a.balance*a.apy/100).toFixed(2)))+' / yr</span></div>':'';
       const urlHtml=a.url?'<button class="btn btn-secondary btn-sm" style="margin-top:8px;width:100%;justify-content:flex-start;gap:8px;padding:8px 12px;border:1px solid rgba(80,112,240,.2);background:rgba(80,112,240,.07)" onclick="openLink(this.dataset.url)" data-url="'+a.url+'"><span>🌐</span><span style="font-size:12px;color:var(--accent2)">'+linkHost(a.url)+'</span><span style="margin-left:auto;color:var(--muted);font-size:13px">›</span></button>':'';
       const balCorrect='<div class="bal-correct-row"><input class="bal-correct-input" type="number" inputmode="decimal" placeholder="Set actual balance..." id="bal-correct-'+a.id+'" value="'+a.balance.toFixed(2)+'"/><button class="bal-correct-btn" onclick="correctBalance('+a.id+')">⚡ Correct</button></div>';
-      const acctId='acct'+a.id;
-      const cardHtml='<div class="card" style="margin-bottom:0;border-left:3px solid '+ac+';border-radius:0 12px 12px 0;cursor:pointer" onclick="toggleCardExpand(\''+acctId+'\')">'
+      const cardHtml='<div class="card" style="margin-bottom:0;border-color:'+ac+'44;border-radius:12px;">'
         +'<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">'
         +'<div><div style="font-size:15px;font-weight:600;margin-bottom:3px">'+(acTypeIcon[a.type]||'🏦')+' '+a.name+defaultBadge+'</div>'
         +'<div style="font-size:12px;color:var(--muted)">'+(acTypeLabel[a.type]||a.type)+(a.notes?' - '+a.notes:'')+'</div></div>'
-        +'<div style="display:flex;align-items:center;gap:8px">'
+        +'<div style="display:flex;align-items:center;gap:10px">'
         +'<span style="font-family:var(--font-d);font-size:22px;color:'+(a.balance>=0?'var(--green)':'var(--red)')+'">'+usd(a.balance)+'</span>'
-        +'<span id="cchev-'+acctId+'" style="color:var(--muted);font-size:11px">&#9662;</span>'
+        +'<button class="btn btn-secondary btn-sm" onclick="openReconcile('+a.id+')" title="Reconcile">⚖️</button>'
         +'</div></div>'
         +reconHtml+apyHtml+urlHtml+balCorrect
-        +'<div id="cact-'+acctId+'" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);flex-wrap:wrap;gap:6px">'
-        +'<button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();openReconcile('+a.id+')" title="Reconcile">&#x2696;&#xFE0F; Reconcile</button>'
-        +'<button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();openEditAccount('+a.id+')">Edit</button>'
-        +'<button class="btn btn-danger btn-sm" onclick="event.stopPropagation();deleteItem(\'accounts\','+a.id+')">&#x2715;</button>'
-        +'</div>'
         +'</div>';
-      return '<div style="margin-bottom:11px">'+cardHtml+'</div>';
+      return wrapSwipeable(cardHtml,'accounts',a.id,'openEditAccount('+a.id+')');
     }).join('')
     :emptyState('🏦','No accounts yet','Add your checking, savings, and cash accounts to track live balances.','+ Add Account',"openModal('account')");
+    setTimeout(attachSwipes,50);
   }
   const catIcon={cash:'💵',invest:'📈',property:'🏠',vehicle:'🚗'};
   const catLabel={cash:'Savings / Cash',invest:'Investments',property:'Property',vehicle:'Vehicle'};
@@ -3678,22 +3694,17 @@ function renderNetWorth(){
     }
     const assetColor={cash:'#1aa8d8',invest:'#5070f0',property:'#f59e0b',vehicle:'#fb923c'};
     const ac2=assetColor[a.category]||'#5070f0';
-    const assetId='asst'+a.id;
-    const innerHtml='<div style="display:flex;justify-content:space-between;align-items:center;cursor:pointer" onclick="toggleCardExpand(\''+assetId+'\')">'
+    const innerHtml='<div style="display:flex;justify-content:space-between;align-items:center">'
       +'<div><div class="row-label">'+(catIcon[a.category]||'💼')+' '+a.name+'</div>'
       +'<div class="row-sub">'+(catLabel[a.category]||a.category)+(a.notes?' · '+a.notes:'')+'</div></div>'
-      +'<div class="row-actions" style="gap:8px">'
+      +'<div class="row-actions">'
       +'<span style="color:var(--green);font-weight:600">'+usd(a.value)+'</span>'
-      +'<span id="cchev-'+assetId+'" style="color:var(--muted);font-size:11px">&#9662;</span>'
       +'</div></div>'
-      +deprHtml+equityHtml
-      +'<div id="cact-'+assetId+'" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);flex-wrap:wrap;gap:6px">'
-      +'<button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();openEditAsset('+a.id+')">Edit</button>'
-      +'<button class="btn btn-danger btn-sm" onclick="event.stopPropagation();deleteItem(\'assets\','+a.id+')">&#x2715;</button>'
-      +'</div>';
-    const assetCard='<div class="card" style="margin-bottom:0;border-left:3px solid '+ac2+';border-radius:0 12px 12px 0;">'+innerHtml+'</div>';
-    return '<div style="margin-bottom:11px">'+assetCard+'</div>';
+      +deprHtml+equityHtml;
+    const assetCard='<div class="card" style="margin-bottom:0;border-color:'+ac2+'44;border-radius:12px;">'+innerHtml+'</div>';
+    return wrapSwipeable(assetCard,'assets',a.id,'openEditAsset('+a.id+')');
   }).join(''):emptyState('📈','No assets yet','Add investments, property, and vehicles to see your full net worth.','+ Add Asset',"openModal('asset')");
+  setTimeout(attachSwipes,50);
   // Dashboard accounts widget
   const wrap=$('d-accounts-wrap'),grid=$('d-accounts');
   if(wrap&&grid){
@@ -3984,7 +3995,7 @@ function chartShowTooltip(canvas,tapX){
 }
 
 const PAGE_ORDER=['dashboard','bills','networth','insights','advisor'];
-const TAB_MAP={dashboard:'dashboard',bills:'bills',networth:'networth',cards:'networth',insights:'insights',debt:'insights',cashflow:'insights',advisor:'advisor'};
+const TAB_MAP={dashboard:'dashboard',bills:'bills',quick:'bills',networth:'networth',cards:'networth',insights:'insights',debt:'insights',cashflow:'insights',advisor:'advisor'};
 let _currentSec='dashboard';
 let _swipeDir=null;
 let _touchStartX=0,_touchStartY=0,_touchLocked=false;
@@ -4367,7 +4378,7 @@ function renderIncomeCard(income, occ, idx, total){
   }
   if(isFirst){
     actionBtns+='<button class="btn btn-secondary btn-sm"'
-      +' onclick="event.stopPropagation();openEditIncome('+income.id+')">Edit</button>'
+      +' onclick="event.stopPropagation();openEditIncome('+income.id+')">&#x270f; Edit</button>'
       +'<button class="btn btn-danger btn-sm"'
       +' onclick="event.stopPropagation();deleteItem(\'income\','+income.id+')">&#x2715;</button>';
   } else {
@@ -5834,7 +5845,7 @@ function renderBills(){
         +schedLabel+'</button>';
     }
     actionBtns+='<button class="btn btn-secondary btn-sm"'
-      +' onclick="event.stopPropagation();openEditBill('+b.id+')">Edit</button>';
+      +' onclick="event.stopPropagation();openEditBill('+b.id+')">&#x270f; Edit</button>';
     if(b.dueDate) actionBtns+='<button class="btn btn-secondary btn-sm"'
       +' onclick="event.stopPropagation();addToCalendar(\''+b.name+' Payment\',\''+b.dueDate+'\',\'Min: '+usd(b.amount)+'\')">&#x1F4C5;</button>';
     actionBtns+='<button class="btn btn-danger btn-sm"'
@@ -6723,13 +6734,14 @@ function obRender(){
   var html = '';
 
   if(obStep===0){
-    html = obDots(0,5) +
+    html =
       '<div class="ob-icon">&#128075;</div>' +
       '<div class="ob-title">Welcome to FinanceOS</div>' +
       '<div class="ob-desc">Your personal finance co-pilot. Everything stays private on your device &mdash; nothing is ever sent anywhere.</div>' +
-      '<div class="ob-btns">' +
-        '<button class="ob-skip" onclick="obStep=\'skip\';obRender()">Skip setup</button>' +
-        '<button class="btn btn-primary" onclick="obStep=1;obRender()" style="padding:10px 28px">Get Started</button>' +
+      '<div class="ob-btns" style="flex-direction:column;gap:10px;margin-top:8px">' +
+        '<button class="btn btn-primary" onclick="obStep=1;obRender()" style="padding:12px 28px;width:100%">&#128640; Get Started</button>' +
+        '<button class="btn btn-secondary" onclick="obImportBackup()" style="padding:12px 28px;width:100%">&#128190; Load Backup</button>' +
+        '<button class="btn btn-secondary" onclick="obDemo()" style="padding:12px 28px;width:100%">&#127917; Explore with Demo Data</button>' +
       '</div>';
   }
 
@@ -6740,7 +6752,8 @@ function obRender(){
       '<div class="ob-desc">Load realistic sample data to see how FinanceOS works &mdash; or jump straight in with a clean slate.</div>' +
       '<div class="ob-btns" style="flex-direction:column;gap:10px">' +
         '<button class="btn btn-primary" onclick="obDemo()" style="padding:10px 28px;width:100%">&#127917; Try Demo Data</button>' +
-        '<button class="btn btn-secondary" onclick="obSkipOnboarding()" style="padding:10px 28px;width:100%">Start Fresh</button>' +
+        '<button class="btn btn-secondary" onclick="obImportBackup()" style="padding:10px 28px;width:100%">&#128190; Load Backup</button>' +
+        '<button class="btn btn-secondary" onclick="obSkipOnboarding()" style="padding:10px 28px;width:100%;opacity:.7">Start Fresh</button>' +
       '</div>';
   }
 
@@ -10034,22 +10047,6 @@ function buildFinancialContext() {
 
   return 'You are a personal AI financial advisor with direct access to the user\'s real financial data from their FinanceOS app. Be concise, specific, and actionable. Reference their actual numbers when relevant. Do not give generic advice.\n\nUSER\'S FINANCIAL SNAPSHOT:\n\nACCOUNTS: ' + accounts + '\n\nMONTHLY INCOME (estimated): ' + fmt(monthlyIncome) + '/mo\n\nMONTHLY EXPENSES by category: ' + topExpenses + '\n\nBILLS: ' + billList + '\n\nDEBT:\n' + debtList + '\n\nSAVINGS GOALS:\n' + goalList + '\n\nNET WORTH: ' + fmt(totalAssets) + ' total assets - ' + fmt(totalDebt) + ' total debt = ' + fmt(totalAssets - totalDebt) + '\n\nSPENDING (last 30 days): ' + fmt(recentSpend) + '\n\nToday: ' + new Date().toLocaleDateString('en-US', {month:'long', day:'numeric', year:'numeric'});
 }
-
-// ── CARD DROPDOWN MENU ─────────────────────────────
-function toggleCardMenu(e){
-  e.stopPropagation();
-  const btn=e.currentTarget;
-  const dropdown=btn.nextElementSibling;
-  const isOpen=dropdown.classList.contains('open');
-  closeAllCardMenus();
-  if(!isOpen) dropdown.classList.add('open');
-}
-function closeAllCardMenus(){
-  document.querySelectorAll('.card-dropdown.open').forEach(d=>d.classList.remove('open'));
-}
-document.addEventListener('click',function(e){
-  if(!e.target.closest('.card-menu-wrap')) closeAllCardMenus();
-});
 
 function renderAdvisor() {
   var keyScreen = document.getElementById('advisor-key-screen');
