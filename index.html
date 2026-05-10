@@ -171,7 +171,7 @@ main{max-width:900px;padding:20px 20px 60px;}
   #overlay-bg.show{display:block;}
   #content{margin-left:0;}
   #alerts-bar{padding-top:4px;}
-  main{padding:16px 14px 24px;padding-top:calc(56px + 40px + 16px);}
+  main{padding:16px 14px 24px;padding-top:80px;}
   .sec-title{display:none;}
   #advisor.active{height:calc(100vh - 56px - 40px);}
 }
@@ -452,6 +452,7 @@ canvas{width:100%!important;}
 [data-theme="light"] .quick-tile{ background:#f0f0fa; border-color:#ddddf0; }
 [data-theme="light"] .plan-toggle{ background:#f0f0fa; border-color:#ddddf0; }
 [data-theme="light"] .plan-toggle button{ color:#6b6b88; }
+[data-theme="light"] .plan-toggle button.active{ color:#fff; }
 [data-theme="light"] #mob-header,[data-theme="light"] #mobile-header{ background:#ffffff; border-color:#ddddf0; }
 [data-theme="light"] .section-label{ color:#6b6b88; }
 [data-theme="light"] .row{ border-color:#ededfa; }
@@ -1173,8 +1174,11 @@ canvas{width:100%!important;}
 
     <!-- BILLS -->
     <div id="bills" class="section">
-      <div class="sec-header">
-        <h2 class="sec-title" data-i18n="Bills &amp; Payments">Bills &amp; Payments</h2>
+      <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
+        <div class="plan-toggle" style="margin-bottom:0">
+          <button id="sub-money-bills" class="active" onclick="showSub('bills','bills')">Bills</button>
+          <button id="sub-money-log"   onclick="showSub('quick','bills')">Log</button>
+        </div>
       </div>
       <div id="money-summary-cards" style="margin-bottom:14px"></div>
       <div class="view-toggle">
@@ -1301,6 +1305,7 @@ canvas{width:100%!important;}
         <div class="plan-toggle" style="margin-bottom:0">
           <button id="sub-acct-accounts" class="active" onclick="showSub('networth','networth')">Accounts</button>
           <button id="sub-acct-cards" onclick="showSub('cards','networth')">Cards</button>
+          <button id="sub-acct-loans" onclick="showSub('loans','networth')">Loans</button>
         </div>
       </div>
 
@@ -1457,6 +1462,7 @@ canvas{width:100%!important;}
         <div class="plan-toggle" style="margin-bottom:0">
           <button id="sub-cards-accounts" onclick="showSub('networth','networth')">Accounts</button>
           <button id="sub-cards-cards" class="active" onclick="showSub('cards','networth')">Cards</button>
+          <button id="sub-cards-loans" onclick="showSub('loans','networth')">Loans</button>
         </div>
       </div>
 
@@ -1488,6 +1494,32 @@ canvas{width:100%!important;}
         <p style="color:var(--muted);font-size:13px;margin-bottom:14px" data-i18n="Credit cards with a $0 balance automatically appear here. Use them every 90 days to keep them active.">Credit cards with a $0 balance automatically appear here. Use them every 90 days to keep them active.</p>
         <div id="card-list"></div>
       </div>
+    </div>
+
+    <!-- LOANS -->
+    <div id="loans" class="section">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
+        <div class="plan-toggle" style="margin-bottom:0">
+          <button id="sub-loans-accounts" onclick="showSub('networth','networth')">Accounts</button>
+          <button id="sub-loans-cards"    onclick="showSub('cards','networth')">Cards</button>
+          <button id="sub-loans-loans"    class="active">Loans</button>
+        </div>
+      </div>
+
+      <!-- Loan Summary -->
+      <div class="card" style="margin-bottom:16px" id="loan-summary-wrap">
+        <div class="section-label" style="color:var(--muted);margin-bottom:12px">Loan Overview</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-bottom:14px">
+          <div><div class="stat-label">Total Owed</div><div class="stat-value" id="loan-total-bal" style="font-size:18px;color:var(--red)">$0.00</div></div>
+          <div><div class="stat-label">Total Borrowed</div><div class="stat-value" id="loan-total-orig" style="font-size:18px">$0.00</div></div>
+          <div><div class="stat-label">Total Paid Off</div><div class="stat-value" id="loan-total-paid" style="font-size:18px;color:var(--green)">$0.00</div></div>
+          <div><div class="stat-label">Progress</div><div class="stat-value" id="loan-total-pct" style="font-size:18px">0%</div></div>
+        </div>
+        <div class="target-bar-bg"><div id="loan-total-bar" class="target-bar-fill" style="width:0%;background:var(--blue)"></div></div>
+      </div>
+
+      <div class="section-label" style="color:var(--muted);margin-bottom:12px">Loans</div>
+      <div id="loans-list"></div>
     </div>
 
     <!-- QUICK UPDATE -->
@@ -1538,9 +1570,14 @@ canvas{width:100%!important;}
 
     <!-- QUICK UPDATE -->
     <div id="quick" class="section">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
+        <div class="plan-toggle" style="margin-bottom:0">
+          <button id="sub-quick-bills" onclick="showSub('bills','bills')">Bills</button>
+          <button id="sub-quick-log"   class="active">Log</button>
+        </div>
+      </div>
 
       <div id="quick-alerts"></div>
-      <p style="color:var(--muted);font-size:13px;margin-bottom:20px">Log cash withdrawals and purchases. Bill and debt payments are handled in Bills &amp; Payments.</p>
       <div class="quick-grid">
         <div class="quick-tile" onclick="openWithdrawal()"><div class="quick-icon">💵</div><div class="quick-label" data-i18n="Cash Withdrawal">Cash Withdrawal</div></div>
         <div class="quick-tile" onclick="openModal('purchase')"><div class="quick-icon">🛒</div><div class="quick-label" data-i18n="New Purchase">New Purchase</div></div>
@@ -3144,6 +3181,36 @@ function importData(){
   input.click();
 }
 
+function obImportBackup(){
+  const input=document.createElement('input');
+  input.type='file';input.accept='.json';
+  input.style.cssText='position:fixed;top:-9999px;left:-9999px;opacity:0;pointer-events:none;';
+  input.onchange=e=>{
+    document.body.removeChild(input);
+    const file=e.target.files[0];if(!file)return;
+    const reader=new FileReader();
+    reader.onload=ev=>{
+      try{
+        const parsed=JSON.parse(ev.target.result);
+        if(typeof parsed!=='object'||Array.isArray(parsed)) throw new Error('Invalid file format');
+        const valid={income:[],expenses:[],bills:[],cards:[],transactions:[]};
+        Object.keys(valid).forEach(k=>{ if(Array.isArray(parsed[k])) valid[k]=parsed[k]; });
+        ['assets','targets','accounts','goals','_pendingTransfers'].forEach(k=>{
+          if(Array.isArray(parsed[k])) valid[k]=parsed[k];
+        });
+        data=valid;
+        saveData();
+        document.getElementById('onboarding-overlay').classList.add('hidden');
+        renderAll();
+        showToast('Backup restored!');
+      }catch(err){alert('Restore failed - invalid backup file.\n'+err.message);}
+    };
+    reader.readAsText(file);
+  };
+  document.body.appendChild(input);
+  input.click();
+}
+
 function loadDemoData(skipConfirm){
   if(!skipConfirm&&!confirm('Load demo data? This will replace your current data with realistic sample data.\n\nTip: Export a backup first if you have real data to keep.')) return;
   const now=new Date();
@@ -3975,7 +4042,7 @@ function chartShowTooltip(canvas,tapX){
 }
 
 const PAGE_ORDER=['dashboard','bills','networth','insights','advisor'];
-const TAB_MAP={dashboard:'dashboard',bills:'bills',networth:'networth',cards:'networth',insights:'insights',debt:'insights',cashflow:'insights',advisor:'advisor'};
+const TAB_MAP={dashboard:'dashboard',bills:'bills',quick:'bills',networth:'networth',cards:'networth',loans:'networth',insights:'insights',debt:'insights',cashflow:'insights',advisor:'advisor'};
 let _currentSec='dashboard';
 let _swipeDir=null;
 let _touchStartX=0,_touchStartY=0,_touchLocked=false;
@@ -3992,6 +4059,7 @@ function showSub(sec,parentSec){
   if(sec==='insights'){const months=parseInt($('chart-months')?$('chart-months').value:3)||3;setTimeout(()=>drawChart(getMonthlyExpenses(months)),80);}
   if(sec==='cashflow') renderCashFlow();
   if(sec==='cards') setTimeout(()=>renderCards(),50);
+  if(sec==='loans') setTimeout(()=>renderLoans(),50);
   if(sec==='quick') setTimeout(()=>renderTxns(),50);
 }
 
@@ -4085,6 +4153,7 @@ function show(sec,btn){
     setTimeout(()=>drawChart(getMonthlyExpenses(months)),80);
   }
   if(sec==='cards') setTimeout(()=>renderCards(),50);
+  if(sec==='loans') setTimeout(()=>renderLoans(),50);
   if(sec==='quick') setTimeout(()=>renderTxns(),50);
   if(sec==='advisor') setTimeout(()=>renderAdvisor(),50);
 }
@@ -4509,7 +4578,7 @@ function saveBill(){
     ? originalLoanAmount
     : (prev&&prev.originalBalance ? Math.max(prev.originalBalance, balance) : balance);
   const item={id:eid||Date.now(),name,amount:amt,dueDate:dt,recurring:rec,
-    status:prev?prev.status:'Pending',btype,
+    status: autoLog && (!prev || prev.status==='Pending') ? 'Scheduled' : (prev?prev.status:'Pending'),btype,
     balance:isDebt?balance:0,apr:isDebt?apr:0,creditLimit,
     originalLoanAmount:btype==='loan'?originalLoanAmount:0,
     originalBalance:isDebt?computedOriginalBalance:0,
@@ -6015,7 +6084,7 @@ function renderCards(){
             </div>
             <div class="drill-panel" id="${cardDrillId}">${cardDrillHtml}</div>
           </div>
-          <button class="btn btn-secondary btn-sm" onclick="openEditBill(${c.id})">✏️</button>
+          <button class="btn btn-secondary btn-sm" onclick="openEditBill(${c.id})">Edit</button>
         </div>
       </div>`;
     }).join('')
@@ -6072,6 +6141,105 @@ function renderCards(){
       </div>`;
     }).join('');
   }
+}
+
+function renderLoans(){
+  const loans = data.bills.filter(b => b.btype === 'loan');
+
+  // ── SUMMARY ──────────────────────────────────────
+  const totalBal  = loans.reduce((s,l) => s + (l.balance||0), 0);
+  const totalOrig = loans.reduce((s,l) => s + (l.originalLoanAmount||l.originalBalance||l.balance||0), 0);
+  const totalPaid = Math.max(0, totalOrig - totalBal);
+  const paidPct   = totalOrig > 0 ? Math.min(100, Math.round(totalPaid / totalOrig * 100)) : 0;
+  const barColor  = paidPct < 30 ? 'var(--blue)' : paidPct < 70 ? 'var(--accent)' : 'var(--green)';
+
+  const lTotalBal  = $('loan-total-bal');
+  const lTotalOrig = $('loan-total-orig');
+  const lTotalPaid = $('loan-total-paid');
+  const lTotalPct  = $('loan-total-pct');
+  const lTotalBar  = $('loan-total-bar');
+  if(lTotalBal)  lTotalBal.textContent  = usd(totalBal);
+  if(lTotalOrig) lTotalOrig.textContent = usd(totalOrig);
+  if(lTotalPaid) lTotalPaid.textContent = usd(totalPaid);
+  if(lTotalPct){  lTotalPct.textContent = paidPct + '%'; lTotalPct.style.color = barColor; }
+  if(lTotalBar){  lTotalBar.style.width = paidPct + '%'; lTotalBar.style.background = barColor; }
+
+  // ── PER-LOAN LIST ─────────────────────────────────
+  const el = $('loans-list');
+  if(!el) return;
+
+  if(!loans.length){
+    el.innerHTML = emptyState('🏦','No loans yet','Add a loan in Money → Bills. Tap + and choose Loan as the type.','Go to Money',"show('bills',null)");
+    return;
+  }
+
+  el.innerHTML = loans.map(l => {
+    const orig     = l.originalLoanAmount || l.originalBalance || l.balance || 0;
+    const paid     = Math.max(0, orig - (l.balance||0));
+    const lPct     = orig > 0 ? Math.min(100, Math.round(paid / orig * 100)) : 0;
+    const lColor   = lPct < 30 ? 'var(--blue)' : lPct < 70 ? 'var(--accent)' : 'var(--green)';
+    const statusC  = statusColor(l.status||'Pending');
+
+    // Drill-down: transactions this month linked to this bill
+    const now2 = new Date();
+    const loanTxns = data.transactions.filter(tr => {
+      if(!tr.date) return false;
+      const d = new Date(tr.date);
+      return (tr.cardId === l.id || tr.autoLogRef === l.id) &&
+             d.getFullYear() === now2.getFullYear() &&
+             d.getMonth()    === now2.getMonth();
+    }).sort((a,b) => b.date.localeCompare(a.date));
+
+    const drillId  = 'drill-loan-' + l.id;
+    const drillHtml = loanTxns.length
+      ? loanTxns.map(tr => `<div class="drill-row">
+          <div class="dr-left">
+            <div class="dr-desc">${tr.description||'Payment'}</div>
+            <div class="dr-sub">${fmtDate(tr.date)}${tr.category?' · '+tr.category:''}</div>
+          </div>
+          <div class="dr-amt" style="color:var(--green)">-${usd(tr.amount)}</div>
+        </div>`).join('')
+      : '<div class="drill-empty">No payments logged this month.</div>';
+
+    return `<div class="card" style="margin-bottom:11px;border-color:${lColor}44">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px">
+        <div style="flex:1;min-width:160px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <span style="font-size:15px;font-weight:600">🏦 ${escHtml(l.name)}</span>
+            <span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;background:${statusC}22;color:${statusC}">${l.status||'Pending'}</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;margin-bottom:10px">
+            <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:8px">
+              <div style="font-size:10px;color:var(--muted);text-transform:uppercase;font-weight:700;margin-bottom:2px">Balance</div>
+              <div style="font-size:15px;font-weight:700;color:var(--red)">${usd(l.balance||0)}</div>
+            </div>
+            <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:8px">
+              <div style="font-size:10px;color:var(--muted);text-transform:uppercase;font-weight:700;margin-bottom:2px">Original</div>
+              <div style="font-size:15px;font-weight:700">${usd(orig)}</div>
+            </div>
+            <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:8px">
+              <div style="font-size:10px;color:var(--muted);text-transform:uppercase;font-weight:700;margin-bottom:2px">Paid Off</div>
+              <div style="font-size:15px;font-weight:700;color:var(--green)">${usd(paid)}</div>
+            </div>
+            <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:8px">
+              <div style="font-size:10px;color:var(--muted);text-transform:uppercase;font-weight:700;margin-bottom:2px">Min. Payment</div>
+              <div style="font-size:15px;font-weight:700;color:var(--yellow)">${usd(l.amount||0)}</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+            <div class="target-bar-bg" style="flex:1"><div class="target-bar-fill" style="width:${lPct}%;background:${lColor}"></div></div>
+            <span style="font-size:12px;font-weight:700;color:${lColor};min-width:36px">${lPct}%</span>
+          </div>
+          <div style="font-size:10px;color:var(--muted);margin-bottom:6px">APR: ${pct(l.apr||0)}${l.dueDate?' · Due '+fmtDate(l.dueDate):''}</div>
+          <div class="drill-toggle" onclick="toggleDrill('${drillId}',this)">
+            <i class="dt-icon">›</i> <span class="dt-label">${loanTxns.length} payment${loanTxns.length===1?'':'s'} this month</span>
+          </div>
+          <div class="drill-panel" id="${drillId}">${drillHtml}</div>
+        </div>
+        <button class="btn btn-secondary btn-sm" onclick="openEditBill(${l.id})">Edit</button>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 function setTxnFilter(f){
@@ -6719,26 +6887,17 @@ function obRender(){
   var html = '';
 
   if(obStep===0){
-    html = obDots(0,5) +
+    html =
       '<div class="ob-icon">&#128075;</div>' +
       '<div class="ob-title">Welcome to FinanceOS</div>' +
       '<div class="ob-desc">Your personal finance co-pilot. Everything stays private on your device &mdash; nothing is ever sent anywhere.</div>' +
-      '<div class="ob-btns">' +
-        '<button class="ob-skip" onclick="obStep=\'skip\';obRender()">Skip setup</button>' +
-        '<button class="btn btn-primary" onclick="obStep=1;obRender()" style="padding:10px 28px">Get Started</button>' +
+      '<div class="ob-btns" style="flex-direction:column;gap:10px;margin-top:8px">' +
+        '<button class="btn btn-primary" onclick="obStep=1;obRender()" style="padding:12px 28px;width:100%">&#128640; Get Started</button>' +
+        '<button class="btn btn-secondary" onclick="obImportBackup()" style="padding:12px 28px;width:100%">&#128190; Load Backup</button>' +
+        '<button class="btn btn-secondary" onclick="obDemo()" style="padding:12px 28px;width:100%">&#127917; Explore with Demo Data</button>' +
       '</div>';
   }
 
-  else if(obStep==='skip'){
-    html =
-      '<div class="ob-icon">&#127917;</div>' +
-      '<div class="ob-title">Want to explore first?</div>' +
-      '<div class="ob-desc">Load realistic sample data to see how FinanceOS works &mdash; or jump straight in with a clean slate.</div>' +
-      '<div class="ob-btns" style="flex-direction:column;gap:10px">' +
-        '<button class="btn btn-primary" onclick="obDemo()" style="padding:10px 28px;width:100%">&#127917; Try Demo Data</button>' +
-        '<button class="btn btn-secondary" onclick="obSkipOnboarding()" style="padding:10px 28px;width:100%">Start Fresh</button>' +
-      '</div>';
-  }
 
   else if(obStep===1){
     html = obDots(1,5) +
@@ -7176,7 +7335,7 @@ function autoResetRecurringBills(){
   data.bills.forEach(b=>{
     if(b.recurring==='One-time') return;
     if(b.status==='Paid'||b.status==='Scheduled'){
-      b.status='Pending';
+      b.status = b.autoLog ? 'Scheduled' : 'Pending';
       b.scheduledAmount=null;
       b.scheduledAccountId=null;
       changed++;
@@ -9906,7 +10065,11 @@ function renderCashFlow(){
     sub:' · '+e.category+(e.frequency&&e.frequency!=='One-time'?' · '+e.frequency:''),
     amt:e.amount, color:'var(--red)'
   }));
-  const billRows=data.bills.filter(b=>b.amount>0).map(b=>({
+  const billRows=data.bills.filter(b=>{
+    if(b.amount<=0) return false;
+    if(b.btype==='creditcard'||b.btype==='loan'||b.btype==='promo') return b.balance>0;
+    return true;
+  }).map(b=>({
     label:b.name,
     sub:' · '+(b.btype==='creditcard'?'Credit Card':b.btype==='loan'?'Loan':'Bill')+(b.recurring&&b.recurring!=='No'?' · '+b.recurring:''),
     amt:b.amount, color:'var(--red)'
@@ -9952,7 +10115,7 @@ function renderCashFlow(){
 function renderAll(){
   updateOriginalBalances();
   renderAlerts();renderDashboard();renderBills();renderDebt();
-  renderNetWorth();renderInsights();renderCashFlow();renderCards();renderTxns();
+  renderNetWorth();renderInsights();renderCashFlow();renderCards();renderLoans();renderTxns();
   renderSnapshot();updateInsightsBadge();updateBillsBadge();
   updateLastSavedUI();checkBackupReminder();
   setTimeout(attachSwipes,50);
