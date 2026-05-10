@@ -102,12 +102,14 @@ main{max-width:900px;padding:20px 20px 60px;}
 }
 /* Tab strip */
 #mobile-tabs{
-  display:flex;overflow-x:hidden;
-  padding:0;gap:0;
+  display:flex;overflow-x:auto;
+  padding:0 6px;gap:0;
+  -webkit-overflow-scrolling:touch;
+  scroll-snap-type:x proximity;
 }
 #mobile-tabs::-webkit-scrollbar{display:none;}
 .mtab{
-  flex:1;min-width:0;padding:7px 2px 6px;font-size:13px;font-weight:600;
+  flex:0 0 auto;padding:7px 14px 6px;font-size:13px;font-weight:600;
   color:var(--muted);white-space:nowrap;text-align:center;
   border-bottom:2px solid transparent;
   cursor:pointer;
@@ -115,6 +117,7 @@ main{max-width:900px;padding:20px 20px 60px;}
   background:none;border-top:none;border-left:none;border-right:none;
   font-family:var(--font-b);
   -webkit-tap-highlight-color:transparent;
+  scroll-snap-align:center;
 }
 .mtab.active{color:var(--accent);border-bottom-color:var(--accent);}
 #overlay-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:55;}
@@ -140,7 +143,7 @@ main{max-width:900px;padding:20px 20px 60px;}
   30%{background:rgba(34,197,94,.18);}
   100%{background:rgba(34,197,94,0);}
 }
-.paid-flash{animation:paidFlash .6s ease forwards;}
+
 
 /* ── SWIPE TRANSITIONS ── */
 @keyframes swipeInRight{from{opacity:0;transform:translateX(28px);}to{opacity:1;transform:translateX(0);}}
@@ -179,10 +182,10 @@ main{max-width:900px;padding:20px 20px 60px;}
 
 /* ── ALERTS ── */
 .alert{border-radius:10px;padding:11px 15px;margin-bottom:8px;font-size:14px;display:flex;align-items:center;gap:8px;animation:fadeIn .3s ease;}
-.alert-tap{cursor:pointer;justify-content:space-between;transition:opacity .15s;}
+
 .alert-tap:hover{opacity:.8;}
-.alert-tap .alert-chevron{font-size:12px;opacity:.6;flex-shrink:0;}
-.alert-tap .alert-body{flex:1;}
+.alert-tap 
+.alert-tap 
 @keyframes fadeIn{from{opacity:0;transform:translateY(-4px);}to{opacity:1;}}
 
 /* ── STAT CARDS ── */
@@ -226,8 +229,8 @@ main{max-width:900px;padding:20px 20px 60px;}
 .quick-tile:active{transform:scale(.97);border-color:var(--accent);}
 .quick-icon{font-size:30px;margin-bottom:10px;}
 .quick-label{font-size:14px;font-weight:600;}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-@media(max-width:680px){.two-col{grid-template-columns:1fr;}}
+
+@media(max-width:680px){}
 .empty{color:#555555;font-size:14px;padding:8px 0;}
 hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
 
@@ -306,7 +309,7 @@ canvas{width:100%!important;}
 /* ── UTILITY CLASSES (extracted from repeated inline styles) ── */
 
 .flex-start{display:flex;align-items:center;gap:10px;}
-.flex-wrap{display:flex;flex-wrap:wrap;gap:10px;}
+
 
 .info-box .stat-label{margin-bottom:2px;}
 
@@ -392,7 +395,7 @@ canvas{width:100%!important;}
 
 
 
-.txn-summary-item .ts-val{font-size:15px;font-weight:700;}
+.txn-summary-item 
 .txn-summary-item 
 
 
@@ -484,24 +487,24 @@ canvas{width:100%!important;}
 
 /* ── AUTO-PROCESS NOTIFICATION ── */
 #autoprocess-banner{display:none;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);border-radius:12px;padding:10px 14px;margin-bottom:16px;font-size:13px;color:var(--green);display:none;align-items:center;gap:10px;}
-#autoprocess-banner .apb-close{margin-left:auto;background:none;border:none;color:var(--green);cursor:pointer;font-size:16px;line-height:1;}
+#autoprocess-banner 
 
 /* ── UNDO TOAST ── */
-#undo-toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:12px;font-size:13px;color:var(--text);z-index:150;opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.3);}
-#undo-toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto;}
+#undo-toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(6px);background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:12px 16px;display:none;align-items:center;gap:12px;font-size:13px;color:var(--text);z-index:150;opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.3);}
+#undo-toast.show{display:flex;opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto;}
 #undo-toast .undo-btn{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font-b);}
 #undo-toast .undo-progress{position:absolute;bottom:0;left:0;height:3px;background:var(--accent);border-radius:0 0 12px 12px;transition:width linear;}
 
 /* ── BILL CONFIRMATION ANIMATION ── */
 @keyframes checkPop{0%{transform:scale(0);opacity:0}60%{transform:scale(1.3)}100%{transform:scale(1);opacity:1}}
-.bill-check{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--green);animation:checkPop .35s ease forwards;}
+
 .bill-check svg{width:13px;height:13px;fill:none;stroke:#fff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;}
 
 /* ── INCOME PROJECTION ── */
 .proj-toggle{display:flex;gap:6px;margin-bottom:12px;}
 .proj-btn{background:rgba(255,255,255,.06);border:none;border-radius:8px;padding:5px 12px;font-size:11px;font-weight:600;color:var(--muted);cursor:pointer;font-family:var(--font-b);transition:all .15s;}
 .proj-btn.active{background:var(--accent);color:#fff;}
-.proj-bar{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);}
+
 .proj-bar:last-child{border-bottom:none;}
 
 
@@ -547,8 +550,7 @@ canvas{width:100%!important;}
 .velocity-row{display:flex;align-items:center;gap:6px;margin-top:4px;font-size:11px;color:var(--muted);}
 .vel-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;display:inline-block;}
 /* ── ANOMALY BADGE ── */
-.anomaly-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;
-  border-radius:6px;padding:2px 7px;margin-top:4px;}
+
 .anomaly-badge.yellow{background:rgba(245,158,11,.15);color:var(--yellow);}
 .anomaly-badge.red{background:rgba(239,68,68,.15);color:var(--red);}
 /* ── ANOMALY SECTION IN INSIGHTS ── */
@@ -568,6 +570,28 @@ canvas{width:100%!important;}
   cursor:pointer;font-family:var(--font-b);transition:all .15s;}
 .nwh-btn.active{background:var(--accent);color:#fff;}
 
+
+/* ── CARD DROPDOWN MENU ── */
+.card-menu-btn{background:rgba(255,255,255,.08);border:none;color:var(--muted);font-size:20px;
+  cursor:pointer;width:30px;height:30px;border-radius:8px;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;line-height:1;font-family:var(--font-b);transition:background .15s;}
+.card-menu-btn:hover{background:rgba(255,255,255,.15);color:var(--text);}
+.card-menu-wrap{position:relative;display:inline-flex;}
+.card-dropdown{display:none;position:absolute;right:0;top:calc(100% + 5px);
+  background:#252525;border:1px solid var(--border2);border-radius:10px;
+  overflow:hidden;z-index:30;min-width:130px;box-shadow:0 8px 24px rgba(0,0,0,.4);}
+.card-dropdown.open{display:block;}
+.card-dropdown-item{display:flex;align-items:center;gap:8px;width:100%;
+  padding:10px 14px;background:none;border:none;color:var(--text);
+  font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-b);text-align:left;transition:background .12s;}
+.card-dropdown-item:hover{background:rgba(255,255,255,.07);}
+.card-dropdown-item.danger{color:var(--red);}
+.card-dropdown-item.danger:hover{background:rgba(239,68,68,.09);}
+[data-theme="light"] .card-dropdown{background:#fff;border-color:#ddddf0;box-shadow:0 8px 24px rgba(0,0,0,.12);}
+[data-theme="light"] .card-dropdown-item{color:#1a1a2e;}
+[data-theme="light"] .card-dropdown-item:hover{background:rgba(0,0,0,.04);}
+[data-theme="light"] .card-menu-btn{background:rgba(0,0,0,.06);color:#6b6b88;}
+[data-theme="light"] .card-menu-btn:hover{background:rgba(0,0,0,.1);color:#1a1a2e;}
 
 /* ── SMART BILL REMINDER ── */
 #smart-bills-wrap{margin-bottom:20px;}
@@ -594,9 +618,9 @@ canvas{width:100%!important;}
 .debt-countdown .dc-icon{font-size:28px;flex-shrink:0;}
 .debt-countdown .dc-body{flex:1;}
 .debt-countdown .dc-label{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.6px;}
-.debt-countdown .dc-debt{font-size:13px;font-weight:700;color:var(--text);margin-top:2px;}
-.debt-countdown .dc-date{font-size:12px;color:var(--accent2);margin-top:2px;}
-.debt-countdown .dc-months{font-size:22px;font-weight:700;color:var(--accent);white-space:nowrap;}
+.debt-countdown 
+.debt-countdown 
+.debt-countdown 
 
 
 /* ── PROMO SIMULATOR ── */
@@ -702,7 +726,7 @@ canvas{width:100%!important;}
 .pi-monthly{font-size:10px;color:var(--muted);margin-top:2px;}
 .pi-progress{height:4px;background:rgba(255,255,255,.08);border-radius:2px;margin-top:5px;width:100%;}
 .pi-progress-fill{height:100%;border-radius:2px;transition:width .3s;}
-.pi-deferred-warn{font-size:10px;font-weight:700;color:var(--red);margin-top:3px;}
+
 
 
 /* ── SPLIT BALANCE DISPLAY ── */
@@ -731,7 +755,7 @@ canvas{width:100%!important;}
 .alloc-total-row{display:flex;justify-content:space-between;padding-top:8px;
   border-top:1px solid var(--border);font-size:13px;font-weight:700;}
 .alloc-warn{font-size:11px;color:var(--yellow);margin-top:6px;}
-.alloc-promo-breakdown{margin-top:8px;padding-top:8px;border-top:1px solid var(--border);}
+
 .alloc-promo-item{display:flex;justify-content:space-between;font-size:11px;
   color:var(--muted);padding:3px 0;}
 .alloc-promo-item.urgent{color:var(--red);font-weight:600;}
@@ -762,9 +786,8 @@ canvas{width:100%!important;}
 #bill-reset-banner{display:none;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.3);
   border-radius:10px;padding:12px 14px;margin-bottom:14px;
   font-size:13px;color:var(--blue);}
-#bill-reset-banner .brb-title{font-weight:700;margin-bottom:4px;}
-#bill-reset-banner .brb-dismiss{float:right;background:none;border:none;
-  color:var(--blue);cursor:pointer;font-size:16px;line-height:1;padding:0;}
+#bill-reset-banner 
+#bill-reset-banner 
 
 /* ── TRANSFER PENDING BANNER ── */
 #transfer-banner{display:none;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);
@@ -775,7 +798,7 @@ canvas{width:100%!important;}
   border-radius:10px;padding:12px 14px;font-size:12px;color:var(--red);margin-bottom:12px;display:none;}
 
 /* ── INCOME EFFECTIVE MONTHLY ── */
-.income-monthly-note{font-size:10px;color:var(--accent2);font-weight:600;margin-top:2px;}
+
 
 
 /* ── SAVINGS GOALS ── */
@@ -921,7 +944,7 @@ canvas{width:100%!important;}
   font-size:10px;font-weight:600;cursor:pointer;border:1px solid rgba(80,112,240,.2);
   transition:all .12s;}
 .txn-tag:hover{background:var(--accent);color:#fff;}
-.txn-tag.active-filter{background:var(--accent);color:#fff;}
+.txn-tag
 
 
 /* ── ONBOARDING INLINE FORMS ── */
@@ -1018,7 +1041,7 @@ canvas{width:100%!important;}
   <button class="pwa-install" id="pwa-install-btn" onclick="pwaInstall()">Install</button>
   <button class="pwa-dismiss" onclick="pwaDismiss()">✕</button>
 </div>
-<div id="undo-toast"><span id="undo-msg">Deleted</span><button class="undo-btn" onclick="undoDelete()">Undo</button><div class="undo-progress" id="undo-progress"></div></div>
+<div id="undo-toast"><span id="undo-msg"></span><button class="undo-btn" onclick="undoDelete()">Undo</button><div class="undo-progress" id="undo-progress"></div></div>
 <div id="onboarding-overlay" class="hidden">
   <div class="ob-card" id="ob-card-inner">
   </div>
@@ -1153,49 +1176,6 @@ canvas{width:100%!important;}
           <div style="font-size:11px;color:var(--muted)">−7 to +7 days</div>
         </div>
         <div id="d-timeline"><div class="empty" data-i18n="No activity this week.">No activity this week.</div></div>
-      </div>
-    </div>
-
-    <!-- BUDGET -->
-    <div id="budget" class="section">
-
-      <div id="budget-alerts"></div>
-      <div class="card-grid" style="margin-bottom:18px">
-        <div class="stat-card"><div class="stat-label" data-i18n="Money In">Money In</div><div class="stat-value" id="cf-in" style="color:var(--green)">$0.00</div></div>
-        <div class="stat-card"><div class="stat-label" data-i18n="Money Out">Money Out</div><div class="stat-value" id="cf-out" style="color:var(--red)">$0.00</div></div>
-        <div class="stat-card"><div class="stat-label" data-i18n="Net Cash Flow">Net Cash Flow</div><div class="stat-value" id="cf-net">$0.00</div></div>
-      </div>
-      <div class="two-col">
-        <!-- MONEY IN -->
-        <div class="card">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-            <div class="section-label" style="color:var(--green);margin-bottom:0" data-i18n="Money In">Money In</div>
-            <button class="btn btn-primary btn-sm" onclick="openModal('income')">+ Income</button>
-          </div>
-          <div id="income-list"></div>
-          <div class="total-row" style="color:var(--green)"><span data-i18n="Total">Total</span><span id="income-total">$0.00</span></div>
-        </div>
-        <!-- MONEY OUT -->
-        <div class="card">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-            <div class="section-label" style="color:var(--red);margin-bottom:0" data-i18n="Money Out">Money Out</div>
-            <div style="display:flex;gap:6px">
-              <button class="btn btn-secondary btn-sm" onclick="openModal('expense')">+ Expense</button>
-              <button class="btn btn-primary btn-sm" onclick="openModal('bill')">+ Bill</button>
-            </div>
-          </div>
-          <div id="expense-list"></div>
-          <div class="total-row" style="color:var(--red)"><span data-i18n="Total">Total</span><span id="expense-total">$0.00</span></div>
-        </div>
-      </div>
-
-      <!-- Paycheck Calendar -->
-      <div class="card" id="paycheck-cal-card" style="margin-top:16px;display:none">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-          <div class="section-label" style="color:var(--teal);margin-bottom:0">📅 Upcoming Paychecks</div>
-          <button class="mn-btn" onclick="togglePaycheckCal()" id="paycheck-cal-toggle" style="font-size:11px;padding:4px 10px;border-radius:8px;border:1px solid var(--border2)">▾ Hide</button>
-        </div>
-        <div id="paycheck-cal-body"></div>
       </div>
     </div>
 
@@ -1609,36 +1589,90 @@ canvas{width:100%!important;}
     <div id="about" class="section">
       <div class="about-hero">
         <div class="about-hero-title">&#128188; FinanceOS</div>
-        <div class="about-hero-sub">Your personal finance co-pilot. Built to give you clarity on where your money goes, help you crush debt faster, and keep you ahead of your bills - without subscriptions, accounts, or data leaving your device.</div>
-        <div class="about-privacy-badge">&#128274; 100% Private - Everything stays on your device</div>
+        <div class="about-hero-sub">Your personal finance command center. Track income, bills, debt, and accounts in one place &mdash; with no subscriptions, no cloud sync, and no data leaving your device.</div>
+        <div class="about-privacy-badge">&#128274; 100% Private &mdash; Everything stays on your device</div>
       </div>
 
       <div class="about-group">
         <div class="about-group-title">Getting Started</div>
         <div class="about-cards">
           <div class="about-card">
-            <div class="about-card-top"><div class="about-card-icon">&#127974;</div><div><div class="about-card-title">Add Your Accounts</div></div></div>
-            <div class="about-card-desc">Add checking, savings, and cash accounts with real balances. Set a default account and it auto-selects in every payment modal. Add an APY to savings accounts to track projected interest earned.</div>
+            <div class="about-card-top"><div class="about-card-icon">&#127974;</div><div><div class="about-card-title">Add Your Accounts First</div></div></div>
+            <div class="about-card-desc">Add checking, savings, and cash accounts with real balances. Set a default account and it auto-selects in every payment modal. Overdraft warnings only work when balances are set.</div>
             <div class="about-card-q">"How do I track my bank balance?"</div>
-            <button class="about-card-goto" onclick="show('networth',null);closeSidebar()">Go to Net Worth &#8594;</button>
+            <button class="about-card-goto" onclick="show('networth',null);closeSidebar()">Go to Accounts &#8594;</button>
           </div>
           <div class="about-card">
-            <div class="about-card-top"><div class="about-card-icon">&#128176;</div><div><div class="about-card-title">Set Up Cash Flow</div></div></div>
-            <div class="about-card-desc">Add your income sources and recurring expenses. The app uses these to calculate how much is available for debt payoff each month.</div>
-            <div class="about-card-q">"How does the app know my monthly budget?"</div>
-            <button class="about-card-goto" onclick="show('budget',null);closeSidebar()">Go to Cash Flow &#8594;</button>
+            <div class="about-card-top"><div class="about-card-icon">&#128176;</div><div><div class="about-card-title">Add Income Sources</div></div></div>
+            <div class="about-card-desc">Add salary, freelance, or any recurring income. Weekly and bi-weekly income automatically expands into individual dated cards each month. Tap any card to mark it Received or Missed.</div>
+            <div class="about-card-q">"How does the app show my paychecks?"</div>
+            <button class="about-card-goto" onclick="show('bills',null);closeSidebar()">Go to Money &#8594;</button>
           </div>
           <div class="about-card">
-            <div class="about-card-top"><div class="about-card-icon">&#128203;</div><div><div class="about-card-title">Add Your Bills</div></div></div>
-            <div class="about-card-desc">Add all recurring bills - rent, subscriptions, loans, credit cards. The app tracks due dates, status, and warns you when you're short on funds.</div>
+            <div class="about-card-top"><div class="about-card-icon">&#128203;</div><div><div class="about-card-title">Add Bills &amp; Subscriptions</div></div></div>
+            <div class="about-card-desc">Add recurring bills, credit cards, and loans. Each item gets a status (Pending, Scheduled, Paid, Overdue). The Monthly Health card at the top shows at a glance how the month looks.</div>
             <div class="about-card-q">"How do I track what I owe each month?"</div>
-            <button class="about-card-goto" onclick="show('bills',null);closeSidebar()">Go to Bills &#8594;</button>
+            <button class="about-card-goto" onclick="show('bills',null);closeSidebar()">Go to Money &#8594;</button>
           </div>
           <div class="about-card">
             <div class="about-card-top"><div class="about-card-icon">&#128257;</div><div><div class="about-card-title">Auto-Log Recurring Payments</div></div></div>
-            <div class="about-card-desc">Enable "Auto-log" on any bill or expense and FinanceOS logs the payment and debits your account automatically on the 1st of each month.</div>
+            <div class="about-card-desc">Enable "Auto-log" on any bill or expense and FinanceOS logs the payment and debits your account automatically on the 1st of each month. No manual entry needed for recurring items.</div>
             <div class="about-card-q">"Can I stop manually logging the same things?"</div>
-            <button class="about-card-goto" onclick="show('budget',null);closeSidebar()">Go to Cash Flow &#8594;</button>
+            <button class="about-card-goto" onclick="show('bills',null);closeSidebar()">Go to Money &#8594;</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-group">
+        <div class="about-group-title">Money Section</div>
+        <div class="about-cards">
+          <div class="about-card">
+            <div class="about-card-top"><div class="about-card-icon">&#129354;</div><div><div class="about-card-title">Monthly Health Card</div></div></div>
+            <div class="about-card-desc">At the top of Money you get a live health score for the month &mdash; Healthy, Caution, or At Risk. It shows overdue count, bills due this week, and net month in one glance.</div>
+            <div class="about-card-q">"How is my month looking financially?"</div>
+            <button class="about-card-goto" onclick="show('bills',null);closeSidebar()">Go to Money &#8594;</button>
+          </div>
+          <div class="about-card">
+            <div class="about-card-top"><div class="about-card-icon">&#128196;</div><div><div class="about-card-title">Tap-to-Expand Cards</div></div></div>
+            <div class="about-card-desc">Every item in the Money list starts collapsed showing just name, date, amount, and status. Tap any card to expand it and reveal actions &mdash; mark income Received, schedule a bill, edit, or delete.</div>
+            <div class="about-card-q">"How do I mark a paycheck as received?"</div>
+            <button class="about-card-goto" onclick="show('bills',null);closeSidebar()">Go to Money &#8594;</button>
+          </div>
+          <div class="about-card">
+            <div class="about-card-top"><div class="about-card-icon">&#128197;</div><div><div class="about-card-title">Filter by Type</div></div></div>
+            <div class="about-card-desc">Use the Type sort button to group everything by category: Income, Bills, Loans, and Credit Cards. Switch to Date view to see everything in chronological order across all types.</div>
+            <div class="about-card-q">"How do I see just my income or just my bills?"</div>
+            <button class="about-card-goto" onclick="show('bills',null);closeSidebar()">Go to Money &#8594;</button>
+          </div>
+          <div class="about-card">
+            <div class="about-card-top"><div class="about-card-icon">&#128198;</div><div><div class="about-card-title">Calendar View</div></div></div>
+            <div class="about-card-desc">Switch to Calendar view to see paychecks and bills plotted by date. Income chips are color-coded by status (Expected, Received, Missed). Bill chips are color-coded by due status.</div>
+            <div class="about-card-q">"When are my bills and paychecks this month?"</div>
+            <button class="about-card-goto" onclick="show('bills',null);closeSidebar()">Go to Money &#8594;</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-group">
+        <div class="about-group-title">Income &amp; Paychecks</div>
+        <div class="about-cards">
+          <div class="about-card">
+            <div class="about-card-top"><div class="about-card-icon">&#128197;</div><div><div class="about-card-title">Bi-Weekly Paycheck Calculator</div></div></div>
+            <div class="about-card-desc">Enter your last paycheck date and FinanceOS calculates exactly which months have 2 vs 3 paychecks. Each paycheck appears as its own card with the correct deposit date.</div>
+            <div class="about-card-q">"Some months I get 3 paychecks &mdash; does the app know?"</div>
+            <button class="about-card-goto" onclick="show('bills',null);closeSidebar()">Go to Money &#8594;</button>
+          </div>
+          <div class="about-card">
+            <div class="about-card-top"><div class="about-card-icon">&#128290;</div><div><div class="about-card-title">Update Individual Payments</div></div></div>
+            <div class="about-card-desc">Each income occurrence can be updated independently. If one paycheck was short or had overtime, tap "$ Update" on that card to record the actual amount without changing the base schedule.</div>
+            <div class="about-card-q">"My check was different this week &mdash; how do I update just that one?"</div>
+            <button class="about-card-goto" onclick="show('bills',null);closeSidebar()">Go to Money &#8594;</button>
+          </div>
+          <div class="about-card">
+            <div class="about-card-top"><div class="about-card-icon">&#9989;</div><div><div class="about-card-title">Track Received vs Missed</div></div></div>
+            <div class="about-card-desc">Mark each paycheck as Received or Missed directly from the Money list. Status is stored per-occurrence &mdash; marking one paycheck received doesn't affect the others.</div>
+            <div class="about-card-q">"How do I know which paychecks have actually cleared?"</div>
+            <button class="about-card-goto" onclick="show('bills',null);closeSidebar()">Go to Money &#8594;</button>
           </div>
         </div>
       </div>
@@ -1648,13 +1682,13 @@ canvas{width:100%!important;}
         <div class="about-cards">
           <div class="about-card">
             <div class="about-card-top"><div class="about-card-icon">&#128201;</div><div><div class="about-card-title">Debt Planner</div></div></div>
-            <div class="about-card-desc">Choose Avalanche (highest APR first) or Snowball (smallest balance first). See your exact payoff date and how much interest you'll save.</div>
+            <div class="about-card-desc">Choose Avalanche (highest APR first) or Snowball (smallest balance first). See your exact payoff date and how much interest you'll save versus the other method.</div>
             <div class="about-card-q">"When will I be debt-free?"</div>
             <button class="about-card-goto" onclick="show('debt',null);closeSidebar()">Go to Debt Planner &#8594;</button>
           </div>
           <div class="about-card">
             <div class="about-card-top"><div class="about-card-icon">&#128202;</div><div><div class="about-card-title">Loan Payoff Progress</div></div></div>
-            <div class="about-card-desc">When adding a loan, enter the original amount borrowed. The Debt Planner shows a progress bar with % paid off, amount paid down, and original loan amount - so you can see how far you've come.</div>
+            <div class="about-card-desc">Enter the original loan amount when adding a loan. The Debt Planner shows a progress bar with % paid off and amount remaining so you can see how far you have come.</div>
             <div class="about-card-q">"How much of my car loan have I paid off?"</div>
             <button class="about-card-goto" onclick="show('debt',null);closeSidebar()">Go to Debt Planner &#8594;</button>
           </div>
@@ -1665,135 +1699,55 @@ canvas{width:100%!important;}
             <button class="about-card-goto" onclick="show('debt',null);closeSidebar()">Go to Debt Planner &#8594;</button>
           </div>
           <div class="about-card">
-            <div class="about-card-top"><div class="about-card-icon">&#9888;&#65039;</div><div><div class="about-card-title">Promo Purchase Tracker</div></div></div>
-            <div class="about-card-desc">Track PayPal "Pay in X months" and Apple Card installment purchases. See the retroactive interest bomb if you miss the deadline - before it happens.</div>
-            <div class="about-card-q">"How do I track my PayPal no-interest purchases?"</div>
-            <button class="about-card-goto" onclick="show('bills',null);closeSidebar()">Go to Bills &#8594;</button>
-          </div>
-          <div class="about-card">
-            <div class="about-card-top"><div class="about-card-icon">&#128179;</div><div><div class="about-card-title">Split Balance System</div></div></div>
-            <div class="about-card-desc">Credit cards with active promo purchases show separate revolving and promo balances. The payment modal lets you allocate exactly how much goes where.</div>
-            <div class="about-card-q">"How do I pay down my promo vs regular balance?"</div>
-            <button class="about-card-goto" onclick="show('bills',null);closeSidebar()">Go to Bills &#8594;</button>
+            <div class="about-card-top"><div class="about-card-icon">&#127760;</div><div><div class="about-card-title">Go to Website &amp; Confirm</div></div></div>
+            <div class="about-card-desc">Add a URL to any bill or debt. When scheduling a payment, a "Go to Website" button opens your bank or biller directly. Come back to the app and confirm the schedule when done.</div>
+            <div class="about-card-q">"How do I jump to Chase to pay my credit card?"</div>
+            <button class="about-card-goto" onclick="show('bills',null);closeSidebar()">Go to Money &#8594;</button>
           </div>
         </div>
       </div>
 
       <div class="about-group">
-        <div class="about-group-title">Income &amp; Paychecks</div>
+        <div class="about-group-title">Insights</div>
         <div class="about-cards">
           <div class="about-card">
-            <div class="about-card-top"><div class="about-card-icon">&#128197;</div><div><div class="about-card-title">Bi-Weekly Paycheck Calculator</div></div></div>
-            <div class="about-card-desc">Enter your last paycheck date and FinanceOS calculates exactly which months have 2 vs 3 paychecks. Every projection uses the real count, not an average.</div>
-            <div class="about-card-q">"Some months I get 3 paychecks - does the app know?"</div>
-            <button class="about-card-goto" onclick="show('budget',null);closeSidebar()">Go to Cash Flow &#8594;</button>
+            <div class="about-card-top"><div class="about-card-icon">&#128200;</div><div><div class="about-card-title">Cash Flow Chart</div></div></div>
+            <div class="about-card-desc">Insights &rarr; Cash Flow shows a monthly trend chart with Money In vs Money Out lines, followed by a detailed breakdown of every income source and outgoing item for the current month.</div>
+            <div class="about-card-q">"Am I spending more than I earn month to month?"</div>
+            <button class="about-card-goto" onclick="showSub('cashflow','insights');closeSidebar()">Go to Cash Flow &#8594;</button>
           </div>
           <div class="about-card">
-            <div class="about-card-top"><div class="about-card-icon">&#128290;</div><div><div class="about-card-title">Income Override</div></div></div>
-            <div class="about-card-desc">Got overtime or a bonus this month? Edit any income entry and enter the actual amount. It overrides for that month only, then auto-resets next month.</div>
-            <div class="about-card-q">"I earned more than usual this month - how do I update it?"</div>
-            <button class="about-card-goto" onclick="show('budget',null);closeSidebar()">Go to Cash Flow &#8594;</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="about-group">
-        <div class="about-group-title">Insights &amp; Tracking</div>
-        <div class="about-cards">
-          <div class="about-card">
-            <div class="about-card-top"><div class="about-card-icon">&#128680;</div><div><div class="about-card-title">Spending Anomaly Detection</div></div></div>
-            <div class="about-card-desc">Compares this month's spending per category against your 3-month average. Yellow = 30% over, Red = 50%+ over. Unusual spending gets flagged automatically.</div>
-            <div class="about-card-q">"Why is my Food category flagged this month?"</div>
-            <button class="about-card-goto" onclick="show('insights',null);closeSidebar()">Go to Insights &#8594;</button>
-          </div>
-          <div class="about-card">
-            <div class="about-card-top"><div class="about-card-icon">&#128200;</div><div><div class="about-card-title">Spending Trends by Category</div></div></div>
-            <div class="about-card-desc">See how any category has trended month-over-month for up to 12 months. Compare two categories side by side and see the % change between months.</div>
-            <div class="about-card-q">"Has my grocery spending been going up?"</div>
-            <button class="about-card-goto" onclick="setInsightsTab('trends');show('insights',null);closeSidebar()">Go to Insights &#8594;</button>
-          </div>
-          <div class="about-card">
-            <div class="about-card-top"><div class="about-card-icon">&#128203;</div><div><div class="about-card-title">Transaction Notes</div></div></div>
-            <div class="about-card-desc">Add a note to any purchase or withdrawal for context. Notes appear inline on the transaction row. Use the search bar to find transactions by description or note text.</div>
-            <div class="about-card-q">"How do I remember what a purchase was for?"</div>
-            <button class="about-card-goto" onclick="show('quick',null);closeSidebar()">Go to Quick Update &#8594;</button>
-          </div>
-          <div class="about-card">
-            <div class="about-card-top"><div class="about-card-icon">&#127919;</div><div><div class="about-card-title">Savings Goals</div></div></div>
-            <div class="about-card-desc">Set a goal with a target amount and deadline. Link it to a savings account to track progress automatically. See the monthly contribution needed to hit it on time.</div>
-            <div class="about-card-q">"How do I save for a vacation or emergency fund?"</div>
-            <button class="about-card-goto" onclick="show('networth',null);closeSidebar()">Go to Net Worth &#8594;</button>
-          </div>
-          <div class="about-card">
-            <div class="about-card-top"><div class="about-card-icon">&#10003;</div><div><div class="about-card-title">Expense Paid Status</div></div></div>
-            <div class="about-card-desc">Tap the ○ button next to any expense in Cash Flow to mark it paid for the month. A green ✓ PAID badge appears and the row dims. Resets automatically on the 1st of each month.</div>
-            <div class="about-card-q">"How do I know which expenses I've already paid this month?"</div>
-            <button class="about-card-goto" onclick="show('budget',null);closeSidebar()">Go to Cash Flow &#8594;</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="about-group">
-        <div class="about-group-title">Account Management</div>
-        <div class="about-cards">
-          <div class="about-card">
-            <div class="about-card-top"><div class="about-card-icon">&#128257;</div><div><div class="about-card-title">Account Transfers</div></div></div>
-            <div class="about-card-desc">Move money between accounts without it counting as spending. Transfers debit one account and credit another, log in the transaction history with a &#8594; indicator, and are excluded from spending stats. Transfers are editable after the fact.</div>
-            <div class="about-card-q">"How do I move money to my savings account?"</div>
-            <button class="about-card-goto" onclick="show('quick',null);closeSidebar()">Go to Quick Update &#8594;</button>
+            <div class="about-card-top"><div class="about-card-icon">&#128083;</div><div><div class="about-card-title">Spending Anomalies</div></div></div>
+            <div class="about-card-desc">The Spending tab automatically flags categories where you spent significantly more than your recent average. Great for catching lifestyle creep before it becomes a habit.</div>
+            <div class="about-card-q">"Did I overspend somewhere this month?"</div>
+            <button class="about-card-goto" onclick="showSub('insights','insights');closeSidebar()">Go to Spending &#8594;</button>
           </div>
           <div class="about-card">
             <div class="about-card-top"><div class="about-card-icon">&#128185;</div><div><div class="about-card-title">APY Interest Tracking</div></div></div>
-            <div class="about-card-desc">Add an APY to any checking or savings account. The account card shows the rate and your projected annual interest earned based on the current balance — updates live as your balance changes.</div>
+            <div class="about-card-desc">Add an APY to any savings account. The account card shows your projected annual interest earned based on the current balance &mdash; updates live as your balance changes.</div>
             <div class="about-card-q">"How much interest will my HYSA earn this year?"</div>
-            <button class="about-card-goto" onclick="show('networth',null);closeSidebar()">Go to Net Worth &#8594;</button>
-          </div>
-          <div class="about-card">
-            <div class="about-card-top"><div class="about-card-icon">&#128662;</div><div><div class="about-card-title">Asset Depreciation</div></div></div>
-            <div class="about-card-desc">When adding a vehicle, enter the purchase date, original value, and annual depreciation rate. The asset card shows the estimated current depreciated value and total loss — so your net worth reflects reality, not what you paid.</div>
-            <div class="about-card-q">"How do I track my car losing value over time?"</div>
-            <button class="about-card-goto" onclick="show('networth',null);closeSidebar()">Go to Net Worth &#8594;</button>
+            <button class="about-card-goto" onclick="show('networth',null);closeSidebar()">Go to Accounts &#8594;</button>
           </div>
           <div class="about-card">
             <div class="about-card-top"><div class="about-card-icon">&#127968;</div><div><div class="about-card-title">Home Equity Tracking</div></div></div>
-            <div class="about-card-desc">Link a property asset to its mortgage loan. The asset card automatically shows your home value, remaining mortgage, and current equity side by side — updates in real time as you make payments.</div>
+            <div class="about-card-desc">Link a property asset to its mortgage loan. The asset card automatically shows your home value, remaining mortgage, and current equity side by side &mdash; updates as you make payments.</div>
             <div class="about-card-q">"How much equity do I have in my house?"</div>
-            <button class="about-card-goto" onclick="show('networth',null);closeSidebar()">Go to Net Worth &#8594;</button>
-          </div>
-          <div class="about-card">
-            <div class="about-card-top"><div class="about-card-icon">&#127760;</div><div><div class="about-card-title">Payment Links</div></div></div>
-            <div class="about-card-desc">Add a website URL to any bill or account. A 🌐 globe button appears on the card — tap it to jump straight to your bank or biller's website in a new tab. If you use Safari with saved passwords, it auto-fills your login via Face ID.</div>
-            <div class="about-card-q">"How do I get to Chase to pay my credit card?"</div>
-            <button class="about-card-goto" onclick="show('bills',null);closeSidebar()">Go to Bills &#8594;</button>
-          </div>
-          <div class="about-card">
-            <div class="about-card-top"><div class="about-card-icon">&#9878;</div><div><div class="about-card-title">Bank Reconciliation</div></div></div>
-            <div class="about-card-desc">Enter your real bank balance and FinanceOS finds the difference. It scans for likely causes - bills paid but not logged, missing deposits - and lets you log an adjustment.</div>
-            <div class="about-card-q">"My app balance doesn't match my bank - how do I fix it?"</div>
-            <button class="about-card-goto" onclick="show('networth',null);closeSidebar()">Go to Net Worth &#8594;</button>
-          </div>
-          <div class="about-card">
-            <div class="about-card-top"><div class="about-card-icon">&#9889;</div><div><div class="about-card-title">Quick Balance Correction</div></div></div>
-            <div class="about-card-desc">Each account card has a correction field at the bottom. Type the real balance and tap Correct - no math required. Fast sync without a full reconciliation.</div>
-            <div class="about-card-q">"My balance is slightly off - quick fix?"</div>
-            <button class="about-card-goto" onclick="show('networth',null);closeSidebar()">Go to Net Worth &#8594;</button>
+            <button class="about-card-goto" onclick="show('networth',null);closeSidebar()">Go to Accounts &#8594;</button>
           </div>
         </div>
       </div>
 
       <div class="about-group">
         <div class="about-group-title">Pro Tips</div>
-        <div class="about-tip">&#128161; <strong>Add a website to any bill or account for one-tap access.</strong> Edit a bill or account and fill in the Website field — type "Chase" and it auto-suggests chase.com. The 🌐 button then appears on the card. Safari users get Face ID autofill automatically.</div>
-        <div class="about-tip">&#128161; <strong>Start with accounts first.</strong> Add your checking account balance before anything else. Every payment modal pre-selects the default account, overdraft warnings only work when balances are set, and the Smart Bill Reminder compares your balance to what's due.</div>
-        <div class="about-tip">&#128161; <strong>Set a default account.</strong> In Net Worth → Accounts, the default account shows a purple DEFAULT badge. Edit any account to change it — all payment modals pre-select it automatically.</div>
-        <div class="about-tip">&#128161; <strong>Use transfers for savings contributions.</strong> Moving money to your emergency fund or HYSA? Use the Transfer tile in Quick Update — it moves the balance correctly and won't inflate your spending stats.</div>
-        <div class="about-tip">&#128161; <strong>Enter original loan amounts.</strong> When adding a car loan, mortgage, or student loan, fill in the Original Loan Amount field. The Debt Planner will show you exactly how much progress you've made paying it down.</div>
-        <div class="about-tip">&#128161; <strong>Link your mortgage to your home.</strong> In Net Worth → Assets, edit a property asset and select your mortgage loan from the dropdown. Your equity updates automatically every time you make a payment.</div>
-        <div class="about-tip">&#128161; <strong>Mark expenses as paid to stay on top of the month.</strong> Each expense row has a ○ button — tap it after you pay. The green ✓ PAID badge makes it easy to see at a glance what's done vs still outstanding for the month.</div>
-        <div class="about-tip">&#128161; <strong>Schedule loan payments for today to see balance drop immediately.</strong> When you schedule a debt payment and set the due date to today, the loan balance reduces on the next app load — no waiting for tomorrow.</div>
+        <div class="about-tip">&#128161; <strong>Add accounts before anything else.</strong> Every payment modal pre-selects the default account, overdraft warnings only work when balances are set, and the Monthly Health card compares your balance to what's due.</div>
+        <div class="about-tip">&#128161; <strong>Use the Type filter in Money to focus.</strong> Tap Type in the sort bar to group everything by Income, Bills, Loans, and Credit Cards. Perfect for reviewing just one category at a time.</div>
+        <div class="about-tip">&#128161; <strong>Mark income Received as it clears.</strong> Tap any paycheck card to expand it and hit Received. This keeps your status badges accurate and lets the Monthly Health card reflect reality.</div>
+        <div class="about-tip">&#128161; <strong>Add a website URL to every bill.</strong> Edit a bill and fill in the Website field. When you go to schedule a payment, a Go to Website button opens your biller directly so you can pay and come back to confirm.</div>
+        <div class="about-tip">&#128161; <strong>Use transfers for savings contributions.</strong> Moving money to your emergency fund or HYSA? Use the Transfer tile in Quick Update &mdash; it moves the balance correctly and won't inflate your spending stats.</div>
+        <div class="about-tip">&#128161; <strong>Enter original loan amounts.</strong> When adding a car loan or student loan, fill in the Original Loan Amount field. The Debt Planner shows exactly how much progress you have made paying it down.</div>
+        <div class="about-tip">&#128161; <strong>The Debt Planner sorts 0% promos last on purpose.</strong> In Avalanche mode, 0% cards go to the bottom &mdash; that's correct. Let them ride free while you attack high-APR debt first.</div>
         <div class="about-tip">&#128161; <strong>Undo any delete.</strong> Deleted something by accident? A purple undo bar appears for 8 seconds at the bottom of the screen. Tap it to restore.</div>
         <div class="about-tip">&#128161; <strong>Export before big changes.</strong> Use Settings &rarr; Export to Excel to save a backup before loading demo data or resetting the app.</div>
-        <div class="about-tip">&#128161; <strong>The Debt Planner sorts 0% promos last on purpose.</strong> In Avalanche mode, 0% cards go to the bottom - that's correct. Let them ride free while you attack high-APR debt first.</div>
       </div>
 
       <div class="about-version" id="about-version-text">FinanceOS &bull; Built for personal use &bull; Data never leaves your device &bull; 2026</div>
@@ -1909,10 +1863,8 @@ canvas{width:100%!important;}
       <input id="i-lastpay" type="date"/>
       <div style="font-size:11px;color:var(--muted);margin-top:4px">Used to calculate which months have 2 vs 3 paychecks</div>
     </div>
-    <div class="field" id="i-actual-wrap" style="display:none">
-      <label data-i18n="This period actual ($)">This period actual ($)</label>
-      <input id="i-actual" type="number" inputmode="decimal" placeholder="Leave blank to use scheduled amount"/>
-      <div style="font-size:11px;color:var(--muted);margin-top:4px" data-i18n="Overrides scheduled amount for current month only. Clears automatically next month.">Overrides scheduled amount for current month only. Clears automatically next month.</div>
+    <div id="i-update-note" style="display:none;font-size:11px;color:var(--muted);background:rgba(80,112,240,.08);border:1px solid rgba(80,112,240,.2);border-radius:8px;padding:8px 12px;margin-bottom:12px">
+      💡 To update the amount for a single payment, close this and tap <strong style="color:var(--accent2)">$ Update</strong> on that payment card in Money.
     </div>
     <button class="btn btn-primary btn-full" onclick="saveIncome()" data-i18n="Save Income">Save Income</button>
   </div>
@@ -3211,15 +3163,25 @@ function loadDemoData(skipConfirm){
   data={
     // ── INCOME ─────────────────────────────────────────────────
     income:[
-      // Bi-weekly salary with lastPayDate → powers paycheck calendar
-      // Has actualAmount override this month → shows ACTUAL badge
-      {id:1001, source:'Salary - Main Job',     amount:3200, frequency:'Bi-weekly', date:ago(3),  accountId:8001,
-       lastPayDate:ago(3),
-       actualAmount:3750, actualMonth:new Date().getFullYear()+'-'+String(new Date().getMonth()+1).padStart(2,'0')},
-      // Monthly freelance → shows recurring badge
-      {id:1002, source:'Freelance',              amount:600,  frequency:'Monthly',   date:ago(8),  accountId:8001},
-      // One-time bonus → no badge
-      {id:1003, source:'Tax Refund',             amount:1100, frequency:'One-time',  date:ago(15), accountId:8002},
+      // Bi-weekly salary — lastPayDate powers 2-or-3-paycheck calendar
+      // First occurrence marked Received; second has an override (overtime)
+      {id:1001, source:'Salary - Main Job', amount:1800, frequency:'Bi-weekly', date:ago(17), accountId:8001,
+       lastPayDate:ago(17),
+       occurrenceOverrides:{ [ago(17)]:1950 },
+       incomeStatusOverrides:{ [ago(17)]:'Received' },
+      },
+      // Weekly side gig — shows 4 individual cards this month
+      {id:1004, source:'Side Gig', amount:250, frequency:'Weekly', date:ago(22), accountId:8001,
+       occurrenceOverrides:{}, incomeStatusOverrides:{ [ago(22)]:'Received', [ago(15)]:'Received' },
+      },
+      // Monthly freelance
+      {id:1002, source:'Freelance', amount:600, frequency:'Monthly', date:ago(8), accountId:8001,
+       occurrenceOverrides:{}, incomeStatusOverrides:{},
+      },
+      // One-time bonus
+      {id:1003, source:'Tax Refund', amount:1100, frequency:'One-time', date:ago(15), accountId:8002,
+       occurrenceOverrides:{}, incomeStatusOverrides:{},
+      },
     ],
 
     // ── EXPENSES ───────────────────────────────────────────────
@@ -3365,7 +3327,7 @@ function loadDemoData(skipConfirm){
   document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
   $('dashboard').classList.add('active');
   document.querySelector('.nav-item').classList.add('active');
-  const mob=$('mobile-brand'); if(mob) mob.textContent='FinanceOS';
+  const mob=$('mobile-brand'); if(mob) mob.innerHTML='<span>FinanceOS</span>';
   renderAll();
   showToast(t('Demo data loaded!'));
 }
@@ -3660,20 +3622,25 @@ function renderNetWorth(){
       const apyHtml=a.apy>0?'<div style="display:flex;align-items:center;gap:8px;margin-top:8px;padding:7px 10px;background:rgba(34,197,94,.07);border-radius:8px;border:1px solid rgba(34,197,94,.15)"><span style="font-size:11px;font-weight:700;color:var(--green)">APY '+a.apy.toFixed(2)+'%</span><span style="font-size:11px;color:var(--muted)">· ~'+usd(parseFloat((a.balance*a.apy/100).toFixed(2)))+' / yr</span></div>':'';
       const urlHtml=a.url?'<button class="btn btn-secondary btn-sm" style="margin-top:8px;width:100%;justify-content:flex-start;gap:8px;padding:8px 12px;border:1px solid rgba(80,112,240,.2);background:rgba(80,112,240,.07)" onclick="openLink(this.dataset.url)" data-url="'+a.url+'"><span>🌐</span><span style="font-size:12px;color:var(--accent2)">'+linkHost(a.url)+'</span><span style="margin-left:auto;color:var(--muted);font-size:13px">›</span></button>':'';
       const balCorrect='<div class="bal-correct-row"><input class="bal-correct-input" type="number" inputmode="decimal" placeholder="Set actual balance..." id="bal-correct-'+a.id+'" value="'+a.balance.toFixed(2)+'"/><button class="bal-correct-btn" onclick="correctBalance('+a.id+')">⚡ Correct</button></div>';
-      const cardHtml='<div class="card" style="margin-bottom:0;border-color:'+ac+'44;border-radius:12px;">'
+      const acctId='acct'+a.id;
+      const cardHtml='<div class="card" style="margin-bottom:0;border-left:3px solid '+ac+';border-radius:0 12px 12px 0;cursor:pointer" onclick="toggleCardExpand(\''+acctId+'\')">'
         +'<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">'
         +'<div><div style="font-size:15px;font-weight:600;margin-bottom:3px">'+(acTypeIcon[a.type]||'🏦')+' '+a.name+defaultBadge+'</div>'
         +'<div style="font-size:12px;color:var(--muted)">'+(acTypeLabel[a.type]||a.type)+(a.notes?' - '+a.notes:'')+'</div></div>'
-        +'<div style="display:flex;align-items:center;gap:10px">'
+        +'<div style="display:flex;align-items:center;gap:8px">'
         +'<span style="font-family:var(--font-d);font-size:22px;color:'+(a.balance>=0?'var(--green)':'var(--red)')+'">'+usd(a.balance)+'</span>'
-        +'<button class="btn btn-secondary btn-sm" onclick="openReconcile('+a.id+')" title="Reconcile">⚖️</button>'
+        +'<span id="cchev-'+acctId+'" style="color:var(--muted);font-size:11px">&#9662;</span>'
         +'</div></div>'
         +reconHtml+apyHtml+urlHtml+balCorrect
+        +'<div id="cact-'+acctId+'" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);flex-wrap:wrap;gap:6px">'
+        +'<button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();openReconcile('+a.id+')" title="Reconcile">&#x2696;&#xFE0F; Reconcile</button>'
+        +'<button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();openEditAccount('+a.id+')">Edit</button>'
+        +'<button class="btn btn-danger btn-sm" onclick="event.stopPropagation();deleteItem(\'accounts\','+a.id+')">&#x2715;</button>'
+        +'</div>'
         +'</div>';
-      return wrapSwipeable(cardHtml,'accounts',a.id,'openEditAccount('+a.id+')');
+      return '<div style="margin-bottom:11px">'+cardHtml+'</div>';
     }).join('')
     :emptyState('🏦','No accounts yet','Add your checking, savings, and cash accounts to track live balances.','+ Add Account',"openModal('account')");
-    setTimeout(attachSwipes,50);
   }
   const catIcon={cash:'💵',invest:'📈',property:'🏠',vehicle:'🚗'};
   const catLabel={cash:'Savings / Cash',invest:'Investments',property:'Property',vehicle:'Vehicle'};
@@ -3711,17 +3678,22 @@ function renderNetWorth(){
     }
     const assetColor={cash:'#1aa8d8',invest:'#5070f0',property:'#f59e0b',vehicle:'#fb923c'};
     const ac2=assetColor[a.category]||'#5070f0';
-    const innerHtml='<div style="display:flex;justify-content:space-between;align-items:center">'
+    const assetId='asst'+a.id;
+    const innerHtml='<div style="display:flex;justify-content:space-between;align-items:center;cursor:pointer" onclick="toggleCardExpand(\''+assetId+'\')">'
       +'<div><div class="row-label">'+(catIcon[a.category]||'💼')+' '+a.name+'</div>'
       +'<div class="row-sub">'+(catLabel[a.category]||a.category)+(a.notes?' · '+a.notes:'')+'</div></div>'
-      +'<div class="row-actions">'
+      +'<div class="row-actions" style="gap:8px">'
       +'<span style="color:var(--green);font-weight:600">'+usd(a.value)+'</span>'
+      +'<span id="cchev-'+assetId+'" style="color:var(--muted);font-size:11px">&#9662;</span>'
       +'</div></div>'
-      +deprHtml+equityHtml;
-    const assetCard='<div class="card" style="margin-bottom:0;border-color:'+ac2+'44;border-radius:12px;">'+innerHtml+'</div>';
-    return wrapSwipeable(assetCard,'assets',a.id,'openEditAsset('+a.id+')');
+      +deprHtml+equityHtml
+      +'<div id="cact-'+assetId+'" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);flex-wrap:wrap;gap:6px">'
+      +'<button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();openEditAsset('+a.id+')">Edit</button>'
+      +'<button class="btn btn-danger btn-sm" onclick="event.stopPropagation();deleteItem(\'assets\','+a.id+')">&#x2715;</button>'
+      +'</div>';
+    const assetCard='<div class="card" style="margin-bottom:0;border-left:3px solid '+ac2+';border-radius:0 12px 12px 0;">'+innerHtml+'</div>';
+    return '<div style="margin-bottom:11px">'+assetCard+'</div>';
   }).join(''):emptyState('📈','No assets yet','Add investments, property, and vehicles to see your full net worth.','+ Add Asset',"openModal('asset')");
-  setTimeout(attachSwipes,50);
   // Dashboard accounts widget
   const wrap=$('d-accounts-wrap'),grid=$('d-accounts');
   if(wrap&&grid){
@@ -4011,7 +3983,7 @@ function chartShowTooltip(canvas,tapX){
   canvas._tipTimer=setTimeout(()=>{tip.style.display='none';},2500);
 }
 
-const PAGE_ORDER=['dashboard','bills','budget','networth','insights','advisor'];
+const PAGE_ORDER=['dashboard','bills','networth','insights','advisor'];
 const TAB_MAP={dashboard:'dashboard',bills:'bills',networth:'networth',cards:'networth',insights:'insights',debt:'insights',cashflow:'insights',advisor:'advisor'};
 let _currentSec='dashboard';
 let _swipeDir=null;
@@ -4056,6 +4028,12 @@ function _initSwipe(){
     const dx=e.changedTouches[0].clientX-_touchStartX;
     const dy=e.changedTouches[0].clientY-_touchStartY;
     if(Math.abs(dx)<48||Math.abs(dx)<Math.abs(dy)*1.4)return;
+    // Sidebar open + swipe left → close sidebar
+    if(dx<0&&$('sidebar').classList.contains('open')){
+      haptic('light');
+      closeSidebar();
+      return;
+    }
     const idx=PAGE_ORDER.indexOf(_currentSec);
     if(dx<0&&idx<PAGE_ORDER.length-1){
       _swipeDir='right';
@@ -4065,6 +4043,10 @@ function _initSwipe(){
       _swipeDir='left';
       haptic('light');
       show(PAGE_ORDER[idx-1],null);
+    } else if(dx>0&&idx===0){
+      // Swipe right from Dashboard → open sidebar (Menu)
+      haptic('light');
+      $('sidebar').classList.add('open');
     }
   },{passive:true});
 }
@@ -4102,7 +4084,7 @@ function show(sec,btn){
     }
   }
   _currentSec=PAGE_ORDER.includes(sec)?sec:(
-    sec==='quick'?'budget':sec==='cards'?'networth':sec==='debt'?'insights':sec
+    sec==='quick'?'quick':sec==='cards'?'networth':sec==='debt'?'insights':sec
   );
   closeSidebar();
   renderAll();
@@ -4119,7 +4101,7 @@ function show(sec,btn){
 // ── MODALS ───────────────────────────────────────
 function openModal(type,extra){
   if(type==='goal'){openModal_goal();return;}
-  if(type==='income'){$('i-id').value='';$('i-source').value='';$('i-amount').value='';$('i-date').value=today();$('i-freq').value='Monthly';$('i-account').value='';$('i-actual').value='';$('i-actual-wrap').style.display='none';if($('i-lastpay'))$('i-lastpay').value='';if($('i-lastpay-wrap'))$('i-lastpay-wrap').style.display='none';populateAccountSelects();}
+  if(type==='income'){$('i-id').value='';$('i-source').value='';$('i-amount').value='';$('i-date').value=today();$('i-freq').value='Monthly';$('i-account').value='';const n=$('i-update-note');if(n)n.style.display='none';if($('i-lastpay'))$('i-lastpay').value='';if($('i-lastpay-wrap'))$('i-lastpay-wrap').style.display='none';populateAccountSelects();}
   if(type==='expense'){clearOverlapWarn('expense-overlap-warn');$('expense-modal-title').textContent='Add Expense';$('e-id').value='';$('e-cat').value='';$('e-desc').value='';if($('e-autolog'))$('e-autolog').checked=false;if($('autolog-account-wrap'))$('autolog-account-wrap').style.display='none';$('e-amount').value='';$('e-date').value=today();$('e-freq').value='One-time';$('e-account').value='';populateAccountSelects();}
   if(type==='bill'){clearOverlapWarn('bill-overlap-warn');$('bill-modal-title').textContent='Add Bill / Debt';$('b-id').value='';$('b-name').value='';if($('b-autolog'))$('b-autolog').checked=false;if($('b-autolog-wrap'))$('b-autolog-wrap').style.display='none';if($('b-autolog-account-wrap'))$('b-autolog-account-wrap').style.display='none';$('b-amount').value='';$('b-date').value='';$('b-recur').value='No';$('b-type').value='bill';$('b-balance').value='';$('b-apr').value='';$('b-limit').value='';$('b-original').value='';if($('b-url'))$('b-url').value='';
   // Collapse More options on fresh add
@@ -4189,23 +4171,9 @@ function openEditIncome(id){
   $('i-account').value=i.accountId||'';
   // Show actual override field only for recurring income
   const isRecurring=i.frequency!=='One-time';
-  $('i-actual-wrap').style.display=isRecurring?'block':'none';
-  $('i-actual').value=i.actualAmount||'';
+  const note=$('i-update-note');
+  if(note) note.style.display=isRecurring?'block':'none';
   $('modal-income').classList.add('open');
-}
-function openEditExpense(id){
-  const e=data.expenses.find(x=>x.id===id);if(!e)return;
-  $('expense-modal-title').textContent='Edit Expense';
-  $('e-id').value=e.id;$('e-cat').value=e.category;$('e-desc').value=e.description||'';$('e-amount').value=e.amount;$('e-date').value=e.date||'';$('e-freq').value=e.frequency||'One-time';
-  populateAccountSelects();
-  $('e-account').value=e.accountId||'';
-  // Wire auto-log fields
-  const chk=$('e-autolog'); const wrap=$('autolog-account-wrap');
-  if(chk) chk.checked=!!e.autoLog;
-  if(wrap) wrap.style.display=e.autoLog?'block':'none';
-  if(e.autoLog) populateAutoLogAccountSelect('e-autolog-account');
-  const sel=$('e-autolog-account'); if(sel&&e.autoLogAccountId) sel.value=e.autoLogAccountId;
-  $('modal-expense').classList.add('open');
 }
 function openEditBill(id){
   const b=data.bills.find(x=>x.id===id);if(!b)return;
@@ -4276,18 +4244,18 @@ function saveIncome(){
   if(!src||!amt)return;
   const eid=parseInt($('i-id').value);
   const prev=eid?data.income.find(i=>i.id===eid):null;
-  // Handle actual override
-  const actualRaw=parseFloat($('i-actual').value);
-  const actualAmount=isNaN(actualRaw)||actualRaw<=0?null:actualRaw;
-  const actualMonth=actualAmount?today().slice(0,7):null; // store YYYY-MM
+  // If base amount changed, clear occurrenceOverrides so new amount reflects on all cards
+  const amountChanged=prev&&prev.amount!==amt;
+  const occurrenceOverrides=amountChanged?{}:(prev&&prev.occurrenceOverrides?prev.occurrenceOverrides:{});
   // Reverse previous account credit if editing
-  const prevEffective=prev?(prev.actualAmount||prev.amount):0;
-  if(prev&&prev.accountId) adjustAccountBalance(prev.accountId,-prevEffective);
-  const item={id:eid||Date.now(),source:src,amount:amt,frequency:freq,date:dt,accountId:acId,actualAmount,actualMonth,lastPayDate:lastPayDate||null,occurrenceOverrides:prev&&prev.occurrenceOverrides?prev.occurrenceOverrides:{},incomeStatusOverrides:prev&&prev.incomeStatusOverrides?prev.incomeStatusOverrides:{}};
+  if(prev&&prev.accountId) adjustAccountBalance(prev.accountId,-prev.amount);
+  const item={id:eid||Date.now(),source:src,amount:amt,frequency:freq,date:dt,accountId:acId,
+    actualAmount:null,actualMonth:null,
+    lastPayDate:lastPayDate||null,
+    occurrenceOverrides,
+    incomeStatusOverrides:prev&&prev.incomeStatusOverrides?prev.incomeStatusOverrides:{}};
   data.income=eid?data.income.map(i=>i.id===eid?item:i):[...data.income,item];
-  // Credit account with effective amount
-  const effective=actualAmount||amt;
-  if(acId) adjustAccountBalance(acId,effective);
+  if(acId) adjustAccountBalance(acId,amt);
   closeModal('income');saveData();renderAll();
 }
 
@@ -4399,7 +4367,7 @@ function renderIncomeCard(income, occ, idx, total){
   }
   if(isFirst){
     actionBtns+='<button class="btn btn-secondary btn-sm"'
-      +' onclick="event.stopPropagation();openEditIncome('+income.id+')">&#x270f; Edit</button>'
+      +' onclick="event.stopPropagation();openEditIncome('+income.id+')">Edit</button>'
       +'<button class="btn btn-danger btn-sm"'
       +' onclick="event.stopPropagation();deleteItem(\'income\','+income.id+')">&#x2715;</button>';
   } else {
@@ -4407,17 +4375,14 @@ function renderIncomeCard(income, occ, idx, total){
       +' style="background:rgba(80,112,240,.12);color:var(--accent2);border:1px solid rgba(80,112,240,.25);font-size:11px;font-weight:700;"'
       +' onclick="event.stopPropagation();openOccurrenceModal('+income.id+',\''+occ.date+'\','+income.amount+')">$ Update</button>';
   }
-  return '<div class="card" style="margin-bottom:8px;border-color:'+sc+'44;border-radius:12px;cursor:pointer"'
+  return '<div class="card" style="margin-bottom:8px;border-left:3px solid #22c55e;border-radius:0 12px 12px 0;cursor:pointer"'
     +' onclick="toggleCardExpand(\''+cid+'\')">'
     +'<div style="display:flex;align-items:center;justify-content:space-between;gap:8px">'
-    +'<div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1">'
-    +'<div style="width:34px;height:34px;border-radius:9px;background:rgba(34,197,94,.15);'
-    +'display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:17px">&#x1F4B0;</div>'
-    +'<div style="min-width:0">'
+    +'<div style="min-width:0;flex:1">'
     +'<div style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'
     +income.source+(isFirst?' '+recurBadge(income.frequency):'')+' </div>'
     +'<div style="font-size:11px;color:var(--muted)">'+subLine+'</div>'
-    +'</div></div>'
+    +'</div>'
     +'<div style="display:flex;align-items:center;gap:6px;flex-shrink:0">'
     +amtStr+statusBadge
     +'<span id="cchev-'+cid+'" style="color:var(--muted);font-size:11px">&#9662;</span>'
@@ -5171,7 +5136,6 @@ function toggleSchedule(id){
 
 // ── VISUAL HELPERS ───────────────────────────────
 function statusColor(s){return{Paid:'#22c55e',Scheduled:'#3b82f6',Pending:'#f59e0b',Overdue:'#ef4444'}[s]||'#888';}
-function freqBorderColor(f){return{Weekly:'#06b6d4','Bi-weekly':'#8b5cf6',Monthly:'#5070f0',Yearly:'#f59e0b'}[f]||'#555566';}
 function recurBadge(freq){
   if(!freq||freq==='One-time')return'';
   const map={Weekly:['#06b6d4','🔁'],'Bi-weekly':['#8b5cf6','🔁'],Monthly:['#5070f0','🔄'],Yearly:['#f59e0b','📆']};
@@ -5545,7 +5509,7 @@ function renderAlerts(){
   };
 
   // ── Per-section: only relevant alerts ────────────────────────
-  ['cards','insights','budget','debt','networth','quick'].forEach(sec=>{
+  ['cards','insights','debt','networth','quick'].forEach(sec=>{
     const el=$(sec+'-alerts');
     if(!el) return;
     const relevant=alerts.filter(a=>a.section===sec);
@@ -5733,120 +5697,6 @@ function toggleDashAccounts(){
   if(chev) chev.textContent=open?'▾':'▴';
 }
 
-function renderBudget(){
-  const thisMonth=today().slice(0,7);
-  const ti=data.income.reduce((s,i)=>s+getEffectiveIncome(i,new Date().getFullYear(),new Date().getMonth()),0);
-  const te=data.expenses.reduce((s,e)=>s+e.amount,0);
-  const tb=data.bills.reduce((s,b)=>s+b.amount,0);
-  const totalOut=te+tb;
-  const net=ti-totalOut;
-
-  // Summary bar
-  if($('cf-in'))  $('cf-in').textContent=usd(ti);
-  if($('cf-out')) $('cf-out').textContent=usd(totalOut);
-  if($('cf-net')){
-    $('cf-net').textContent=usd(net);
-    $('cf-net').style.color=net>=0?'var(--green)':'var(--red)';
-  }
-  $('income-total').textContent=usd(ti);
-  $('expense-total').textContent=usd(totalOut);
-  setTimeout(attachSwipes,80);
-
-  // Money In -- income
-  $('income-list').innerHTML=data.income.length?data.income.map(i=>{
-    const now2=new Date();
-    const hasOverride=i.actualAmount&&i.actualMonth===thisMonth;
-    const eff=getEffectiveIncome(i,now2.getFullYear(),now2.getMonth());
-    const ifc=freqBorderColor(i.frequency);
-
-    // Weekly and Bi-weekly: expand into one row per occurrence this month
-    if((i.frequency==='Weekly'||i.frequency==='Bi-weekly')&&!hasOverride){
-      const occs=getIncomeOccurrences(i,now2.getFullYear(),now2.getMonth());
-      const occLabel=i.frequency==='Weekly'?'Week':'Paycheck';
-      return occs.map((occ,idx)=>{
-        const isFirst=idx===0;
-        const badge=isFirst?' '+recurBadge(i.frequency):'';
-        const hasOccOverride=(i.occurrenceOverrides||{})[occ.date]!=null;
-        const amtStyle=hasOccOverride?'color:var(--accent2);font-weight:700':'color:var(--green);font-weight:600';
-        const amtLabel=hasOccOverride
-          ?('<span style="'+amtStyle+'">'+usd(occ.amount)+'</span><div style="font-size:9px;color:var(--accent2);font-weight:700;text-align:right">UPDATED</div>')
-          :('<span style="'+amtStyle+'">'+usd(occ.amount)+'</span>');
-        if(isFirst){
-          // First occurrence: edit + delete, swipeable
-          return wrapSwipeable(
-            '<div class="row" style="margin-bottom:0;border-radius:12px;border:1px solid '+ifc+'44;background:var(--surface);padding:12px 14px;">'
-            +'<div><div class="row-label">'+i.source+badge+'</div>'
-            +'<div class="row-sub">'+fmtDate(occ.date)+' · '+occLabel+' 1 of '+occs.length+'</div></div>'
-            +'<div class="row-actions">'
-            +amtLabel
-            +'<button class="btn btn-secondary btn-sm show-desktop" onclick="openEditIncome('+i.id+')">✏️</button>'
-            +'<button class="btn btn-danger btn-sm show-desktop" onclick="deleteItem(\'income\','+i.id+')">&#x2715;</button>'
-            +'</div></div>',
-            'income',i.id,'openEditIncome('+i.id+')');
-        }
-        // Subsequent occurrences: balance button only, not swipeable
-        return '<div class="swipe-wrap">'
-          +'<div class="row" style="margin-bottom:0;border-radius:12px;border:1px solid '+ifc+'44;background:var(--surface);padding:12px 14px;">'
-          +'<div><div class="row-label">'+i.source+badge+'</div>'
-          +'<div class="row-sub">'+fmtDate(occ.date)+' · '+occLabel+' '+(idx+1)+' of '+occs.length+'</div></div>'
-          +'<div class="row-actions">'
-          +amtLabel
-          +'<button class="btn btn-sm show-desktop" style="background:rgba(80,112,240,.12);color:var(--accent2);border:1px solid rgba(80,112,240,.25);font-size:11px;font-weight:700;padding:4px 8px;" '
-          +'onclick="openOccurrenceModal('+i.id+',\''+occ.date+'\','+i.amount+')">$ Update</button>'
-          +'</div></div>'
-          +'</div>';
-      }).join('');
-    }
-
-    // Single-row for monthly, one-time, yearly (or when actual override is set)
-    const amtDisplay=hasOverride
-      ?('<div style="text-align:right">'
-        +'<span style="color:var(--muted);text-decoration:line-through;font-size:12px">'+usd(i.amount)+'</span>'
-        +'<span style="color:var(--green);font-weight:700;margin-left:4px">'+usd(eff)+'</span>'
-        +'<div style="font-size:10px;color:var(--accent2);font-weight:700">ACTUAL</div></div>')
-      :('<span style="color:var(--green);font-weight:600">'+usd(eff)+'</span>');
-    return wrapSwipeable(
-      '<div class="row" style="margin-bottom:0;border-radius:12px;border:1px solid '+ifc+'44;background:var(--surface);padding:12px 14px;"><div>'
-      +'<div class="row-label">'+i.source+' '+recurBadge(i.frequency)+'</div>'
-      +'<div class="row-sub">'+[fmtDate(i.date),i.frequency!=='One-time'?i.frequency:'One-time'].filter(Boolean).join(' - ')+'</div>'
-      +'</div><div class="row-actions">'
-      +amtDisplay
-      +'<button class="btn btn-secondary btn-sm show-desktop" onclick="openEditIncome('+i.id+')">✏️</button>'
-      +'<button class="btn btn-danger btn-sm show-desktop" onclick="deleteItem(\'income\','+i.id+')">&#x2715;</button>'
-      +'</div></div>',
-      'income',i.id,'openEditIncome('+i.id+')');
-  }).join(''): emptyState('💰','No income yet','Add your salary, freelance work, or any other income sources.','+ Add Income',"openModal('income')");
-
-  // Money Out -- expenses + bills combined
-  const expRows=data.expenses.map(e=>{
-    const isPaid=e.paidMonth===thisMonth;
-    const efc=freqBorderColor(e.frequency);
-    return wrapSwipeable(`<div class="row" style="margin-bottom:0;border-radius:12px;border:1px solid ${efc}44;background:var(--surface);padding:12px 14px;${isPaid?'opacity:.6':''}"><div>
-      <div class="row-label">${catIcon(e.category)}${e.category} ${recurBadge(e.frequency)}${e.autoLog?'<span class="autolog-badge">&#128259; auto</span>':''}${isPaid?'<span style="margin-left:6px;font-size:10px;font-weight:700;background:rgba(34,197,94,.15);color:var(--green);border-radius:5px;padding:2px 7px">✓ PAID</span>':''}</div>
-      <div class="row-sub">${[e.description,fmtDate(e.date)].filter(Boolean).join(' - ')}</div>
-    </div><div class="row-actions">
-      <span style="color:var(--red);font-weight:600">${usd(e.amount)}</span>
-      <button class="btn btn-sm" style="background:${isPaid?'rgba(34,197,94,.15)':'rgba(255,255,255,.06)'};color:${isPaid?'var(--green)':'var(--muted)'};border:1px solid ${isPaid?'rgba(34,197,94,.3)':'var(--border2)'};" onclick="toggleExpensePaid(${e.id})" title="${isPaid?'Mark unpaid':'Mark paid'}">${isPaid?'✓':'○'}</button>
-      <button class="btn btn-secondary btn-sm show-desktop" onclick="openEditExpense(${e.id})">✏️</button>
-      <button class="btn btn-danger btn-sm show-desktop" onclick="deleteItem('expenses',${e.id})">✕</button>
-    </div></div>`,'expenses',e.id,`openEditExpense(${e.id})`);
-  });
-
-  const billTypeIcon={bill:'📋',creditcard:'💳',loan:'🏦',promo:'🎁'};
-  const billRows=data.bills.filter(b=>b.amount>0).map(b=>{
-    const bfc=freqBorderColor(b.recurring&&b.recurring!=='No'?b.recurring:'One-time');
-    const btypeBadge=b.btype==='creditcard'?'<span style="background:rgba(239,68,68,.15);color:#ef4444;border-radius:5px;padding:1px 6px;font-size:10px;font-weight:700;margin-left:4px">CARD</span>':b.btype==='loan'?'<span style="background:rgba(251,146,60,.15);color:#fb923c;border-radius:5px;padding:1px 6px;font-size:10px;font-weight:700;margin-left:4px">LOAN</span>':b.promoEndDate?'<span style="background:rgba(34,197,94,.15);color:var(--green);border-radius:5px;padding:1px 6px;font-size:10px;font-weight:700;margin-left:4px">PROMO</span>':'';
-    const bIcon=billTypeIcon[b.btype]||'📋';
-    const bSub=(b.recurring!=='No'?b.recurring+' payment':'')+(b.dueDate?' - Due '+fmtDate(b.dueDate):'');
-    return wrapSwipeable('<div class="row" style="margin-bottom:0;border-radius:12px;border:1px solid '+bfc+'44;background:var(--surface);padding:12px 14px;"><div><div class="row-label">'+bIcon+' '+b.name+btypeBadge+'</div><div class="row-sub">'+bSub+'</div></div><div class="row-actions"><span style="color:var(--red);font-weight:600">'+usd(b.amount)+'</span><button class="btn btn-secondary btn-sm show-desktop" onclick="openEditBill('+b.id+')">✏️</button><button class="btn btn-danger btn-sm show-desktop" onclick="deleteBillFromModal('+b.id+')">✕</button></div></div>','bills',b.id,'openEditBill('+b.id+')');
-  });
-  const allOut=[...expRows,...billRows];
-  $('expense-list').innerHTML=allOut.length?allOut.join(''):emptyState('💸','No outgoings yet','Add your monthly expenses and bills to see your full cash flow picture.','+ Add Expense',"openModal('expense')");
-  renderPaycheckCalendar();
-}
-
-
-// ── MONEY SUMMARY CARDS ───────────────────────────────────────
 function renderMoneySummaryCards(){
   const el=$('money-summary-cards');
   if(!el) return;
@@ -5958,9 +5808,8 @@ function renderBills(){
     const isZeroBalance=isDebt&&!b.balance&&!b.amount;
     if(eff!=='Paid'&&eff!=='Scheduled'&&d<0&&!isZeroBalance) eff='Overdue';
     const sc=statusColor(eff);
-    // Icon + bg by type
-    const typeIcon=b.btype==='creditcard'?'&#x1F4B3;':b.btype==='loan'?'&#x1F3E6;':'&#x1F4CB;';
-    const typeBg=b.btype==='creditcard'?'rgba(239,68,68,.15)':b.btype==='loan'?'rgba(59,130,246,.15)':'rgba(245,158,11,.15)';
+    // Left border color by type
+    const typeColor=b.btype==='creditcard'?'#ef4444':b.btype==='loan'?'#3b82f6':'#f59e0b';
     // Sub line
     const subLine='Due: '+fmtDate(b.dueDate)+(b.recurring&&b.recurring!=='No'?' \u00b7 '+b.recurring:'');
     // Type badge
@@ -5985,23 +5834,21 @@ function renderBills(){
         +schedLabel+'</button>';
     }
     actionBtns+='<button class="btn btn-secondary btn-sm"'
-      +' onclick="event.stopPropagation();openEditBill('+b.id+')">&#x270f; Edit</button>';
+      +' onclick="event.stopPropagation();openEditBill('+b.id+')">Edit</button>';
     if(b.dueDate) actionBtns+='<button class="btn btn-secondary btn-sm"'
       +' onclick="event.stopPropagation();addToCalendar(\''+b.name+' Payment\',\''+b.dueDate+'\',\'Min: '+usd(b.amount)+'\')">&#x1F4C5;</button>';
     actionBtns+='<button class="btn btn-danger btn-sm"'
       +' onclick="event.stopPropagation();deleteBillFromModal('+b.id+')">&#x2715;</button>';
 
-    return '<div class="card" style="margin-bottom:8px;border-color:'+sc+'44;border-radius:12px;cursor:pointer"'
+    return '<div class="card" style="margin-bottom:8px;border-left:3px solid '+typeColor+';border-radius:0 12px 12px 0;cursor:pointer"'
       +' onclick="toggleCardExpand(\''+cid+'\')">'
       +'<div style="display:flex;align-items:center;justify-content:space-between;gap:8px">'
-      +'<div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1">'
-      +'<div style="width:34px;height:34px;border-radius:9px;'+typeBg+';display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:17px">'+typeIcon+'</div>'
-      +'<div style="min-width:0">'
+      +'<div style="min-width:0;flex:1">'
       +'<div style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'
       +b.name+(b.autoLog?'<span class="autolog-badge">&#128259; auto</span>':'')+typeBadge+'</div>'
       +'<div style="font-size:11px;color:var(--muted)">'+subLine+'</div>'
       +(isDebt&&b.balance?'<div style="font-size:11px;color:var(--muted)">'+getBalanceSplitHtml(b)+'</div>':'')
-      +'</div></div>'
+      +'</div>'
       +'<div style="display:flex;align-items:center;gap:6px;flex-shrink:0">'
       +'<span style="font-weight:700;font-size:15px">'+usd(b.amount)+'</span>'
       +statusBadge
@@ -6176,7 +6023,7 @@ function renderCards(){
         </div>
       </div>`;
     }).join('')
-    :emptyState('💳','No credit cards yet','Add a Credit Card in Cash Flow - tap the + Bill button and choose Credit Card as the type.','Go to Cash Flow',"show('budget',document.querySelector('.nav-item:nth-child(2)'));closeModal&&closeModal('settings')");
+    :emptyState('💳','No credit cards yet','Add a Credit Card in Cash Flow - tap the + Bill button and choose Credit Card as the type.','Go to Cash Flow',"show('bills',null);closeModal&&closeModal('settings')");
   }
 
   // ── INACTIVE CARD REMINDERS ──────────────────────
@@ -7172,7 +7019,8 @@ function showUndoToast(key){
   const bar=$('undo-progress');
   if(!toast) return;
   if(msg) msg.textContent=(labels[key]||'Item')+' deleted';
-  toast.classList.add('show');
+  toast.style.display='flex';
+  requestAnimationFrame(()=>toast.classList.add('show'));
   // Progress bar animation
   if(bar){
     bar.style.transition='none';
@@ -7182,6 +7030,7 @@ function showUndoToast(key){
   clearTimeout(_undoTimer);
   _undoTimer=setTimeout(()=>{
     toast.classList.remove('show');
+    setTimeout(()=>{if(!toast.classList.contains('show'))toast.style.display='none';},220);
     _undoState=null;
   },8000);
 }
@@ -7194,15 +7043,11 @@ function undoDelete(){
   _undoState=null;
   clearTimeout(_undoTimer);
   const toast=$('undo-toast');
-  if(toast) toast.classList.remove('show');
+  if(toast){toast.classList.remove('show');setTimeout(()=>{if(!toast.classList.contains('show'))toast.style.display='none';},220);}
   showToast('Restored!');
 }
 
 // ── BILL PAID ANIMATION ───────────────────────────────────────
-function checkmarkSVG(){
-  return '<svg viewBox="0 0 12 10"><polyline points="1,5 4,9 11,1"/></svg>';
-}
-
 // ── INCOME PROJECTION ─────────────────────────────────────────
 let projWindow=3;
 
@@ -7650,68 +7495,6 @@ function renderDebtCountdown(){
 
 
 // ── SMART BILL REMINDER ───────────────────────────────────────
-function renderSmartBillReminder(){
-  const wrap=$('smart-bills-wrap');
-  if(!wrap) return;
-
-  // Get accounts with balances
-  const accounts=data.accounts||[];
-  if(!accounts.length){ wrap.innerHTML=''; return; }
-
-  // Get unpaid bills due in next 30 days
-  const now=new Date();
-  const in30=new Date(now); in30.setDate(in30.getDate()+30);
-  const todayStr=today();
-  const in30Str=in30.toISOString().slice(0,10);
-
-  const upcoming=data.bills.filter(b=>{
-    if(b.status==='Paid'||b.status==='Scheduled') return false;
-    if(!b.dueDate) return false;
-    if((b.btype==='creditcard'||b.btype==='loan')&&!b.balance&&!b.amount) return false;
-    return b.dueDate>=todayStr&&b.dueDate<=in30Str || b.dueDate<todayStr; // include overdue
-  }).sort((a,b)=>a.dueDate.localeCompare(b.dueDate));
-
-  if(!upcoming.length){ wrap.innerHTML=''; return; }
-
-  const totalDue=upcoming.reduce((s,b)=>s+b.amount,0);
-  const totalBalance=accounts.reduce((s,a)=>s+a.balance,0);
-  const remaining=totalBalance-totalDue;
-  const canPay=remaining>=0;
-  const pct=totalBalance>0?Math.round(totalDue/totalBalance*100):100;
-
-  const verdictClass=canPay&&remaining>totalBalance*0.2?'ok':canPay?'warn':'danger';
-  const verdictMsg=verdictClass==='ok'
-    ? `You have ${usd(remaining)} left after paying all upcoming bills - comfortable.`
-    : verdictClass==='warn'
-    ? `Paying all bills leaves only ${usd(remaining)} - consider spacing payments.`
-    : `Insufficient funds - bills exceed balance by ${usd(Math.abs(remaining))}.`;
-
-  const rows=upcoming.slice(0,5).map(b=>{
-    const d=b.dueDate<todayStr?'Overdue':b.dueDate===todayStr?'Today':
-      (()=>{const diff=Math.round((new Date(b.dueDate)-now)/86400000);return`in ${diff}d`;})();
-    const col=b.dueDate<todayStr?'var(--red)':b.dueDate===todayStr?'var(--yellow)':'var(--muted)';
-    return`<div class="smart-bill-row">
-      <div><div class="sbr-name">${b.name}</div><div class="sbr-due" style="color:${col}">${d}</div></div>
-      <div class="sbr-amt" style="color:var(--text)">${usd(b.amount)}</div>
-    </div>`;
-  }).join('');
-
-  const moreCount=upcoming.length>5?`<div style="font-size:11px;color:var(--muted);text-align:center;padding-top:6px">+${upcoming.length-5} more bills</div>`:'';
-
-  wrap.innerHTML=`<div class="smart-bill-card">
-    <div class="sb-header">
-      <div class="sb-title">💡 Smart Bill Reminder - Next 30 Days</div>
-      <div class="sb-balance" style="color:${canPay?'var(--green)':'var(--red)'}">
-        ${usd(totalBalance)} available
-      </div>
-    </div>
-    ${rows}${moreCount}
-    <div class="smart-bill-verdict ${verdictClass}">${verdictMsg}</div>
-  </div>`;
-}
-
-
-
 // ── EXPORT TO EXCEL / NUMBERS ─────────────────────────────────
 function exportToExcel(){
   if(typeof XLSX==='undefined'){
@@ -8756,84 +8539,6 @@ function getPaycheckDates(income, year, month){
 
 let _paycheckCalOpen = true;
 
-function togglePaycheckCal(){
-  _paycheckCalOpen = !_paycheckCalOpen;
-  const body = $('paycheck-cal-body');
-  const btn  = $('paycheck-cal-toggle');
-  if(body) body.style.display = _paycheckCalOpen ? 'block' : 'none';
-  if(btn)  btn.textContent    = _paycheckCalOpen ? '▾ Hide' : '▸ Show';
-}
-
-function renderPaycheckCalendar(){
-  const card = $('paycheck-cal-card');
-  const body = $('paycheck-cal-body');
-  if(!card || !body) return;
-
-  // Only show for income sources that are bi-weekly with a lastPayDate
-  const biweekly = data.income.filter(i => i.frequency === 'Bi-weekly' && i.lastPayDate);
-  if(!biweekly.length){ card.style.display = 'none'; return; }
-
-  card.style.display = 'block';
-  body.style.display = _paycheckCalOpen ? 'block' : 'none';
-
-  const now = new Date();
-  const months = [];
-  for(let m = 0; m < 3; m++){
-    const d = new Date(now.getFullYear(), now.getMonth() + m, 1);
-    months.push({ year: d.getFullYear(), month: d.getMonth() });
-  }
-
-  const dayNames = ['S','M','T','W','T','F','S'];
-  const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-
-  body.innerHTML = biweekly.map(inc => {
-    const calendars = months.map(({ year, month }) => {
-      const paycheckDates = getPaycheckDates(inc, year, month) || [];
-      const paycheckDays  = new Set(paycheckDates.map(d => d.getDate()));
-      const firstDay = new Date(year, month, 1).getDay();
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
-      const todayDate = now.getFullYear() === year && now.getMonth() === month ? now.getDate() : -1;
-
-      // Build grid
-      let cells = '';
-      // Day-name headers
-      dayNames.forEach(d => { cells += `<div style="font-size:9px;color:var(--muted);text-align:center;font-weight:700;padding-bottom:2px">${d}</div>`; });
-      // Empty cells before 1st
-      for(let i = 0; i < firstDay; i++) cells += '<div></div>';
-      // Day cells
-      for(let d = 1; d <= daysInMonth; d++){
-        const isPayday  = paycheckDays.has(d);
-        const isToday   = d === todayDate;
-        const bg  = isPayday  ? 'var(--green)'                    : isToday ? 'rgba(80,112,240,.25)' : 'transparent';
-        const clr = isPayday  ? '#fff'                             : isToday ? 'var(--accent)'        : 'var(--muted)';
-        const fw  = isPayday || isToday ? '700' : '400';
-        const br  = isPayday  ? '50%'   : isToday ? '50%'        : '0';
-        const sz  = isPayday  ? '11px'  : '10px';
-        cells += `<div style="text-align:center;font-size:${sz};color:${clr};font-weight:${fw};background:${bg};border-radius:${br};width:22px;height:22px;line-height:22px;margin:1px auto">${d}</div>`;
-      }
-
-      const count = paycheckDays.size;
-      const isThreeCheck = count === 3;
-      return `<div style="flex:1;min-width:180px">
-        <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center">
-          <span>${monthNames[month]} ${year}</span>
-          ${count > 0 ? `<span style="background:${isThreeCheck?'rgba(34,197,94,.15)':'rgba(80,112,240,.12)'};color:${isThreeCheck?'var(--green)':'var(--accent2)'};border-radius:5px;padding:1px 7px;font-size:10px">${count} paycheck${count>1?'s':''}${isThreeCheck?' 🎉':''}</span>` : ''}
-        </div>
-        <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:1px">${cells}</div>
-      </div>`;
-    }).join('');
-
-    return `<div style="margin-bottom:14px">
-      <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:10px">💰 ${inc.source} <span style="font-size:10px;font-weight:400;color:var(--muted)">· Bi-weekly · ${usd(inc.amount)}/paycheck</span></div>
-      <div style="display:flex;gap:16px;flex-wrap:wrap">${calendars}</div>
-    </div>`;
-  }).join('<hr style="border:none;border-top:1px solid var(--border);margin:12px 0">');
-}
-
-
-
-
-
 // ── #5 BILL RESET BANNER ─────────────────────────────────────
 function checkBillResetNotify(){
   const raw = localStorage.getItem('financeOS_billResetNotify');
@@ -9703,13 +9408,6 @@ function populateAutoLogAccountSelect(selId){
 
 
 // ── MAIN AUTO-LOG RUNNER ──────────────────────────────────────
-function toggleExpensePaid(id){
-  const e=data.expenses.find(x=>x.id===id);if(!e)return;
-  const thisMonth=today().slice(0,7);
-  e.paidMonth=(e.paidMonth===thisMonth)?null:thisMonth;
-  saveData();renderBudget();
-}
-
 function resetStaleExpensePaid(){
   const thisMonth=today().slice(0,7);
   data.expenses.forEach(e=>{ if(e.paidMonth&&e.paidMonth!==thisMonth) e.paidMonth=null; });
@@ -10231,7 +9929,7 @@ function renderCashFlow(){
 
 function renderAll(){
   updateOriginalBalances();
-  renderAlerts();renderDashboard();renderBudget();renderBills();renderDebt();
+  renderAlerts();renderDashboard();renderBills();renderDebt();
   renderNetWorth();renderInsights();renderCashFlow();renderCards();renderTxns();
   renderSnapshot();updateInsightsBadge();updateBillsBadge();
   updateLastSavedUI();checkBackupReminder();
@@ -10243,6 +9941,8 @@ setInterval(updateLastSavedUI, 60000);
 
 document.addEventListener('DOMContentLoaded',()=>{
   const vEl=$('sidebar-version'); if(vEl) vEl.textContent=APP_VERSION;
+  // Ensure undo toast is hidden on load
+  const ut=$('undo-toast'); if(ut){ut.classList.remove('show');ut.style.display='none';}
   const av=$('about-version-text'); if(av) av.textContent=`FinanceOS \u2022 Built for personal use \u2022 Data never leaves your device \u2022 ${APP_VERSION} \u2022 2026`;
   loadTheme();
   toggleDebtFields();
@@ -10334,6 +10034,22 @@ function buildFinancialContext() {
 
   return 'You are a personal AI financial advisor with direct access to the user\'s real financial data from their FinanceOS app. Be concise, specific, and actionable. Reference their actual numbers when relevant. Do not give generic advice.\n\nUSER\'S FINANCIAL SNAPSHOT:\n\nACCOUNTS: ' + accounts + '\n\nMONTHLY INCOME (estimated): ' + fmt(monthlyIncome) + '/mo\n\nMONTHLY EXPENSES by category: ' + topExpenses + '\n\nBILLS: ' + billList + '\n\nDEBT:\n' + debtList + '\n\nSAVINGS GOALS:\n' + goalList + '\n\nNET WORTH: ' + fmt(totalAssets) + ' total assets - ' + fmt(totalDebt) + ' total debt = ' + fmt(totalAssets - totalDebt) + '\n\nSPENDING (last 30 days): ' + fmt(recentSpend) + '\n\nToday: ' + new Date().toLocaleDateString('en-US', {month:'long', day:'numeric', year:'numeric'});
 }
+
+// ── CARD DROPDOWN MENU ─────────────────────────────
+function toggleCardMenu(e){
+  e.stopPropagation();
+  const btn=e.currentTarget;
+  const dropdown=btn.nextElementSibling;
+  const isOpen=dropdown.classList.contains('open');
+  closeAllCardMenus();
+  if(!isOpen) dropdown.classList.add('open');
+}
+function closeAllCardMenus(){
+  document.querySelectorAll('.card-dropdown.open').forEach(d=>d.classList.remove('open'));
+}
+document.addEventListener('click',function(e){
+  if(!e.target.closest('.card-menu-wrap')) closeAllCardMenus();
+});
 
 function renderAdvisor() {
   var keyScreen = document.getElementById('advisor-key-screen');
