@@ -171,7 +171,7 @@ main{max-width:900px;padding:20px 20px 60px;}
   #overlay-bg.show{display:block;}
   #content{margin-left:0;}
   #alerts-bar{padding-top:4px;}
-  main{padding:16px 14px 24px;padding-top:80px;}
+  main{padding:16px 14px 24px;padding-top:76px;}
   .sec-title{display:none;}
   #advisor.active{height:calc(100vh - 56px - 40px);}
 }
@@ -1141,12 +1141,19 @@ canvas{width:100%!important;}
         <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:4px">Net Balance</div>
         <div id="d-balance" style="font-family:var(--font-d);font-size:34px;font-weight:800;letter-spacing:-1px;line-height:1">$0.00</div>
         <div id="d-summary-line" style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.4"></div>
+        <div style="margin-top:12px;padding-top:10px;border-top:1px solid rgba(80,112,240,.2);display:flex;justify-content:space-between;align-items:center">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)">Projected Balance</div>
+          <div style="display:flex;align-items:baseline;gap:4px">
+            <div id="d-projected" style="font-family:var(--font-d);font-size:18px;font-weight:800;letter-spacing:-.5px">$0.00</div>
+            <div id="d-projected-sub" style="font-size:10px;color:var(--muted)"></div>
+          </div>
+        </div>
       </div>
 
       <!-- 4 supporting stats -->
       <div class="card-grid" style="grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
         <div class="stat-card"><div class="stat-label" data-i18n="Income">Income</div><div class="stat-value" id="d-income" style="color:var(--teal)">$0.00</div></div>
-        <div class="stat-card"><div class="stat-label" data-i18n="Expenses">Expenses</div><div class="stat-value" id="d-expenses" style="color:var(--yellow)">$0.00</div></div>
+        <div class="stat-card"><div class="stat-label">Money Out</div><div class="stat-value" id="d-expenses" style="color:var(--yellow)">$0.00</div></div>
         <div class="stat-card"><div class="stat-label" data-i18n="Total Debt">Total Debt</div><div class="stat-value" id="d-debt" style="color:var(--red)">$0.00</div></div>
         <div class="stat-card"><div class="stat-label">Accounts</div><div class="stat-value" id="d-acct-total" style="color:var(--accent2)">$0.00</div></div>
       </div>
@@ -1960,7 +1967,6 @@ canvas{width:100%!important;}
     <div class="overlap-warn" id="bill-overlap-warn"></div>
 
     <!-- ── CORE FIELDS (always visible) ── -->
-    <div class="field"><label data-i18n="Name">Name</label><input id="b-name" placeholder="e.g. Rent, Chase Visa, Student Loan" oninput="checkBillExpenseOverlap(this.value,'bill-overlap-warn');autofillBillUrl()"/></div>
     <div class="field"><label data-i18n="Type">Type</label>
       <select id="b-type" onchange="toggleDebtFields()">
         <option value="bill" data-i18n="Regular Bill">Regular Bill</option>
@@ -1968,6 +1974,7 @@ canvas{width:100%!important;}
         <option value="loan" data-i18n="Loan (Car, Student, Mortgage)">Loan (Car, Student, Mortgage)</option>
       </select>
     </div>
+    <div class="field"><label data-i18n="Name">Name</label><input id="b-name" placeholder="e.g. Rent, Chase Visa, Student Loan" oninput="checkBillExpenseOverlap(this.value,'bill-overlap-warn');autofillBillUrl()"/></div>
     <div class="field-row">
       <div class="field"><label data-i18n="Min. Payment ($)">Min. Payment ($)</label><input id="b-amount" type="number" inputmode="decimal" placeholder="0.00"/></div>
       <div class="field"><label data-i18n="Due Date">Due Date</label><input id="b-date" type="date"/></div>
@@ -3015,6 +3022,29 @@ function loadData(){
     data.bills.forEach(b=>{
       if(b.btype==='creditcard'||b.btype==='loan'||b.btype==='promo') migrateRevolvingBalance(b);
     });
+    // ── Repair: advance recurring bills stuck on a past due date ──
+    (data.bills||[]).forEach(b=>{
+      if(!b.dueDate || b.recurring==='One-time' || !b.recurring) return;
+      if(b.status!=='Paid' && b.status!=='Pending' && b.status!=='Scheduled') return;
+      // Advance until dueDate is in the future (max 24 iterations)
+      let guard=0;
+      while(daysUntil(b.dueDate) < 0 && guard++ < 24){
+        const dd=new Date(b.dueDate+'T12:00:00');
+        if(b.recurring==='Monthly')        dd.setMonth(dd.getMonth()+1);
+        else if(b.recurring==='Weekly')    dd.setDate(dd.getDate()+7);
+        else if(b.recurring==='Bi-weekly') dd.setDate(dd.getDate()+14);
+        else if(b.recurring==='Quarterly') dd.setMonth(dd.getMonth()+3);
+        else if(b.recurring==='Annually')  dd.setFullYear(dd.getFullYear()+1);
+        else break;
+        b.dueDate=dd.toISOString().split('T')[0];
+      }
+      // If the bill was Paid but due date has now moved forward, reset status
+      if(b.status==='Paid' && daysUntil(b.dueDate) > 0){
+        b.status = b.autoLog ? 'Scheduled' : 'Pending';
+        b.scheduledAmount=null;
+        b.scheduledAccountId=null;
+      }
+    });
     // Auto-reset recurring bills on new month
     autoResetRecurringBills();
     // Auto-expire promo APRs when end date passes
@@ -3397,7 +3427,7 @@ const acTypeLabel={checking:'Checking',savings:'Savings',cash:'Cash'};
 function populateAccountSelects(){
   const accs=data.accounts||[];
   const opts='<option value="">-- No account linked --</option>'+accs.map(a=>`<option value="${a.id}">${acTypeIcon[a.type]||''} ${a.name} (${usd(a.balance)})</option>`).join('');
-  ['i-account','e-account','sb-account','pd-account','pu-account'].forEach(id=>{
+  ['i-account','e-account','sb-account','pd-account','pu-account','t-account'].forEach(id=>{
     const el=$(id); if(!el) return;
     const prev=el.value;
     el.innerHTML=opts;
@@ -4452,6 +4482,26 @@ function renderIncomeCard(income, occ, idx, total){
     +actionBtns+'</div>'
     +'</div>';
 }
+function openEditExpense(id){
+  const e=data.expenses.find(x=>x.id===id); if(!e) return;
+  openModal('expense');
+  $('expense-modal-title').textContent='Edit Expense';
+  $('e-id').value=e.id;
+  $('e-cat').value=e.category||'';
+  $('e-desc').value=e.description||'';
+  $('e-amount').value=e.amount||'';
+  $('e-date').value=e.date||today();
+  $('e-freq').value=e.frequency||'One-time';
+  if($('e-account')) $('e-account').value=e.accountId||'';
+  if($('e-autolog')){
+    $('e-autolog').checked=!!e.autoLog;
+    const wrap=$('autolog-account-wrap');
+    if(wrap) wrap.style.display=e.autoLog?'block':'none';
+  }
+  if($('e-autolog-account')&&e.autoLogAccountId) $('e-autolog-account').value=e.autoLogAccountId;
+  populateAccountSelects();
+}
+
 function saveExpense(){
   const autoLog = $('e-autolog') ? $('e-autolog').checked : false;
   const autoLogAccountId = parseInt($('e-autolog-account')?.value)||0;
@@ -4832,7 +4882,8 @@ function autoProcessScheduledBills(){
       amount:parseFloat(amt.toFixed(2)),
       type:(b.btype==='creditcard'||b.btype==='loan')?'Debt Payment':'Bill Payment',
       date:b.dueDate||today(),
-      accountId:acId
+      accountId:acId,
+      autoLogRef: b.autoLog ? b.id : undefined
     });
     // Advance due date if recurring
     if(b.dueDate&&b.recurring&&b.recurring!=='No'){
@@ -5597,6 +5648,13 @@ function renderDashboard(){
   const te=data.expenses.reduce((s,e)=>s+e.amount,0);
   const td=data.bills.filter(b=>b.btype==='creditcard'||b.btype==='loan').reduce((s,b)=>s+(b.balance||0),0);
   const tt=data.transactions.filter(t=>!t.promoRef).reduce((s,t)=>s+t.amount,0);
+  // Money Out = expenses + active bill payments + spending transactions (no bill payments — already in bills)
+  const tb=data.bills.filter(b=>{
+    if((b.btype==='creditcard'||b.btype==='loan'||b.btype==='promo')&&!(b.balance>0)) return false;
+    return (b.amount||0)>0;
+  }).reduce((s,b)=>s+(b.scheduledAmount||b.amount||0),0);
+  const tw=data.transactions.filter(t=>!t.promoRef&&t.type!=='Transfer'&&t.type!=='Bill Payment'&&t.type!=='Debt Payment').reduce((s,t)=>s+t.amount,0);
+  const totalOut=te+tb+tw;
   const net=ti-te-tt;
   const totalAccounts=(data.accounts||[]).reduce((s,a)=>s+a.balance,0);
 
@@ -5605,6 +5663,34 @@ function renderDashboard(){
   if(balEl){
     balEl.textContent=usd(net);
     balEl.style.color=net>=0?'var(--green)':'var(--red)';
+  }
+
+  // Projected Balance = account balances − unpaid bills/expenses due this month
+  const projEl=$('d-projected');
+  const projSub=$('d-projected-sub');
+  if(projEl){
+    const todayStr=today();
+    const monthStr=todayStr.slice(0,7);
+    const unpaidBills=data.bills.filter(b=>{
+      if(b.status==='Paid') return false;
+      if((b.btype==='creditcard'||b.btype==='loan'||b.btype==='promo')&&!(b.balance>0)) return false;
+      return b.dueDate && b.dueDate.slice(0,7)===monthStr;
+    }).reduce((s,b)=>s+(b.scheduledAmount||b.amount||0),0);
+    const unpaidExp=data.expenses.filter(e=>{
+      if(e.paidMonth===monthStr) return false;
+      return e.date && e.date.slice(0,7)===monthStr;
+    }).reduce((s,e)=>s+e.amount,0);
+    const projected=totalAccounts-unpaidBills-unpaidExp;
+    projEl.textContent=usd(projected);
+    projEl.style.color=projected>=0?'var(--green)':'var(--red)';
+    if(projSub){
+      const billCount=data.bills.filter(b=>{
+        if(b.status==='Paid') return false;
+        if((b.btype==='creditcard'||b.btype==='loan'||b.btype==='promo')&&!(b.balance>0)) return false;
+        return b.dueDate && b.dueDate.slice(0,7)===monthStr;
+      }).length;
+      projSub.textContent=`after ${billCount} bill${billCount===1?'':'s'} & expenses`;
+    }
   }
 
   // Contextual summary line
@@ -5626,7 +5712,7 @@ function renderDashboard(){
 
   // Supporting stat cards
   $('d-income').textContent=usd(ti);
-  $('d-expenses').textContent=usd(te);
+  $('d-expenses').textContent=usd(totalOut);
   $('d-debt').textContent=usd(td);
   const acctTotalEl=$('d-acct-total');
   if(acctTotalEl) acctTotalEl.textContent=usd(totalAccounts);
@@ -5678,7 +5764,8 @@ function renderDashboard(){
             ${b.scheduledAmount?`<div class="row-sub" style="color:var(--blue)">Scheduled: ${usd(b.scheduledAmount)}</div>`:''}
           </div>
           <div style="text-align:right">
-            <div style="font-weight:700;color:${sc}">${usd(b.amount)}</div>
+            <div style="font-weight:700;color:${sc}">${usd(b.scheduledAmount||b.amount)}</div>
+            ${b.scheduledAmount?`<div style="font-size:10px;color:var(--muted)">min ${usd(b.amount)}</div>`:''}
             <div class="badge" style="background:${sc}22;color:${sc};font-size:10px">${eff}</div>
           </div>
         </div>`;
@@ -5910,7 +5997,8 @@ function renderBills(){
       +(isDebt&&b.balance?'<div style="font-size:11px;color:var(--muted)">'+getBalanceSplitHtml(b)+'</div>':'')
       +'</div>'
       +'<div style="display:flex;align-items:center;gap:6px;flex-shrink:0">'
-      +'<span style="font-weight:700;font-size:15px">'+usd(b.amount)+'</span>'
+      +'<span style="font-weight:700;font-size:15px">'+usd(b.scheduledAmount||b.amount)+'</span>'
+      +(b.scheduledAmount?'<div style="font-size:10px;color:var(--muted)">min '+usd(b.amount)+'</div>':'')
       +statusBadge
       +'<span id="cchev-'+cid+'" style="color:var(--muted);font-size:11px">&#9662;</span>'
       +'</div></div>'
@@ -5929,13 +6017,47 @@ function renderBills(){
   }
 
   let html='';
+  const currentMonth=today().slice(0,7);
+
+  // Helper: render an expense card
+  function renderExpenseCard(e){
+    const ecid='exp'+e.id;
+    const isPaid=e.paidMonth===currentMonth;
+    const d=daysUntil(e.date);
+    const eff=isPaid?'Paid':(e.frequency&&e.frequency!=='One-time'&&d<0?'Overdue':'Pending');
+    const sc=statusColor(eff);
+    const statusBadge='<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:'+sc+'22;color:'+sc+'">'+eff+'</span>';
+    const subLine=(e.date?'Due: '+fmtDate(e.date):'')+(e.frequency&&e.frequency!=='One-time'?' · '+e.frequency:'')+(e.category?' · '+e.category:'');
+    let actionBtns='';
+    if(eff==='Paid') actionBtns='<span style="font-size:12px;color:var(--green);font-weight:700">✓ Paid</span>';
+    actionBtns+='<button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();openEditExpense('+e.id+')">Edit</button>'
+      +'<button class="btn btn-danger btn-sm" onclick="event.stopPropagation();deleteItem(\'expenses\','+e.id+')">&#x2715;</button>';
+    return '<div class="card" style="margin-bottom:8px;border-left:3px solid #a855f7;border-radius:4px 12px 12px 4px;cursor:pointer"'
+      +' onclick="toggleCardExpand(\''+ecid+'\')"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px">'
+      +'<div style="min-width:0;flex:1">'
+      +'<div style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'
+      +escHtml(e.description||e.category)
+      +(e.autoLog?'<span class="autolog-badge">&#128259; auto</span>':'')
+      +'<span style="font-size:9px;font-weight:700;padding:1px 6px;border-radius:20px;background:rgba(168,85,247,.15);color:#a855f7;margin-left:4px">EXP</span>'
+      +'</div>'
+      +'<div style="font-size:11px;color:var(--muted)">'+subLine+'</div>'
+      +'</div>'
+      +'<div style="display:flex;align-items:center;gap:6px;flex-shrink:0">'
+      +'<span style="font-weight:700;font-size:15px">'+usd(e.amount)+'</span>'
+      +statusBadge
+      +'<span id="cchev-'+ecid+'" style="color:var(--muted);font-size:11px">&#9662;</span>'
+      +'</div></div>'
+      +'<div id="cact-'+ecid+'" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);flex-wrap:wrap;gap:6px">'
+      +actionBtns+'</div></div>';
+  }
 
   if(billSort==='type'){
     // ── GROUP BY TYPE ──────────────────────────────
-    const incomeCards=incomeItems.map(it=>renderIncomeCard(it.income,it.occ,it.idx,it.total));
-    const billCards=data.bills.filter(b=>b.btype==='bill').map((b,i)=>renderBillCard(b,i===0));
-    const loanCards=data.bills.filter(b=>(b.btype==='loan'||b.btype==='promo')&&b.balance>0).map((b,i)=>renderBillCard(b,i===0));
-    const cardCards=data.bills.filter(b=>b.btype==='creditcard'&&b.balance>0).map((b,i)=>renderBillCard(b,i===0));
+    const incomeCards  = incomeItems.map(it=>renderIncomeCard(it.income,it.occ,it.idx,it.total));
+    const billCards    = data.bills.filter(b=>b.btype==='bill').map((b,i)=>renderBillCard(b,i===0));
+    const expenseCards = data.expenses.filter(e=>e.amount>0).map(e=>renderExpenseCard(e));
+    const loanCards    = data.bills.filter(b=>(b.btype==='loan'||b.btype==='promo')&&b.balance>0).map((b,i)=>renderBillCard(b,i===0));
+    const cardCards    = data.bills.filter(b=>b.btype==='creditcard'&&b.balance>0).map((b,i)=>renderBillCard(b,i===0));
 
     if(incomeCards.length){
       html+=sectionDiv('💰 Income',0);
@@ -5945,8 +6067,12 @@ function renderBills(){
       html+=sectionDiv('📋 Bills',incomeCards.length?1:0);
       html+=billCards.join('<div style="margin-bottom:8px"></div>');
     }
+    if(expenseCards.length){
+      html+=sectionDiv('💸 Expenses',incomeCards.length+billCards.length?1:0);
+      html+=expenseCards.join('<div style="margin-bottom:8px"></div>');
+    }
     if(loanCards.length){
-      html+=sectionDiv('🏦 Loans',incomeCards.length+billCards.length?1:0);
+      html+=sectionDiv('🏦 Loans',1);
       html+=loanCards.join('<div style="margin-bottom:8px"></div>');
     }
     if(cardCards.length){
@@ -5973,6 +6099,12 @@ function renderBills(){
         if(eff!=='Paid'&&eff!=='Scheduled'&&d<0&&!isZeroBalance) eff='Overdue';
         return{_kind:'bill',bill:b,_date:b.dueDate||'',_amount:b.amount,_status:eff};
       }),
+      ...data.expenses.filter(e=>e.amount>0).map(e=>{
+        const isPaid=e.paidMonth===currentMonth;
+        const d=daysUntil(e.date);
+        const eff=isPaid?'Paid':(e.frequency&&e.frequency!=='One-time'&&d<0?'Overdue':'Pending');
+        return{_kind:'expense',expense:e,_date:e.date||'',_amount:e.amount,_status:eff};
+      }),
       ...incomeItems
     ];
 
@@ -5981,22 +6113,33 @@ function renderBills(){
     else if(billSort==='status') allItems.sort((a,b)=>(statusOrder[a._status]??9)-(statusOrder[b._status]??9));
 
     let lastMonthKey='';
-    allItems.forEach((item,idx)=>{
+    const unpaidItems = allItems.filter(i => i._status !== 'Paid' && i._status !== 'Received');
+    const paidItems   = allItems.filter(i => i._status === 'Paid'  || i._status === 'Received');
+
+    unpaidItems.forEach((item,idx)=>{
       if(billSort==='date'){
         const monthKey=item._date?item._date.slice(0,7):'';
         if(monthKey&&monthKey!==lastMonthKey){
           lastMonthKey=monthKey;
           const label=item._date?new Date(item._date+'T12:00:00').toLocaleDateString('en-US',{month:'long',year:'numeric'}):'';
-          html+=sectionDiv(label, idx);
+          html+=sectionDiv(label,idx);
         }
       }
-      if(item._kind==='bill'){
-        html+=renderBillCard(item.bill,false);
-      } else {
-        html+=renderIncomeCard(item.income,item.occ,item.idx,item.total);
-      }
+      if(item._kind==='bill') html+=renderBillCard(item.bill,false);
+      else if(item._kind==='expense') html+=renderExpenseCard(item.expense);
+      else html+=renderIncomeCard(item.income,item.occ,item.idx,item.total);
       html+='<div style="margin-bottom:8px"></div>';
     });
+
+    if(paidItems.length){
+      html+=sectionDiv('✅ Paid / Received', unpaidItems.length ? 1 : 0);
+      paidItems.forEach(item=>{
+        if(item._kind==='bill') html+=renderBillCard(item.bill,false);
+        else if(item._kind==='expense') html+=renderExpenseCard(item.expense);
+        else html+=renderIncomeCard(item.income,item.occ,item.idx,item.total);
+        html+='<div style="margin-bottom:8px"></div>';
+      });
+    }
   }
 
   $('bill-list').innerHTML=html||emptyState('📋','Nothing here yet','Add bills, loans, credit cards, and income to get started.',"+ Add a Bill","openModal('bill')");
@@ -7332,10 +7475,23 @@ function autoResetRecurringBills(){
   if(lastReset===currentMonth) return;
   let changed=0;
   const resetNames=[];
+
+  function advanceDueDate(dueDate, recurring){
+    if(!dueDate) return dueDate;
+    const d=new Date(dueDate+'T12:00:00');
+    if(recurring==='Monthly')    d.setMonth(d.getMonth()+1);
+    else if(recurring==='Weekly')     d.setDate(d.getDate()+7);
+    else if(recurring==='Bi-weekly')  d.setDate(d.getDate()+14);
+    else if(recurring==='Quarterly')  d.setMonth(d.getMonth()+3);
+    else if(recurring==='Annually')   d.setFullYear(d.getFullYear()+1);
+    return d.toISOString().split('T')[0];
+  }
+
   data.bills.forEach(b=>{
     if(b.recurring==='One-time') return;
     if(b.status==='Paid'||b.status==='Scheduled'){
       b.status = b.autoLog ? 'Scheduled' : 'Pending';
+      if(daysUntil(b.dueDate) <= 0) b.dueDate = advanceDueDate(b.dueDate, b.recurring);
       b.scheduledAmount=null;
       b.scheduledAccountId=null;
       changed++;
@@ -9656,8 +9812,17 @@ function runAutoLog(){
     // Deduct from account
     adjustAccountBalance(b.autoLogAccountId, -amt);
 
-    // Mark bill as Paid
+    // Mark bill as Paid and advance due date for next cycle
     b.status = 'Paid';
+    if(b.dueDate && b.recurring && b.recurring!=='One-time'){
+      const dd=new Date(b.dueDate+'T12:00:00');
+      if(b.recurring==='Monthly')   dd.setMonth(dd.getMonth()+1);
+      else if(b.recurring==='Weekly')    dd.setDate(dd.getDate()+7);
+      else if(b.recurring==='Bi-weekly') dd.setDate(dd.getDate()+14);
+      else if(b.recurring==='Quarterly') dd.setMonth(dd.getMonth()+3);
+      else if(b.recurring==='Annually')  dd.setFullYear(dd.getFullYear()+1);
+      b.dueDate = dd.toISOString().split('T')[0];
+    }
 
     // Log transaction
     data.transactions.push({
@@ -10072,7 +10237,7 @@ function renderCashFlow(){
   }).map(b=>({
     label:b.name,
     sub:' · '+(b.btype==='creditcard'?'Credit Card':b.btype==='loan'?'Loan':'Bill')+(b.recurring&&b.recurring!=='No'?' · '+b.recurring:''),
-    amt:b.amount, color:'var(--red)'
+    amt:b.scheduledAmount||b.amount, color:'var(--red)'
   }));
   const outRows=[...expenseRows,...billRows];
   const totalOut=outRows.reduce((s,r)=>s+r.amt,0);
