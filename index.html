@@ -83,17 +83,6 @@ main{max-width:900px;padding:20px 20px 60px;}
   line-height:1;padding:2px 4px;
   -webkit-tap-highlight-color:transparent;
 }
-#mobile-bell{
-  position:relative;background:none;
-  border:none;font-size:22px;cursor:pointer;
-  padding:2px 4px;line-height:1;color:var(--text);
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-}
-#mobile-bell-badge{
-  display:none;position:absolute;top:1px;right:1px;
-  width:7px;height:7px;background:var(--red);border-radius:50%;
-  border:1.5px solid var(--surface);
-}
 #mobile-ham{
   background:none;border:none;color:var(--text);
   font-size:20px;cursor:pointer;padding:2px 4px;
@@ -180,8 +169,6 @@ main{max-width:900px;padding:20px 20px 60px;}
 .alert{border-radius:10px;padding:11px 15px;margin-bottom:8px;font-size:14px;display:flex;align-items:center;gap:8px;animation:fadeIn .3s ease;}
 
 .alert-tap:hover{opacity:.8;}
-.alert-tap 
-.alert-tap 
 @keyframes fadeIn{from{opacity:0;transform:translateY(-4px);}to{opacity:1;}}
 
 /* ── STAT CARDS ── */
@@ -226,7 +213,6 @@ main{max-width:900px;padding:20px 20px 60px;}
 .quick-icon{font-size:30px;margin-bottom:10px;}
 .quick-label{font-size:14px;font-weight:600;}
 
-@media(max-width:680px){}
 .empty{color:#555555;font-size:14px;padding:8px 0;}
 hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
 
@@ -285,7 +271,6 @@ hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
 .pin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:220px;}
 .pin-key{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;font-size:20px;font-weight:600;cursor:pointer;text-align:center;color:var(--text);font-family:var(--font-b);transition:background .1s,transform .1s;}
 .pin-key:active{background:var(--border2);transform:scale(.95);}
-.pin-key
 .pin-key.del{font-size:16px;}
 
 /* ── CHART ── */
@@ -305,7 +290,38 @@ canvas{width:100%!important;}
 /* ── UTILITY CLASSES (extracted from repeated inline styles) ── */
 
 .flex-start{display:flex;align-items:center;gap:10px;}
+.flex-end{display:flex;justify-content:flex-end;}
+.flex-between{display:flex;justify-content:space-between;align-items:center;}
+.flex-center{display:flex;align-items:center;justify-content:center;}
+.flex-col{display:flex;flex-direction:column;}
 
+/* Text helpers */
+.txt-muted{color:var(--muted);}
+.txt-muted-sm{font-size:11px;color:var(--muted);}
+.txt-muted-sm-top{font-size:11px;color:var(--muted);margin-top:4px;}
+.txt-muted-xs{font-size:12px;color:var(--muted);}
+.txt-label{font-size:10px;color:var(--muted);text-transform:uppercase;font-weight:700;margin-bottom:2px;}
+.txt-bold{font-weight:700;}
+.txt-red{color:var(--red);}
+.txt-green{color:var(--green);}
+.txt-yellow{color:var(--yellow);}
+.txt-accent{color:var(--accent2);}
+
+/* Spacing helpers */
+.mb-0{margin-bottom:0;}
+.mb-8{margin-bottom:8px;}
+.mb-16{margin-bottom:16px;}
+.mt-0{margin-top:0;}
+.m-0{margin:0;}
+
+/* Surface chip — used in settings rows and info panels */
+.surface-chip{background:rgba(255,255,255,.04);border-radius:8px;padding:8px;}
+
+/* Inline select — used in trend compare and other in-row selects */
+.inline-select{background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:5px 10px;color:var(--text);font-size:12px;flex:1;}
+
+/* Section sub-header row (flex-end with toggle) */
+.sub-header-row{display:flex;justify-content:flex-end;margin-bottom:14px;}
 
 .info-box .stat-label{margin-bottom:2px;}
 
@@ -389,10 +405,6 @@ canvas{width:100%!important;}
 
 
 
-
-
-.txn-summary-item 
-.txn-summary-item 
 
 
 /* ── SIDEBAR FOOTER ── */
@@ -484,10 +496,6 @@ canvas{width:100%!important;}
 
 /* ── AUTO-PROCESS NOTIFICATION ── */
 #autoprocess-banner{display:none;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);border-radius:12px;padding:10px 14px;margin-bottom:16px;font-size:13px;color:var(--green);display:none;align-items:center;gap:10px;}
-#autoprocess-banner 
-
-/* ── UNDO TOAST ── */
-
 
 /* ── BILL CONFIRMATION ANIMATION ── */
 @keyframes checkPop{0%{transform:scale(0);opacity:0}60%{transform:scale(1.3)}100%{transform:scale(1);opacity:1}}
@@ -611,9 +619,6 @@ canvas{width:100%!important;}
 .debt-countdown .dc-icon{font-size:28px;flex-shrink:0;}
 .debt-countdown .dc-body{flex:1;}
 .debt-countdown .dc-label{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.6px;}
-.debt-countdown 
-.debt-countdown 
-.debt-countdown 
 
 
 /* ── PROMO SIMULATOR ── */
@@ -643,27 +648,6 @@ canvas{width:100%!important;}
 .promo-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(34,197,94,.12);
   color:var(--green);border:1px solid rgba(34,197,94,.25);border-radius:6px;
   padding:3px 8px;font-size:10px;font-weight:700;margin-top:4px;}
-.promo-badge.warn{background:rgba(245,158,11,.12);color:var(--yellow);border-color:rgba(245,158,11,.25);}
-.promo-badge.danger{background:rgba(239,68,68,.12);color:var(--red);border-color:rgba(239,68,68,.25);}
-.promo-needed{font-size:11px;color:var(--muted);margin-top:3px;}
-
-
-/* ── PROMO SIMULATOR ── */
-#promo-simulator{background:var(--surface);border:1px solid var(--border2);border-radius:14px;padding:16px;margin-bottom:16px;}
-.promo-sim-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
-.promo-scenario-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
-.promo-tab{background:rgba(255,255,255,.06);border:1px solid var(--border2);border-radius:8px;padding:6px 12px;font-size:11px;font-weight:600;color:var(--muted);cursor:pointer;font-family:var(--font-b);transition:all .15s;}
-.promo-tab.active{background:var(--accent);color:#fff;border-color:var(--accent);}
-.promo-result{background:rgba(80,112,240,.06);border:1px solid rgba(80,112,240,.2);border-radius:10px;padding:12px;margin-top:12px;}
-.promo-result-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
-.promo-result-item{background:var(--surface);border-radius:8px;padding:8px 10px;border:1px solid var(--border);}
-.promo-result-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;}
-.promo-result-val{font-size:15px;font-weight:700;}
-.promo-verdict{padding:10px 12px;border-radius:8px;font-size:12px;font-weight:600;margin-top:8px;}
-.promo-verdict.go{background:rgba(34,197,94,.12);color:var(--green);}
-.promo-verdict.caution{background:rgba(245,158,11,.12);color:var(--yellow);}
-.promo-verdict.nogo{background:rgba(239,68,68,.12);color:var(--red);}
-.promo-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.25);border-radius:6px;padding:3px 8px;font-size:10px;font-weight:700;margin-top:4px;}
 .promo-badge.warn{background:rgba(245,158,11,.12);color:var(--yellow);border-color:rgba(245,158,11,.25);}
 .promo-badge.danger{background:rgba(239,68,68,.12);color:var(--red);border-color:rgba(239,68,68,.25);}
 .promo-needed{font-size:11px;color:var(--muted);margin-top:3px;}
@@ -779,8 +763,6 @@ canvas{width:100%!important;}
 #bill-reset-banner{display:none;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.3);
   border-radius:10px;padding:12px 14px;margin-bottom:14px;
   font-size:13px;color:var(--blue);}
-#bill-reset-banner 
-#bill-reset-banner 
 
 /* ── TRANSFER PENDING BANNER ── */
 #transfer-banner{display:none;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);
@@ -1064,27 +1046,27 @@ canvas{width:100%!important;}
     <button class="pin-key" onclick="pinKey('9')">9</button>
     <button class="pin-key del" onclick="pinDel()">⌫</button>
     <button class="pin-key" onclick="pinKey('0')">0</button>
-    <button class="pin-key" onclick="pinClear()" style="font-size:12px;color:var(--muted)" data-i18n="Clear">Clear</button>
+    <button class="pin-key" onclick="pinClear()" class="txt-muted-xs" data-i18n="Clear">Clear</button>
   </div>
 </div>
 
 <!-- ── SIDEBAR ── -->
 <div id="sidebar">
   <div class="brand">💼 FinanceOS</div>
-  <button class="nav-item active" onclick="show('dashboard',this)"><span class="ni">📊</span><span data-i18n="Dashboard">Dashboard</span></button>
-  <button class="nav-item" onclick="show('bills',this)"><span class="ni">💰</span><span>Money</span><span id="bills-badge" class="nav-badge red" style="display:none"></span></button>
-  <button class="nav-item" onclick="show('debt',this)"><span class="ni">📉</span><span data-i18n="Debt Planner">Debt Planner</span></button>
-  <button class="nav-item" onclick="show('networth',this)"><span class="ni">🏦</span><span>Accounts</span></button>
-  <button class="nav-item" onclick="show('insights',this)"><span class="ni">📈</span><span data-i18n="Insights">Insights</span><span id="insights-badge" class="nav-badge" style="display:none"></span></button>
-  <button class="nav-item" onclick="show('cards',this)"><span class="ni">💳</span><span data-i18n="Cards">Cards</span></button>
-  <button class="nav-item" onclick="show('advisor',this)"><span class="ni">🤖</span><span>My Advisor</span></button>
-  <button class="nav-item" onclick="show('quick',this)"><span class="ni">⚡</span><span data-i18n="Quick Update">Quick Update</span></button>
+  <button class="nav-item active" data-section="dashboard" onclick="show('dashboard',this)"><span class="ni">📊</span><span data-i18n="Dashboard">Dashboard</span></button>
+  <button class="nav-item" data-section="bills" onclick="show('bills',this)"><span class="ni">💰</span><span>Money</span><span id="bills-badge" class="nav-badge red" style="display:none"></span></button>
+  <button class="nav-item" data-section="debt" onclick="show('debt',this)"><span class="ni">📉</span><span data-i18n="Debt Planner">Debt Planner</span></button>
+  <button class="nav-item" data-section="networth" onclick="show('networth',this)"><span class="ni">🏦</span><span>Accounts</span></button>
+  <button class="nav-item" data-section="insights" onclick="show('insights',this)"><span class="ni">📈</span><span data-i18n="Insights">Insights</span><span id="insights-badge" class="nav-badge" style="display:none"></span></button>
+  <button class="nav-item" data-section="cards" onclick="show('cards',this)"><span class="ni">💳</span><span data-i18n="Cards">Cards</span></button>
+  <button class="nav-item" data-section="advisor" onclick="show('advisor',this)"><span class="ni">🤖</span><span>My Advisor</span></button>
+  <button class="nav-item" data-section="quick" onclick="show('quick',this)"><span class="ni">⚡</span><span data-i18n="Quick Update">Quick Update</span></button>
   <div id="sidebar-footer">
     <div id="last-saved" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 0;"><span id="ls-dot" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0;"></span><span id="ls-text" style="font-size:11px;color:#444460;font-weight:400;font-family:-apple-system,sans-serif;">Not saved yet</span></div>
   </div>
   <div class="nav-settings">
     <button class="nav-item" onclick="lockApp()" id="lock-nav-btn" style="display:none"><span class="ni">🔒</span><span data-i18n="Lock App">Lock App</span></button>
-    <button class="nav-item" onclick="show('about',this)"><span class="ni">&#8505;&#65039;</span><span>About</span></button>
+    <button class="nav-item" onclick="show('about',this)" data-section="about"><span class="ni">&#8505;&#65039;</span><span>About</span></button>
     <button class="nav-item" onclick="openModal('settings')"><span class="ni">⚙️</span><span data-i18n="Settings">Settings</span></button>
     <div style="text-align:center;padding:4px 0 8px;font-size:10px;color:#333350;font-weight:600;letter-spacing:.04em;font-family:-apple-system,sans-serif;" id="sidebar-version"></div>
   </div>
@@ -1153,9 +1135,9 @@ canvas{width:100%!important;}
       <!-- 4 supporting stats -->
       <div class="card-grid" style="grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
         <div class="stat-card"><div class="stat-label" data-i18n="Income">Income</div><div class="stat-value" id="d-income" style="color:var(--teal)">$0.00</div></div>
-        <div class="stat-card"><div class="stat-label">Money Out</div><div class="stat-value" id="d-expenses" style="color:var(--yellow)">$0.00</div></div>
-        <div class="stat-card"><div class="stat-label" data-i18n="Total Debt">Total Debt</div><div class="stat-value" id="d-debt" style="color:var(--red)">$0.00</div></div>
-        <div class="stat-card"><div class="stat-label">Accounts</div><div class="stat-value" id="d-acct-total" style="color:var(--accent2)">$0.00</div></div>
+        <div class="stat-card"><div class="stat-label">Money Out</div><div class="stat-value" id="d-expenses" class="txt-yellow">$0.00</div></div>
+        <div class="stat-card"><div class="stat-label" data-i18n="Total Debt">Total Debt</div><div class="stat-value" id="d-debt" class="txt-red">$0.00</div></div>
+        <div class="stat-card"><div class="stat-label">Accounts</div><div class="stat-value" id="d-acct-total" class="txt-accent">$0.00</div></div>
       </div>
 
       <!-- Account chip strip (tap to expand) -->
@@ -1167,13 +1149,13 @@ canvas{width:100%!important;}
       </div>
 
       <!-- Notification pill (desktop) -->
-      <div style="margin-bottom:16px"><button id="notif-pill"></button></div>
+      <div class="mb-16"><button id="notif-pill"></button></div>
 
       <!-- 7-day timeline -->
       <div class="card">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
           <div class="section-label" style="color:var(--muted);margin-bottom:0">Activity</div>
-          <div style="font-size:11px;color:var(--muted)">−7 to +7 days</div>
+          <div class="txt-muted-sm">−7 to +7 days</div>
         </div>
         <div id="d-timeline"><div class="empty" data-i18n="No activity this week.">No activity this week.</div></div>
       </div>
@@ -1182,7 +1164,7 @@ canvas{width:100%!important;}
     <!-- BILLS -->
     <div id="bills" class="section">
       <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
-        <div class="plan-toggle" style="margin-bottom:0">
+        <div class="plan-toggle" class="mb-0">
           <button id="sub-money-bills" class="active" onclick="showSub('bills','bills')">Bills</button>
           <button id="sub-money-log"   onclick="showSub('quick','bills')">Log</button>
         </div>
@@ -1211,8 +1193,8 @@ canvas{width:100%!important;}
 
     <!-- DEBT PLANNER -->
     <div id="debt" class="section">
-      <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
-        <div class="plan-toggle" style="margin-bottom:0">
+      <div class="sub-header-row">
+        <div class="plan-toggle" class="mb-0">
           <button id="sub-debt-cashflow" onclick="showSub('cashflow','insights')">Cash Flow</button>
           <button id="sub-debt-debt"     class="active" onclick="showSub('debt','insights')">Debt</button>
           <button id="sub-debt-spending" onclick="showSub('insights','insights')">Spending</button>
@@ -1235,14 +1217,14 @@ canvas{width:100%!important;}
           <div style="font-size:32px;margin-bottom:12px">📉</div>
           <div style="font-size:15px;font-weight:600;margin-bottom:6px" data-i18n="No debts entered yet">No debts entered yet</div>
           <div style="font-size:13px;color:var(--muted);margin-bottom:16px" data-i18n="Add bills with a Balance and APR in the Bills section to use the planner.">Add bills with a Balance and APR in the Bills section to use the planner.</div>
-          <button class="btn btn-primary" onclick="show('bills',document.querySelector('.nav-item:nth-child(3)'))" data-i18n="Go to Bills">Go to Bills</button>
+          <button class="btn btn-primary" onclick="show('bills',document.querySelector('[data-section=bills]'))" data-i18n="Go to Bills">Go to Bills</button>
         </div>
       </div>
       <div id="debt-planner-content">
 
         <!-- Debt-Free Countdown -->
-        <div id="debt-countdown-wrap" style="margin-bottom:16px"></div>
-        <div style="margin-bottom:16px">
+        <div id="debt-countdown-wrap" class="mb-16"></div>
+        <div class="mb-16">
           <div class="plan-toggle">
             <button id="btn-avalanche" class="active" onclick="setMethod('avalanche')" data-i18n="Avalanche">Avalanche</button>
             <button id="btn-snowball" onclick="setMethod('snowball')" data-i18n="Snowball">Snowball</button>
@@ -1252,7 +1234,7 @@ canvas{width:100%!important;}
 
         <!-- Cash flow breakdown -->
         <div class="card" style="margin-bottom:18px" id="cash-flow-panel">
-          <div class="section-label" style="color:var(--muted)" data-i18n="Available Cash Breakdown">Available Cash Breakdown</div>
+          <div class="section-label" class="txt-muted" data-i18n="Available Cash Breakdown">Available Cash Breakdown</div>
           <div id="cash-flow-rows"></div>
           <div style="display:flex;justify-content:space-between;align-items:center;padding-top:10px;margin-top:4px;border-top:1px solid var(--border)">
             <span style="font-size:13px;font-weight:700" data-i18n="Available for Debt Payments">Available for Debt Payments</span>
@@ -1265,7 +1247,7 @@ canvas{width:100%!important;}
           <div class="debt-progress-header">
             <div>
               <div style="font-size:13px;font-weight:700;color:var(--text)" data-i18n="Overall Payoff Progress">Overall Payoff Progress</div>
-              <div style="font-size:11px;color:var(--muted)" id="debt-progress-label"></div>
+              <div class="txt-muted-sm" id="debt-progress-label"></div>
             </div>
             <div style="font-size:20px;font-weight:700;color:var(--green)" id="debt-progress-pct"></div>
           </div>
@@ -1286,12 +1268,12 @@ canvas{width:100%!important;}
             <button class="promo-tab" id="ptab-transfer" onclick="setPromoScenario('transfer',this)">🔄 Balance Transfer</button>
           </div>
           <div id="promo-sim-inputs" style="display:none;grid-template-columns:1fr 1fr;gap:10px">
-            <div class="field" style="margin:0"><label id="promo-amount-label">Amount ($)</label><input id="promo-amount" type="number" placeholder="5000" oninput="calcPromo()"/></div>
-            <div class="field" style="margin:0"><label>Promo Months</label><input id="promo-months" type="number" placeholder="10" value="10" oninput="calcPromo()"/></div>
-            <div class="field" style="margin:0"><label id="promo-fee-label">Fee (%)</label><input id="promo-fee" type="number" placeholder="3" step="0.1" oninput="calcPromo()"/></div>
-            <div class="field" style="margin:0"><label>Regular APR After (%)</label><input id="promo-regular-apr" type="number" placeholder="24.99" step="0.01" oninput="calcPromo()"/></div>
-            <div class="field" style="margin:0" id="promo-current-apr-wrap"><label>Current Debt APR (%)</label><input id="promo-current-apr" type="number" placeholder="22.99" step="0.01" oninput="calcPromo()"/></div>
-            <div class="field" style="margin:0">
+            <div class="field" class="m-0"><label id="promo-amount-label">Amount ($)</label><input id="promo-amount" type="number" placeholder="5000" oninput="calcPromo()"/></div>
+            <div class="field" class="m-0"><label>Promo Months</label><input id="promo-months" type="number" placeholder="10" value="10" oninput="calcPromo()"/></div>
+            <div class="field" class="m-0"><label id="promo-fee-label">Fee (%)</label><input id="promo-fee" type="number" placeholder="3" step="0.1" oninput="calcPromo()"/></div>
+            <div class="field" class="m-0"><label>Regular APR After (%)</label><input id="promo-regular-apr" type="number" placeholder="24.99" step="0.01" oninput="calcPromo()"/></div>
+            <div class="field" class="m-0" id="promo-current-apr-wrap"><label>Current Debt APR (%)</label><input id="promo-current-apr" type="number" placeholder="22.99" step="0.01" oninput="calcPromo()"/></div>
+            <div class="field" class="m-0">
               <label>Fee Type</label>
               <select id="promo-fee-type" onchange="calcPromo()" style="background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:8px;color:var(--text);font-size:13px;width:100%">
                 <option value="percent">Percent (%)</option>
@@ -1308,8 +1290,8 @@ canvas{width:100%!important;}
 
     <!-- NET WORTH -->
     <div id="networth" class="section">
-      <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
-        <div class="plan-toggle" style="margin-bottom:0">
+      <div class="sub-header-row">
+        <div class="plan-toggle" class="mb-0">
           <button id="sub-acct-accounts" class="active" onclick="showSub('networth','networth')">Accounts</button>
           <button id="sub-acct-cards" onclick="showSub('cards','networth')">Cards</button>
           <button id="sub-acct-loans" onclick="showSub('loans','networth')">Loans</button>
@@ -1321,13 +1303,13 @@ canvas{width:100%!important;}
       <!-- Summary -->
       <div class="nw-grid" style="margin-bottom:20px">
         <div class="nw-card"><div class="stat-label" data-i18n="Account Balances">Account Balances</div><div class="stat-value" id="nw-accounts" style="color:var(--blue)">$0.00</div></div>
-        <div class="nw-card"><div class="stat-label" data-i18n="Total Assets">Total Assets</div><div class="stat-value" id="nw-assets" style="color:var(--green)">$0.00</div></div>
-        <div class="nw-card"><div class="stat-label" data-i18n="Total Debt">Total Debt</div><div class="stat-value" id="nw-debts" style="color:var(--red)">$0.00</div></div>
+        <div class="nw-card"><div class="stat-label" data-i18n="Total Assets">Total Assets</div><div class="stat-value" id="nw-assets" class="txt-green">$0.00</div></div>
+        <div class="nw-card"><div class="stat-label" data-i18n="Total Debt">Total Debt</div><div class="stat-value" id="nw-debts" class="txt-red">$0.00</div></div>
         <div class="nw-card"><div class="stat-label" data-i18n="Net Worth">Net Worth</div><div class="stat-value" id="nw-total">$0.00</div></div>
       </div>
 
       <!-- Accounts subsection -->
-      <div class="card" style="margin-bottom:16px">
+      <div class="card" class="mb-16">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
           <div class="section-label" style="color:var(--blue);margin-bottom:0" data-i18n="Accounts">Accounts</div>
           <button class="btn btn-secondary btn-sm" onclick="openModal('account')">+ Account</button>
@@ -1336,7 +1318,7 @@ canvas{width:100%!important;}
       </div>
 
       <!-- Savings Goals subsection -->
-      <div class="card" style="margin-bottom:16px">
+      <div class="card" class="mb-16">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
           <div class="section-label" style="color:var(--green);margin-bottom:0" data-i18n="Savings Goals">Savings Goals</div>
           <button class="btn btn-primary btn-sm" onclick="openModal('goal')">+ Goal</button>
@@ -1344,9 +1326,9 @@ canvas{width:100%!important;}
         <div id="goals-list"></div>
       </div>
       <!-- Assets subsection -->
-      <div class="card" style="margin-bottom:16px">
+      <div class="card" class="mb-16">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-          <div class="section-label" style="color:var(--muted)" data-i18n="Assets">Assets</div>
+          <div class="section-label" class="txt-muted" data-i18n="Assets">Assets</div>
           <button class="btn btn-primary btn-sm" onclick="openModal('asset')">+ Asset</button>
         </div>
         <div id="asset-list"></div>
@@ -1356,7 +1338,7 @@ canvas{width:100%!important;}
       <div class="card" style="margin-bottom:20px" id="nw-history-card">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px">
           <div class="section-label" style="color:var(--muted);margin-bottom:0" data-i18n="Net Worth History">Net Worth History</div>
-          <div class="plan-toggle" style="margin-bottom:0">
+          <div class="plan-toggle" class="mb-0">
             <button class="nwh-btn active" onclick="setNWHWindow(6,this)">6mo</button>
             <button class="nwh-btn" onclick="setNWHWindow(12,this)">12mo</button>
             <button class="nwh-btn" onclick="setNWHWindow(24,this)">All</button>
@@ -1370,14 +1352,14 @@ canvas{width:100%!important;}
     <!-- INSIGHTS -->
     <!-- CASH FLOW (Insights sub-view) -->
     <div id="cashflow" class="section">
-      <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
-        <div class="plan-toggle" style="margin-bottom:0">
+      <div class="sub-header-row">
+        <div class="plan-toggle" class="mb-0">
           <button id="sub-cf-cashflow" class="active" onclick="showSub('cashflow','insights')">Cash Flow</button>
           <button id="sub-cf-debt"     onclick="showSub('debt','insights')">Debt</button>
           <button id="sub-cf-spending" onclick="showSub('insights','insights')">Spending</button>
         </div>
       </div>
-      <div class="card" style="margin-bottom:16px">
+      <div class="card" class="mb-16">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px">
           <div class="section-label" style="color:var(--muted);margin-bottom:0">Monthly Cash Flow</div>
           <select id="cf-chart-months" onchange="renderCashFlow()" style="background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:5px 10px;color:var(--text);font-size:12px;-webkit-appearance:none">
@@ -1393,8 +1375,8 @@ canvas{width:100%!important;}
     </div>
 
     <div id="insights" class="section">
-      <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
-        <div class="plan-toggle" style="margin-bottom:0">
+      <div class="sub-header-row">
+        <div class="plan-toggle" class="mb-0">
           <button id="sub-ins-cashflow" onclick="showSub('cashflow','insights')">Cash Flow</button>
           <button id="sub-ins-debt"     onclick="showSub('debt','insights')">Debt</button>
           <button id="sub-ins-spending" class="active" onclick="showSub('insights','insights')">Spending</button>
@@ -1403,7 +1385,7 @@ canvas{width:100%!important;}
       <div id="insights-alerts"></div>
 
       <!-- Spending Chart -->
-      <div class="card" style="margin-bottom:16px">
+      <div class="card" class="mb-16">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px">
           <div class="section-label" style="color:var(--muted);margin-bottom:0" data-i18n="Monthly Spending Trend">Monthly Spending Trend</div>
           <select id="chart-months" onchange="renderInsights()" style="background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:5px 10px;color:var(--text);font-size:12px;-webkit-appearance:none">
@@ -1417,17 +1399,17 @@ canvas{width:100%!important;}
       </div>
 
       <!-- Spending Anomalies -->
-      <div class="card" style="margin-bottom:16px" id="anomaly-card">
+      <div class="card" class="mb-16" id="anomaly-card">
         <div class="section-label" style="color:var(--muted);margin-bottom:14px" data-i18n="Spending Anomalies">Spending Anomalies</div>
         <div id="anomaly-wrap"></div>
       </div>
 
       <!-- Budget vs Actual -->
-      <div class="card" style="margin-bottom:16px">
+      <div class="card" class="mb-16">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;flex-wrap:wrap;gap:10px">
           <div class="section-label" style="color:var(--muted);margin-bottom:0" data-i18n="Budget vs Actual">Budget vs Actual</div>
           <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:flex-end;min-width:0">
-            <div class="plan-toggle" style="margin-bottom:0">
+            <div class="plan-toggle" class="mb-0">
               <button id="tab-categories" class="active" onclick="setInsightsTab('categories')" data-i18n="Categories">Categories</button>
               <button id="tab-cards" onclick="setInsightsTab('cards')" data-i18n="Cards">Cards</button>
               <button id="tab-trends" onclick="setInsightsTab('trends')">&#128200; Trends</button>
@@ -1444,7 +1426,7 @@ canvas{width:100%!important;}
           <span style="font-size:18px">📅</span>
           <div>
             <div class="section-label" style="color:var(--muted);margin-bottom:0" data-i18n="Monthly Snapshot">Monthly Snapshot</div>
-            <div style="font-size:11px;color:var(--muted)" id="snap-subtitle">This month vs last month</div>
+            <div class="txt-muted-sm" id="snap-subtitle">This month vs last month</div>
           </div>
         </div>
         <div class="snap-grid" id="snap-grid"></div>
@@ -1465,8 +1447,8 @@ canvas{width:100%!important;}
 
     <!-- CARDS -->
     <div id="cards" class="section">
-      <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
-        <div class="plan-toggle" style="margin-bottom:0">
+      <div class="sub-header-row">
+        <div class="plan-toggle" class="mb-0">
           <button id="sub-cards-accounts" onclick="showSub('networth','networth')">Accounts</button>
           <button id="sub-cards-cards" class="active" onclick="showSub('cards','networth')">Cards</button>
           <button id="sub-cards-loans" onclick="showSub('loans','networth')">Loans</button>
@@ -1476,8 +1458,8 @@ canvas{width:100%!important;}
       <div id="cards-alerts"></div>
       <!-- Credit Utilization Summary -->
       <div id="credit-summary-wrap">
-        <div class="card" style="margin-bottom:16px">
-          <div class="section-label" style="color:var(--muted)" data-i18n="Overall Credit Utilization">Overall Credit Utilization</div>
+        <div class="card" class="mb-16">
+          <div class="section-label" class="txt-muted" data-i18n="Overall Credit Utilization">Overall Credit Utilization</div>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:14px">
             <div><div class="stat-label" data-i18n="Total Credit Limit">Total Credit Limit</div><div class="stat-value" id="cr-limit" style="font-size:18px">$0.00</div></div>
             <div><div class="stat-label" data-i18n="Total Balance Used">Total Balance Used</div><div class="stat-value" id="cr-used" style="font-size:18px;color:var(--yellow)">$0.00</div></div>
@@ -1505,8 +1487,8 @@ canvas{width:100%!important;}
 
     <!-- LOANS -->
     <div id="loans" class="section">
-      <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
-        <div class="plan-toggle" style="margin-bottom:0">
+      <div class="sub-header-row">
+        <div class="plan-toggle" class="mb-0">
           <button id="sub-loans-accounts" onclick="showSub('networth','networth')">Accounts</button>
           <button id="sub-loans-cards"    onclick="showSub('cards','networth')">Cards</button>
           <button id="sub-loans-loans"    class="active">Loans</button>
@@ -1514,7 +1496,7 @@ canvas{width:100%!important;}
       </div>
 
       <!-- Loan Summary -->
-      <div class="card" style="margin-bottom:16px" id="loan-summary-wrap">
+      <div class="card" class="mb-16" id="loan-summary-wrap">
         <div class="section-label" style="color:var(--muted);margin-bottom:12px">Loan Overview</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-bottom:14px">
           <div><div class="stat-label">Total Owed</div><div class="stat-value" id="loan-total-bal" style="font-size:18px;color:var(--red)">$0.00</div></div>
@@ -1578,7 +1560,7 @@ canvas{width:100%!important;}
     <!-- QUICK UPDATE -->
     <div id="quick" class="section">
       <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
-        <div class="plan-toggle" style="margin-bottom:0">
+        <div class="plan-toggle" class="mb-0">
           <button id="sub-quick-bills" onclick="showSub('bills','bills')">Bills</button>
           <button id="sub-quick-log"   class="active">Log</button>
         </div>
@@ -1794,6 +1776,33 @@ canvas{width:100%!important;}
 
 <!-- ══ MODALS ══ -->
 
+<!-- CONFIRM DIALOG -->
+<div class="overlay" id="modal-confirm">
+  <div class="modal" style="max-width:380px;padding:28px 24px 24px">
+    <div style="text-align:center;margin-bottom:18px">
+      <div id="confirm-icon" style="font-size:36px;margin-bottom:10px"></div>
+      <div id="confirm-title" style="font-size:17px;font-weight:700;color:var(--text);margin-bottom:8px"></div>
+      <div id="confirm-msg" style="font-size:13px;color:var(--muted);line-height:1.6"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px">
+      <button class="btn btn-secondary btn-full" onclick="_confirmCancel()">Cancel</button>
+      <button class="btn btn-full" id="confirm-ok-btn" onclick="_confirmOk()">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- ALERT DIALOG -->
+<div class="overlay" id="modal-alert">
+  <div class="modal" style="max-width:360px;padding:28px 24px 24px">
+    <div style="text-align:center;margin-bottom:20px">
+      <div id="alert-icon" style="font-size:36px;margin-bottom:10px"></div>
+      <div id="alert-title" style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px"></div>
+      <div id="alert-msg" style="font-size:13px;color:var(--muted);line-height:1.6"></div>
+    </div>
+    <button class="btn btn-primary btn-full" onclick="document.getElementById('modal-alert').classList.remove('open')">OK</button>
+  </div>
+</div>
+
 <!-- NOTIFICATION DRAWER -->
 <div class="overlay" id="notif-drawer-overlay">
   <div class="modal" style="max-height:85vh">
@@ -1897,10 +1906,10 @@ canvas{width:100%!important;}
     <div class="field" id="i-lastpay-wrap" style="display:none">
       <label>Last Paycheck Date</label>
       <input id="i-lastpay" type="date"/>
-      <div style="font-size:11px;color:var(--muted);margin-top:4px">Used to calculate which months have 2 vs 3 paychecks</div>
+      <div class="txt-muted-sm-top">Used to calculate which months have 2 vs 3 paychecks</div>
     </div>
     <div id="i-update-note" style="display:none;font-size:11px;color:var(--muted);background:rgba(80,112,240,.08);border:1px solid rgba(80,112,240,.2);border-radius:8px;padding:8px 12px;margin-bottom:12px">
-      💡 To update the amount for a single payment, close this and tap <strong style="color:var(--accent2)">$ Update</strong> on that payment card in Money.
+      💡 To update the amount for a single payment, close this and tap <strong class="txt-accent">$ Update</strong> on that payment card in Money.
     </div>
     <button class="btn btn-primary btn-full" onclick="saveIncome()" data-i18n="Save Income">Save Income</button>
   </div>
@@ -1920,7 +1929,7 @@ canvas{width:100%!important;}
     <div class="field">
       <label>Actual Amount ($)</label>
       <input id="occ-amount" type="number" inputmode="decimal" placeholder="Leave blank to use scheduled amount"/>
-      <div style="font-size:11px;color:var(--muted);margin-top:4px">Overrides the scheduled amount for this specific payment only. Leave blank to revert to scheduled.</div>
+      <div class="txt-muted-sm-top">Overrides the scheduled amount for this specific payment only. Leave blank to revert to scheduled.</div>
     </div>
     <button class="btn btn-primary btn-full" onclick="saveOccurrenceOverride()">Save</button>
     <button class="btn btn-danger btn-full" onclick="clearOccurrenceOverride()" style="margin-top:8px;background:transparent;border:1px solid rgba(239,68,68,.3);">Clear Override</button>
@@ -1995,7 +2004,7 @@ canvas{width:100%!important;}
         </div>
         <div class="field" id="b-limit-wrap"><label data-i18n="Credit Limit ($)">Credit Limit ($)</label><input id="b-limit" type="number" inputmode="decimal" placeholder="e.g. 10000"/></div>
         <div class="field" id="b-original-wrap"><label>Original Loan Amount ($)</label><input id="b-original" type="number" inputmode="decimal" placeholder="e.g. 25000" step="0.01"/>
-          <div style="font-size:11px;color:var(--muted);margin-top:4px">Used by Debt Planner to show payoff progress.</div>
+          <div class="txt-muted-sm-top">Used by Debt Planner to show payoff progress.</div>
         </div>
       </div>
       <div id="b-autolog-wrap" style="display:none">
@@ -2011,7 +2020,7 @@ canvas{width:100%!important;}
         </div>
       </div>
       <div class="field"><label>Website (optional)</label><input id="b-url" placeholder="e.g. chase.com or netflix.com" oninput="onBillUrlInput(this.value)"/>
-        <div style="font-size:11px;color:var(--muted);margin-top:4px">Tap to go directly to this biller's site or app when paying.</div>
+        <div class="txt-muted-sm-top">Tap to go directly to this biller's site or app when paying.</div>
       </div>
     </div>
 
@@ -2061,7 +2070,7 @@ canvas{width:100%!important;}
       <div class="field" id="a-depr-rate-wrap">
         <label>Annual Depreciation (%)</label>
         <input id="a-depr-rate" type="number" inputmode="decimal" placeholder="e.g. 15 for a car" step="0.1"/>
-        <div style="font-size:11px;color:var(--muted);margin-top:4px">Used to estimate current value from purchase date. Typical: car 15–20%, home appreciates (leave blank).</div>
+        <div class="txt-muted-sm-top">Used to estimate current value from purchase date. Typical: car 15–20%, home appreciates (leave blank).</div>
       </div>
     </div>
 
@@ -2071,7 +2080,7 @@ canvas{width:100%!important;}
       <select id="a-linked-bill" style="background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:8px;color:var(--text);font-size:13px;width:100%">
         <option value="">-- None --</option>
       </select>
-      <div style="font-size:11px;color:var(--muted);margin-top:4px">Links the loan balance so the card shows your equity automatically.</div>
+      <div class="txt-muted-sm-top">Links the loan balance so the card shows your equity automatically.</div>
     </div>
 
     <div class="field"><label data-i18n="Notes (optional)">Notes (optional)</label><input id="a-notes" placeholder="e.g. Estimated market value"/></div>
@@ -2139,12 +2148,12 @@ canvas{width:100%!important;}
       </select>
     </div>
     <div class="field" id="ac-apy-wrap"><label>APY (%)</label><input id="ac-apy" type="number" inputmode="decimal" placeholder="e.g. 4.50" step="0.01"/>
-      <div style="font-size:11px;color:var(--muted);margin-top:4px">Annual Percentage Yield — used to show projected interest earned.</div>
+      <div class="txt-muted-sm-top">Annual Percentage Yield — used to show projected interest earned.</div>
     </div>
     <div class="field"><label data-i18n="Current Balance ($)">Current Balance ($)</label><input id="ac-balance" type="number" inputmode="decimal" placeholder="0.00"/></div>
     <div class="field"><label data-i18n="Notes (optional)">Notes (optional)</label><input id="ac-notes" placeholder="e.g. Primary checking account"/></div>
     <div class="field" id="ac-url-wrap"><label>Online Banking URL (optional)</label><input id="ac-url" placeholder="e.g. pnc.com or ally.com"/>
-      <div style="font-size:11px;color:var(--muted);margin-top:4px">Tap to jump directly to your bank's website or app.</div>
+      <div class="txt-muted-sm-top">Tap to jump directly to your bank's website or app.</div>
     </div>
     <button class="btn btn-primary btn-full" onclick="saveAccount()" data-i18n="Save Account">Save Account</button>
     <div id="account-delete-wrap" style="display:none;margin-top:10px">
@@ -2218,8 +2227,8 @@ canvas{width:100%!important;}
         </div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-        <div class="field" style="margin:0"><label>Promo Months</label><input id="pu-promo-months" type="number" placeholder="6" value="6" oninput="calcPromoRequired()"/></div>
-        <div class="field" style="margin:0" id="pu-deferred-apr-wrap"><label>Interest Rate If Late (%)</label><input id="pu-promo-apr" type="number" placeholder="29.99" step="0.01"/></div>
+        <div class="field" class="m-0"><label>Promo Months</label><input id="pu-promo-months" type="number" placeholder="6" value="6" oninput="calcPromoRequired()"/></div>
+        <div class="field" class="m-0" id="pu-deferred-apr-wrap"><label>Interest Rate If Late (%)</label><input id="pu-promo-apr" type="number" placeholder="29.99" step="0.01"/></div>
       </div>
       <div id="pu-promo-calc" style="font-size:12px;color:var(--muted);margin-top:8px;padding:8px 10px;background:rgba(0,0,0,.15);border-radius:8px;display:none"></div>
     </div>
@@ -2250,7 +2259,7 @@ canvas{width:100%!important;}
     </div>
     <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;font-weight:700" data-i18n="Payment Amount">Payment Amount</div>
     <button id="sb-min-btn" class="btn btn-full" style="background:rgba(80,112,240,.12);color:var(--accent2);padding:12px;justify-content:space-between;margin-bottom:10px" onclick="sbSelect('min')">
-      <span data-i18n="Minimum / Standard">Minimum / Standard</span><span id="sb-min-val" style="font-weight:700"></span>
+      <span data-i18n="Minimum / Standard">Minimum / Standard</span><span id="sb-min-val" class="txt-bold"></span>
     </button>
     <div class="field">
       <label data-i18n="Or enter custom amount ($)">Or enter custom amount ($)</label>
@@ -2275,8 +2284,8 @@ canvas{width:100%!important;}
     </div>
     <div style="font-size:15px;font-weight:700" id="pd-name"></div>
       <div style="font-size:12px;color:var(--muted);margin-top:4px">
-        Balance: <span id="pd-balance" style="color:var(--red)"></span>
-        &nbsp;|&nbsp; APR: <span id="pd-apr" style="color:var(--yellow)"></span>
+        Balance: <span id="pd-balance" class="txt-red"></span>
+        &nbsp;|&nbsp; APR: <span id="pd-apr" class="txt-yellow"></span>
       </div>
       <div id="pd-website-wrap" style="display:none;margin-top:10px">
         <a id="pd-website-btn" href="#" target="_blank" rel="noopener"
@@ -2287,12 +2296,12 @@ canvas{width:100%!important;}
       <div class="balance-split" id="pd-balance-split" style="display:none">
         <div class="balance-bucket revolving">
           <div class="bb-label">Revolving</div>
-          <div class="bb-val" id="pd-revolving-val" style="color:var(--red)"></div>
+          <div class="bb-val" id="pd-revolving-val" class="txt-red"></div>
           <div class="bb-sub" id="pd-revolving-interest"></div>
         </div>
         <div class="balance-bucket promo">
           <div class="bb-label">Promo Items</div>
-          <div class="bb-val" id="pd-promo-val" style="color:var(--accent2)"></div>
+          <div class="bb-val" id="pd-promo-val" class="txt-accent"></div>
           <div class="bb-sub" id="pd-promo-count"></div>
         </div>
       </div>
@@ -2300,13 +2309,13 @@ canvas{width:100%!important;}
     <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;font-weight:700" data-i18n="Payment Amount">Payment Amount</div>
     <div style="display:grid;gap:8px;margin-bottom:16px">
       <button id="pd-min-btn" class="btn btn-full" style="background:rgba(80,112,240,.12);color:var(--accent2);padding:12px;justify-content:space-between" onclick="selectPayAmount('min')">
-        <span data-i18n="Minimum Payment">Minimum Payment</span><span id="pd-min-val" style="font-weight:700"></span>
+        <span data-i18n="Minimum Payment">Minimum Payment</span><span id="pd-min-val" class="txt-bold"></span>
       </button>
       <button id="pd-sug-btn" class="btn btn-full" style="background:rgba(34,197,94,.1);color:var(--green);padding:12px;justify-content:space-between" onclick="selectPayAmount('suggested')">
-        <span data-i18n="Suggested (Planner)">Suggested (Planner)</span><span id="pd-sug-val" style="font-weight:700"></span>
+        <span data-i18n="Suggested (Planner)">Suggested (Planner)</span><span id="pd-sug-val" class="txt-bold"></span>
       </button>
       <button id="pd-full-btn" class="btn btn-full" style="background:rgba(251,146,60,.1);color:#fb923c;padding:12px;justify-content:space-between" onclick="selectPayAmount('full')">
-        <span data-i18n="Pay in Full">Pay in Full</span><span id="pd-full-val" style="font-weight:700"></span>
+        <span data-i18n="Pay in Full">Pay in Full</span><span id="pd-full-val" class="txt-bold"></span>
       </button>
     </div>
     <div class="field">
@@ -2314,9 +2323,9 @@ canvas{width:100%!important;}
       <input id="pd-custom" type="number" inputmode="decimal" placeholder="0.00" oninput="selectPayAmount('custom')"/>
     </div>
     <div id="pd-breakdown" style="background:rgba(255,255,255,.03);border-radius:10px;padding:12px;margin-bottom:14px;font-size:12px;display:none">
-      <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--muted)" data-i18n="Interest portion">Interest portion</span><span id="pd-interest-portion" style="color:var(--red)"></span></div>
-      <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--muted)" data-i18n="Principal portion">Principal portion</span><span id="pd-principal-portion" style="color:var(--green)"></span></div>
-      <div style="display:flex;justify-content:space-between;padding-top:6px;border-top:1px solid var(--border);font-weight:700"><span data-i18n="New Balance">New Balance</span><span id="pd-new-balance" style="color:var(--accent2)"></span></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span class="txt-muted" data-i18n="Interest portion">Interest portion</span><span id="pd-interest-portion" class="txt-red"></span></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span class="txt-muted" data-i18n="Principal portion">Principal portion</span><span id="pd-principal-portion" class="txt-green"></span></div>
+      <div style="display:flex;justify-content:space-between;padding-top:6px;border-top:1px solid var(--border);font-weight:700"><span data-i18n="New Balance">New Balance</span><span id="pd-new-balance" class="txt-accent"></span></div>
     </div>
     <!-- PAYMENT ALLOCATION -->
     <div class="alloc-section" id="pd-alloc-section" style="display:none">
@@ -2324,7 +2333,7 @@ canvas{width:100%!important;}
       <div class="alloc-row">
         <div class="alloc-label">
           <div style="font-weight:600">Revolving Balance</div>
-          <div style="font-size:11px;color:var(--muted)" id="pd-alloc-revolving-hint"></div>
+          <div class="txt-muted-sm" id="pd-alloc-revolving-hint"></div>
         </div>
         <input class="alloc-input" id="pd-alloc-revolving" type="number" inputmode="decimal"
           placeholder="0.00" oninput="onAllocInput('revolving')"/>
@@ -2356,21 +2365,21 @@ canvas{width:100%!important;}
       <button class="btn btn-full" style="background:rgba(255,255,255,.06);color:var(--text);padding:14px;font-size:14px;justify-content:flex-start;gap:12px" onclick="calIcal()">
         <span style="font-size:22px">🍎</span>
         <div style="text-align:left">
-          <div style="font-weight:700" data-i18n="Apple Calendar">Apple Calendar</div>
+          <div class="txt-bold" data-i18n="Apple Calendar">Apple Calendar</div>
           <div style="font-size:11px;color:var(--muted);font-weight:400" data-i18n="Downloads .ics file - opens in Apple Calendar">Downloads .ics file - opens in Apple Calendar</div>
         </div>
       </button>
       <button class="btn btn-full" style="background:rgba(255,255,255,.06);color:var(--text);padding:14px;font-size:14px;justify-content:flex-start;gap:12px" onclick="calGoogle()">
         <span style="font-size:22px">📅</span>
         <div style="text-align:left">
-          <div style="font-weight:700" data-i18n="Google Calendar">Google Calendar</div>
+          <div class="txt-bold" data-i18n="Google Calendar">Google Calendar</div>
           <div style="font-size:11px;color:var(--muted);font-weight:400" data-i18n="Opens Google Calendar in your browser">Opens Google Calendar in your browser</div>
         </div>
       </button>
       <button class="btn btn-full" style="background:rgba(59,130,246,.12);color:#60a5fa;padding:14px;font-size:14px;justify-content:flex-start;gap:12px" onclick="calIcal()">
         <span style="font-size:22px">📆</span>
         <div style="text-align:left">
-          <div style="font-weight:700" data-i18n="Outlook / Other">Outlook / Other</div>
+          <div class="txt-bold" data-i18n="Outlook / Other">Outlook / Other</div>
           <div style="font-size:11px;color:#60a5fa88;font-weight:400" data-i18n="Downloads .ics - works with any calendar app">Downloads .ics - works with any calendar app</div>
         </div>
       </button>
@@ -2509,17 +2518,17 @@ canvas{width:100%!important;}
         <label>Your Bank Statement Balance ($)</label>
         <input id="recon-bank-bal" type="number" inputmode="decimal" placeholder="0.00"
           oninput="updateReconDiff()"/>
-        <div style="font-size:11px;color:var(--muted);margin-top:4px">
+        <div class="txt-muted-sm-top">
           Enter the current balance shown in your bank app or statement
         </div>
       </div>
       <div class="recon-summary" id="recon-summary" style="display:none">
         <div class="recon-row">
-          <span style="color:var(--muted)">App balance</span>
+          <span class="txt-muted">App balance</span>
           <span id="recon-app-bal" style="font-weight:600"></span>
         </div>
         <div class="recon-row">
-          <span style="color:var(--muted)">Your bank balance</span>
+          <span class="txt-muted">Your bank balance</span>
           <span id="recon-bank-display" style="font-weight:600"></span>
         </div>
         <div class="recon-row total">
@@ -2549,7 +2558,7 @@ canvas{width:100%!important;}
             <option value="Unknown">Unknown</option>
           </select>
         </div>
-        <div class="field" style="margin:0">
+        <div class="field" class="m-0">
           <label>Adjustment Amount ($) <span id="recon-adj-auto" style="color:var(--accent2);font-size:10px"></span></label>
           <input id="recon-adj-amount" type="number" inputmode="decimal" placeholder="0.00"/>
         </div>
@@ -2564,7 +2573,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v2.1.0';
+const APP_VERSION='v2.0.0';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -2880,7 +2889,6 @@ const TRANSLATIONS={
     'Over budget by':'Excede el presupuesto por',
     'used this month':'usado este mes',
     '-- No account linked --':'-- Sin cuenta vinculada --',
-    'No card / cash purchase':'Sin tarjeta / efectivo',
     // Settings static text
     'Auto-Save Active':'Guardado Automatico Activo',
     'Data saves automatically in':'Los datos se guardan automaticamente en',
@@ -2943,8 +2951,6 @@ function setLanguage(lang){
   checkBackupReminder();
   showOnboarding();
   initPWA();
-  showOnboarding();
-  initPWA();
 }
 function applyTranslations(){
   document.querySelectorAll('[data-i18n]').forEach(el=>{
@@ -2954,9 +2960,9 @@ function applyTranslations(){
   const autosave=$('autosave-desc');
   if(autosave){
     if(appLang==='es'){
-      autosave.innerHTML='Los datos se guardan automaticamente en <strong style="color:var(--text)">este navegador</strong> via almacenamiento local. Nada se envia a ningun lugar. <strong style="color:var(--accent2)">Formato v4</strong> - exporta un respaldo antes de actualizar.';
+      autosave.innerHTML='Los datos se guardan automaticamente en <strong style="color:var(--text)">este navegador</strong> via almacenamiento local. Nada se envia a ningun lugar. <strong class="txt-accent">Formato v4</strong> - exporta un respaldo antes de actualizar.';
     } else {
-      autosave.innerHTML='Data saves automatically in <strong style="color:var(--text)">this browser only</strong> via local storage. Nothing is ever sent anywhere. <strong style="color:var(--accent2)">v4 format</strong> - export a backup before updating if you have real data.';
+      autosave.innerHTML='Data saves automatically in <strong style="color:var(--text)">this browser only</strong> via local storage. Nothing is ever sent anywhere. <strong class="txt-accent">v4 format</strong> - export a backup before updating if you have real data.';
     }
   }
   const backupDesc=$('backup-desc');
@@ -3051,8 +3057,6 @@ function loadData(){
     autoExpirePromos();
     // Auto-log recurring transactions
     runAutoLog();
-    // Auto-expire promo APRs
-    autoExpirePromos();
     // Reset stale expense paid flags from previous months
     resetStaleExpensePaid();
     // Purge obsolete transaction types
@@ -3128,6 +3132,41 @@ function getEffectiveIncome(i, yr, mo){
   return parseFloat(occs.reduce((s,o) => s + o.amount, 0).toFixed(2));
 }
 function haptic(type){try{navigator.vibrate&&navigator.vibrate(type==='heavy'?20:type==='medium'?12:6);}catch(e){}}
+
+// ── STYLED CONFIRM / ALERT HELPERS ───────────────────────────
+let _confirmCallback=null;
+function showConfirm(opts){
+  // opts: { title, msg, icon, okLabel, okStyle, onOk, onCancel }
+  const o=Object.assign({title:'Are you sure?',msg:'',icon:'⚠️',okLabel:'Confirm',okStyle:'background:var(--accent);color:#fff'},opts);
+  $('confirm-icon').textContent=o.icon;
+  $('confirm-title').textContent=o.title;
+  $('confirm-msg').textContent=o.msg;
+  const btn=$('confirm-ok-btn');
+  btn.textContent=o.okLabel;
+  btn.style.cssText=o.okStyle;
+  _confirmCallback={onOk:o.onOk||null,onCancel:o.onCancel||null};
+  document.getElementById('modal-confirm').classList.add('open');
+}
+function _confirmOk(){
+  document.getElementById('modal-confirm').classList.remove('open');
+  if(_confirmCallback&&_confirmCallback.onOk) _confirmCallback.onOk();
+  _confirmCallback=null;
+}
+function _confirmCancel(){
+  document.getElementById('modal-confirm').classList.remove('open');
+  if(_confirmCallback&&_confirmCallback.onCancel) _confirmCallback.onCancel();
+  _confirmCallback=null;
+}
+function showAlert(opts){
+  // opts: { title, msg, icon }
+  const o=Object.assign({title:'Notice',msg:'',icon:'ℹ️'},opts);
+  $('alert-icon').textContent=o.icon;
+  $('alert-title').textContent=o.title;
+  $('alert-msg').textContent=o.msg;
+  document.getElementById('modal-alert').classList.add('open');
+}
+// ─────────────────────────────────────────────────────────────
+
 function showToast(msg, type){
   const el=$('toast');
   if(!el) return;
@@ -3146,22 +3185,27 @@ function showToast(msg, type){
   showToast._t=setTimeout(()=>el.classList.remove('show'),2400);
 }
 function confirmReset(){
-  if(confirm('Reset ALL data? Cannot be undone.')){
-    data={income:[],expenses:[],bills:[],cards:[],transactions:[],goals:[],_pendingTransfers:[]};
-    localStorage.removeItem(STORAGE_KEY);
-    localStorage.removeItem(SAVE_TS_KEY);
-    localStorage.removeItem(ONBOARD_KEY);
-    localStorage.removeItem(NW_HISTORY_KEY);
-    localStorage.removeItem(THEME_KEY);
-    appTheme='auto';
-    applyTheme('auto');
-    updateThemeButtons();
-    closeModal('settings');
-  const si=$('txn-search');if(si)si.value='';
-  txnAllMonths=false;_updateAllMonthsBtn();
-  const sc=$('txn-clear');if(sc)sc.style.display='none';renderAll();updateLastSavedUI();showOnboarding();
-    alert('All data has been reset.');
-  }
+  showConfirm({
+    icon:'🗑️', title:'Reset all data?',
+    msg:'This will permanently erase everything. Cannot be undone.',
+    okLabel:'Reset Everything', okStyle:'background:var(--red);color:#fff',
+    onOk:()=>{
+      data={income:[],expenses:[],bills:[],cards:[],transactions:[],goals:[],_pendingTransfers:[]};
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(SAVE_TS_KEY);
+      localStorage.removeItem(ONBOARD_KEY);
+      localStorage.removeItem(NW_HISTORY_KEY);
+      localStorage.removeItem(THEME_KEY);
+      appTheme='auto';
+      applyTheme('auto');
+      updateThemeButtons();
+      closeModal('settings');
+      const si=$('txn-search');if(si)si.value='';
+      txnAllMonths=false;_updateAllMonthsBtn();
+      const sc=$('txn-clear');if(sc)sc.style.display='none';renderAll();updateLastSavedUI();showOnboarding();
+      showToast('All data has been reset.');
+    }
+  });
 }
 function exportData(){
   try{
@@ -3175,9 +3219,9 @@ function exportData(){
     URL.revokeObjectURL(url);
     showToast(t('Backup downloaded!'));
     markBackupDone();
-  }catch(e){alert('Export failed: '+e.message);}
+  }catch(e){showAlert({icon:'❌',title:'Export failed',msg:e.message});}
 }
-function importData(){
+function importData(skipConfirm){
   const input=document.createElement('input');
   input.type='file';input.accept='.json';
   input.style.cssText='position:fixed;top:-9999px;left:-9999px;opacity:0;pointer-events:none;';
@@ -3196,14 +3240,25 @@ function importData(){
         ['assets','targets','accounts','goals','_pendingTransfers'].forEach(k=>{
           if(Array.isArray(parsed[k])) valid[k]=parsed[k];
         });
-        if(confirm(`Import data? This will replace your current data.\n\nFound: ${valid.income.length} income, ${valid.expenses.length} expenses, ${valid.bills.length} bills, ${valid.cards.length} cards, ${valid.transactions.length} transactions.`)){
+        const doImport=()=>{
           data=valid;
           saveData();
+          document.getElementById('onboarding-overlay').classList.add('hidden');
           closeModal('settings');
           renderAll();
           showToast(t('Data imported!'));
+        };
+        if(skipConfirm){
+          doImport();
+        } else {
+          showConfirm({
+            icon:'⬆️', title:'Import backup?',
+            msg:`This will replace your current data.\n\nFound: ${valid.income.length} income, ${valid.expenses.length} expenses, ${valid.bills.length} bills, ${valid.cards.length} cards, ${valid.transactions.length} transactions.`,
+            okLabel:'Import', okStyle:'background:var(--accent);color:#fff',
+            onOk: doImport
+          });
         }
-      }catch(err){alert('Import failed - invalid backup file.\n'+err.message);}
+      }catch(err){showAlert({icon:'❌',title:'Import failed',msg:'Invalid backup file. '+err.message});}
     };
     reader.readAsText(file);
   };
@@ -3211,39 +3266,11 @@ function importData(){
   input.click();
 }
 
-function obImportBackup(){
-  const input=document.createElement('input');
-  input.type='file';input.accept='.json';
-  input.style.cssText='position:fixed;top:-9999px;left:-9999px;opacity:0;pointer-events:none;';
-  input.onchange=e=>{
-    document.body.removeChild(input);
-    const file=e.target.files[0];if(!file)return;
-    const reader=new FileReader();
-    reader.onload=ev=>{
-      try{
-        const parsed=JSON.parse(ev.target.result);
-        if(typeof parsed!=='object'||Array.isArray(parsed)) throw new Error('Invalid file format');
-        const valid={income:[],expenses:[],bills:[],cards:[],transactions:[]};
-        Object.keys(valid).forEach(k=>{ if(Array.isArray(parsed[k])) valid[k]=parsed[k]; });
-        ['assets','targets','accounts','goals','_pendingTransfers'].forEach(k=>{
-          if(Array.isArray(parsed[k])) valid[k]=parsed[k];
-        });
-        data=valid;
-        saveData();
-        document.getElementById('onboarding-overlay').classList.add('hidden');
-        renderAll();
-        showToast('Backup restored!');
-      }catch(err){alert('Restore failed - invalid backup file.\n'+err.message);}
-    };
-    reader.readAsText(file);
-  };
-  document.body.appendChild(input);
-  input.click();
-}
+function obImportBackup(){ importData(true); }
 
 function loadDemoData(skipConfirm){
-  if(!skipConfirm&&!confirm('Load demo data? This will replace your current data with realistic sample data.\n\nTip: Export a backup first if you have real data to keep.')) return;
-  const now=new Date();
+  const _run=()=>{
+    const now=new Date();
   const dt=days=>{ const d=new Date(now); d.setDate(d.getDate()+days); return d.toISOString().split('T')[0]; };
   const ago=days=>dt(-days);
   const monthAgo=(m,day)=>{ const d=new Date(now); d.setMonth(d.getMonth()-m); d.setDate(day); return d.toISOString().split('T')[0]; };
@@ -3415,10 +3442,19 @@ function loadDemoData(skipConfirm){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
   $('dashboard').classList.add('active');
-  document.querySelector('.nav-item').classList.add('active');
+  document.querySelector('[data-section=dashboard]').classList.add('active');
   const mob=$('mobile-brand'); if(mob) mob.innerHTML='<span>FinanceOS</span>';
   renderAll();
   showToast(t('Demo data loaded!'));
+  }; // end _run
+  if(skipConfirm){ _run(); } else {
+    showConfirm({
+      icon:'🎭', title:'Load demo data?',
+      msg:'This will replace your current data with realistic sample data. Export a backup first if you have real data to keep.',
+      okLabel:'Load Demo', okStyle:'background:#fb923c;color:#fff',
+      onOk: _run
+    });
+  }
 }
 
 const acTypeIcon={checking:'🏦',savings:'💰',cash:'💵'};
@@ -3549,24 +3585,31 @@ function saveTransfer(){
     delete $('modal-transfer').dataset.editId;
   }
 
+  const _doTransfer=()=>{
+    fromAcc.balance=parseFloat((fromAcc.balance-amt).toFixed(2));
+    toAcc.balance=parseFloat((toAcc.balance+amt).toFixed(2));
+    data.transactions.push({
+      id:Date.now(),
+      description:'Transfer → '+toAcc.name,
+      amount:amt,
+      type:'Transfer',
+      date:dt,
+      accountId:fromId,
+      toAccountId:toId,
+      methodLabel:fromAcc.name,
+      note
+    });
+    closeModal('transfer');saveData();renderAll();
+    showToast(editId?'Transfer updated!':'Transfer saved!');
+  };
   if(amt>fromAcc.balance){
-    if(!confirm('Warning: this transfer of '+usd(amt)+' would overdraw '+fromAcc.name+' by '+usd(amt-fromAcc.balance)+'. Continue?'))return;
-  }
-  fromAcc.balance=parseFloat((fromAcc.balance-amt).toFixed(2));
-  toAcc.balance=parseFloat((toAcc.balance+amt).toFixed(2));
-  data.transactions.push({
-    id:Date.now(),
-    description:'Transfer → '+toAcc.name,
-    amount:amt,
-    type:'Transfer',
-    date:dt,
-    accountId:fromId,
-    toAccountId:toId,
-    methodLabel:fromAcc.name,
-    note
-  });
-  closeModal('transfer');saveData();renderAll();
-  showToast(editId?'Transfer updated!':'Transfer saved!');
+    showConfirm({
+      icon:'⚠️', title:'Overdraft warning',
+      msg:'This transfer of '+usd(amt)+' would overdraw '+fromAcc.name+' by '+usd(amt-fromAcc.balance)+'. Continue anyway?',
+      okLabel:'Continue', okStyle:'background:var(--yellow);color:#000',
+      onOk:_doTransfer
+    });
+  } else { _doTransfer(); }
 }
 
 // ── NEW PURCHASE ──────────────────────────────────
@@ -3658,10 +3701,37 @@ function confirmPurchase(){
     const acc=(data.accounts||[]).find(a=>a.id===acId);
     if(acc){
       methodLabel=acc.name;
+      const _finishPurchase=()=>{
+        adjustAccountBalance(acId,-amt);
+        const puNote=$('pu-note')?$('pu-note').value.trim():'';
+        const tx={
+          id:Date.now(),description:desc,amount:amt,type:'Purchase',
+          date:dt,accountId:acId,cardId,category,methodLabel,note:puNote,tags:[..._puTags]
+        };
+        if(window._pendingPromo){
+          Object.assign(tx,{
+            promoType:window._pendingPromo.promoType,
+            promoMonths:window._pendingPromo.promoMonths,
+            promoApr:window._pendingPromo.promoApr,
+            promoEnd:window._pendingPromo.promoEnd,
+            monthlyRequired:window._pendingPromo.monthlyRequired
+          });
+          window._pendingPromo=null;
+        }
+        data.transactions.push(tx);
+        resetInactiveCardForPurchase(cardId);
+        closeModal('purchase');saveData();renderAll();
+        showToast(t('Purchase logged!'));
+      };
       if(amt>acc.balance){
-        if(!confirm('Warning: this purchase of '+usd(amt)+' would overdraw '+acc.name+' by '+usd(amt-acc.balance)+'. Continue?'))return;
-      }
-      adjustAccountBalance(acId,-amt);
+        showConfirm({
+          icon:'⚠️', title:'Overdraft warning',
+          msg:'This purchase of '+usd(amt)+' would overdraw '+acc.name+' by '+usd(amt-acc.balance)+'. Continue anyway?',
+          okLabel:'Continue', okStyle:'background:var(--yellow);color:#000',
+          onOk:_finishPurchase
+        });
+      } else { _finishPurchase(); }
+      return;
     }
   }
 
@@ -3708,13 +3778,13 @@ function renderNetWorth(){
       const ac=acTypeColor[a.type]||'#5070f0';
       const defaultBadge=a.isDefault?'<span style="margin-left:7px;font-size:10px;font-weight:700;background:rgba(80,112,240,.18);color:var(--accent);border-radius:5px;padding:2px 7px;vertical-align:middle">DEFAULT</span>':'';
       const reconHtml=a.lastReconciled?'<div class="recon-badge">&#10003; Reconciled '+fmtDate(a.lastReconciled)+'</div><div class="recon-history">Bank: '+usd(a.lastReconciledBal||0)+' confirmed</div>':'';
-      const apyHtml=a.apy>0?'<div style="display:flex;align-items:center;gap:8px;margin-top:8px;padding:7px 10px;background:rgba(34,197,94,.07);border-radius:8px;border:1px solid rgba(34,197,94,.15)"><span style="font-size:11px;font-weight:700;color:var(--green)">APY '+a.apy.toFixed(2)+'%</span><span style="font-size:11px;color:var(--muted)">· ~'+usd(parseFloat((a.balance*a.apy/100).toFixed(2)))+' / yr</span></div>':'';
+      const apyHtml=a.apy>0?'<div style="display:flex;align-items:center;gap:8px;margin-top:8px;padding:7px 10px;background:rgba(34,197,94,.07);border-radius:8px;border:1px solid rgba(34,197,94,.15)"><span style="font-size:11px;font-weight:700;color:var(--green)">APY '+a.apy.toFixed(2)+'%</span><span class="txt-muted-sm">· ~'+usd(parseFloat((a.balance*a.apy/100).toFixed(2)))+' / yr</span></div>':'';
       const urlHtml=a.url?'<button class="btn btn-secondary btn-sm" style="margin-top:8px;width:100%;justify-content:flex-start;gap:8px;padding:8px 12px;border:1px solid rgba(80,112,240,.2);background:rgba(80,112,240,.07)" onclick="openLink(this.dataset.url)" data-url="'+a.url+'"><span>🌐</span><span style="font-size:12px;color:var(--accent2)">'+linkHost(a.url)+'</span><span style="margin-left:auto;color:var(--muted);font-size:13px">›</span></button>':'';
       const acctId='acct'+a.id;
       const cardHtml='<div class="card" style="margin-bottom:0;border-left:3px solid '+ac+';border-radius:4px 12px 12px 4px;cursor:pointer" onclick="toggleCardExpand(\''+acctId+'\')">'
         +'<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">'
         +'<div><div style="font-size:15px;font-weight:600;margin-bottom:3px">'+(acTypeIcon[a.type]||'🏦')+' '+a.name+defaultBadge+'</div>'
-        +'<div style="font-size:12px;color:var(--muted)">'+(acTypeLabel[a.type]||a.type)+(a.notes?' - '+a.notes:'')+'</div></div>'
+        +'<div class="txt-muted-xs">'+(acTypeLabel[a.type]||a.type)+(a.notes?' - '+a.notes:'')+'</div></div>'
         +'<div style="display:flex;align-items:center;gap:8px">'
         +'<span style="font-family:var(--font-d);font-size:22px;color:'+(a.balance>=0?'var(--green)':'var(--red)')+'">'+usd(a.balance)+'</span>'
         +'<span id="cchev-'+acctId+'" style="color:var(--muted);font-size:11px">&#9662;</span>'
@@ -3740,14 +3810,14 @@ function renderNetWorth(){
       const years=(Date.now()-new Date(a.purchaseDate))/(365.25*24*3600*1000);
       const estimated=parseFloat((a.originalValue*Math.pow(1-a.depreciationRate/100,years)).toFixed(2));
       const lost=a.originalValue-estimated;
-      deprHtml=`<div style="font-size:11px;color:var(--muted);margin-top:4px">
-        Purchased ${fmtDate(a.purchaseDate)} · Est. depreciated: <span style="color:var(--red)">${usd(Math.max(0,estimated))}</span>
+      deprHtml=`<div class="txt-muted-sm-top">
+        Purchased ${fmtDate(a.purchaseDate)} · Est. depreciated: <span class="txt-red">${usd(Math.max(0,estimated))}</span>
         <span style="color:var(--muted);margin-left:4px">(~${usd(lost)} lost)</span>
       </div>`;
     }
     if((a.category==='property')&&a.originalValue>0&&a.purchaseDate){
       const years=(Date.now()-new Date(a.purchaseDate))/(365.25*24*3600*1000);
-      deprHtml=`<div style="font-size:11px;color:var(--muted);margin-top:4px">
+      deprHtml=`<div class="txt-muted-sm-top">
         Purchased ${fmtDate(a.purchaseDate)} · ${years.toFixed(1)} yr${years>=2?'s':''} ago · Original: ${usd(a.originalValue)}
       </div>`;
     }
@@ -3758,9 +3828,9 @@ function renderNetWorth(){
       if(loan){
         const equity=a.value-(loan.balance||0);
         equityHtml=`<div style="display:flex;gap:16px;margin-top:6px;padding:6px 10px;background:rgba(255,255,255,.04);border-radius:8px;flex-wrap:wrap">
-          <span style="font-size:11px;color:var(--muted)">🏠 Value: <strong style="color:var(--text)">${usd(a.value)}</strong></span>
-          <span style="font-size:11px;color:var(--muted)">🏦 Mortgage: <strong style="color:var(--red)">${usd(loan.balance||0)}</strong></span>
-          <span style="font-size:11px;color:var(--muted)">💰 Equity: <strong style="color:${equity>=0?'var(--green)':'var(--red)'}">${usd(equity)}</strong></span>
+          <span class="txt-muted-sm">🏠 Value: <strong style="color:var(--text)">${usd(a.value)}</strong></span>
+          <span class="txt-muted-sm">🏦 Mortgage: <strong class="txt-red">${usd(loan.balance||0)}</strong></span>
+          <span class="txt-muted-sm">💰 Equity: <strong style="color:${equity>=0?'var(--green)':'var(--red)'}">${usd(equity)}</strong></span>
         </div>`;
       }
     }
@@ -3842,11 +3912,16 @@ function savePinSetup(){
   showToast(t('PIN saved!'));
 }
 function removePin(){
-  if(confirm('Remove PIN lock? The app will no longer lock on startup.')){
-    localStorage.removeItem(PIN_KEY);
-    $('lock-nav-btn').style.display='none';
-    closeModal('pinsetup');showToast(t('PIN removed.'));
-  }
+  showConfirm({
+    icon:'🔓', title:'Remove PIN lock?',
+    msg:'The app will no longer lock on startup.',
+    okLabel:'Remove PIN', okStyle:'background:var(--red);color:#fff',
+    onOk:()=>{
+      localStorage.removeItem(PIN_KEY);
+      $('lock-nav-btn').style.display='none';
+      closeModal('pinsetup');showToast(t('PIN removed.'));
+    }
+  });
 }
 
 // ── ASSETS ───────────────────────────────────────
@@ -4471,7 +4546,7 @@ function renderIncomeCard(income, occ, idx, total){
     +'<div style="min-width:0;flex:1">'
     +'<div style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'
     +income.source+(isFirst?' '+recurBadge(income.frequency):'')+' </div>'
-    +'<div style="font-size:11px;color:var(--muted)">'+subLine+'</div>'
+    +'<div class="txt-muted-sm">'+subLine+'</div>'
     +'</div>'
     +'<div style="display:flex;align-items:center;gap:6px;flex-shrink:0">'
     +amtStr+statusBadge
@@ -4509,20 +4584,27 @@ function saveExpense(){
   if(!cat||!amt)return;
   const eid=parseInt($('e-id').value);
   const prev=eid?data.expenses.find(e=>e.id===eid):null;
-  // Overdraft check
+  const _doSaveExpense=()=>{
+    // Reverse previous account debit if editing
+    if(prev&&prev.accountId) adjustAccountBalance(prev.accountId,prev.amount);
+    const item={id:eid||Date.now(),category:cat,description:desc,amount:amt,date:dt,frequency:freq,accountId:acId,autoLog,autoLogAccountId};
+    data.expenses=eid?data.expenses.map(e=>e.id===eid?item:e):[...data.expenses,item];
+    if(acId) adjustAccountBalance(acId,-amt);
+    closeModal('expense');saveData();renderAll();
+  };
   if(acId){
     const bal=getAccountBalance(acId);
     if(bal!==null&&amt>bal){
-      if(!confirm('Warning: this expense of '+usd(amt)+' would overdraw this account by '+usd(amt-bal)+'. Continue?'))return;
+      showConfirm({
+        icon:'⚠️', title:'Overdraft warning',
+        msg:'This expense of '+usd(amt)+' would overdraw this account by '+usd(amt-bal)+'. Continue anyway?',
+        okLabel:'Continue', okStyle:'background:var(--yellow);color:#000',
+        onOk:_doSaveExpense
+      });
+      return;
     }
   }
-  // Reverse previous account debit if editing
-  if(prev&&prev.accountId) adjustAccountBalance(prev.accountId,prev.amount);
-  const item={id:eid||Date.now(),category:cat,description:desc,amount:amt,date:dt,frequency:freq,accountId:acId,autoLog,autoLogAccountId};
-  data.expenses=eid?data.expenses.map(e=>e.id===eid?item:e):[...data.expenses,item];
-  // Debit account
-  if(acId) adjustAccountBalance(acId,-amt);
-  closeModal('expense');saveData();renderAll();
+  _doSaveExpense();
 }
 // Strip non-numeric chars from pasted values (%, $, commas, spaces, etc.)
 const sanitizeNum = s => parseFloat(String(s).replace(/[^0-9.\-]/g,'')) || 0;
@@ -4693,24 +4775,30 @@ function saveTxn(){
   const note=$('t-note')?$('t-note').value.trim():'';
   if(!desc||!amt)return;
   if(!acId){showToast(t('Please select a Pay From account'),'error');return;}
-  // Overdraft check
+  const _doSaveTxn=()=>{
+    const eid=parseInt($('t-id').value);
+    if(eid){
+      const prev=data.transactions.find(t=>t.id===eid);
+      if(prev&&prev.accountId) adjustAccountBalance(prev.accountId,prev.amount);
+    }
+    const item={id:eid||Date.now(),description:desc,amount:amt,type:'Withdrawal',date:dt,accountId:acId,note};
+    data.transactions=eid?data.transactions.map(t=>t.id===eid?item:t):[...data.transactions,item];
+    if(acId) adjustAccountBalance(acId,-amt);
+    closeModal('txn');saveData();renderAll();
+  };
   if(acId){
     const bal=getAccountBalance(acId);
     if(bal!==null&&amt>bal){
-      if(!confirm('Warning: this withdrawal of '+usd(amt)+' would overdraw this account by '+usd(amt-bal)+'. Continue?'))return;
+      showConfirm({
+        icon:'⚠️', title:'Overdraft warning',
+        msg:'This withdrawal of '+usd(amt)+' would overdraw this account by '+usd(amt-bal)+'. Continue anyway?',
+        okLabel:'Continue', okStyle:'background:var(--yellow);color:#000',
+        onOk:_doSaveTxn
+      });
+      return;
     }
   }
-  const eid=parseInt($('t-id').value);
-  // Reverse previous account debit if editing
-  if(eid){
-    const prev=data.transactions.find(t=>t.id===eid);
-    if(prev&&prev.accountId) adjustAccountBalance(prev.accountId,prev.amount);
-  }
-  const item={id:eid||Date.now(),description:desc,amount:amt,type:'Withdrawal',date:dt,accountId:acId,note};
-  data.transactions=eid?data.transactions.map(t=>t.id===eid?item:t):[...data.transactions,item];
-  // Deduct from account
-  if(acId) adjustAccountBalance(acId,-amt);
-  closeModal('txn');saveData();renderAll();
+  _doSaveTxn();
 }
 
 // ── SWIPE TO DELETE ────────────────────────────────
@@ -4904,10 +4992,16 @@ function autoProcessScheduledBills(){
 }
 function revertToPending(id){
   const b=data.bills.find(x=>x.id===id);if(!b)return;
-  if(!confirm('Cancel scheduled payment for '+b.name+'?')) return;
-  b.status='Pending';
-  b.scheduledAmount=null;
-  saveData();renderAll();
+  showConfirm({
+    icon:'↩️', title:'Cancel scheduled payment?',
+    msg:b.name+' will return to Pending status.',
+    okLabel:'Cancel Payment', okStyle:'background:var(--red);color:#fff',
+    onOk:()=>{
+      b.status='Pending';
+      b.scheduledAmount=null;
+      saveData();renderAll();
+    }
+  });
 }
 
 function flashBillCard(id, color){
@@ -4967,20 +5061,25 @@ function confirmScheduleBill(){
   const acId=parseInt($('sb-account').value)||0;
   if(!amt||amt<=0){showToast(t('Enter a valid amount'),'error');return;}
   if(!acId){showToast(t('Please select a Pay From account'),'error');return;}
-  if(acId){
-    const bal=getAccountBalance(acId);
-    if(bal!==null&&amt>bal){
-      if(!confirm('Warning: scheduling '+usd(amt)+' would overdraw this account by '+usd(amt-bal)+'. Continue?'))return;
-    }
-  }
-  b.status='Scheduled';
-  b.scheduledAmount=amt;
-  b.scheduledAccountId=acId;
-  closeModal('schedulebill');
-  haptic('medium');
-  saveData();renderAll();
-  flashBillCard(_scheduleBillId,'blue');
-  showToast('Payment scheduled - '+usd(amt));
+  const _doSchedule=()=>{
+    b.status='Scheduled';
+    b.scheduledAmount=amt;
+    b.scheduledAccountId=acId;
+    closeModal('schedulebill');
+    haptic('medium');
+    saveData();renderAll();
+    flashBillCard(_scheduleBillId,'blue');
+    showToast('Payment scheduled - '+usd(amt));
+  };
+  const bal=getAccountBalance(acId);
+  if(bal!==null&&amt>bal){
+    showConfirm({
+      icon:'⚠️', title:'Overdraft warning',
+      msg:'Scheduling '+usd(amt)+' would overdraw this account by '+usd(amt-bal)+'. Continue anyway?',
+      okLabel:'Continue', okStyle:'background:var(--yellow);color:#000',
+      onOk:_doSchedule
+    });
+  } else { _doSchedule(); }
 }
 
 // ── DEBT PAYMENT FLOW ────────────────────────────
@@ -5095,7 +5194,42 @@ function confirmDebtPayment(){
     if(acId){
       const bal=getAccountBalance(acId);
       if(bal!==null&&total>bal){
-        if(!confirm('Warning: payment of '+usd(total)+' would overdraw this account by '+usd(total-bal)+'. Continue?'))return;
+        showConfirm({
+          icon:'⚠️', title:'Overdraft warning',
+          msg:'Payment of '+usd(total)+' would overdraw this account by '+usd(total-bal)+'. Continue anyway?',
+          okLabel:'Continue', okStyle:'background:var(--yellow);color:#000',
+          onOk:()=>{
+            migrateRevolvingBalance(b);
+            if(toRevolving>0){
+              const monthlyRate=(b.apr||0)/100/12;
+              const interest=parseFloat(((b.revolvingBalance||0)*monthlyRate).toFixed(2));
+              const principal=Math.max(0,toRevolving-interest);
+              b.revolvingBalance=parseFloat(Math.max(0,(b.revolvingBalance||0)-principal).toFixed(2));
+              b.balance=parseFloat(Math.max(0,(b.balance||0)-principal).toFixed(2));
+              data.transactions.push({
+                id:Date.now()+Math.random(),description:b.name+' - revolving payment',
+                amount:parseFloat(toRevolving.toFixed(2)),type:'Debt Payment',date:today(),
+                accountId:acId,methodLabel:''
+              });
+            }
+            promoAllocs.forEach(alloc=>{
+              const txn=data.transactions.find(t=>t.id===alloc.id);if(!txn)return;
+              b.balance=parseFloat(Math.max(0,(b.balance||0)-alloc.amount).toFixed(2));
+              data.transactions.push({
+                id:Date.now()+Math.random(),description:b.name+' - promo: '+txn.description,
+                amount:parseFloat(alloc.amount.toFixed(2)),type:'Debt Payment',date:today(),
+                accountId:acId,methodLabel:'',promoRef:txn.id
+              });
+            });
+            adjustAccountBalance(acId,-total);
+            b.status=b.balance>0.01?'Pending':'Paid';
+            b.scheduledAmount=null;b.scheduledAccountId=null;
+            closeModal('paydebt');saveData();renderAll();
+            if(b.status==='Paid'){ haptic('medium'); flashBillCard(_payDebtId,'green'); }
+            showToast('Payment of '+usd(total)+' applied!');
+          }
+        });
+        return;
       }
     }
     migrateRevolvingBalance(b);
@@ -5137,7 +5271,20 @@ function confirmDebtPayment(){
     if(acId){
       const bal=getAccountBalance(acId);
       if(bal!==null&&amount>bal){
-        if(!confirm('Warning: this payment of '+usd(amount)+' would overdraw this account by '+usd(amount-bal)+'. Continue?'))return;
+        showConfirm({
+          icon:'⚠️', title:'Overdraft warning',
+          msg:'This payment of '+usd(amount)+' would overdraw this account by '+usd(amount-bal)+'. Continue anyway?',
+          okLabel:'Continue', okStyle:'background:var(--yellow);color:#000',
+          onOk:()=>{
+            applyGeneralPaymentToPromos(b.id,amount);
+            b.scheduledAmount=parseFloat(amount.toFixed(2));
+            b.scheduledAccountId=acId;
+            b.status='Scheduled';
+            closeModal('paydebt');saveData();renderAll();
+            showToast('Payment of '+usd(amount)+' scheduled!');
+          }
+        });
+        return;
       }
     }
     applyGeneralPaymentToPromos(b.id,amount);
@@ -5404,7 +5551,7 @@ function renderDebt(){
     <div class="summary-box"><div class="stat-label">Payoff Time</div><div class="stat-value" style="color:var(--accent2);font-size:18px">${timeStr2}</div></div>
     <div class="summary-box"><div class="stat-label">Total Interest</div><div class="stat-value" style="color:var(--yellow);font-size:18px">${usd(plan.totalInterestPaid)}</div></div>
     <div class="summary-box"><div class="stat-label">Monthly Pool</div><div class="stat-value" style="color:var(--green);font-size:18px">${usd(totalPool)}</div></div>
-    ${interestSaved>0?`<div class="summary-box" style="grid-column:1/-1;background:rgba(34,197,94,.07);border-color:rgba(34,197,94,.2)"><div class="stat-label" style="color:var(--green)">vs ${altMethod.charAt(0).toUpperCase()+altMethod.slice(1)} method</div><div style="font-size:14px;font-weight:700;color:var(--green)">Save ${usd(interestSaved)} in interest with ${debtMethod}</div></div>`:''}
+    ${interestSaved>0?`<div class="summary-box" style="grid-column:1/-1;background:rgba(34,197,94,.07);border-color:rgba(34,197,94,.2)"><div class="stat-label" class="txt-green">vs ${altMethod.charAt(0).toUpperCase()+altMethod.slice(1)} method</div><div style="font-size:14px;font-weight:700;color:var(--green)">Save ${usd(interestSaved)} in interest with ${debtMethod}</div></div>`:''}
     `;
 
   // Debt cards
@@ -5427,7 +5574,7 @@ function renderDebt(){
       <tr>
         <td>${r.month}</td>
         <td>${usd(r.payment)}</td>
-        <td style="color:var(--red)">${usd(r.interest)}</td>
+        <td class="txt-red">${usd(r.interest)}</td>
         <td>${usd(r.balance)}</td>
       </tr>`).join('');
 
@@ -5446,8 +5593,8 @@ function renderDebt(){
           <div style="height:7px;border-radius:4px;width:${pct}%;background:var(--green);transition:width .4s ease"></div>
         </div>
         <div style="display:flex;justify-content:space-between;margin-top:5px">
-          <span style="font-size:11px;color:var(--muted)">Paid: <strong style="color:var(--text)">${usd(paid)}</strong></span>
-          <span style="font-size:11px;color:var(--muted)">Original: <strong style="color:var(--text)">${usd(loanOriginal)}</strong></span>
+          <span class="txt-muted-sm">Paid: <strong style="color:var(--text)">${usd(paid)}</strong></span>
+          <span class="txt-muted-sm">Original: <strong style="color:var(--text)">${usd(loanOriginal)}</strong></span>
         </div>
       </div>`;
     })() : '';
@@ -5460,18 +5607,18 @@ function renderDebt(){
             <span class="apr-badge"${d.btype==='promo'?' style="background:rgba(34,197,94,.15);color:var(--green)"':''}>APR ${pct(d.apr)}</span>
             ${promoBadgeHtml}
             ${getPromoSortNote(d)}
-            <span style="font-size:12px;color:var(--muted)">Min: ${usd(d.amount)}/mo</span>
+            <span class="txt-muted-xs">Min: ${usd(d.amount)}/mo</span>
           </div>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px">
-            <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:8px">
+            <div class="surface-chip">
               <div style="font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;margin-bottom:3px">Balance</div>
               <div style="font-size:15px;font-weight:700;color:var(--red)">${usd(d.balance)}</div>
             </div>
-            <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:8px">
+            <div class="surface-chip">
               <div style="font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;margin-bottom:3px">Payoff</div>
               <div style="font-size:15px;font-weight:700;color:var(--green)">${payoffStr}</div>
             </div>
-            <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:8px">
+            <div class="surface-chip">
               <div style="font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;margin-bottom:3px">Total Interest</div>
               <div style="font-size:15px;font-weight:700;color:var(--yellow)">${usd(totalInt)}</div>
             </div>
@@ -5614,9 +5761,9 @@ function buildAlerts(){
 function renderAlerts(){
   const alerts=buildAlerts();
   const navTarget={
-    bills:"show('bills',document.querySelector('.nav-item:nth-child(3)'))",
-    cards:"show('cards',document.querySelector('.nav-item:nth-child(7)'))",
-    insights:"show('insights',document.querySelector('.nav-item:nth-child(6)'))",
+    bills:"show('bills',document.querySelector('[data-section=bills]'))",
+    cards:"show('cards',document.querySelector('[data-section=cards]'))",
+    insights:"show('insights',document.querySelector('[data-section=insights]'))",
   };
 
   // ── Per-section: only relevant alerts ────────────────────────
@@ -5703,10 +5850,10 @@ function renderDashboard(){
       return d>=0&&d<=7;
     }).length;
     const parts=[];
-    if(overdueBills>0) parts.push(`<span style="color:var(--red)">${overdueBills} overdue bill${overdueBills>1?'s':''}</span>`);
-    if(dueSoon>0) parts.push(`<span style="color:var(--yellow)">${dueSoon} due this week</span>`);
-    if(net>0&&!overdueBills&&!dueSoon) parts.push(`<span style="color:var(--green)">↑ Looking good this month</span>`);
-    if(net<0) parts.push(`<span style="color:var(--red)">↓ Spending exceeds income</span>`);
+    if(overdueBills>0) parts.push(`<span class="txt-red">${overdueBills} overdue bill${overdueBills>1?'s':''}</span>`);
+    if(dueSoon>0) parts.push(`<span class="txt-yellow">${dueSoon} due this week</span>`);
+    if(net>0&&!overdueBills&&!dueSoon) parts.push(`<span class="txt-green">↑ Looking good this month</span>`);
+    if(net<0) parts.push(`<span class="txt-red">↓ Spending exceeds income</span>`);
     summaryEl.innerHTML=parts.join(' &nbsp;·&nbsp; ')||'&nbsp;';
   }
 
@@ -5731,8 +5878,8 @@ function renderDashboard(){
 
   // ── 7-DAY TIMELINE ────────────────────────────
   const todayStr=today();
-  const past7=dt(-7), next7=dt(7);
-  function dt(days){ const d=new Date(); d.setDate(d.getDate()+days); return d.toISOString().split('T')[0]; }
+  function dtOffset(days){ const d=new Date(); d.setDate(d.getDate()+days); return d.toISOString().split('T')[0]; }
+  const past7=dtOffset(-7), next7=dtOffset(7);
 
   const upcomingBills=data.bills.filter(b=>{
     if(b.status==='Paid') return false;
@@ -5817,19 +5964,17 @@ function renderDashboard(){
     html+=upcoming.map(i=>i.render()).join('');
   }
 
-  // TODAY divider
-  html+=`<div style="display:flex;align-items:center;gap:10px;margin:12px 0">
-    <div style="flex:1;height:1px;background:var(--accent);opacity:.3"></div>
-    <div style="font-size:11px;font-weight:700;color:var(--accent);letter-spacing:1px">${t('TODAY')}</div>
-    <div style="flex:1;height:1px;background:var(--accent);opacity:.3"></div>
-  </div>`;
+  // TODAY divider — only render when there is content above (upcoming/overdue) or below (past)
+  const hasAbove=overdue.length||upcoming.length;
+  const hasBelow=past.length;
+  if(hasAbove||hasBelow){
+    html+=`<div style="display:flex;align-items:center;gap:10px;margin:12px 0"><div style="flex:1;height:1px;background:var(--accent);opacity:.3"></div><div style="font-size:11px;font-weight:700;color:var(--accent);letter-spacing:1px">${t('TODAY')}</div><div style="flex:1;height:1px;background:var(--accent);opacity:.3"></div></div>`;
+  }
 
   // Past/recent group
   if(past.length){
     html+=`<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin-bottom:8px">Recent</div>`;
     html+=past.map(i=>i.render()).join('');
-  } else {
-    html+=emptyState('📅','No recent activity','No transactions logged in the past 7 days.','','');
   }
 
   $('d-timeline').innerHTML=html;
@@ -5973,7 +6118,7 @@ function renderBills(){
         +'<button class="btn btn-sm" style="background:rgba(255,255,255,.06);color:var(--muted);font-size:11px"'
         +' onclick="event.stopPropagation();revertToPending('+b.id+')">Cancel</button>';
     } else if(isZeroBalance){
-      actionBtns='<span style="font-size:12px;color:var(--muted)">No balance</span>';
+      actionBtns='<span class="txt-muted-xs">No balance</span>';
     } else {
       const schedLabel=eff==='Overdue'?'Schedule Now':'Schedule';
       actionBtns='<button class="btn btn-sm" style="background:rgba(59,130,246,.15);color:var(--blue)"'
@@ -5993,8 +6138,8 @@ function renderBills(){
       +'<div style="min-width:0;flex:1">'
       +'<div style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'
       +b.name+(b.autoLog?'<span class="autolog-badge">&#128259; auto</span>':'')+typeBadge+'</div>'
-      +'<div style="font-size:11px;color:var(--muted)">'+subLine+'</div>'
-      +(isDebt&&b.balance?'<div style="font-size:11px;color:var(--muted)">'+getBalanceSplitHtml(b)+'</div>':'')
+      +'<div class="txt-muted-sm">'+subLine+'</div>'
+      +(isDebt&&b.balance?'<div class="txt-muted-sm">'+getBalanceSplitHtml(b)+'</div>':'')
       +'</div>'
       +'<div style="display:flex;align-items:center;gap:6px;flex-shrink:0">'
       +'<span style="font-weight:700;font-size:15px">'+usd(b.scheduledAmount||b.amount)+'</span>'
@@ -6040,7 +6185,7 @@ function renderBills(){
       +(e.autoLog?'<span class="autolog-badge">&#128259; auto</span>':'')
       +'<span style="font-size:9px;font-weight:700;padding:1px 6px;border-radius:20px;background:rgba(168,85,247,.15);color:#a855f7;margin-left:4px">EXP</span>'
       +'</div>'
-      +'<div style="font-size:11px;color:var(--muted)">'+subLine+'</div>'
+      +'<div class="txt-muted-sm">'+subLine+'</div>'
       +'</div>'
       +'<div style="display:flex;align-items:center;gap:6px;flex-shrink:0">'
       +'<span style="font-weight:700;font-size:15px">'+usd(e.amount)+'</span>'
@@ -6061,23 +6206,23 @@ function renderBills(){
 
     if(incomeCards.length){
       html+=sectionDiv('💰 Income',0);
-      html+=incomeCards.join('<div style="margin-bottom:8px"></div>');
+      html+=incomeCards.join('<div class="mb-8"></div>');
     }
     if(billCards.length){
       html+=sectionDiv('📋 Bills',incomeCards.length?1:0);
-      html+=billCards.join('<div style="margin-bottom:8px"></div>');
+      html+=billCards.join('<div class="mb-8"></div>');
     }
     if(expenseCards.length){
       html+=sectionDiv('💸 Expenses',incomeCards.length+billCards.length?1:0);
-      html+=expenseCards.join('<div style="margin-bottom:8px"></div>');
+      html+=expenseCards.join('<div class="mb-8"></div>');
     }
     if(loanCards.length){
       html+=sectionDiv('🏦 Loans',1);
-      html+=loanCards.join('<div style="margin-bottom:8px"></div>');
+      html+=loanCards.join('<div class="mb-8"></div>');
     }
     if(cardCards.length){
       html+=sectionDiv('💳 Credit Cards',1);
-      html+=cardCards.join('<div style="margin-bottom:8px"></div>');
+      html+=cardCards.join('<div class="mb-8"></div>');
     }
 
   } else {
@@ -6128,7 +6273,7 @@ function renderBills(){
       if(item._kind==='bill') html+=renderBillCard(item.bill,false);
       else if(item._kind==='expense') html+=renderExpenseCard(item.expense);
       else html+=renderIncomeCard(item.income,item.occ,item.idx,item.total);
-      html+='<div style="margin-bottom:8px"></div>';
+      html+='<div class="mb-8"></div>';
     });
 
     if(paidItems.length){
@@ -6137,7 +6282,7 @@ function renderBills(){
         if(item._kind==='bill') html+=renderBillCard(item.bill,false);
         else if(item._kind==='expense') html+=renderExpenseCard(item.expense);
         else html+=renderIncomeCard(item.income,item.occ,item.idx,item.total);
-        html+='<div style="margin-bottom:8px"></div>';
+        html+='<div class="mb-8"></div>';
       });
     }
   }
@@ -6174,10 +6319,11 @@ function renderCards(){
   if(crBar){crBar.style.width=utilPct+'%';crBar.style.background=utilColor;}
   if(crTip) crTip.textContent=tip;
 
-  // Per-card list
+  // Per-card list — show all cards with a balance (even if no credit limit set yet)
+  const activeCards=data.bills.filter(b=>b.btype==='creditcard'&&b.balance>0);
   const ccList=$('credit-card-list');
   if(ccList){
-    ccList.innerHTML=creditCards.length?creditCards.map(c=>{
+    ccList.innerHTML=activeCards.length?activeCards.map(c=>{
       const cardUtil=c.creditLimit>0?Math.min(100,Math.round(c.balance/c.creditLimit*100)):0;
       const cardColor=cardUtil<30?'var(--green)':cardUtil<50?'var(--yellow)':'var(--red)';
       const avail=Math.max(0,c.creditLimit-c.balance);
@@ -6204,16 +6350,16 @@ function renderCards(){
           <div style="flex:1;min-width:160px">
             <div style="font-size:15px;font-weight:600;margin-bottom:4px">💳 ${c.name}</div>
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;margin-bottom:10px">
-              <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:8px">
-                <div style="font-size:10px;color:var(--muted);text-transform:uppercase;font-weight:700;margin-bottom:2px">Balance</div>
+              <div class="surface-chip">
+                <div class="txt-label">Balance</div>
                 <div style="font-size:15px;font-weight:700;color:${cardColor}">${usd(c.balance)}</div>
               </div>
-              <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:8px">
-                <div style="font-size:10px;color:var(--muted);text-transform:uppercase;font-weight:700;margin-bottom:2px">Limit</div>
+              <div class="surface-chip">
+                <div class="txt-label">Limit</div>
                 <div style="font-size:15px;font-weight:700">${usd(c.creditLimit)}</div>
               </div>
-              <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:8px">
-                <div style="font-size:10px;color:var(--muted);text-transform:uppercase;font-weight:700;margin-bottom:2px">Available</div>
+              <div class="surface-chip">
+                <div class="txt-label">Available</div>
                 <div style="font-size:15px;font-weight:700;color:var(--green)">${usd(avail)}</div>
               </div>
             </div>
@@ -6272,13 +6418,15 @@ function renderCards(){
         <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px">
           <div>
             <div style="font-size:15px;font-weight:600;margin-bottom:3px">💳 ${c.name}${c.last4?` <span style="color:var(--muted);font-size:13px">....${c.last4}</span>`:''}</div>
-            <div style="font-size:12px;color:var(--muted)">${lastUsedText}</div>
+            <div class="txt-muted-xs">${lastUsedText}</div>
             ${c.notes?`<div style="font-size:12px;color:#444;margin-top:2px">${c.notes}</div>`:''}
             ${c.inactive?`<div style="color:var(--accent2);font-size:12px;font-weight:700;margin-top:5px">⚡ No purchases in 90+ days - use this card!</div>`:''}
           </div>
           <div class="row-actions">
+            ${c.isCard?`<button class="btn btn-secondary btn-sm" onclick="openEditBill(${c.billId})">Edit</button>`:''}
             <button class="btn btn-secondary btn-sm" onclick="addToCalendar('Use ${c.name} card','${c.lastUsed||today()}','Keep card active')">📅 Remind</button>
-            ${!c.isCard?`<button class="btn btn-danger btn-sm" onclick="deleteItem('cards',${c.cardId})">✕</button>`:''}
+            ${!c.isCard?`<button class="btn btn-danger btn-sm" onclick="deleteItem('cards',${c.cardId})">✕</button>`:`<button class="btn btn-danger btn-sm" onclick="deleteItem('bills',${c.billId})">✕</button>`}
+          </div>
           </div>
         </div>
       </div>`;
@@ -6340,7 +6488,7 @@ function renderLoans(){
             <div class="dr-desc">${tr.description||'Payment'}</div>
             <div class="dr-sub">${fmtDate(tr.date)}${tr.category?' · '+tr.category:''}</div>
           </div>
-          <div class="dr-amt" style="color:var(--green)">-${usd(tr.amount)}</div>
+          <div class="dr-amt" class="txt-green">-${usd(tr.amount)}</div>
         </div>`).join('')
       : '<div class="drill-empty">No payments logged this month.</div>';
 
@@ -6352,20 +6500,20 @@ function renderLoans(){
             <span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;background:${statusC}22;color:${statusC}">${l.status||'Pending'}</span>
           </div>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;margin-bottom:10px">
-            <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:8px">
-              <div style="font-size:10px;color:var(--muted);text-transform:uppercase;font-weight:700;margin-bottom:2px">Balance</div>
+            <div class="surface-chip">
+              <div class="txt-label">Balance</div>
               <div style="font-size:15px;font-weight:700;color:var(--red)">${usd(l.balance||0)}</div>
             </div>
-            <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:8px">
-              <div style="font-size:10px;color:var(--muted);text-transform:uppercase;font-weight:700;margin-bottom:2px">Original</div>
+            <div class="surface-chip">
+              <div class="txt-label">Original</div>
               <div style="font-size:15px;font-weight:700">${usd(orig)}</div>
             </div>
-            <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:8px">
-              <div style="font-size:10px;color:var(--muted);text-transform:uppercase;font-weight:700;margin-bottom:2px">Paid Off</div>
+            <div class="surface-chip">
+              <div class="txt-label">Paid Off</div>
               <div style="font-size:15px;font-weight:700;color:var(--green)">${usd(paid)}</div>
             </div>
-            <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:8px">
-              <div style="font-size:10px;color:var(--muted);text-transform:uppercase;font-weight:700;margin-bottom:2px">Min. Payment</div>
+            <div class="surface-chip">
+              <div class="txt-label">Min. Payment</div>
               <div style="font-size:15px;font-weight:700;color:var(--yellow)">${usd(l.amount||0)}</div>
             </div>
           </div>
@@ -6461,22 +6609,22 @@ function renderTxns(){
       sumEl.innerHTML=`<div class="txn-stats-grid">
         <div class="txn-stat-card">
           <div class="txn-stat-label">Total Spent</div>
-          <div class="txn-stat-val" style="color:var(--red)">-${usd(totalSpent)}</div>
+          <div class="txn-stat-val" class="txt-red">-${usd(totalSpent)}</div>
           <div class="txn-stat-sub">${spendingTxns.length} transaction${spendingTxns.length===1?'':'s'}</div>
         </div>
         <div class="txn-stat-card">
           <div class="txn-stat-label">Purchases</div>
-          <div class="txn-stat-val" style="color:var(--yellow)">${purchaseCt}</div>
+          <div class="txn-stat-val" class="txt-yellow">${purchaseCt}</div>
           <div class="txn-stat-sub">-${usd(monthAll.filter(tx=>tx.type==='Purchase').reduce((s,tx)=>s+tx.amount,0))}</div>
         </div>
         <div class="txn-stat-card">
           <div class="txn-stat-label">Withdrawals</div>
-          <div class="txn-stat-val" style="color:var(--accent2)">${withdrawCt}</div>
+          <div class="txn-stat-val" class="txt-accent">${withdrawCt}</div>
           <div class="txn-stat-sub">-${usd(monthAll.filter(tx=>tx.type==='Withdrawal').reduce((s,tx)=>s+tx.amount,0))}</div>
         </div>
         <div class="txn-stat-card">
           <div class="txn-stat-label">Avg / Transaction</div>
-          <div class="txn-stat-val" style="color:var(--muted)">${spendingTxns.length?usd(parseFloat((totalSpent/spendingTxns.length).toFixed(2))):usd(0)}</div>
+          <div class="txn-stat-val" class="txt-muted">${spendingTxns.length?usd(parseFloat((totalSpent/spendingTxns.length).toFixed(2))):usd(0)}</div>
           <div class="txn-stat-sub">${new Date(y,m-1,1).toLocaleString('default',{month:'short',year:'numeric'})}</div>
         </div>
       </div>`;
@@ -6649,7 +6797,7 @@ function renderInsights(){
     const utilRow=cardBill&&cardBill.creditLimit>0?`
       <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border)">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-          <span style="font-size:11px;color:var(--muted)">Credit Utilization</span>
+          <span class="txt-muted-sm">Credit Utilization</span>
           <span style="font-size:11px;font-weight:700;color:${cardBill.balance/cardBill.creditLimit<0.3?'var(--green)':cardBill.balance/cardBill.creditLimit<0.5?'var(--yellow)':'var(--red)'}">
             ${usd(cardBill.balance)} / ${usd(cardBill.creditLimit)} (${Math.round(cardBill.balance/cardBill.creditLimit*100)}%)
           </span>
@@ -6761,7 +6909,7 @@ function renderSnapshot(){
     { label:'Income',    val:thisIncome,   prev:lastIncome,   col:'var(--teal)' },
     { label:'Spending',  val:thisOut,      prev:lastOut,      col:'var(--red)'   },
     { label:'Net',       val:thisNet,      prev:lastNet,      col:thisNet>=0?'var(--green)':'var(--red)' },
-    { label:'Bills Paid',val:null,         prev:null,         col:'var(--blue)', custom:`<div class="si-val" style="color:var(--blue)">${thisBillsPaid} / ${thisBillsTotal}</div><div class="si-delta" style="color:var(--muted)">${thisBillsTotal - thisBillsPaid} remaining</div>` },
+    { label:'Bills Paid',val:null,         prev:null,         col:'var(--blue)', custom:`<div class="si-val" style="color:var(--blue)">${thisBillsPaid} / ${thisBillsTotal}</div><div class="si-delta" class="txt-muted">${thisBillsTotal - thisBillsPaid} remaining</div>` },
   ].map(item => `
     <div class="snap-item">
       <div class="si-label">${item.label}</div>
@@ -7131,9 +7279,9 @@ function obRender(){
     var monthlyBills = (window._obBill) ? (window._obBill.amount||0) : 0;
     var leftover = monthlyInc - monthlyBills;
     var summaryRows = '';
-    if(totalBal>0) summaryRows += '<div class="ob-insight-row"><span class="ob-insight-label">Account Balance</span><span class="ob-insight-val" style="color:var(--green)">'+usd(totalBal)+'</span></div>';
+    if(totalBal>0) summaryRows += '<div class="ob-insight-row"><span class="ob-insight-label">Account Balance</span><span class="ob-insight-val" class="txt-green">'+usd(totalBal)+'</span></div>';
     if(monthlyInc>0) summaryRows += '<div class="ob-insight-row"><span class="ob-insight-label">Monthly Income</span><span class="ob-insight-val" style="color:var(--teal)">'+usd(monthlyInc)+'</span></div>';
-    if(monthlyBills>0) summaryRows += '<div class="ob-insight-row"><span class="ob-insight-label">Monthly Bills</span><span class="ob-insight-val" style="color:var(--red)">'+usd(monthlyBills)+'</span></div>';
+    if(monthlyBills>0) summaryRows += '<div class="ob-insight-row"><span class="ob-insight-label">Monthly Bills</span><span class="ob-insight-val" class="txt-red">'+usd(monthlyBills)+'</span></div>';
     if(monthlyInc>0&&monthlyBills>0) summaryRows += '<div class="ob-insight-row"><span class="ob-insight-label">Left Over</span><span class="ob-insight-val" style="color:'+(leftover>=0?'var(--green)':'var(--red)')+'">'+usd(leftover)+'</span></div>';
     var summaryHtml = summaryRows ? '<div class="ob-insight">'+summaryRows+'</div>' : '';
 
@@ -7153,7 +7301,7 @@ function obRender(){
 function obDemo(){
   obSkipOnboarding();
   loadDemoData(true);
-  var firstNav = document.querySelector('.nav-item');
+  var firstNav = document.querySelector('[data-section=dashboard]');
   show('dashboard', firstNav);
   setTimeout(()=>{
     renderAll();
@@ -7253,7 +7401,7 @@ function obFinish(){
   try{ saveData(); }catch(e){}
   obSkipOnboarding();
   renderAll();
-  var firstNav = document.querySelector('.nav-item');
+  var firstNav = document.querySelector('[data-section=dashboard]');
   show('dashboard', firstNav);
 }
 
@@ -7429,7 +7577,7 @@ function renderProjection(){
   const monthRows = hasSpike ? monthlyTotals.map(m=>{
     const isSpike = m.total > avgMonthly*1.2;
     return`<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid var(--border)">
-      <span style="font-size:12px;color:var(--muted)">${m.label}</span>
+      <span class="txt-muted-xs">${m.label}</span>
       <span style="font-size:13px;font-weight:700;color:${isSpike?'var(--yellow)':'var(--green)'}">
         ${usd(m.total)}${isSpike?' <span style="font-size:9px;font-weight:700;background:rgba(245,158,11,.15);color:var(--yellow);border-radius:4px;padding:1px 4px">3 checks</span>':''}
       </span>
@@ -7439,10 +7587,10 @@ function renderProjection(){
   el.innerHTML=`
     <div style="background:rgba(34,197,94,.07);border-radius:8px;padding:10px 12px;margin-bottom:${hasSpike?'10px':'0'}">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-        <span style="font-size:11px;color:var(--muted)">Expected by ${endLabel}</span>
+        <span class="txt-muted-sm">Expected by ${endLabel}</span>
         <span style="font-size:18px;font-weight:700;color:var(--green)">${usd(grandTotal)}</span>
       </div>
-      <div style="font-size:11px;color:var(--muted)">${usd(avgMonthly)} avg/month &times; ${months.length} months</div>
+      <div class="txt-muted-sm">${usd(avgMonthly)} avg/month &times; ${months.length} months</div>
       ${hasSpike?`<div style="font-size:11px;color:var(--yellow);margin-top:4px">&#127881; Includes ${monthlyTotals.filter(m=>m.total>avgMonthly*1.2).length} 3-paycheck month${monthlyTotals.filter(m=>m.total>avgMonthly*1.2).length>1?'s':''}</div>`:''}
     </div>
     ${hasSpike?`<div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Monthly Breakdown</div>${monthRows}`:''}`;
@@ -7818,7 +7966,7 @@ function renderDebtCountdown(){
     <div style="display:flex;justify-content:space-between;align-items:center;${i>0?'margin-top:6px;padding-top:6px;border-top:1px solid var(--border)':''}">
       <div>
         <div style="font-size:12px;font-weight:700;color:var(--text)">${i===0?'Next:':'Then:'} <strong>${p.name}</strong></div>
-        <div style="font-size:11px;color:var(--muted)">${p.date.toLocaleString('default',{month:'long',year:'numeric'})}</div>
+        <div class="txt-muted-sm">${p.date.toLocaleString('default',{month:'long',year:'numeric'})}</div>
       </div>
       <div style="font-size:14px;font-weight:700;color:var(--accent)">${p.payoffMonth}mo</div>
     </div>`).join('');
@@ -8537,7 +8685,7 @@ function calcPromoRequired(){
     const projectedInterest = parseFloat((amt * dailyRate * months * 30).toFixed(2));
     calc.style.display='block';
     calc.innerHTML = `Pay <strong>${usd(monthly)}/mo</strong> to clear by <strong>${endStr}</strong><br>`
-      + (apr>0 ? `<span style="color:var(--red)">Miss deadline = <strong>${usd(projectedInterest)}</strong> in deferred interest charged retroactively</span>` : '');
+      + (apr>0 ? `<span class="txt-red">Miss deadline = <strong>${usd(projectedInterest)}</strong> in deferred interest charged retroactively</span>` : '');
   } else {
     calc.style.display='block';
     calc.innerHTML = `Fixed <strong>${usd(monthly)}/mo</strong> for ${months} months &mdash; paid off by <strong>${endStr}</strong>`;
@@ -8575,17 +8723,17 @@ function renderPromoItems(cardId){
 
     let deadlineHtml='';
     if(isExpired){
-      deadlineHtml=`<div class="pi-deadline" style="color:var(--red)">EXPIRED ${Math.abs(daysLeft)}d ago</div>`;
+      deadlineHtml=`<div class="pi-deadline" class="txt-red">EXPIRED ${Math.abs(daysLeft)}d ago</div>`;
       deadlineHtml += getDeferredInterestWarning(tx, remaining, daysLeft);
     } else if(isDanger){
-      deadlineHtml=`<div class="pi-deadline" style="color:var(--red)">&#128680; ${daysLeft}d left - pay ${usd(remaining)} now!</div>`;
+      deadlineHtml=`<div class="pi-deadline" class="txt-red">&#128680; ${daysLeft}d left - pay ${usd(remaining)} now!</div>`;
       deadlineHtml += getDeferredInterestWarning(tx, remaining, daysLeft);
     } else if(isWarn){
       deadlineHtml += getDeferredInterestWarning(tx, remaining, daysLeft);
-      deadlineHtml=`<div class="pi-deadline" style="color:var(--yellow)">&#9888;&#65039; ${daysLeft}d left &mdash; ${usd(monthlyNeeded)}/mo needed</div>`;
+      deadlineHtml=`<div class="pi-deadline" class="txt-yellow">&#9888;&#65039; ${daysLeft}d left &mdash; ${usd(monthlyNeeded)}/mo needed</div>`;
     } else {
       const endFmt = new Date(tx.promoEnd).toLocaleDateString('en-US',{month:'short',year:'numeric'});
-      deadlineHtml=`<div class="pi-deadline" style="color:var(--muted)">${tx.promoType==='deferred'?'Pay in full by':'Last payment'}: ${endFmt}</div>`;
+      deadlineHtml=`<div class="pi-deadline" class="txt-muted">${tx.promoType==='deferred'?'Pay in full by':'Last payment'}: ${endFmt}</div>`;
     }
 
     const barColor = isExpired||isDanger?'var(--red)':isWarn?'var(--yellow)':'var(--accent)';
@@ -8600,7 +8748,7 @@ function renderPromoItems(cardId){
       <div class="pi-right">
         <div class="pi-amount" style="color:${remaining>0?'var(--text)':'var(--green)'}">${usd(remaining)}</div>
         <div class="pi-monthly">${remaining>0?usd(monthlyNeeded)+'/mo needed':'Paid off!'}</div>
-        <div class="pi-monthly" style="color:var(--muted)">${pct}% paid</div>
+        <div class="pi-monthly" class="txt-muted">${pct}% paid</div>
       </div>
     </div>`;
   }).join('');
@@ -8622,7 +8770,7 @@ function renderPromoItems(cardId){
   return `<div class="promo-items-wrap">
     <button onclick="togglePromoCollapse('${collapseId}')" style="width:100%;background:none;border:none;display:flex;align-items:center;gap:8px;padding:0 0 6px;cursor:pointer;text-align:left">
       <span class="promo-items-header" style="margin:0;flex:1">🎁 ${items.length} promo${items.length>1?'s':''} · ${usd(totalRemaining)} remaining${hasDanger?' 🚨':''}</span>
-      <span id="${collapseId}-chev" style="font-size:11px;color:var(--muted)">${isOpen?'▴':'▾'}</span>
+      <span id="${collapseId}-chev" class="txt-muted-sm">${isOpen?'▴':'▾'}</span>
     </button>
     <div id="${collapseId}" style="display:${isOpen?'block':'none'}">
       ${rows}
@@ -8764,8 +8912,8 @@ function getBalanceSplitHtml(b){
   const rev = getRevolvingBalance(b);
   const promo = Math.max(0,(b.balance||0)-rev);
   if(promo>0.01){
-    return '<span style="color:var(--red)">Revolving: '+usd(rev)+'</span>'
-      +' &bull; <span style="color:var(--accent2)">Promo: '+usd(promo)+'</span>'
+    return '<span class="txt-red">Revolving: '+usd(rev)+'</span>'
+      +' &bull; <span class="txt-accent">Promo: '+usd(promo)+'</span>'
       +' &bull; Total: '+usd(b.balance)+(b.apr?' | APR: '+pct(b.apr):'');
   }
   return 'Balance: '+usd(b.balance)+(b.apr?' | APR: '+pct(b.apr):'');
@@ -9633,7 +9781,7 @@ function renderSpendingTrends(){
     </div>
     <div style="margin-bottom:10px">${bars}</div>
     <div class="trend-avg-line">
-      <span style="font-size:11px;color:var(--muted)">Avg: <strong>${usd(avg1)}/mo</strong>${_trendCat2?` &nbsp;|&nbsp; ${_trendCat2} avg: <strong>${usd(avg2)}/mo</strong>`:''}</span>
+      <span class="txt-muted-sm">Avg: <strong>${usd(avg1)}/mo</strong>${_trendCat2?` &nbsp;|&nbsp; ${_trendCat2} avg: <strong>${usd(avg2)}/mo</strong>`:''}</span>
     </div>
     <div class="trend-summary">
       <div class="trend-stat">
@@ -9642,7 +9790,7 @@ function renderSpendingTrends(){
       </div>
       <div class="trend-stat">
         <div class="trend-stat-label">Highest</div>
-        <div class="trend-stat-val" style="color:var(--red)">${usd(highest.total)}<div style="font-size:9px;color:var(--muted)">${highest.label}</div></div>
+        <div class="trend-stat-val" class="txt-red">${usd(highest.total)}<div style="font-size:9px;color:var(--muted)">${highest.label}</div></div>
       </div>
       <div class="trend-stat">
         <div class="trend-stat-label">${months}-mo trend</div>
@@ -9868,7 +10016,7 @@ function checkAutoLogBanner(){
     banner.innerHTML = `
       <button onclick="dismissAutoLogBanner()" style="float:right;background:none;border:none;color:var(--green);cursor:pointer;font-size:16px">&#x2715;</button>
       <div style="font-weight:700;margin-bottom:4px">&#128259; Auto-logged ${n.count} payment${n.count>1?'s':''} for ${monthFmt}</div>
-      <div style="font-size:12px;color:var(--muted)">${n.items.join(', ')}${n.count>5?' +more':''} &mdash; Total: ${usd(n.total)}</div>`;
+      <div class="txt-muted-xs">${n.items.join(', ')}${n.count>5?' +more':''} &mdash; Total: ${usd(n.total)}</div>`;
   }catch(e){}
 }
 
@@ -9885,10 +10033,10 @@ function dismissAutoLogBanner(){
 function buildNotifications(){
   const notifs=[];
   const navTarget={
-    bills:"show('bills',document.querySelector('.nav-item:nth-child(3)'))",
-    debt:"show('debt',document.querySelector('.nav-item:nth-child(4)'))",
-    cards:"show('cards',document.querySelector('.nav-item:nth-child(7)'))",
-    insights:"show('insights',document.querySelector('.nav-item:nth-child(6)'))",
+    bills:"show('bills',document.querySelector('[data-section=bills]'))",
+    debt:"show('debt',document.querySelector('[data-section=debt]'))",
+    cards:"show('cards',document.querySelector('[data-section=cards]'))",
+    insights:"show('insights',document.querySelector('[data-section=insights]'))",
   };
 
   // ── Alerts from buildAlerts() ─────────────────────────────
@@ -10248,14 +10396,14 @@ function renderCashFlow(){
     return '<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)">'
       +'<div style="min-width:0;flex:1;padding-right:12px">'
       +'<div style="font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+r.label+'</div>'
-      +(r.sub?'<div style="font-size:11px;color:var(--muted)">'+r.sub+'</div>':'')
+      +(r.sub?'<div class="txt-muted-sm">'+r.sub+'</div>':'')
       +'</div>'
       +'<div style="font-size:14px;font-weight:700;color:'+r.color+';white-space:nowrap">'+usd(r.amt)+'</div>'
       +'</div>';
   }
 
   function sectionHtml(title, rows, total, totalColor){
-    return '<div style="margin-bottom:16px">'
+    return '<div class="mb-16">'
       +'<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:6px">'+title+'</div>'
       +(rows.length
         ? rows.map(rowHtml).join('')
@@ -10469,18 +10617,21 @@ async function advisorSend() {
   advisorHistory.push({role:'user', content:msg});
   renderAdvisorMessages();
 
-  // Loading indicator
   var wrap = document.getElementById('advisor-messages');
-  var loadDiv = document.createElement('div');
-  loadDiv.id = 'advisor-loading';
-  loadDiv.style.cssText = 'display:flex;justify-content:flex-start;margin-bottom:10px';
-  loadDiv.innerHTML = '<div style="padding:10px 14px;border-radius:16px 16px 16px 4px;background:var(--surface);border:1px solid var(--border);font-size:13px;color:var(--muted)">Thinking…</div>';
-  wrap.appendChild(loadDiv);
-  wrap.scrollTop = wrap.scrollHeight;
-
   var sendBtn = document.getElementById('advisor-send-btn');
   if (sendBtn) sendBtn.disabled = true;
 
+  // Create a live streaming bubble
+  var streamDiv = document.createElement('div');
+  streamDiv.style.cssText = 'display:flex;justify-content:flex-start;margin-bottom:10px';
+  var bubble = document.createElement('div');
+  bubble.style.cssText = 'max-width:84%;padding:10px 14px;border-radius:16px 16px 16px 4px;background:var(--surface);border:1px solid var(--border);font-size:13px;line-height:1.6;color:var(--text);white-space:pre-wrap;word-break:break-word';
+  bubble.textContent = '…';
+  streamDiv.appendChild(bubble);
+  wrap.appendChild(streamDiv);
+  wrap.scrollTop = wrap.scrollHeight;
+
+  var fullText = '';
   try {
     var resp = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -10493,23 +10644,52 @@ async function advisorSend() {
       body: JSON.stringify({
         model: 'claude-haiku-4-5-20251001',
         max_tokens: 1024,
+        stream: true,
         system: buildFinancialContext(),
         messages: advisorHistory
       })
     });
-    var result = await resp.json();
-    var loadEl = document.getElementById('advisor-loading');
-    if (loadEl) loadEl.remove();
-    if (result.error) {
-      advisorHistory.push({role:'assistant', content:'⚠️ API Error: ' + result.error.message});
-    } else {
-      var text = (result.content && result.content[0] && result.content[0].text) ? result.content[0].text : '(no response)';
-      advisorHistory.push({role:'assistant', content:text});
+
+    if (!resp.ok) {
+      var errData = await resp.json();
+      throw new Error((errData.error && errData.error.message) || 'API error ' + resp.status);
     }
+
+    var reader = resp.body.getReader();
+    var decoder = new TextDecoder();
+    var buffer = '';
+
+    while (true) {
+      var _ref = await reader.read();
+      var done = _ref.done, value = _ref.value;
+      if (done) break;
+      buffer += decoder.decode(value, {stream: true});
+      var lines = buffer.split('\n');
+      buffer = lines.pop(); // keep incomplete line
+      for (var i = 0; i < lines.length; i++) {
+        var line = lines[i].trim();
+        if (!line.startsWith('data:')) continue;
+        var jsonStr = line.slice(5).trim();
+        if (jsonStr === '[DONE]') continue;
+        try {
+          var evt = JSON.parse(jsonStr);
+          if (evt.type === 'content_block_delta' && evt.delta && evt.delta.type === 'text_delta') {
+            fullText += evt.delta.text;
+            bubble.textContent = fullText;
+            wrap.scrollTop = wrap.scrollHeight;
+          } else if (evt.type === 'error') {
+            throw new Error(evt.error && evt.error.message || 'Stream error');
+          }
+        } catch(parseErr) { /* skip malformed lines */ }
+      }
+    }
+
+    streamDiv.remove();
+    advisorHistory.push({role:'assistant', content: fullText || '(no response)'});
+
   } catch(err) {
-    var loadEl2 = document.getElementById('advisor-loading');
-    if (loadEl2) loadEl2.remove();
-    advisorHistory.push({role:'assistant', content:'⚠️ Connection error. Check your internet and try again.'});
+    streamDiv.remove();
+    advisorHistory.push({role:'assistant', content:'⚠️ ' + (err.message || 'Connection error. Check your internet and try again.')});
   }
 
   if (sendBtn) sendBtn.disabled = false;
