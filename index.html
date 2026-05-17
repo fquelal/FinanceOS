@@ -24,6 +24,9 @@
   --font-b:-apple-system,BlinkMacSystemFont,'Helvetica Neue','Segoe UI',sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+/* Hide scrollbars on all platforms while keeping scroll functionality */
+*::-webkit-scrollbar{display:none;}
+*{-ms-overflow-style:none;scrollbar-width:none;}
 body{background:var(--bg);color:var(--text);font-family:var(--font-b);min-height:100vh;display:flex;}
 
 /* ── SIDEBAR ── */
