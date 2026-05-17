@@ -205,7 +205,7 @@ main{max-width:900px;padding:20px 20px 60px;}
 
 /* ── BADGES ── */
 .badge{display:inline-block;border-radius:6px;padding:3px 10px;font-size:12px;font-weight:700;margin-top:4px;}
-.recur-badge{display:inline-flex;align-items:center;gap:3px;border-radius:6px;padding:3px 8px;font-size:12px;font-weight:700;}
+.recur-badge{display:inline-flex;align-items:center;gap:3px;border-radius:6px;padding:2px 7px;font-size:12px;font-weight:700;flex-shrink:0;}
 
 /* ── MISC ── */
 .section-label{font-size:12px;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;font-weight:700;}
@@ -958,8 +958,8 @@ canvas{width:100%!important;}
 .autolog-toggle label{font-size:13px;color:var(--text);cursor:pointer;flex:1;}
 #autolog-account-wrap,#b-autolog-account-wrap{display:none;margin-top:8px;}
 .autolog-badge{display:inline-flex;align-items:center;gap:3px;background:rgba(34,197,94,.12);
-  color:var(--green);border:1px solid rgba(34,197,94,.25);border-radius:5px;
-  padding:1px 7px;font-size:10px;font-weight:700;margin-left:5px;}
+  color:var(--green);border:1px solid rgba(34,197,94,.25);border-radius:6px;
+  padding:2px 7px;font-size:12px;font-weight:700;flex-shrink:0;}
 
 
 /* ── TRANSACTION SUMMARY STATS ── */
@@ -2576,7 +2576,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v2.1.2';
+const APP_VERSION='v2.1.3';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -4515,7 +4515,7 @@ function renderIncomeCard(income, occ, idx, total){
     ?('<span style="color:var(--muted);text-decoration:line-through;font-size:11px">'+usd(income.amount)+'</span>'
       +' <span style="font-weight:700;color:var(--accent2)">'+usd(occ.amount)+'</span>')
     :('<span style="font-weight:700;color:var(--green)">'+usd(occ.amount)+'</span>');
-  const statusBadge='<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;'
+  const statusBadge='<span style="font-size:12px;font-weight:700;padding:2px 8px;border-radius:20px;'
     +'background:'+sc+'22;color:'+sc+'">'+status+'</span>';
   let actionBtns='';
   if(status==='Received'){
@@ -4554,8 +4554,8 @@ function renderIncomeCard(income, occ, idx, total){
     +' onclick="toggleCardExpand(\''+cid+'\')">'
     +'<div style="display:flex;align-items:center;justify-content:space-between;gap:8px">'
     +'<div style="min-width:0;flex:1">'
-    +'<div style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'
-    +income.source+(isFirst?' '+recurBadge(income.frequency):'')+' </div>'
+    +(isFirst&&income.frequency&&income.frequency!=='One-time'?'<div style="margin-bottom:3px;display:flex;gap:4px;flex-wrap:wrap">'+recurBadge(income.frequency)+'</div>':'')
+    +'<div style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+income.source+'</div>'
     +'<div class="txt-muted-sm">'+subLine+'</div>'
     +'</div>'
     +'<div style="display:flex;align-items:center;gap:6px;flex-shrink:0">'
@@ -5408,7 +5408,7 @@ function recurBadge(freq){
   if(!freq||freq==='One-time')return'';
   const map={Weekly:['#06b6d4','🔁'],'Bi-weekly':['#8b5cf6','🔁'],Monthly:['#5070f0','🔄'],Yearly:['#f59e0b','📆']};
   const[c,icon]=map[freq]||['#888','🔁'];
-  return`<span class="recur-badge" style="background:${c}22;color:${c}">${icon} ${freq}</span>`;
+  return`<span class="recur-badge" style="background:${c}22;color:${c}">${freq} ${icon}</span>`;
 }
 
 // ── DEBT PLANNER ENGINE ──────────────────────────
@@ -5656,7 +5656,7 @@ function buildAlerts(){
   // ── BILLS: overdue + due within 7 days ──────────────────────
   data.bills.forEach(b=>{
     const d=daysUntil(b.dueDate);
-    const isZeroBalance=(b.btype==='creditcard'||b.btype==='loan')&&!(b.balance>0);
+    const isZeroBalance=(b.btype==='creditcard'||b.btype==='loan')&&!b.balance&&!b.amount;
     if(isZeroBalance) return;
     if(b.status!=='Paid'&&b.status!=='Scheduled'&&d<0){
       alerts.push({
@@ -5893,7 +5893,7 @@ function renderDashboard(){
 
   const upcomingBills=data.bills.filter(b=>{
     if(b.status==='Paid') return false;
-    if((b.btype==='creditcard'||b.btype==='loan')&&!(b.balance>0)) return false;
+    if((b.btype==='creditcard'||b.btype==='loan')&&!b.balance&&!b.amount) return false;
     const d=b.dueDate;
     if(!d) return false;
     return d>=past7&&d<=next7||(b.status==='Overdue')||daysUntil(d)<0;
@@ -5923,7 +5923,7 @@ function renderDashboard(){
           <div style="text-align:right">
             <div style="font-weight:700;color:${sc}">${usd(b.scheduledAmount||b.amount)}</div>
             ${b.scheduledAmount?`<div style="font-size:10px;color:var(--muted)">min ${usd(b.amount)}</div>`:''}
-            <div class="badge" style="background:${sc}22;color:${sc};font-size:10px">${eff}</div>
+            <div class="badge" style="background:${sc}22;color:${sc};font-size:12px">${eff}</div>
           </div>
         </div>`;
       }
@@ -6020,7 +6020,7 @@ function renderMoneySummaryCards(){
   const overdue=data.bills.filter(b=>{
     if(b.status==='Paid'||b.status==='Scheduled') return false;
     if(!b.dueDate) return false;
-    if((b.btype==='creditcard'||b.btype==='loan')&&!(b.balance>0)) return false;
+    if((b.btype==='creditcard'||b.btype==='loan')&&!b.balance&&!b.amount) return false;
     return b.dueDate<todayStr;
   });
   const in7=new Date(now); in7.setDate(in7.getDate()+7);
@@ -6115,10 +6115,10 @@ function renderBills(){
     // Sub line
     const subLine='Due: '+fmtDate(b.dueDate)+(b.recurring&&b.recurring!=='No'?' \u00b7 '+b.recurring:'');
     // Type badge
-    const typeBadge=b.btype==='creditcard'?'<span style="font-size:9px;font-weight:700;padding:1px 6px;border-radius:20px;background:rgba(239,68,68,.15);color:#ef4444">CARD</span>'
-      :b.btype==='loan'?'<span style="font-size:9px;font-weight:700;padding:1px 6px;border-radius:20px;background:rgba(59,130,246,.15);color:#3b82f6">LOAN</span>':'';
+    const typeBadge=b.btype==='creditcard'?'<span style="font-size:12px;font-weight:700;padding:2px 7px;border-radius:6px;background:rgba(239,68,68,.15);color:#ef4444;flex-shrink:0">Card</span>'
+      :b.btype==='loan'?'<span style="font-size:12px;font-weight:700;padding:2px 7px;border-radius:6px;background:rgba(59,130,246,.15);color:#3b82f6;flex-shrink:0">Loan</span>':'';
     const scheduledAmt=b.scheduledAmount?' \u00b7 '+usd(b.scheduledAmount):'';
-    const statusBadge='<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:'+sc+'22;color:'+sc+'">'+eff+'</span>';
+    const statusBadge='<span style="font-size:12px;font-weight:700;padding:2px 8px;border-radius:20px;background:'+sc+'22;color:'+sc+'">'+eff+'</span>';
     // Action buttons
     let actionBtns='';
     if(eff==='Paid'){
@@ -6146,8 +6146,9 @@ function renderBills(){
       +' onclick="toggleCardExpand(\''+cid+'\')">'
       +'<div style="display:flex;align-items:center;justify-content:space-between;gap:8px">'
       +'<div style="min-width:0;flex:1">'
-      +'<div style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'
-      +b.name+(b.autoLog?'<span class="autolog-badge">&#128259; auto</span>':'')+typeBadge+'</div>'
+      +((b.autoLog||typeBadge)?'<div style="margin-bottom:3px;display:flex;gap:4px;flex-wrap:wrap">'
+        +(b.autoLog?'<span class="autolog-badge">&#128259; Auto</span>':'')+typeBadge+'</div>':'')
+      +'<div style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+b.name+'</div>'
       +'<div class="txt-muted-sm">'+subLine+'</div>'
       +(isDebt&&b.balance?'<div class="txt-muted-sm">'+getBalanceSplitHtml(b)+'</div>':'')
       +'</div>'
@@ -6181,7 +6182,7 @@ function renderBills(){
     const d=daysUntil(e.date);
     const eff=isPaid?'Paid':(e.frequency&&e.frequency!=='One-time'&&d<0?'Overdue':'Pending');
     const sc=statusColor(eff);
-    const statusBadge='<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:'+sc+'22;color:'+sc+'">'+eff+'</span>';
+    const statusBadge='<span style="font-size:12px;font-weight:700;padding:2px 8px;border-radius:20px;background:'+sc+'22;color:'+sc+'">'+eff+'</span>';
     const subLine=(e.date?'Due: '+fmtDate(e.date):'')+(e.frequency&&e.frequency!=='One-time'?' · '+e.frequency:'')+(e.category?' · '+e.category:'');
     let actionBtns='';
     if(eff==='Paid') actionBtns='<span style="font-size:12px;color:var(--green);font-weight:700">✓ Paid</span>';
@@ -6190,11 +6191,11 @@ function renderBills(){
     return '<div class="card" style="margin-bottom:8px;border-left:3px solid #a855f7;border-radius:4px 12px 12px 4px;cursor:pointer"'
       +' onclick="toggleCardExpand(\''+ecid+'\')"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px">'
       +'<div style="min-width:0;flex:1">'
-      +'<div style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'
-      +escHtml(e.description||e.category)
-      +(e.autoLog?'<span class="autolog-badge">&#128259; auto</span>':'')
-      +'<span style="font-size:9px;font-weight:700;padding:1px 6px;border-radius:20px;background:rgba(168,85,247,.15);color:#a855f7;margin-left:4px">EXP</span>'
+      +'<div style="margin-bottom:3px;display:flex;gap:4px;flex-wrap:wrap">'
+      +(e.autoLog?'<span class="autolog-badge">&#128259; Auto</span>':'')
+      +'<span style="font-size:12px;font-weight:700;padding:2px 7px;border-radius:6px;background:rgba(168,85,247,.15);color:#a855f7;flex-shrink:0">Expense</span>'
       +'</div>'
+      +'<div style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+escHtml(e.description||e.category)+'</div>'
       +'<div class="txt-muted-sm">'+subLine+'</div>'
       +'</div>'
       +'<div style="display:flex;align-items:center;gap:6px;flex-shrink:0">'
