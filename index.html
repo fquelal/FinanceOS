@@ -2576,7 +2576,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v2.1.3';
+const APP_VERSION='v2.1.4';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -4558,10 +4558,12 @@ function renderIncomeCard(income, occ, idx, total){
     +'<div style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+income.source+'</div>'
     +'<div class="txt-muted-sm">'+subLine+'</div>'
     +'</div>'
-    +'<div style="display:flex;align-items:center;gap:6px;flex-shrink:0">'
-    +amtStr+statusBadge
+    +'<div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0">'
+    +statusBadge
+    +'<div style="display:flex;align-items:center;gap:6px">'
+    +amtStr
     +'<span id="cchev-'+cid+'" style="color:var(--muted);font-size:11px">&#9662;</span>'
-    +'</div></div>'
+    +'</div></div></div>'
     +'<div id="cact-'+cid+'"'
     +' style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);flex-wrap:wrap;gap:6px">'
     +actionBtns+'</div>'
@@ -6152,11 +6154,13 @@ function renderBills(){
       +'<div class="txt-muted-sm">'+subLine+'</div>'
       +(isDebt&&b.balance?'<div class="txt-muted-sm">'+getBalanceSplitHtml(b)+'</div>':'')
       +'</div>'
-      +'<div style="display:flex;align-items:center;gap:6px;flex-shrink:0">'
-      +'<span style="font-weight:700;font-size:15px">'+usd(b.scheduledAmount||b.amount)+'</span>'
-      +(b.scheduledAmount?'<div style="font-size:10px;color:var(--muted)">min '+usd(b.amount)+'</div>':'')
+      +'<div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0">'
       +statusBadge
+      +'<div style="display:flex;align-items:center;gap:6px">'
+      +'<span style="font-weight:700;font-size:15px">'+usd(b.scheduledAmount||b.amount)+'</span>'
       +'<span id="cchev-'+cid+'" style="color:var(--muted);font-size:11px">&#9662;</span>'
+      +'</div>'
+      +(b.scheduledAmount?'<div style="font-size:11px;color:var(--muted)">min '+usd(b.amount)+'</div>':'')
       +'</div></div>'
       +(isDebt?renderPromoItems(b.id):'')
     +'<div id="cact-'+cid+'"'
@@ -6198,11 +6202,12 @@ function renderBills(){
       +'<div style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+escHtml(e.description||e.category)+'</div>'
       +'<div class="txt-muted-sm">'+subLine+'</div>'
       +'</div>'
-      +'<div style="display:flex;align-items:center;gap:6px;flex-shrink:0">'
-      +'<span style="font-weight:700;font-size:15px">'+usd(e.amount)+'</span>'
+      +'<div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0">'
       +statusBadge
+      +'<div style="display:flex;align-items:center;gap:6px">'
+      +'<span style="font-weight:700;font-size:15px">'+usd(e.amount)+'</span>'
       +'<span id="cchev-'+ecid+'" style="color:var(--muted);font-size:11px">&#9662;</span>'
-      +'</div></div>'
+      +'</div></div></div>'
       +'<div id="cact-'+ecid+'" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);flex-wrap:wrap;gap:6px">'
       +actionBtns+'</div></div>';
   }
