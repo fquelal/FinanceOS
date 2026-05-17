@@ -5656,7 +5656,7 @@ function buildAlerts(){
   // ── BILLS: overdue + due within 7 days ──────────────────────
   data.bills.forEach(b=>{
     const d=daysUntil(b.dueDate);
-    const isZeroBalance=(b.btype==='creditcard'||b.btype==='loan')&&!b.balance&&!b.amount;
+    const isZeroBalance=(b.btype==='creditcard'||b.btype==='loan')&&!(b.balance>0);
     if(isZeroBalance) return;
     if(b.status!=='Paid'&&b.status!=='Scheduled'&&d<0){
       alerts.push({
@@ -5893,7 +5893,7 @@ function renderDashboard(){
 
   const upcomingBills=data.bills.filter(b=>{
     if(b.status==='Paid') return false;
-    if((b.btype==='creditcard'||b.btype==='loan')&&!b.balance&&!b.amount) return false;
+    if((b.btype==='creditcard'||b.btype==='loan')&&!(b.balance>0)) return false;
     const d=b.dueDate;
     if(!d) return false;
     return d>=past7&&d<=next7||(b.status==='Overdue')||daysUntil(d)<0;
@@ -6020,7 +6020,7 @@ function renderMoneySummaryCards(){
   const overdue=data.bills.filter(b=>{
     if(b.status==='Paid'||b.status==='Scheduled') return false;
     if(!b.dueDate) return false;
-    if((b.btype==='creditcard'||b.btype==='loan')&&!b.balance&&!b.amount) return false;
+    if((b.btype==='creditcard'||b.btype==='loan')&&!(b.balance>0)) return false;
     return b.dueDate<todayStr;
   });
   const in7=new Date(now); in7.setDate(in7.getDate()+7);
