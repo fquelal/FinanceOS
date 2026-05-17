@@ -2576,7 +2576,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v2.1.1';
+const APP_VERSION='v2.1.2';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -4417,11 +4417,18 @@ function saveIncome(){
   const occurrenceOverrides=amountChanged?{}:(prev&&prev.occurrenceOverrides?prev.occurrenceOverrides:{});
   // Reverse previous account credit if editing
   if(prev&&prev.accountId) adjustAccountBalance(prev.accountId,-prev.amount);
+  // Auto-mark as Received if the logged date is today or in the past
+  // One-time: mark that specific date
+  // Recurring: mark only the initial date entry (user manages future occurrences manually)
+  const existingOverrides=prev&&prev.incomeStatusOverrides?{...prev.incomeStatusOverrides}:{};
+  if(dt&&dt<=today()&&!existingOverrides[dt]){
+    existingOverrides[dt]='Received';
+  }
   const item={id:eid||Date.now(),source:src,amount:amt,frequency:freq,date:dt,accountId:acId,
     actualAmount:null,actualMonth:null,
     lastPayDate:lastPayDate||null,
     occurrenceOverrides,
-    incomeStatusOverrides:prev&&prev.incomeStatusOverrides?prev.incomeStatusOverrides:{}};
+    incomeStatusOverrides:existingOverrides};
   data.income=eid?data.income.map(i=>i.id===eid?item:i):[...data.income,item];
   if(acId) adjustAccountBalance(acId,amt);
   closeModal('income');saveData();renderAll();
