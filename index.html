@@ -2616,7 +2616,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v2.1.4';
+const APP_VERSION='v2.1.5';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -4582,12 +4582,7 @@ function renderIncomeCard(income, occ, idx, total){
       +' onclick="event.stopPropagation();setIncomeOccurrenceStatus('+income.id+',\''+occ.date+'\',\'Missed\')">'
       +'&#x2715; Missed</button>';
   }
-  if(isFirst){
-    actionBtns+='<button class="btn btn-secondary btn-sm"'
-      +' onclick="event.stopPropagation();openEditIncome('+income.id+')">Edit</button>'
-      +'<button class="btn btn-danger btn-sm"'
-      +' onclick="event.stopPropagation();deleteItem(\'income\','+income.id+')">&#x2715;</button>';
-  } else {
+  if(!isFirst) {
     actionBtns+='<button class="btn btn-sm"'
       +' style="background:rgba(80,112,240,.12);color:var(--accent2);border:1px solid rgba(80,112,240,.25);font-size:11px;font-weight:700;"'
       +' onclick="event.stopPropagation();openOccurrenceModal('+income.id+',\''+occ.date+'\','+income.amount+')">$ Update</button>';
@@ -5084,6 +5079,70 @@ function flashBillCard(id, color){
   },100);
 }
 
+
+let _scheduleExpenseId=null;
+
+function openScheduleExpense(id){
+  const e=data.expenses.find(x=>x.id===id);if(!e)return;
+  _scheduleExpenseId=id;
+  _scheduleBillId=null;
+  $('sb-name').textContent=e.description||e.category;
+  $('sb-due').textContent=e.date?'Due: '+fmtDate(e.date):'';
+  $('sb-min-val').textContent=usd(e.amount);
+  $('sb-custom').value='';
+  $('sb-custom').placeholder='e.g. '+e.amount;
+  checkNoAccountsNudge('sb-no-accounts-nudge');
+  populateAccountSelects();
+  $('sb-account').value=getDefaultAccountId()||'';
+  _sbAmount=e.amount;
+  $('sb-min-btn').style.outline='2px solid var(--accent)';
+  const sbWrap=$('sb-website-wrap');
+  if(sbWrap) sbWrap.style.display='none';
+  $('modal-schedulebill').classList.add('open');
+}
+
+function confirmScheduleExpense(){
+  const e=data.expenses.find(x=>x.id===_scheduleExpenseId);if(!e)return;
+  const amt=sanitizeNum($('sb-custom').value)||_sbAmount||e.amount;
+  const acId=parseInt($('sb-account').value)||0;
+  if(!amt||amt<=0){showToast('Enter a valid amount','error');return;}
+  if(!acId){showToast('Please select a Pay From account','error');return;}
+  const doMark=()=>{
+    e.paidMonth=today().slice(0,7);
+    adjustAccountBalance(acId,-amt);
+    data.transactions.push({
+      id:Date.now()+Math.random(),
+      description:e.description||e.category,
+      amount:amt,type:'Bill Payment',
+      date:today(),accountId:acId,
+      category:e.category,
+      methodLabel:(data.accounts||[]).find(a=>a.id===acId)?.name||'',
+      note:'Manual expense payment'
+    });
+    _scheduleExpenseId=null;
+    closeModal('schedulebill');
+    saveData();renderAll();
+    showToast('Expense logged — '+usd(amt));
+  };
+  const bal=getAccountBalance(acId);
+  if(bal!==null&&amt>bal){
+    showConfirm({
+      icon:'⚠️',title:'Overdraft warning',
+      msg:'This would overdraw the account by '+usd(amt-bal)+'. Continue anyway?',
+      okLabel:'Continue',okStyle:'background:var(--yellow);color:#000',
+      onOk:doMark
+    });
+    return;
+  }
+  doMark();
+}
+
+function undoExpensePaid(id){
+  const e=data.expenses.find(x=>x.id===id);if(!e)return;
+  e.paidMonth=null;
+  saveData();renderAll();
+  showToast('Expense marked unpaid');
+}
 // Schedule regular (non-debt) bill
 let _scheduleBillId=null;
 function openScheduleBill(id){
@@ -5121,6 +5180,7 @@ function sbSelect(type){
   }
 }
 function confirmScheduleBill(){
+  if(_scheduleExpenseId){ confirmScheduleExpense(); return; }
   const b=data.bills.find(x=>x.id===_scheduleBillId);if(!b)return;
   const amt=sanitizeNum($('sb-custom').value)||_sbAmount||b.amount;
   const acId=parseInt($('sb-account').value)||0;
@@ -5967,7 +6027,12 @@ function renderDashboard(){
         if((b.btype==='creditcard'||b.btype==='loan'||b.btype==='promo')&&!(b.balance>0)) return false;
         return b.dueDate && b.dueDate.slice(0,7)===monthStr;
       }).length;
-      projSub.textContent=`after ${billCount} bill${billCount===1?'':'s'} & expenses`;
+      const expCount=data.expenses.filter(e=>{
+        if(e.paidMonth===monthStr) return false;
+        return e.date && e.date.slice(0,7)===monthStr;
+      }).length;
+      const totalCount=billCount+expCount;
+      projSub.textContent=`after ${totalCount} item${totalCount===1?'':'s'} (${billCount} bill${billCount!==1?'s':''}, ${expCount} expense${expCount!==1?'s':''})`;  
     }
   }
 
@@ -6174,11 +6239,41 @@ function renderMoneySummaryCards(){
       :'Spending exceeds income this month. Review your bills and expenses.';
   }
 
+  // Money Left calculation
+  const thisMonthStr=todayStr.slice(0,7);
+  const pendingBillAmt=data.bills.filter(b=>{
+    if(b.status==='Paid'||b.status==='Scheduled') return false;
+    if((b.btype==='creditcard'||b.btype==='loan')&&!(b.balance>0)) return false;
+    return true;
+  }).reduce((s,b)=>s+(b.amount||0),0);
+  const pendingExpAmt=data.expenses.filter(e=>!e.paidMonth||e.paidMonth!==thisMonthStr).reduce((s,e)=>s+(e.amount||0),0);
+  const moneyLeft=availableNow-pendingBillAmt-pendingExpAmt;
+
+  // Paid Progress calculation
+  const billsDue=data.bills.filter(b=>{
+    if((b.btype==='creditcard'||b.btype==='loan')&&!(b.balance>0)) return false;
+    return b.dueDate&&b.dueDate.slice(0,7)===thisMonthStr;
+  });
+  const expsDue=data.expenses.filter(e=>e.date&&e.date.slice(0,7)===thisMonthStr);
+  const totalItems=billsDue.length+expsDue.length;
+  const paidItems=billsDue.filter(b=>b.status==='Paid'||b.status==='Scheduled').length
+    +expsDue.filter(e=>e.paidMonth===thisMonthStr).length;
+  const progressPct=totalItems>0?Math.round(paidItems/totalItems*100):0;
+  const progressCol=progressPct===100?'var(--green)':progressPct>=50?'var(--blue)':'var(--yellow)';
+
   const statPill=(label,val,col)=>
     '<div style="flex:1;text-align:center;padding:8px 4px;background:rgba(255,255,255,.03);border-radius:8px">'
     +'<div style="font-size:16px;font-weight:800;color:'+col+'">'+val+'</div>'
     +'<div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-top:2px">'+label+'</div>'
     +'</div>';
+
+  const progressPill=
+    '<div style="flex:1;text-align:center;padding:8px 4px;background:rgba(255,255,255,.03);border-radius:8px">'
+    +'<div style="font-size:16px;font-weight:800;color:'+progressCol+'">'+paidItems+'/'+totalItems+'</div>'
+    +'<div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-top:2px">Paid</div>'
+    +'<div style="height:3px;border-radius:2px;background:rgba(255,255,255,.08);margin-top:5px;overflow:hidden">'
+    +'<div style="height:100%;width:'+progressPct+'%;background:'+progressCol+';border-radius:2px;transition:width .4s"></div>'
+    +'</div></div>';
 
   el.innerHTML=
     // Health card full width
@@ -6189,8 +6284,8 @@ function renderMoneySummaryCards(){
     +'<div style="font-size:11px;font-weight:800;color:'+healthColor+';background:'+healthColor+'18;border:1px solid '+healthColor+'33;border-radius:20px;padding:2px 10px">'+healthIcon+' '+healthStatus+'</div>'
     +'</div>'
     +'<div style="display:flex;gap:6px;margin-bottom:10px">'
-    +statPill('Overdue',overdue.length,overdue.length>0?'var(--red)':'var(--green)')
-    +statPill('Due Soon',dueSoon.length,dueSoon.length>0?'var(--yellow)':'var(--green)')
+    +statPill('Money Left',(moneyLeft>=0?'':'-')+usd(Math.abs(moneyLeft)),moneyLeft>=0?'var(--green)':'var(--red)')
+    +progressPill
     +statPill('Net Month',(netMonth>=0?'+':'')+usd(netMonth),netMonth>=0?'var(--green)':'var(--red)')
     +'</div>'
     +'<div style="font-size:12px;color:var(--muted);line-height:1.5;border-top:1px solid var(--border);padding-top:8px">'+healthMsg+'</div>'
@@ -6237,7 +6332,8 @@ function renderBills(){
     const subLine='Due: '+fmtDate(b.dueDate)+(b.recurring&&b.recurring!=='No'?' \u00b7 '+b.recurring:'');
     // Type badge
     const typeBadge=b.btype==='creditcard'?'<span style="font-size:12px;font-weight:700;padding:2px 7px;border-radius:6px;background:rgba(239,68,68,.15);color:#ef4444;flex-shrink:0">Card</span>'
-      :b.btype==='loan'?'<span style="font-size:12px;font-weight:700;padding:2px 7px;border-radius:6px;background:rgba(59,130,246,.15);color:#3b82f6;flex-shrink:0">Loan</span>':'';
+      :b.btype==='loan'?'<span style="font-size:12px;font-weight:700;padding:2px 7px;border-radius:6px;background:rgba(59,130,246,.15);color:#3b82f6;flex-shrink:0">Loan</span>'
+      :b.btype==='bill'?'<span style="font-size:12px;font-weight:700;padding:2px 7px;border-radius:6px;background:rgba(245,158,11,.15);color:#f59e0b;flex-shrink:0">Bill</span>':'';
     const scheduledAmt=b.scheduledAmount?' \u00b7 '+usd(b.scheduledAmount):'';
     const statusBadge='<span style="font-size:12px;font-weight:700;padding:2px 8px;border-radius:20px;background:'+sc+'22;color:'+sc+'">'+eff+'</span>';
     // Action buttons
@@ -6304,10 +6400,20 @@ function renderBills(){
     const statusBadge='<span style="font-size:12px;font-weight:700;padding:2px 8px;border-radius:20px;background:'+sc+'22;color:'+sc+'">'+eff+'</span>';
     const subLine=(e.date?'Due: '+fmtDate(e.date):'')+(e.frequency&&e.frequency!=='One-time'?' · '+e.frequency:'')+(e.category?' · '+e.category:'');
     let actionBtns='';
-    if(eff==='Paid') actionBtns='<span style="font-size:12px;color:var(--green);font-weight:700">✓ Paid</span>';
-
-    return '<div class="card" style="margin-bottom:8px;border-left:3px solid #a855f7;border-radius:4px 12px 12px 4px;cursor:pointer"'
-      +' onclick="toggleCardExpand(\''+ecid+'\')"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px">'
+    if(!e.autoLog){
+      if(eff==='Paid'){
+        actionBtns='<button class="btn btn-sm" style="background:rgba(255,255,255,.06);color:var(--muted)"'
+          +' onclick="event.stopPropagation();undoExpensePaid('+e.id+')">Undo</button>';
+      } else {
+        actionBtns='<button class="btn btn-sm" style="background:rgba(59,130,246,.15);color:var(--blue)"'
+          +' onclick="event.stopPropagation();openScheduleExpense('+e.id+')">Schedule</button>';
+      }
+    }
+    const hasActions=!!actionBtns;
+    const chevron=hasActions?'<span id="cchev-'+ecid+'" style="color:var(--muted);font-size:11px">&#9662;</span>':'';
+    const cardClick=hasActions?' onclick="toggleCardExpand(\''+ecid+'\')">':'>';
+    return '<div class="card"'+(hasActions?' onclick="toggleCardExpand(\''+ecid+'\')"':'')+' style="margin-bottom:8px;border-left:3px solid #a855f7;border-radius:4px 12px 12px 4px'+(hasActions?';cursor:pointer':'')+'">'
+      +'<div style="display:flex;align-items:center;justify-content:space-between;gap:8px">'
       +'<div style="min-width:0;flex:1">'
       +'<div style="margin-bottom:3px;display:flex;gap:4px;flex-wrap:wrap">'
       +(e.autoLog?'<span class="autolog-badge">&#128259; Auto</span>':'')
@@ -6318,12 +6424,12 @@ function renderBills(){
       +'</div>'
       +'<div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0">'
       +statusBadge
-      +'<div style="display:flex;align-items:center;gap:6px">'
+      +'<div style="display:flex;align-items:center;gap:4px">'
       +'<span style="font-weight:700;font-size:15px">'+usd(e.amount)+'</span>'
-      +'<span id="cchev-'+ecid+'" style="color:var(--muted);font-size:11px">&#9662;</span>'
+      +chevron
       +'</div></div></div>'
-      +'<div id="cact-'+ecid+'" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);flex-wrap:wrap;gap:6px">'
-      +actionBtns+'</div></div>';
+      +(hasActions?'<div id="cact-'+ecid+'" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);flex-wrap:wrap;gap:6px">'+actionBtns+'</div>':'')
+      +'</div>';
   }
 
   if(billSort==='type'){
