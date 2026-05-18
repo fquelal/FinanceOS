@@ -5604,7 +5604,7 @@ function setMethod(m){
 
 function calcDebtPlan(debts, extra){
   // Clone debts preserving original min payments
-  let items=debts.map(d=>({...d,bal:d.balance,monthlyRate:d.apr/100/12,minPay:d.amount}));
+  let items=debts.map(d=>({...d,bal:d.balance,monthlyRate:d.apr/100/12,minPay:Math.max(d.scheduledAmount||0,d.amount||0)||d.amount}));
   // Sort by method
   if(debtMethod==='avalanche') items.sort((a,b)=>b.apr-a.apr);
   else items.sort((a,b)=>a.bal-b.bal);
@@ -5685,7 +5685,7 @@ function renderDebt(){
   const totalIncome   = data.income.reduce((s,i)=>s+getEffectiveIncome(i,new Date().getFullYear(),new Date().getMonth()),0);
   const totalExpenses = data.expenses.reduce((s,e)=>s+e.amount,0);
   const totalBillsPmt = data.bills.filter(b=>b.btype==='bill').reduce((s,b)=>s+b.amount,0);
-  const totalDebtMins = debts.reduce((s,d)=>s+d.amount,0);
+  const totalDebtMins = debts.reduce((s,d)=>s+Math.max(d.scheduledAmount||0,d.amount||0),0);
   const manualExtra = 0;
 
   // Available = income - expenses - non-debt bills - debt minimums + manual extra
@@ -5701,7 +5701,7 @@ function renderDebt(){
     {label:'Total Income (all sources)', value:totalIncome, color:'var(--teal)', sign:'+'},
     {label:'Living Expenses', value:totalExpenses, color:'var(--red)', sign:'-'},
     {label:'Regular Bills', value:totalBillsPmt, color:'var(--yellow)', sign:'-'},
-    {label:'Debt Minimums', value:totalDebtMins, color:'var(--muted)', sign:'-'},
+    {label:'Debt Payments (scheduled where set)', value:totalDebtMins, color:'var(--muted)', sign:'-'},
   ];
   if($('cash-flow-rows')){
     $('cash-flow-rows').innerHTML=cfRows.map(r=>`
@@ -8233,7 +8233,7 @@ function renderDebtCountdown(){
   const extra=Math.max(0,(data.income.reduce((s,i)=>s+getEffectiveIncome(i,new Date().getFullYear(),new Date().getMonth()),0))
     -(data.expenses.reduce((s,e)=>s+e.amount,0))
     -(data.bills.filter(b=>b.btype==='bill').reduce((s,b)=>s+b.amount,0))
-    -(debts.reduce((s,b)=>s+b.amount,0)));
+    -(debts.reduce((s,b)=>s+Math.max(b.scheduledAmount||0,b.amount||0),0)));
   const plan=calcDebtPlan(debts.map(b=>({...b,balance:b.balance,amount:b.amount,apr:b.apr})), Math.max(0,extra));
   if(!plan||!plan.months){ wrap.innerHTML=''; return; }
 
