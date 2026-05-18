@@ -950,11 +950,11 @@ canvas{width:100%!important;}
 
 
 /* ── AUTO-LOG ── */
-.autolog-toggle{display:flex;align-items:center;gap:8px;padding:10px 12px;
+.autolog-toggle{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;
   background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);
   border-radius:10px;cursor:pointer;margin-top:4px;}
 .autolog-toggle input[type=checkbox]{width:16px;height:16px;
-  accent-color:var(--green);cursor:pointer;flex-shrink:0;}
+  accent-color:var(--green);flex-shrink:0;pointer-events:none;}
 .autolog-toggle label{font-size:13px;color:var(--text);cursor:pointer;flex:1;}
 #autolog-account-wrap,#b-autolog-account-wrap{display:none;margin-top:8px;}
 .autolog-badge{display:inline-flex;align-items:center;gap:3px;background:rgba(34,197,94,.12);
@@ -1298,6 +1298,7 @@ canvas{width:100%!important;}
           <button id="sub-acct-accounts" class="active" onclick="showSub('networth','networth')">Accounts</button>
           <button id="sub-acct-cards" onclick="showSub('cards','networth')">Cards</button>
           <button id="sub-acct-loans" onclick="showSub('loans','networth')">Loans</button>
+          <button id="sub-acct-bills" onclick="showSub('bills-manage','networth')">Bills &amp; Exp.</button>
         </div>
       </div>
 
@@ -1349,6 +1350,33 @@ canvas{width:100%!important;}
         </div>
         <div class="chart-wrap"><canvas id="nw-history-chart"></canvas></div>
         <div id="nw-history-empty" style="display:none;font-size:12px;color:var(--muted);padding:8px 0;text-align:center">Keep using the app monthly to build your history.</div>
+      </div>
+    </div>
+
+
+    <!-- BILLS & EXPENSES MANAGE -->
+    <div id="bills-manage" class="section">
+      <div class="sub-header-row">
+        <div class="plan-toggle" class="mb-0">
+          <button id="sub-bills-accounts" onclick="showSub('networth','networth')">Accounts</button>
+          <button id="sub-bills-cards"    onclick="showSub('cards','networth')">Cards</button>
+          <button id="sub-bills-loans"    onclick="showSub('loans','networth')">Loans</button>
+          <button id="sub-bills-bills"    class="active">Bills &amp; Exp.</button>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <div class="section-label" style="color:var(--blue);margin-bottom:0">Bills &amp; Debts</div>
+          <button class="btn btn-primary btn-sm" onclick="openModal('bill')">+ Bill</button>
+        </div>
+        <div id="bills-manage-list"></div>
+      </div>
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <div class="section-label" style="color:#a855f7;margin-bottom:0">Expenses</div>
+          <button class="btn btn-primary btn-sm" onclick="openModal('expense')">+ Expense</button>
+        </div>
+        <div id="expenses-manage-list"></div>
       </div>
     </div>
 
@@ -1455,6 +1483,7 @@ canvas{width:100%!important;}
           <button id="sub-cards-accounts" onclick="showSub('networth','networth')">Accounts</button>
           <button id="sub-cards-cards" class="active" onclick="showSub('cards','networth')">Cards</button>
           <button id="sub-cards-loans" onclick="showSub('loans','networth')">Loans</button>
+          <button id="sub-cards-bills" onclick="showSub('bills-manage','networth')">Bills &amp; Exp.</button>
         </div>
       </div>
 
@@ -1494,7 +1523,8 @@ canvas{width:100%!important;}
         <div class="plan-toggle" class="mb-0">
           <button id="sub-loans-accounts" onclick="showSub('networth','networth')">Accounts</button>
           <button id="sub-loans-cards"    onclick="showSub('cards','networth')">Cards</button>
-          <button id="sub-loans-loans"    class="active">Loans</button>
+          <button id="sub-loans-loans"    class="active" onclick="showSub('loans','networth')">Loans</button>
+          <button id="sub-loans-bills"    onclick="showSub('bills-manage','networth')">Bills &amp; Exp.</button>
         </div>
       </div>
 
@@ -1958,8 +1988,8 @@ canvas{width:100%!important;}
       <select id="e-freq"><option selected data-i18n="One-time">One-time</option><option data-i18n="Weekly">Weekly</option><option data-i18n="Bi-weekly">Bi-weekly</option><option data-i18n="Monthly">Monthly</option><option data-i18n="Yearly">Yearly</option></select>
     </div>
     <div class="autolog-toggle" onclick="toggleAutoLogExpense()">
-      <input type="checkbox" id="e-autolog" onclick="event.stopPropagation();toggleAutoLogExpense()"/>
       <label for="e-autolog">&#128259; Auto-log this expense every month</label>
+      <input type="checkbox" id="e-autolog"/>
     </div>
     <div id="autolog-account-wrap" class="field">
       <label>Deduct from Account</label>
@@ -2012,8 +2042,8 @@ canvas{width:100%!important;}
       </div>
       <div id="b-autolog-wrap" style="display:none">
         <div class="autolog-toggle" onclick="toggleAutoLogBill()">
-          <input type="checkbox" id="b-autolog" onclick="event.stopPropagation();toggleAutoLogBill()"/>
           <label for="b-autolog">&#128259; Auto-log payment every month</label>
+          <input type="checkbox" id="b-autolog"/>
         </div>
         <div id="b-autolog-account-wrap" class="field">
           <label>Pay from Account</label>
@@ -2314,8 +2344,8 @@ canvas{width:100%!important;}
       <button id="pd-min-btn" class="btn btn-full" style="background:rgba(80,112,240,.12);color:var(--accent2);padding:12px;justify-content:space-between" onclick="selectPayAmount('min')">
         <span data-i18n="Minimum Payment">Minimum Payment</span><span id="pd-min-val" class="txt-bold"></span>
       </button>
-      <button id="pd-sug-btn" class="btn btn-full" style="background:rgba(34,197,94,.1);color:var(--green);padding:12px;justify-content:space-between" onclick="selectPayAmount('suggested')">
-        <span data-i18n="Suggested (Planner)">Suggested (Planner)</span><span id="pd-sug-val" class="txt-bold"></span>
+      <button id="pd-sug-btn" class="btn btn-full" style="background:rgba(34,197,94,.1);color:var(--green);padding:12px;justify-content:space-between" onclick="selectPayAmount('statement')">
+        <span>Statement Balance</span><span id="pd-sug-val" class="txt-bold"></span>
       </button>
       <button id="pd-full-btn" class="btn btn-full" style="background:rgba(251,146,60,.1);color:#fb923c;padding:12px;justify-content:space-between" onclick="selectPayAmount('full')">
         <span data-i18n="Pay in Full">Pay in Full</span><span id="pd-full-val" class="txt-bold"></span>
@@ -2324,6 +2354,12 @@ canvas{width:100%!important;}
     <div class="field">
       <label data-i18n="Or enter custom amount ($)">Or enter custom amount ($)</label>
       <input id="pd-custom" type="number" inputmode="decimal" placeholder="0.00" oninput="selectPayAmount('custom')"/>
+    </div>
+    <div id="pd-no-interest-wrap" style="display:none;margin-bottom:12px">
+      <div class="autolog-toggle" style="margin-top:0" onclick="toggleNoInterest()">
+        <label for="pd-no-interest">💡 This payment won't incur interest</label>
+        <input type="checkbox" id="pd-no-interest" style="pointer-events:none"/>
+      </div>
     </div>
     <div id="pd-breakdown" style="background:rgba(255,255,255,.03);border-radius:10px;padding:12px;margin-bottom:14px;font-size:12px;display:none">
       <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span class="txt-muted" data-i18n="Interest portion">Interest portion</span><span id="pd-interest-portion" class="txt-red"></span></div>
@@ -2349,7 +2385,11 @@ canvas{width:100%!important;}
       <div class="alloc-warn" id="pd-alloc-warn" style="display:none"></div>
     </div>
     <div class="field"><label data-i18n="Pay from Account">Pay from Account</label><select id="pd-account"><option value="">-- No account linked --</option></select></div>
-    <button class="btn btn-primary btn-full" onclick="confirmDebtPayment()" data-i18n="Confirm Payment">Confirm Payment</button>
+    <div class="field">
+      <label>Payment Due Date</label>
+      <input type="date" id="pd-due-date"/>
+    </div>
+    <button class="btn btn-primary btn-full" id="pd-confirm-btn" onclick="confirmDebtPayment()">Confirm Payment</button>
   </div>
 </div>
 
@@ -4169,6 +4209,7 @@ function showSub(sec,parentSec){
   if(sec==='cards') setTimeout(()=>renderCards(),50);
   if(sec==='loans') setTimeout(()=>renderLoans(),50);
   if(sec==='quick') setTimeout(()=>renderTxns(),50);
+  if(sec==='bills-manage') setTimeout(()=>renderBillsManage(),50);
 }
 
 function _initSwipe(){
@@ -4263,6 +4304,7 @@ function show(sec,btn){
   if(sec==='cards') setTimeout(()=>renderCards(),50);
   if(sec==='loans') setTimeout(()=>renderLoans(),50);
   if(sec==='quick') setTimeout(()=>renderTxns(),50);
+  if(sec==='bills-manage') setTimeout(()=>renderBillsManage(),50);
   if(sec==='advisor') setTimeout(()=>renderAdvisor(),50);
 }
 
@@ -4969,11 +5011,12 @@ function autoProcessScheduledBills(){
     if((b.btype==='creditcard'||b.btype==='loan'||b.btype==='promo')&&b.balance>0){
       migrateRevolvingBalance(b);
       const monthlyRate=(b.apr||0)/100/12;
-      // Interest only on revolving portion
-      const interest=parseFloat(((b.revolvingBalance||0)*monthlyRate).toFixed(2));
+      // Interest only on revolving portion (skip if flagged as no-interest payment)
+      const interest=b.noInterestPayment?0:parseFloat(((b.revolvingBalance||0)*monthlyRate).toFixed(2));
       const principal=Math.max(0,amt-interest);
       b.revolvingBalance=parseFloat(Math.max(0,(b.revolvingBalance||0)-principal).toFixed(2));
       b.balance=parseFloat(Math.max(0,b.balance-principal).toFixed(2));
+      delete b.noInterestPayment; // clear after use
     }
     // Log transaction
     data.transactions.push({
@@ -5002,6 +5045,16 @@ function autoProcessScheduledBills(){
   });
   if(changed) saveData();
 }
+function saveBillDueDate(id){
+  const b=data.bills.find(x=>x.id===id);if(!b)return;
+  const input=$('due-edit-'+id);if(!input)return;
+  const newDate=input.value;
+  if(!newDate){showToast('Please enter a valid date','error');return;}
+  b.dueDate=newDate;
+  saveData();renderAll();
+  showToast('Due date updated!');
+}
+
 function revertToPending(id){
   const b=data.bills.find(x=>x.id===id);if(!b)return;
   showConfirm({
@@ -5011,7 +5064,7 @@ function revertToPending(id){
     onOk:()=>{
       b.status='Pending';
       b.scheduledAmount=null;
-      saveData();renderAll();
+      saveData();renderAll();renderBillsManage();
     }
   });
 }
@@ -5098,6 +5151,7 @@ function confirmScheduleBill(){
 let _payDebtId=null;
 let _payDebtAmount=0;
 let _payDebtType='min';
+let _noInterest=false;
 
 function openPayDebt(id){
   const b=data.bills.find(x=>x.id===id);if(!b)return;
@@ -5112,7 +5166,32 @@ function openPayDebt(id){
   $('pd-full-val').textContent=usd(fullAmt);
   $('pd-custom').value='';
   $('pd-breakdown').style.display='none';
-  $('pd-sug-btn').style.display='none';
+  // Statement Balance button
+  const stmtBal=b.statementBalance||0;
+  $('pd-sug-btn').style.display='';
+  $('pd-sug-val').textContent=stmtBal>0?usd(stmtBal):'Set amount';
+  // Reset no-interest state
+  _noInterest=false;
+  const niChk=$('pd-no-interest'),niWrap=$('pd-no-interest-wrap');
+  if(niChk) niChk.checked=false;
+  if(niWrap) niWrap.style.display='none';
+  // Edit mode: pre-fill if already scheduled
+  const confirmBtn=$('pd-confirm-btn');
+  if(b.scheduledAmount){
+    $('pd-custom').value=b.scheduledAmount;
+    _payDebtAmount=b.scheduledAmount;
+    _payDebtType='custom';
+    highlightPayBtn(null);
+    if(b.noInterestPayment){
+      _noInterest=true;
+      if(niChk){niChk.checked=true;}
+    }
+    if(niWrap) niWrap.style.display='block';
+    updatePayBreakdown(b,b.scheduledAmount);
+    if(confirmBtn) confirmBtn.textContent='Update Payment';
+  } else {
+    if(confirmBtn) confirmBtn.textContent='Confirm Payment';
+  }
   checkNoAccountsNudge('pd-no-accounts-nudge');
   populateAccountSelects();
   $('pd-account').value=getDefaultAccountId()||'';
@@ -5151,18 +5230,39 @@ function openPayDebt(id){
     pdWrap.style.display=url?'block':'none';
     if(url){ pdBtn.href='https://'+url.replace(/^https?:\/\//,''); pdBtn.innerHTML='🌐 Go to '+url+' &nbsp;→'; }
   }
+  if($('pd-due-date')) $('pd-due-date').value=b.dueDate||'';
   $('modal-paydebt').classList.add('open');
 }
 
 function selectPayAmount(type){
   const b=data.bills.find(x=>x.id===_payDebtId);if(!b)return;
   _payDebtType=type;
-  if(type==='min')      { _payDebtAmount=b.amount||0; highlightPayBtn('pd-min-btn'); }
-  else if(type==='suggested'){ _payDebtAmount=b.amount||0; highlightPayBtn('pd-sug-btn'); }
-  else if(type==='full'){ _payDebtAmount=b.balance||0; highlightPayBtn('pd-full-btn'); }
-  else if(type==='custom'){
+  const niChk=$('pd-no-interest'),niWrap=$('pd-no-interest-wrap');
+  if(type==='min'){
+    _payDebtAmount=b.amount||0;
+    highlightPayBtn('pd-min-btn');
+    _noInterest=false;
+    if(niChk) niChk.checked=false;
+    if(niWrap) niWrap.style.display='none';
+  } else if(type==='statement'){
+    const stmtAmt=b.statementBalance||0;
+    if(stmtAmt>0){ $('pd-custom').value=stmtAmt; _payDebtAmount=stmtAmt; }
+    else{ $('pd-custom').value=''; _payDebtAmount=0; setTimeout(()=>$('pd-custom').focus(),50); }
+    highlightPayBtn('pd-sug-btn');
+    _noInterest=true;
+    if(niChk) niChk.checked=true;
+    if(niWrap) niWrap.style.display='block';
+  } else if(type==='full'){
+    _payDebtAmount=b.balance||0;
+    highlightPayBtn('pd-full-btn');
+    _noInterest=true;
+    if(niChk) niChk.checked=true;
+    if(niWrap) niWrap.style.display='block';
+  } else if(type==='custom'){
     _payDebtAmount=sanitizeNum($('pd-custom').value)||0;
     highlightPayBtn(null);
+    if(niWrap) niWrap.style.display='block';
+    _noInterest=niChk?niChk.checked:false;
   }
   updatePayBreakdown(b,_payDebtAmount);
 }
@@ -5176,14 +5276,30 @@ function highlightPayBtn(activeId){
 
 function updatePayBreakdown(b,amount){
   if(!amount||amount<=0){$('pd-breakdown').style.display='none';return;}
-  const monthlyRate=(b.apr||0)/100/12;
-  const interest=parseFloat(((b.balance||0)*monthlyRate).toFixed(2));
-  const principal=parseFloat(Math.min(amount-interest,b.balance||0).toFixed(2));
-  const newBal=parseFloat(Math.max(0,(b.balance||0)-principal).toFixed(2));
+  let interest,principal,newBal;
+  if(_noInterest){
+    interest=0;
+    principal=parseFloat(Math.min(amount,b.balance||0).toFixed(2));
+    newBal=parseFloat(Math.max(0,(b.balance||0)-principal).toFixed(2));
+  } else {
+    const monthlyRate=(b.apr||0)/100/12;
+    interest=parseFloat(((b.balance||0)*monthlyRate).toFixed(2));
+    principal=parseFloat(Math.min(amount-interest,b.balance||0).toFixed(2));
+    newBal=parseFloat(Math.max(0,(b.balance||0)-principal).toFixed(2));
+  }
   $('pd-interest-portion').textContent=usd(Math.max(0,interest));
   $('pd-principal-portion').textContent=usd(Math.max(0,principal));
   $('pd-new-balance').textContent=usd(newBal);
   $('pd-breakdown').style.display='block';
+}
+
+function toggleNoInterest(){
+  const chk=$('pd-no-interest');
+  const b=data.bills.find(x=>x.id===_payDebtId);if(!b||!chk)return;
+  if(document.activeElement!==chk) chk.checked=!chk.checked;
+  _noInterest=chk.checked;
+  const amt=_payDebtType==='custom'?sanitizeNum($('pd-custom').value)||0:_payDebtAmount;
+  updatePayBreakdown(b,amt);
 }
 
 function confirmDebtPayment(){
@@ -5303,6 +5419,9 @@ function confirmDebtPayment(){
     b.scheduledAmount=parseFloat(amount.toFixed(2));
     b.scheduledAccountId=acId;
     b.status='Scheduled';
+    if(_noInterest) b.noInterestPayment=true; else delete b.noInterestPayment;
+    const newDue=$('pd-due-date')?.value;
+    if(newDue) b.dueDate=newDue;
     closeModal('paydebt');saveData();renderAll();
     showToast('Payment of '+usd(amount)+' scheduled!');
   }
@@ -6126,8 +6245,9 @@ function renderBills(){
     if(eff==='Paid'){
       actionBtns='<span style="font-size:12px;color:var(--green);font-weight:700">&#x2713; Paid'+scheduledAmt+'</span>';
     } else if(eff==='Scheduled'){
-      actionBtns='<span style="font-size:12px;color:var(--blue);font-weight:700">Scheduled'+scheduledAmt+'</span>'
-        +'<button class="btn btn-sm" style="background:rgba(255,255,255,.06);color:var(--muted);font-size:11px"'
+      actionBtns='<button class="btn btn-sm" style="background:rgba(59,130,246,.15);color:var(--blue)"'
+        +' onclick="event.stopPropagation();openPayDebt('+b.id+')">Edit Payment</button>'
+        +'<button class="btn btn-sm" style="background:rgba(255,255,255,.06);color:var(--muted)"'
         +' onclick="event.stopPropagation();revertToPending('+b.id+')">Cancel</button>';
     } else if(isZeroBalance){
       actionBtns='<span class="txt-muted-xs">No balance</span>';
@@ -6137,12 +6257,7 @@ function renderBills(){
         +' onclick="event.stopPropagation();'+(isDebt?'openPayDebt('+b.id+')':'openScheduleBill('+b.id+')')+'">'
         +schedLabel+'</button>';
     }
-    actionBtns+='<button class="btn btn-secondary btn-sm"'
-      +' onclick="event.stopPropagation();openEditBill('+b.id+')">Edit</button>';
-    if(b.dueDate) actionBtns+='<button class="btn btn-secondary btn-sm"'
-      +' onclick="event.stopPropagation();addToCalendar(\''+b.name+' Payment\',\''+b.dueDate+'\',\'Min: '+usd(b.amount)+'\')">&#x1F4C5;</button>';
-    actionBtns+='<button class="btn btn-danger btn-sm"'
-      +' onclick="event.stopPropagation();deleteBillFromModal('+b.id+')">&#x2715;</button>';
+
 
     return '<div class="card" style="margin-bottom:8px;border-left:3px solid '+typeColor+';border-radius:4px 12px 12px 4px;cursor:pointer"'
       +' onclick="toggleCardExpand(\''+cid+'\')">'
@@ -6190,8 +6305,7 @@ function renderBills(){
     const subLine=(e.date?'Due: '+fmtDate(e.date):'')+(e.frequency&&e.frequency!=='One-time'?' · '+e.frequency:'')+(e.category?' · '+e.category:'');
     let actionBtns='';
     if(eff==='Paid') actionBtns='<span style="font-size:12px;color:var(--green);font-weight:700">✓ Paid</span>';
-    actionBtns+='<button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();openEditExpense('+e.id+')">Edit</button>'
-      +'<button class="btn btn-danger btn-sm" onclick="event.stopPropagation();deleteItem(\'expenses\','+e.id+')">&#x2715;</button>';
+
     return '<div class="card" style="margin-bottom:8px;border-left:3px solid #a855f7;border-radius:4px 12px 12px 4px;cursor:pointer"'
       +' onclick="toggleCardExpand(\''+ecid+'\')"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px">'
       +'<div style="min-width:0;flex:1">'
@@ -6314,6 +6428,54 @@ function renderBills(){
   }
 }
 
+
+function renderBillsManage(){
+  // Bills list
+  const bl=$('bills-manage-list');
+  if(bl){
+    if(!data.bills.length){
+      bl.innerHTML='<div style="color:var(--muted);font-size:13px;text-align:center;padding:12px 0">No bills added yet.</div>';
+    } else {
+      const typeColor={creditcard:'#ef4444',loan:'#3b82f6',bill:'#f59e0b',promo:'#8b5cf6'};
+      const typeLabel={creditcard:'Card',loan:'Loan',bill:'Bill',promo:'Promo'};
+      bl.innerHTML=data.bills.map(b=>{
+        const tc=typeColor[b.btype]||'#888';
+        const tl=typeLabel[b.btype]||'Bill';
+        return `<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 0;border-bottom:1px solid var(--border)">
+          <div style="min-width:0;flex:1">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
+              <span style="font-size:10px;font-weight:700;padding:1px 6px;border-radius:5px;background:${tc}22;color:${tc};flex-shrink:0">${tl}</span>
+              <span style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escHtml(b.name)}</span>
+            </div>
+            <div style="font-size:12px;color:var(--muted)">${b.dueDate?'Due: '+fmtDate(b.dueDate)+' · ':''}${usd(b.amount)}${b.balance?' · Bal: '+usd(b.balance):''}</div>
+          </div>
+          <div style="display:flex;gap:6px;flex-shrink:0">
+            <button class="btn btn-secondary btn-sm" onclick="openEditBill(${b.id})">Edit</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteBillFromModal(${b.id})">&#x2715;</button>
+          </div>
+        </div>`;
+      }).join('');
+    }
+  }
+  // Expenses list
+  const el=$('expenses-manage-list');
+  if(el){
+    if(!data.expenses.length){
+      el.innerHTML='<div style="color:var(--muted);font-size:13px;text-align:center;padding:12px 0">No expenses added yet.</div>';
+    } else {
+      el.innerHTML=data.expenses.map(e=>`<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 0;border-bottom:1px solid var(--border)">
+        <div style="min-width:0;flex:1">
+          <div style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px">${escHtml(e.description||e.category)}</div>
+          <div style="font-size:12px;color:var(--muted)">${e.date?'Due: '+fmtDate(e.date)+' · ':''}${usd(e.amount)}${e.frequency&&e.frequency!=='One-time'?' · '+e.frequency:''}</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-shrink:0">
+          <button class="btn btn-secondary btn-sm" onclick="openEditExpense(${e.id})">Edit</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteItem('expenses',${e.id});renderBillsManage()">&#x2715;</button>
+        </div>
+      </div>`).join('');
+    }
+  }
+}
 function renderCards(){
   // ── CREDIT UTILIZATION ──────────────────────────
   const creditCards=data.bills.filter(b=>b.btype==='creditcard'&&b.creditLimit>0);
