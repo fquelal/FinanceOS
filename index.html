@@ -1127,7 +1127,10 @@ canvas{width:100%!important;}
         <div id="d-balance" style="font-family:var(--font-d);font-size:34px;font-weight:800;letter-spacing:-1px;line-height:1">$0.00</div>
         <div id="d-summary-line" style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.4"></div>
         <div style="margin-top:12px;padding-top:10px;border-top:1px solid rgba(80,112,240,.2);display:flex;justify-content:space-between;align-items:center">
-          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)">Projected Balance</div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)">Projected Balance</div>
+            <div id="d-projected-acct" style="font-size:10px;font-weight:600;color:var(--accent2);background:rgba(80,112,240,.1);border-radius:5px;padding:1px 6px"></div>
+          </div>
           <div style="display:flex;align-items:baseline;gap:4px">
             <div id="d-projected" style="font-family:var(--font-d);font-size:18px;font-weight:800;letter-spacing:-.5px">$0.00</div>
             <div id="d-projected-sub" style="font-size:10px;color:var(--muted)"></div>
@@ -1295,10 +1298,10 @@ canvas{width:100%!important;}
     <div id="networth" class="section">
       <div class="sub-header-row">
         <div class="plan-toggle" class="mb-0">
-          <button id="sub-acct-accounts" class="active" onclick="showSub('networth','networth')">Accounts</button>
+          <button id="sub-acct-accounts" class="active" onclick="showSub('networth','networth')">Funds</button>
           <button id="sub-acct-cards" onclick="showSub('cards','networth')">Cards</button>
           <button id="sub-acct-loans" onclick="showSub('loans','networth')">Loans</button>
-          <button id="sub-acct-bills" onclick="showSub('bills-manage','networth')">Bills &amp; Exp.</button>
+          <button id="sub-acct-bills" onclick="showSub('bills-manage','networth')">Bills</button>
         </div>
       </div>
 
@@ -1358,15 +1361,15 @@ canvas{width:100%!important;}
     <div id="bills-manage" class="section">
       <div class="sub-header-row">
         <div class="plan-toggle" class="mb-0">
-          <button id="sub-bills-accounts" onclick="showSub('networth','networth')">Accounts</button>
+          <button id="sub-bills-accounts" onclick="showSub('networth','networth')">Funds</button>
           <button id="sub-bills-cards"    onclick="showSub('cards','networth')">Cards</button>
           <button id="sub-bills-loans"    onclick="showSub('loans','networth')">Loans</button>
-          <button id="sub-bills-bills"    class="active">Bills &amp; Exp.</button>
+          <button id="sub-bills-bills"    class="active">Bills</button>
         </div>
       </div>
       <div class="card" style="margin-bottom:16px">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-          <div class="section-label" style="color:var(--blue);margin-bottom:0">Bills &amp; Debts</div>
+          <div class="section-label" style="color:var(--blue);margin-bottom:0">Bills</div>
           <button class="btn btn-primary btn-sm" onclick="openModal('bill')">+ Bill</button>
         </div>
         <div id="bills-manage-list"></div>
@@ -1480,10 +1483,10 @@ canvas{width:100%!important;}
     <div id="cards" class="section">
       <div class="sub-header-row">
         <div class="plan-toggle" class="mb-0">
-          <button id="sub-cards-accounts" onclick="showSub('networth','networth')">Accounts</button>
+          <button id="sub-cards-accounts" onclick="showSub('networth','networth')">Funds</button>
           <button id="sub-cards-cards" class="active" onclick="showSub('cards','networth')">Cards</button>
           <button id="sub-cards-loans" onclick="showSub('loans','networth')">Loans</button>
-          <button id="sub-cards-bills" onclick="showSub('bills-manage','networth')">Bills &amp; Exp.</button>
+          <button id="sub-cards-bills" onclick="showSub('bills-manage','networth')">Bills</button>
         </div>
       </div>
 
@@ -1521,10 +1524,10 @@ canvas{width:100%!important;}
     <div id="loans" class="section">
       <div class="sub-header-row">
         <div class="plan-toggle" class="mb-0">
-          <button id="sub-loans-accounts" onclick="showSub('networth','networth')">Accounts</button>
+          <button id="sub-loans-accounts" onclick="showSub('networth','networth')">Funds</button>
           <button id="sub-loans-cards"    onclick="showSub('cards','networth')">Cards</button>
           <button id="sub-loans-loans"    class="active" onclick="showSub('loans','networth')">Loans</button>
-          <button id="sub-loans-bills"    onclick="showSub('bills-manage','networth')">Bills &amp; Exp.</button>
+          <button id="sub-loans-bills"    onclick="showSub('bills-manage','networth')">Bills</button>
         </div>
       </div>
 
@@ -1983,7 +1986,6 @@ canvas{width:100%!important;}
       <div class="field"><label data-i18n="Amount ($)">Amount ($)</label><input id="e-amount" type="number" inputmode="decimal" placeholder="0.00"/></div>
       <div class="field"><label data-i18n="Date">Date</label><input id="e-date" type="date"/></div>
     </div>
-    <div class="field"><label data-i18n="Pay from Account">Pay from Account</label><select id="e-account"><option value="">-- No account linked --</option></select></div>
     <div class="field"><label data-i18n="Frequency">Frequency</label>
       <select id="e-freq"><option selected data-i18n="One-time">One-time</option><option data-i18n="Weekly">Weekly</option><option data-i18n="Bi-weekly">Bi-weekly</option><option data-i18n="Monthly">Monthly</option><option data-i18n="Yearly">Yearly</option></select>
     </div>
@@ -1992,7 +1994,7 @@ canvas{width:100%!important;}
       <input type="checkbox" id="e-autolog"/>
     </div>
     <div id="autolog-account-wrap" class="field">
-      <label>Deduct from Account</label>
+      <label>Pay from Account</label>
       <select id="e-autolog-account" style="background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:8px;color:var(--text);font-size:13px;width:100%">
         <option value="">-- Select account --</option>
       </select>
@@ -2440,7 +2442,7 @@ canvas{width:100%!important;}
       <div class="field"><label data-i18n="Amount ($)">Amount ($)</label><input id="t-amount" type="number" inputmode="decimal" placeholder="0.00" oninput="checkWithdrawalOverdraft()"/></div>
       <div class="field"><label data-i18n="Date">Date</label><input id="t-date" type="date"/></div>
     </div>
-    <div class="field"><label data-i18n="Deduct from Account">Deduct from Account</label>
+    <div class="field"><label>Pay from Account</label>
       <select id="t-account" onchange="checkWithdrawalOverdraft()"><option value="">-- No account linked --</option></select>
     </div>
     <div id="t-overdraft-warn" style="display:none;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--red);margin-bottom:10px"></div>
@@ -2616,7 +2618,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v2.1.5';
+const APP_VERSION='v2.1.6';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -2878,7 +2880,7 @@ const TRANSLATIONS={
     'Cash Withdrawal':'Retiro de Efectivo',
     'Edit:':'Editar:',
     'Add to Calendar':'Agregar al Calendario',
-    'Deduct from Account':'Deducir de Cuenta',
+    'Pay from Account':'Pagar desde Cuenta',
     'Payment Amount':'Monto de Pago',
     'Minimum Payment':'Pago Minimo',
     'Suggested (Planner)':'Sugerido (Planificador)',
@@ -3506,7 +3508,7 @@ const acTypeLabel={checking:'Checking',savings:'Savings',cash:'Cash'};
 function populateAccountSelects(){
   const accs=data.accounts||[];
   const opts='<option value="">-- No account linked --</option>'+accs.map(a=>`<option value="${a.id}">${acTypeIcon[a.type]||''} ${a.name} (${usd(a.balance)})</option>`).join('');
-  ['i-account','e-account','sb-account','pd-account','pu-account','t-account'].forEach(id=>{
+  ['i-account','sb-account','pd-account','pu-account','t-account'].forEach(id=>{
     const el=$(id); if(!el) return;
     const prev=el.value;
     el.innerHTML=opts;
@@ -4312,7 +4314,7 @@ function show(sec,btn){
 function openModal(type,extra){
   if(type==='goal'){openModal_goal();return;}
   if(type==='income'){$('i-id').value='';$('i-source').value='';$('i-amount').value='';$('i-date').value=today();$('i-freq').value='Monthly';$('i-account').value='';const n=$('i-update-note');if(n)n.style.display='none';if($('i-lastpay'))$('i-lastpay').value='';if($('i-lastpay-wrap'))$('i-lastpay-wrap').style.display='none';populateAccountSelects();}
-  if(type==='expense'){clearOverlapWarn('expense-overlap-warn');$('expense-modal-title').textContent='Add Expense';$('e-id').value='';$('e-cat').value='';$('e-desc').value='';if($('e-autolog'))$('e-autolog').checked=false;if($('autolog-account-wrap'))$('autolog-account-wrap').style.display='none';$('e-amount').value='';$('e-date').value=today();$('e-freq').value='One-time';$('e-account').value='';populateAccountSelects();}
+  if(type==='expense'){clearOverlapWarn('expense-overlap-warn');$('expense-modal-title').textContent='Add Expense';$('e-id').value='';$('e-cat').value='';$('e-desc').value='';if($('e-autolog'))$('e-autolog').checked=false;if($('autolog-account-wrap'))$('autolog-account-wrap').style.display='none';$('e-amount').value='';$('e-date').value=today();$('e-freq').value='One-time';populateAccountSelects();}
   if(type==='bill'){clearOverlapWarn('bill-overlap-warn');$('bill-modal-title').textContent='Add Bill / Debt';$('b-id').value='';$('b-name').value='';if($('b-autolog'))$('b-autolog').checked=false;if($('b-autolog-wrap'))$('b-autolog-wrap').style.display='none';if($('b-autolog-account-wrap'))$('b-autolog-account-wrap').style.display='none';$('b-amount').value='';$('b-date').value='';$('b-recur').value='No';$('b-type').value='bill';$('b-balance').value='';$('b-apr').value='';$('b-limit').value='';$('b-original').value='';if($('b-url'))$('b-url').value='';
   // Collapse More options on fresh add
   if($('b-more-fields'))$('b-more-fields').style.display='none';
@@ -4616,12 +4618,12 @@ function openEditExpense(id){
   $('e-amount').value=e.amount||'';
   $('e-date').value=e.date||today();
   $('e-freq').value=e.frequency||'One-time';
-  if($('e-account')) $('e-account').value=e.accountId||'';
   if($('e-autolog')){
     $('e-autolog').checked=!!e.autoLog;
     const wrap=$('autolog-account-wrap');
     if(wrap) wrap.style.display=e.autoLog?'block':'none';
   }
+  if(e.autoLog) populateAutoLogAccountSelect('e-autolog-account');
   if($('e-autolog-account')&&e.autoLogAccountId) $('e-autolog-account').value=e.autoLogAccountId;
   populateAccountSelects();
 }
@@ -4629,7 +4631,7 @@ function openEditExpense(id){
 function saveExpense(){
   const autoLog = $('e-autolog') ? $('e-autolog').checked : false;
   const autoLogAccountId = parseInt($('e-autolog-account')?.value)||0;
-  const cat=$('e-cat').value,desc=$('e-desc').value.trim(),amt=sanitizeNum($('e-amount').value),dt=$('e-date').value,freq=$('e-freq').value,acId=parseInt($('e-account').value)||0;
+  const cat=$('e-cat').value,desc=$('e-desc').value.trim(),amt=sanitizeNum($('e-amount').value),dt=$('e-date').value,freq=$('e-freq').value,acId=0;
   if(!cat||!amt)return;
   const eid=parseInt($('e-id').value);
   const prev=eid?data.expenses.find(e=>e.id===eid):null;
@@ -5994,7 +5996,10 @@ function renderDashboard(){
   const tw=data.transactions.filter(t=>!t.promoRef&&t.type!=='Transfer'&&t.type!=='Bill Payment'&&t.type!=='Debt Payment').reduce((s,t)=>s+t.amount,0);
   const totalOut=te+tb+tw;
   const net=ti-te-tt;
-  const totalAccounts=(data.accounts||[]).reduce((s,a)=>s+a.balance,0);
+  const defaultAcct=(data.accounts||[]).find(a=>a.isDefault)||(data.accounts||[]).find(a=>a.type==='checking')||(data.accounts||[])[0]||{};
+  const totalAccounts=defaultAcct.balance||0;
+  const acctNameEl=$('d-projected-acct');
+  if(acctNameEl) acctNameEl.textContent=defaultAcct.name||'';
 
   // Hero card — Net Balance
   const balEl=$('d-balance');
@@ -6198,7 +6203,8 @@ function renderMoneySummaryCards(){
 
   // Available Now — total account balances
   const accounts=data.accounts||[];
-  const availableNow=accounts.reduce((s,a)=>s+(a.balance||0),0);
+  const defaultAcct2=(accounts||[]).find(a=>a.isDefault)||(accounts||[]).find(a=>a.type==='checking')||(accounts||[])[0]||{};
+  const availableNow=defaultAcct2.balance||0;
   const acctCount=accounts.length;
   const acctSub=acctCount>0?acctCount+' account'+(acctCount===1?'':'s'):'No accounts linked';
 
@@ -6242,10 +6248,10 @@ function renderMoneySummaryCards(){
   // Money Left calculation
   const thisMonthStr=todayStr.slice(0,7);
   const pendingBillAmt=data.bills.filter(b=>{
-    if(b.status==='Paid'||b.status==='Scheduled') return false;
+    if(b.status==='Paid') return false;
     if((b.btype==='creditcard'||b.btype==='loan')&&!(b.balance>0)) return false;
     return true;
-  }).reduce((s,b)=>s+(b.amount||0),0);
+  }).reduce((s,b)=>s+(b.scheduledAmount||b.amount||0),0);
   const pendingExpAmt=data.expenses.filter(e=>!e.paidMonth||e.paidMonth!==thisMonthStr).reduce((s,e)=>s+(e.amount||0),0);
   const moneyLeft=availableNow-pendingBillAmt-pendingExpAmt;
 
@@ -6539,12 +6545,12 @@ function renderBillsManage(){
   // Bills list
   const bl=$('bills-manage-list');
   if(bl){
-    if(!data.bills.length){
-      bl.innerHTML='<div style="color:var(--muted);font-size:13px;text-align:center;padding:12px 0">No bills added yet.</div>';
-    } else {
+    {
       const typeColor={creditcard:'#ef4444',loan:'#3b82f6',bill:'#f59e0b',promo:'#8b5cf6'};
       const typeLabel={creditcard:'Card',loan:'Loan',bill:'Bill',promo:'Promo'};
-      bl.innerHTML=data.bills.map(b=>{
+      const billsOnly=data.bills.filter(b=>b.btype==='bill');
+      if(!billsOnly.length){ bl.innerHTML='<div style="color:var(--muted);font-size:13px;text-align:center;padding:12px 0">No bills added yet.</div>'; }
+      else bl.innerHTML=billsOnly.map(b=>{
         const tc=typeColor[b.btype]||'#888';
         const tl=typeLabel[b.btype]||'Bill';
         return `<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 0;border-bottom:1px solid var(--border)">
