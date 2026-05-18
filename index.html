@@ -5604,7 +5604,7 @@ function setMethod(m){
 
 function calcDebtPlan(debts, extra){
   // Clone debts preserving original min payments
-  let items=debts.map(d=>({...d,bal:d.balance,monthlyRate:d.apr/100/12,minPay:Math.max(d.scheduledAmount||0,d.amount||0)||d.amount}));
+  let items=debts.map(d=>({...d,bal:d.balance,monthlyRate:d.apr/100/12,minPay:Math.max(d.scheduledAmount||0,d.amount||0)||d.amount,skipInterest:!!d.noInterestPayment}));
   // Sort by method
   if(debtMethod==='avalanche') items.sort((a,b)=>b.apr-a.apr);
   else items.sort((a,b)=>a.bal-b.bal);
@@ -5627,7 +5627,8 @@ function calcDebtPlan(debts, extra){
     // Step 2: pay interest + minimum on each active debt
     items.forEach(d=>{
       if(d.bal<=0.01){d.bal=0;return;}
-      const interest=parseFloat((d.bal*d.monthlyRate).toFixed(2));
+      const interest=d.skipInterest?0:parseFloat((d.bal*d.monthlyRate).toFixed(2));
+      d.skipInterest=false; // only skip interest for the first scheduled month
       totalInterestPaid+=interest;
       d.bal+=interest;
       const pay=parseFloat(Math.min(d.minPay,d.bal).toFixed(2));
@@ -5800,7 +5801,7 @@ function renderDebt(){
             <span class="apr-badge"${d.btype==='promo'?' style="background:rgba(34,197,94,.15);color:var(--green)"':''}>APR ${pct(d.apr)}</span>
             ${promoBadgeHtml}
             ${getPromoSortNote(d)}
-            <span class="txt-muted-xs">Min: ${usd(d.amount)}/mo</span>
+            <span class="txt-muted-xs">${d.scheduledAmount&&d.scheduledAmount!==d.amount?'Scheduled: '+usd(d.scheduledAmount)+' · Min: '+usd(d.amount)+'/mo':'Min: '+usd(d.amount)+'/mo'}</span>
           </div>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px">
             <div class="surface-chip">
