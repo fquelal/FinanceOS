@@ -1126,12 +1126,12 @@ canvas{width:100%!important;}
         <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:4px">Net Balance</div>
         <div id="d-balance" style="font-family:var(--font-d);font-size:34px;font-weight:800;letter-spacing:-1px;line-height:1">$0.00</div>
         <div id="d-summary-line" style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.4"></div>
-        <div style="margin-top:12px;padding-top:10px;border-top:1px solid rgba(80,112,240,.2);display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
-          <div style="display:flex;flex-direction:column;gap:2px">
+        <div style="margin-top:12px;padding-top:10px;border-top:1px solid rgba(80,112,240,.2);display:flex;align-items:flex-start;gap:8px">
+          <div style="display:flex;flex-direction:column;gap:2px;flex:1">
             <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)">Projected Balance</div>
             <span id="d-projected-acct" style="font-size:11px;font-weight:600;color:var(--accent2)"></span>
           </div>
-          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:2px;flex:1">
             <div id="d-projected" style="font-family:var(--font-d);font-size:18px;font-weight:800;letter-spacing:-.5px">$0.00</div>
             <div id="d-projected-sub" style="font-size:10px;color:var(--muted)"></div>
           </div>
@@ -2618,7 +2618,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v2.1.7';
+const APP_VERSION='v2.1.8';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -6039,7 +6039,7 @@ function renderDashboard(){
         return e.date && e.date.slice(0,7)===monthStr;
       }).length;
       const totalCount=billCount+expCount;
-      projSub.textContent=`after ${totalCount} item${totalCount===1?'':'s'} (${billCount} bill${billCount!==1?'s':''}, ${expCount} expense${expCount!==1?'s':''})`;  
+      projSub.textContent=`after ${totalCount} item${totalCount===1?'':'s'}`;  
     }
   }
 
@@ -6086,7 +6086,7 @@ function renderDashboard(){
 
   const upcomingBills=data.bills.filter(b=>{
     if(b.status==='Paid') return false;
-    if((b.btype==='creditcard'||b.btype==='loan')&&!b.balance&&!b.amount) return false;
+    if((b.btype==='creditcard'||b.btype==='loan')&&!(b.balance>0)) return false;
     const d=b.dueDate;
     if(!d) return false;
     return d>=past7&&d<=next7||(b.status==='Overdue')||daysUntil(d)<0;
@@ -6224,7 +6224,7 @@ function renderMoneySummaryCards(){
     if(!b.dueDate) return false;
     return b.dueDate>=todayStr&&b.dueDate<=in7Str;
   });
-  const totalBillsOut=data.bills.filter(b=>b.amount>0).reduce((s,b)=>s+b.amount,0);
+  const totalBillsOut=data.bills.filter(b=>b.amount>0&&!((b.btype==='creditcard'||b.btype==='loan'||b.btype==='promo')&&!(b.balance>0))).reduce((s,b)=>s+(b.scheduledAmount||b.amount),0);
   const netMonth=expectedIncome-totalBillsOut-data.expenses.reduce((s,e)=>s+e.amount,0);
   const overdueAmt=overdue.reduce((s,b)=>s+b.amount,0);
 
@@ -10560,7 +10560,7 @@ function getCashFlowMonths(months){
     const label=d.toLocaleString('default',{month:'short',year:'2-digit'});
     const totalIn=data.income.reduce((s,inc)=>s+getEffectiveIncome(inc,yr,mo),0);
     const totalOut=data.expenses.reduce((s,e)=>s+e.amount,0)
-      +data.bills.filter(b=>b.amount>0).reduce((s,b)=>s+b.amount,0);
+      +data.bills.filter(b=>b.amount>0&&!((b.btype==='creditcard'||b.btype==='loan'||b.btype==='promo')&&!(b.balance>0))).reduce((s,b)=>s+(b.scheduledAmount||b.amount),0);
     result.push({label,totalIn,totalOut});
   }
   return result;
