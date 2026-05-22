@@ -116,15 +116,6 @@ main{max-width:900px;padding:20px 20px 60px;}
 .skel-line{height:14px;margin-bottom:10px;border-radius:6px;}
 .skel-card{height:72px;border-radius:12px;margin-bottom:10px;}
 
-/* ── SWIPE PEEK ── */
-@keyframes swipePeek{
-  0%{transform:translateX(0);}
-  30%{transform:translateX(-52px);}
-  60%{transform:translateX(-52px);}
-  100%{transform:translateX(0);}
-}
-.swipe-peek-anim > .swipe-wrap:first-child{animation:swipePeek 1.1s ease 0.6s both;}
-
 /* ── PAID FLASH ANIMATION ── */
 @keyframes paidFlash{
   0%{background:rgba(34,197,94,0);}
@@ -331,9 +322,6 @@ canvas{width:100%!important;}
 /* ── SWIPE TO DELETE ── */
 .swipe-wrap{position:relative;overflow:hidden;border-radius:12px;margin-bottom:11px;}
 .swipe-wrap .card,.swipe-wrap .row{margin-bottom:0;border-radius:12px;transition:transform .25s ease;touch-action:pan-y;will-change:transform;}
-.swipe-delete-zone{position:absolute;right:0;top:0;height:100%;width:80px;background:var(--red);display:flex;align-items:center;justify-content:center;border-radius:4px 12px 12px 4px;cursor:pointer;transform:translateX(80px);transition:transform .25s ease;}
-.swipe-delete-zone svg{width:22px;height:22px;fill:#fff;}
-.swipe-wrap.swiped .swipe-delete-zone{transform:translateX(0);}
 .swipe-actions{position:absolute;right:0;top:0;height:100%;width:160px;display:flex;border-radius:0 12px 12px 0;transform:translateX(160px);transition:transform .25s ease;}
 .swipe-action-edit{flex:1;background:var(--blue);display:flex;align-items:center;justify-content:center;cursor:pointer;}
 .swipe-action-edit svg{width:20px;height:20px;fill:#fff;}
@@ -498,7 +486,7 @@ canvas{width:100%!important;}
 .ob-skip{background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;font-family:var(--font-b);text-decoration:underline;}
 
 /* ── AUTO-PROCESS NOTIFICATION ── */
-#autoprocess-banner{display:none;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);border-radius:12px;padding:10px 14px;margin-bottom:16px;font-size:13px;color:var(--green);display:none;align-items:center;gap:10px;}
+#autoprocess-banner{display:none;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);border-radius:12px;padding:10px 14px;margin-bottom:16px;font-size:13px;color:var(--green);align-items:center;gap:10px;}
 
 /* ── BILL CONFIRMATION ANIMATION ── */
 @keyframes checkPop{0%{transform:scale(0);opacity:0}60%{transform:scale(1.3)}100%{transform:scale(1);opacity:1}}
@@ -1170,7 +1158,7 @@ canvas{width:100%!important;}
     <!-- BILLS -->
     <div id="bills" class="section">
       <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
-        <div class="plan-toggle" class="mb-0">
+        <div class="plan-toggle mb-0">
           <button id="sub-money-bills" class="active" onclick="showSub('bills','bills')">Bills</button>
           <button id="sub-money-log"   onclick="showSub('quick','bills')">Log</button>
         </div>
@@ -1200,7 +1188,7 @@ canvas{width:100%!important;}
     <!-- DEBT PLANNER -->
     <div id="debt" class="section">
       <div class="sub-header-row">
-        <div class="plan-toggle" class="mb-0">
+        <div class="plan-toggle mb-0">
           <button id="sub-debt-cashflow" onclick="showSub('cashflow','insights')">Cash Flow</button>
           <button id="sub-debt-debt"     class="active" onclick="showSub('debt','insights')">Debt</button>
           <button id="sub-debt-spending" onclick="showSub('insights','insights')">Spending</button>
@@ -2220,7 +2208,8 @@ canvas{width:100%!important;}
 <!-- NEW PURCHASE -->
 <div class="overlay" id="modal-purchase">
   <div class="modal">
-    <div class="modal-header"><span class="modal-title">🛒 New Purchase</span><button class="close-btn" onclick="closeModal('purchase')">✕</button></div>
+    <div class="modal-header"><span class="modal-title" id="pu-modal-title">🛒 New Purchase</span><button class="close-btn" onclick="closeModal('purchase')">✕</button></div>
+    <input type="hidden" id="pu-edit-id"/>
     <div class="field"><label data-i18n="Description">Description</label><input id="pu-desc" placeholder="e.g. Amazon, Gas Station, Whole Foods"/></div>
     <div class="field-row">
       <div class="field"><label data-i18n="Amount ($)">Amount ($)</label><input id="pu-amount" type="number" inputmode="decimal" placeholder="0.00" oninput="checkPurchaseOverdraft();calcPromoRequired()"/></div>
@@ -2618,7 +2607,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v2.1.8';
+const APP_VERSION='v2.1.9';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -3566,7 +3555,7 @@ function saveAccount(){
   data.accounts=eid?data.accounts.map(a=>a.id===eid?item:a):[...data.accounts,item];
   $('ac-name').value='';$('ac-balance').value='';$('ac-notes').value='';$('ac-apy').value='';$('ac-id').value='';if($('ac-url'))$('ac-url').value='';
   $('account-delete-wrap').style.display='none';
-  closeModal('account');saveData();renderAll();
+  closeModal('account');saveData();renderSections('alerts','dashboard','bills','debt','networth','insights','txns');
 }
 
 function deleteAccountFromModal(){
@@ -3644,7 +3633,7 @@ function saveTransfer(){
       methodLabel:fromAcc.name,
       note
     });
-    closeModal('transfer');saveData();renderAll();
+    closeModal('transfer');saveData();renderSections('dashboard','networth','txns');
     showToast(editId?'Transfer updated!':'Transfer saved!');
   };
   if(amt>fromAcc.balance){
@@ -3662,8 +3651,9 @@ function openPurchaseModal(){
   $('pu-desc').value='';$('pu-amount').value='';$('pu-date').value=today();
   $('pu-category').value='';
   if($('pu-note'))$('pu-note').value='';
-  const defAcId=getDefaultAccountId();
-  $('pu-method').value=defAcId?'acc-'+defAcId:'';
+  if($('pu-edit-id')) $('pu-edit-id').value='';
+  if($('pu-modal-title')) $('pu-modal-title').textContent='🛒 New Purchase';
+  $('pu-method').value='';
   $('pu-overdraft-warn').style.display='none';
   // Populate unified payment method dropdown
   const accs=data.accounts||[];
@@ -3674,6 +3664,9 @@ function openPurchaseModal(){
   $('pu-cards-group').innerHTML=cards.map(c=>
     `<option value="card-${c.id}">💳 ${c.name} (Balance: ${usd(c.balance)})</option>`
   ).join('');
+  // Default to primary account for new purchases
+  const defAcId=getDefaultAccountId();
+  if(defAcId) $('pu-method').value='acc-'+defAcId;
   // Reset promo fields
   const check=$('pu-promo-check'); if(check) check.checked=false;
   const fields=$('pu-promo-fields'); if(fields) fields.style.display='none';
@@ -3684,6 +3677,28 @@ function openPurchaseModal(){
   const apr=$('pu-promo-apr'); if(apr) apr.value='';
   $('modal-purchase').classList.add('open');
   setTimeout(()=>$('pu-desc').focus(),260);
+}
+
+function openEditPurchase(id){
+  const tx=data.transactions.find(x=>x.id===id);if(!tx)return;
+  // Reuse openPurchaseModal to populate dropdowns, then override fields
+  openPurchaseModal();
+  if($('pu-edit-id')) $('pu-edit-id').value=tx.id;
+  if($('pu-modal-title')) $('pu-modal-title').textContent='✏️ Edit Purchase';
+  $('pu-desc').value=tx.description||'';
+  $('pu-amount').value=tx.amount||'';
+  $('pu-date').value=tx.date||today();
+  $('pu-category').value=tx.category||'';
+  if($('pu-note')) $('pu-note').value=tx.note||'';
+  // Restore payment method — card-{id} or acc-{id}
+  if(tx.cardId) $('pu-method').value='card-'+tx.cardId;
+  else if(tx.accountId) $('pu-method').value='acc-'+tx.accountId;
+  else $('pu-method').value='';
+  // Restore tags
+  _puTags=tx.tags?[...tx.tags]:[];
+  // Hide promo section — editing promo details not supported
+  const fields=$('pu-promo-fields'); if(fields) fields.style.display='none';
+  const check=$('pu-promo-check'); if(check) check.checked=false;
 }
 
 function checkPurchaseOverdraft(){
@@ -3705,6 +3720,24 @@ function confirmPurchase(){
   const category=$('pu-category').value||'';
   if(!desc||!amt)return;
   if(!method){showToast(t('Please select a payment method'),'error');return;}
+
+  // ── Edit mode: reverse the old transaction's balance effects ──
+  const editId=parseInt($('pu-edit-id')?.value)||0;
+  if(editId){
+    const prev=data.transactions.find(x=>x.id===editId);
+    if(prev){
+      if(prev.cardId){
+        const oldCard=data.bills.find(b=>b.id===prev.cardId);
+        if(oldCard){
+          oldCard.balance=parseFloat(Math.max(0,oldCard.balance-prev.amount).toFixed(2));
+          if(oldCard.revolvingBalance!=null)
+            oldCard.revolvingBalance=parseFloat(Math.max(0,(oldCard.revolvingBalance||0)-prev.amount).toFixed(2));
+        }
+      } else if(prev.accountId){
+        adjustAccountBalance(prev.accountId,prev.amount); // restore debited amount
+      }
+    }
+  }
 
   // ── Promo check ───────────────────────────────────────────
   const promoCheck=$('pu-promo-check');
@@ -3750,7 +3783,7 @@ function confirmPurchase(){
         adjustAccountBalance(acId,-amt);
         const puNote=$('pu-note')?$('pu-note').value.trim():'';
         const tx={
-          id:Date.now(),description:desc,amount:amt,type:'Purchase',
+          id:editId||Date.now(),description:desc,amount:amt,type:'Purchase',
           date:dt,accountId:acId,cardId,category,methodLabel,note:puNote,tags:[..._puTags]
         };
         if(window._pendingPromo){
@@ -3763,10 +3796,11 @@ function confirmPurchase(){
           });
           window._pendingPromo=null;
         }
-        data.transactions.push(tx);
+        if(editId) data.transactions=data.transactions.map(x=>x.id===editId?tx:x);
+        else data.transactions.push(tx);
         resetInactiveCardForPurchase(cardId);
-        closeModal('purchase');saveData();renderAll();
-        showToast(t('Purchase logged!'));
+        closeModal('purchase');saveData();renderSections('dashboard','txns','insights','cards');
+        showToast(editId?'Purchase updated!':t('Purchase logged!'));
       };
       if(amt>acc.balance){
         showConfirm({
@@ -3782,7 +3816,7 @@ function confirmPurchase(){
 
   const puNote=$('pu-note')?$('pu-note').value.trim():'';
   const tx={
-    id:Date.now(),description:desc,amount:amt,type:'Purchase',
+    id:editId||Date.now(),description:desc,amount:amt,type:'Purchase',
     date:dt,accountId:acId,cardId,category,methodLabel,note:puNote,tags:[..._puTags]
   };
   if(window._pendingPromo){
@@ -3795,10 +3829,11 @@ function confirmPurchase(){
     });
     window._pendingPromo=null;
   }
-  data.transactions.push(tx);
+  if(editId) data.transactions=data.transactions.map(x=>x.id===editId?tx:x);
+  else data.transactions.push(tx);
   resetInactiveCardForPurchase(cardId);
-  closeModal('purchase');saveData();renderAll();
-  showToast(t('Purchase logged!'));
+  closeModal('purchase');saveData();renderSections('dashboard','txns','insights','cards');
+  showToast(editId?'Purchase updated!':t('Purchase logged!'));
 }
 
 function renderNetWorth(){
@@ -4014,7 +4049,7 @@ function saveAsset(){
   $('a-name').value='';$('a-value').value='';$('a-notes').value='';
   $('a-purchase-date').value='';$('a-original-value').value='';$('a-depr-rate').value='';$('a-id').value='';
   $('asset-delete-wrap').style.display='none';
-  closeModal('asset');saveData();renderAll();
+  closeModal('asset');saveData();renderSections('networth');
 }
 
 function deleteAssetFromModal(){
@@ -4043,7 +4078,7 @@ function saveTarget(){
   }
   data.targets=eid?data.targets.map(t=>t.id===eid?item:t):[...data.targets,item];
   $('tg-amount').value='';$('tg-id').value='';
-  closeModal('target');saveData();renderAll();
+  closeModal('target');saveData();renderSections('insights');
 }
 
 // ── CHART ─────────────────────────────────────────
@@ -4205,9 +4240,12 @@ function showSub(sec,parentSec){
   document.querySelectorAll('.mtab').forEach(t=>t.classList.remove('active'));
   const mt=$('mtab-'+(TAB_MAP[parentSec]||parentSec));
   if(mt) mt.classList.add('active');
-  renderAll();
-  if(sec==='insights'){const months=parseInt($('chart-months')?$('chart-months').value:3)||3;setTimeout(()=>drawChart(getMonthlyExpenses(months)),80);}
-  if(sec==='cashflow') renderCashFlow();
+  renderAlerts();
+  if(sec==='bills') renderBills();
+  else if(sec==='dashboard') renderDashboard();
+  else if(sec==='networth') renderNetWorth();
+  else if(sec==='debt') renderDebt();
+  else if(sec==='insights') renderInsights();
   if(sec==='cards') setTimeout(()=>renderCards(),50);
   if(sec==='loans') setTimeout(()=>renderLoans(),50);
   if(sec==='quick') setTimeout(()=>renderTxns(),50);
@@ -4297,7 +4335,13 @@ function show(sec,btn){
     sec==='quick'?'quick':sec==='cards'?'networth':sec==='debt'?'insights':sec
   );
   closeSidebar();
-  renderAll();
+  renderAlerts();
+  if(sec==='dashboard') renderDashboard();
+  else if(sec==='bills') renderBills();
+  else if(sec==='networth') renderNetWorth();
+  else if(sec==='debt') renderDebt();
+  else if(sec==='cashflow') renderCashFlow();
+  else if(sec==='insights') renderInsights();
   // Force re-render sections that depend on visibility (chart width, etc.)
   if(sec==='insights'){
     const months=parseInt($('chart-months')?$('chart-months').value:3)||3;
@@ -4415,9 +4459,13 @@ function deleteBillFromModal(inlineId){
 }
 function openEditTxn(id){
   const t=data.transactions.find(x=>x.id===id);if(!t)return;
-  // Route transfers to the transfer modal
+  // Route to dedicated modals by type
   if(t.type==='Transfer'){
     openEditTransfer(id);
+    return;
+  }
+  if(t.type==='Purchase'){
+    openEditPurchase(id);
     return;
   }
   currentTxnType=t.type;
@@ -4475,7 +4523,7 @@ function saveIncome(){
     incomeStatusOverrides:existingOverrides};
   data.income=eid?data.income.map(i=>i.id===eid?item:i):[...data.income,item];
   if(acId) adjustAccountBalance(acId,amt);
-  closeModal('income');saveData();renderAll();
+  closeModal('income');saveData();renderSections('alerts','bills','dashboard','insights');
 }
 
 // ── OCCURRENCE OVERRIDE ───────────────────────────────────────
@@ -4504,7 +4552,7 @@ function saveOccurrenceOverride(){
   } else {
     i.occurrenceOverrides[date]=parseFloat(val.toFixed(2));
   }
-  saveData();closeModal('occurrence');renderAll();
+  saveData();closeModal('occurrence');renderSections('bills','dashboard','insights');
   showToast('Payment updated');
 }
 function clearOccurrenceOverride(){
@@ -4512,7 +4560,7 @@ function clearOccurrenceOverride(){
   const date=$('occ-date').value;
   const i=data.income.find(x=>x.id===id);
   if(i&&i.occurrenceOverrides) delete i.occurrenceOverrides[date];
-  saveData();closeModal('occurrence');renderAll();
+  saveData();closeModal('occurrence');renderSections('bills','dashboard','insights');
   showToast('Override cleared');
 }
 
@@ -4639,7 +4687,7 @@ function saveExpense(){
     const item={id:eid||Date.now(),category:cat,description:desc,amount:amt,date:dt,frequency:freq,accountId:acId,autoLog,autoLogAccountId};
     data.expenses=eid?data.expenses.map(e=>e.id===eid?item:e):[...data.expenses,item];
     if(acId) adjustAccountBalance(acId,-amt);
-    closeModal('expense');saveData();renderAll();
+    closeModal('expense');saveData();renderSections('alerts','bills','dashboard','insights','debt');
   };
   if(acId){
     const bal=getAccountBalance(acId);
@@ -4769,7 +4817,7 @@ function saveBill(){
     url:billUrl||undefined
   };
   data.bills=eid?data.bills.map(b=>b.id===eid?item:b):[...data.bills,item];
-  closeModal('bill');updateOriginalBalances();saveData();renderAll();
+  closeModal('bill');updateOriginalBalances();saveData();renderSections('alerts','bills','dashboard','debt','networth','insights');
 }
 
 function onBillUrlInput(val){
@@ -4795,7 +4843,7 @@ function saveCard(){
   const next=new Date();next.setDate(next.getDate()+days);
   data.cards.push({id:Date.now(),name,last4,reminderDays:days,nextReminder:next.toISOString().split('T')[0],notes});
   $('c-name').value='';$('c-last4').value='';$('c-notes').value='';
-  closeModal('card');saveData();renderAll();
+  closeModal('card');saveData();renderSections('cards');
 }
 function openWithdrawal(){
   currentTxnType='Withdrawal'; 
@@ -4833,7 +4881,7 @@ function saveTxn(){
     const item={id:eid||Date.now(),description:desc,amount:amt,type:'Withdrawal',date:dt,accountId:acId,note};
     data.transactions=eid?data.transactions.map(t=>t.id===eid?item:t):[...data.transactions,item];
     if(acId) adjustAccountBalance(acId,-amt);
-    closeModal('txn');saveData();renderAll();
+    closeModal('txn');saveData();renderSections('dashboard','txns','insights','cards');
   };
   if(acId){
     const bal=getAccountBalance(acId);
@@ -4881,7 +4929,7 @@ function initSwipe(wrap, onDeleteFn, onEditFn){
   });
   wrap.addEventListener('click',e=>{
     if(_swipeFired) return;
-    if(swiped&&!e.target.closest('.swipe-delete-zone')&&!e.target.closest('.swipe-actions')){
+    if(swiped&&!e.target.closest('.swipe-actions')){
       inner.style.transform='';wrap.classList.remove(swipedClass);swiped=false;
     }
   });
@@ -4893,23 +4941,14 @@ function initSwipe(wrap, onDeleteFn, onEditFn){
       if(delBtn) delBtn.addEventListener('click',()=>onDeleteFn());
       if(editBtn) editBtn.addEventListener('click',()=>onEditFn());
     }
-  } else {
-    const zone=wrap.querySelector('.swipe-delete-zone');
-    if(zone) zone.addEventListener('click',()=>onDeleteFn());
   }
 }
 
 function wrapSwipeable(html, key, id, editAction){
-  if(editAction){
-    return '<div class="swipe-wrap">'+html
-      +'<div class="swipe-actions" data-key="'+key+'" data-id="'+id+'" data-edit="'+editAction+'">'
-      +'<div class="swipe-action-edit"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></div>'
-      +'<div class="swipe-action-del"><svg viewBox="0 0 24 24"><path d="M9 3h6l1 1h4v2H4V4h4zm-4 5h14l-1 13H6zm5 2v9h1v-9zm4 0v9h1v-9z"/></svg></div>'
-      +'</div></div>';
-  }
   return '<div class="swipe-wrap">'+html
-    +'<div class="swipe-delete-zone" data-key="'+key+'" data-id="'+id+'">'
-    +'<svg viewBox="0 0 24 24" width="22" height="22" fill="#fff"><path d="M9 3h6l1 1h4v2H4V4h4zm-4 5h14l-1 13H6zm5 2v9h1v-9zm4 0v9h1v-9z"/></svg>'
+    +'<div class="swipe-actions" data-key="'+key+'" data-id="'+id+'" data-edit="'+editAction+'">'
+    +'<div class="swipe-action-edit"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></div>'
+    +'<div class="swipe-action-del"><svg viewBox="0 0 24 24"><path d="M9 3h6l1 1h4v2H4V4h4zm-4 5h14l-1 13H6zm5 2v9h1v-9zm4 0v9h1v-9z"/></svg></div>'
     +'</div></div>';
 }
 
@@ -4917,23 +4956,14 @@ function attachSwipes(){
   document.querySelectorAll('.swipe-wrap').forEach(wrap=>{
     if(wrap._swipeInited) return;
     wrap._swipeInited=true;
-    // Two-button mode (edit + delete)
     const actions=wrap.querySelector('.swipe-actions');
-    if(actions){
-      const key=actions.getAttribute('data-key');
-      const id=parseInt(actions.getAttribute('data-id'));
-      const editFnName=actions.getAttribute('data-edit');
-      const onDelete=()=>{ if(key&&id) deleteItem(key,id); };
-      const onEdit=()=>{ if(editFnName) eval(editFnName); };
-      initSwipe(wrap, onDelete, onEdit);
-      return;
-    }
-    // Single-button mode (delete only)
-    const zone=wrap.querySelector('.swipe-delete-zone');
-    if(!zone) return;
-    const key=zone.getAttribute('data-key');
-    const id=parseInt(zone.getAttribute('data-id'));
-    initSwipe(wrap, function(){ if(key&&id) deleteItem(key,id); });
+    if(!actions) return;
+    const key=actions.getAttribute('data-key');
+    const id=parseInt(actions.getAttribute('data-id'));
+    const editFnName=actions.getAttribute('data-edit');
+    const onDelete=()=>{ if(key&&id) deleteItem(key,id); };
+    const onEdit=()=>{ if(editFnName) eval(editFnName); };
+    initSwipe(wrap, onDelete, onEdit);
   });
 }
 
@@ -5046,7 +5076,7 @@ function saveBillDueDate(id){
   const newDate=input.value;
   if(!newDate){showToast('Please enter a valid date','error');return;}
   b.dueDate=newDate;
-  saveData();renderAll();
+  saveData();renderSections('alerts','bills','dashboard');
   showToast('Due date updated!');
 }
 
@@ -5059,7 +5089,7 @@ function revertToPending(id){
     onOk:()=>{
       b.status='Pending';
       b.scheduledAmount=null;
-      saveData();renderAll();renderBillsManage();
+      saveData();renderSections('alerts','bills','dashboard','debt');renderBillsManage();
     }
   });
 }
@@ -5067,15 +5097,12 @@ function revertToPending(id){
 function flashBillCard(id, color){
   // Brief color flash on the bill card after a status change
   setTimeout(()=>{
-    const cards=document.querySelectorAll('#bill-list .card');
-    cards.forEach(card=>{
-      if(card.innerHTML.includes('openEditBill('+id+')')||card.innerHTML.includes('openPayDebt('+id+')')||card.innerHTML.includes('openScheduleBill('+id+')')){
-        const col=color==='green'?'rgba(34,197,94,.2)':'rgba(59,130,246,.2)';
-        card.style.transition='background .1s';
-        card.style.background=col;
-        setTimeout(()=>{ card.style.background=''; },600);
-      }
-    });
+    const card=document.querySelector('#bill-list .card[data-bill-id="'+id+'"]');
+    if(!card) return;
+    const col=color==='green'?'rgba(34,197,94,.2)':'rgba(59,130,246,.2)';
+    card.style.transition='background .1s';
+    card.style.background=col;
+    setTimeout(()=>{ card.style.background=''; },600);
   },100);
 }
 
@@ -5121,7 +5148,7 @@ function confirmScheduleExpense(){
     });
     _scheduleExpenseId=null;
     closeModal('schedulebill');
-    saveData();renderAll();
+    saveData();renderSections('bills','dashboard','insights');
     showToast('Expense logged — '+usd(amt));
   };
   const bal=getAccountBalance(acId);
@@ -5140,7 +5167,7 @@ function confirmScheduleExpense(){
 function undoExpensePaid(id){
   const e=data.expenses.find(x=>x.id===id);if(!e)return;
   e.paidMonth=null;
-  saveData();renderAll();
+  saveData();renderSections('bills','dashboard','insights');
   showToast('Expense marked unpaid');
 }
 // Schedule regular (non-debt) bill
@@ -5148,6 +5175,7 @@ let _scheduleBillId=null;
 function openScheduleBill(id){
   const b=data.bills.find(x=>x.id===id);if(!b)return;
   _scheduleBillId=id;
+  _scheduleExpenseId=null;
   $('sb-name').textContent=b.name;
   $('sb-due').textContent='Due: '+fmtDate(b.dueDate);
   $('sb-min-val').textContent=usd(b.amount);
@@ -5169,14 +5197,15 @@ function openScheduleBill(id){
 }
 let _sbAmount=0;
 function sbSelect(type){
-  const b=data.bills.find(x=>x.id===_scheduleBillId);if(!b)return;
   if(type==='min'){
-    _sbAmount=b.amount;
     $('sb-min-btn').style.outline='2px solid var(--accent)';
     $('sb-custom').value='';
+    const b=data.bills.find(x=>x.id===_scheduleBillId);
+    if(b) _sbAmount=b.amount;
+    // For expenses _sbAmount was already set in openScheduleExpense
   } else {
-    _sbAmount=sanitizeNum($('sb-custom').value)||0;
     $('sb-min-btn').style.outline='none';
+    _sbAmount=sanitizeNum($('sb-custom').value)||0;
   }
 }
 function confirmScheduleBill(){
@@ -5192,7 +5221,7 @@ function confirmScheduleBill(){
     b.scheduledAccountId=acId;
     closeModal('schedulebill');
     haptic('medium');
-    saveData();renderAll();
+    saveData();renderSections('alerts','bills','dashboard','debt');
     flashBillCard(_scheduleBillId,'blue');
     showToast('Payment scheduled - '+usd(amt));
   };
@@ -5412,7 +5441,7 @@ function confirmDebtPayment(){
             adjustAccountBalance(acId,-total);
             b.status=b.balance>0.01?'Pending':'Paid';
             b.scheduledAmount=null;b.scheduledAccountId=null;
-            closeModal('paydebt');saveData();renderAll();
+            closeModal('paydebt');saveData();renderSections('alerts','bills','dashboard','debt','networth','txns');
             if(b.status==='Paid'){ haptic('medium'); flashBillCard(_payDebtId,'green'); }
             showToast('Payment of '+usd(total)+' applied!');
           }
@@ -5445,7 +5474,7 @@ function confirmDebtPayment(){
     adjustAccountBalance(acId,-total);
     b.status=b.balance>0.01?'Pending':'Paid';
     b.scheduledAmount=null;b.scheduledAccountId=null;
-    closeModal('paydebt');saveData();renderAll();
+    closeModal('paydebt');saveData();renderSections('alerts','bills','dashboard','debt','networth','txns');
     if(b.status==='Paid'){ haptic('medium'); flashBillCard(_payDebtId,'green'); }
     showToast('Payment of '+usd(total)+' applied!');
   } else {
@@ -5468,7 +5497,7 @@ function confirmDebtPayment(){
             b.scheduledAmount=parseFloat(amount.toFixed(2));
             b.scheduledAccountId=acId;
             b.status='Scheduled';
-            closeModal('paydebt');saveData();renderAll();
+            closeModal('paydebt');saveData();renderSections('alerts','bills','dashboard','debt','networth','txns');
             showToast('Payment of '+usd(amount)+' scheduled!');
           }
         });
@@ -5482,7 +5511,7 @@ function confirmDebtPayment(){
     if(_noInterest) b.noInterestPayment=true; else delete b.noInterestPayment;
     const newDue=$('pd-due-date')?.value;
     if(newDue) b.dueDate=newDue;
-    closeModal('paydebt');saveData();renderAll();
+    closeModal('paydebt');saveData();renderSections('alerts','bills','dashboard','debt','networth','txns');
     showToast('Payment of '+usd(amount)+' scheduled!');
   }
 }
@@ -5536,14 +5565,14 @@ function addToCalendar(name,date,notes){
 }
 function calGoogle(){
   const{name,date,notes}=_calPending;
-  const d=new Date(date),pad=n=>String(n).padStart(2,'0');
+  const d=new Date(date+'T12:00:00'),pad=n=>String(n).padStart(2,'0');
   const dt=`${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}`;
   window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('💰 '+name)}&dates=${dt}/${dt}&details=${encodeURIComponent(notes||'')}`, '_blank');
   closeModal('calpick');
 }
 function calIcal(){
   const{name,date,notes}=_calPending;
-  const d=new Date(date),pad=n=>String(n).padStart(2,'0');
+  const d=new Date(date+'T12:00:00'),pad=n=>String(n).padStart(2,'0');
   const dt=`${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}`;
   const uid=`financeos-${Date.now()}@local`;
   const stamp=new Date().toISOString().replace(/[-:.]/g,'').slice(0,15)+'Z';
@@ -6382,7 +6411,7 @@ function renderBills(){
         +'<div style="height:3px;width:'+util+'%;background:'+uc+';border-radius:2px"></div></div>';
     })();
 
-    return '<div class="card" style="margin-bottom:8px;border-left:3px solid '+typeColor+';border-radius:4px 12px 12px 4px;cursor:pointer"'
+    return '<div class="card" data-bill-id="'+b.id+'" style="margin-bottom:8px;border-left:3px solid '+typeColor+';border-radius:4px 12px 12px 4px;cursor:pointer"'
       +' onclick="toggleCardExpand(\''+cid+'\')">'
       +'<div style="display:flex;align-items:center;justify-content:space-between;gap:8px">'
       +'<div style="min-width:0;flex:1">'
@@ -6552,14 +6581,6 @@ function renderBills(){
   }
 
   $('bill-list').innerHTML=html||emptyState('📋','Nothing here yet','Add bills, loans, credit cards, and income to get started.',"+ Add a Bill","openModal('bill')");
-  setTimeout(attachSwipes,50);
-  if(!localStorage.getItem('financeOS_swipePeeked')&&html){
-    localStorage.setItem('financeOS_swipePeeked','1');
-    setTimeout(()=>{
-      const bl=$('bill-list');if(bl)bl.classList.add('swipe-peek-anim');
-      setTimeout(()=>{const bl=$('bill-list');if(bl)bl.classList.remove('swipe-peek-anim');},2000);
-    },600);
-  }
 }
 
 
@@ -6619,7 +6640,7 @@ function quickUpdateCardBalance(id){
   if(isNaN(parsed)||parsed<0){ showToast('Invalid balance','error'); return; }
   b.balance=parseFloat(parsed.toFixed(2));
   if(!b.originalBalance||b.balance>b.originalBalance) b.originalBalance=b.balance;
-  saveData(); renderAll();
+  saveData(); renderSections('bills','dashboard','debt','networth');
   showToast('Balance updated to '+usd(b.balance));
 }
 
@@ -8858,7 +8879,7 @@ function savePromoDebt(){
     }
 
     updateOriginalBalances();
-    closeModal('promo'); saveData(); renderAll();
+    closeModal('promo'); saveData(); renderSections('bills','dashboard','debt','networth');
     showToast('Promo applied to '+card.name+'!'); return;
   }
 
@@ -8926,7 +8947,7 @@ function savePromoDebt(){
       amount: totalTransferred, fee: feePaid,
       completionDate: (()=>{const d=new Date();d.setDate(d.getDate()+5);return d.toISOString().split('T')[0];})()
     });
-    closeModal('promo'); saveData(); renderAll();
+    closeModal('promo'); saveData(); renderSections('bills','dashboard','debt','networth');
     showToast('Transfer initiated - '+usd(totalTransferred)+' moving to '+destCard.name+' (3-5 business days)');
     return;
   }
@@ -9268,7 +9289,7 @@ function correctBalance(id){
   if(!acc) return;
   const diff = parseFloat((newBal - acc.balance).toFixed(2));
   acc.balance = parseFloat(newBal.toFixed(2));
-  saveData(); renderAll();
+  saveData(); renderSections('dashboard','networth','bills','debt');
   const msg = diff===0 ? 'Balance unchanged'
     : diff>0 ? 'Balance corrected +'+usd(diff)
     : 'Balance corrected -'+usd(Math.abs(diff));
@@ -9276,6 +9297,14 @@ function correctBalance(id){
 }
 
 // ── FEATURE 3: OVERLAP DETECTION ─────────────────────────────
+// Returns true if two strings share at least one word of 4+ characters.
+// This avoids false positives from short tokens like "net", "my", "gas".
+function _sharesSignificantWord(a, b){
+  const wordsOf = s => s.toLowerCase().trim().split(/\s+/).filter(w => w.length >= 4);
+  const wb = new Set(wordsOf(b));
+  return wordsOf(a).some(w => wb.has(w));
+}
+
 function checkBillExpenseOverlap(name, warnId){
   if(!name || name.length < 3) return false;
   const nameLower = name.toLowerCase().trim();
@@ -9285,15 +9314,13 @@ function checkBillExpenseOverlap(name, warnId){
   // Check expenses for similar description
   const matchingExp = data.expenses.find(e=>{
     const d = (e.description||'').toLowerCase();
-    const c = (e.category||'').toLowerCase();
-    return d.includes(nameLower) || nameLower.includes(d.split(' ')[0])
-      || c===nameLower || nameLower.includes(c);
+    return d === nameLower || _sharesSignificantWord(e.description||'', name);
   });
 
   // Check bills for similar name
   const matchingBill = data.bills.find(b=>{
     const n = (b.name||'').toLowerCase();
-    return n.includes(nameLower) || nameLower.includes(n.split(' ')[0]);
+    return n === nameLower || _sharesSignificantWord(b.name||'', name);
   });
 
   if(matchingExp && warnId==='bill-overlap-warn'){
@@ -9664,7 +9691,7 @@ function saveGoal(){
   const item = {id:eid||Date.now(), name, target, date, notes, accountId:acId, saved, createdAt:eid?undefined:today()};
   if(eid) item.createdAt = (data.goals.find(g=>g.id===eid)||{}).createdAt;
   data.goals = eid ? data.goals.map(g=>g.id===eid?item:g) : [...data.goals, item];
-  closeModal('goal'); saveData(); renderAll();
+  closeModal('goal'); saveData(); renderSections('networth');
   showToast(eid?'Goal updated!':'Goal added!');
 }
 
@@ -9955,7 +9982,7 @@ function confirmReconcile(){
   a.lastReconciledBal = bankBal;
 
   closeModal('recon');
-  saveData(); renderAll();
+  saveData(); renderSections('dashboard','networth','txns');
   showToast('Account reconciled!');
 }
 
@@ -10750,13 +10777,40 @@ function renderCashFlow(){
     +'</div>';
 }
 
+// ── TARGETED RENDERING ───────────────────────────────────────
+// Call renderSections() after data mutations instead of renderAll().
+// Only re-renders sections whose data actually changed.
+function renderSections(...keys){
+  const s=new Set(keys);
+  if(s.has('debt')||s.has('networth')) updateOriginalBalances();
+  if(s.has('alerts'))    { renderAlerts(); updateBillsBadge(); }
+  if(s.has('dashboard')) { renderDashboard(); }
+  if(s.has('bills'))     { renderBills(); }
+  if(s.has('debt'))      { renderDebt(); }
+  if(s.has('networth'))  { renderNetWorth(); }
+  if(s.has('insights'))  { renderInsights(); renderCashFlow(); renderSnapshot(); updateInsightsBadge(); }
+  if(s.has('cards'))     { renderCards(); }
+  if(s.has('loans'))     { renderLoans(); }
+  if(s.has('txns'))      { renderTxns(); setTimeout(attachSwipes,50); }
+  updateLastSavedUI();
+  checkBackupReminder();
+}
+
+// renderAll() is kept for full resets (init, import, language change, delete/undo).
+// rAF gate collapses any double-calls within the same frame to one pass.
+let _renderAllScheduled=false;
 function renderAll(){
-  updateOriginalBalances();
-  renderAlerts();renderDashboard();renderBills();renderDebt();
-  renderNetWorth();renderInsights();renderCashFlow();renderCards();renderLoans();renderTxns();
-  renderSnapshot();updateInsightsBadge();updateBillsBadge();
-  updateLastSavedUI();checkBackupReminder();
-  setTimeout(attachSwipes,50);
+  if(_renderAllScheduled) return;
+  _renderAllScheduled=true;
+  requestAnimationFrame(()=>{
+    _renderAllScheduled=false;
+    updateOriginalBalances();
+    renderAlerts();renderDashboard();renderBills();renderDebt();
+    renderNetWorth();renderInsights();renderCashFlow();renderCards();renderLoans();renderTxns();
+    renderSnapshot();updateInsightsBadge();updateBillsBadge();
+    updateLastSavedUI();checkBackupReminder();
+    setTimeout(attachSwipes,50);
+  });
 }
 
 // ── INIT ─────────────────────────────────────────
