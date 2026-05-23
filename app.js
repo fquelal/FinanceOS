@@ -99,10 +99,6 @@ function getEffectiveIncome(i, yr, mo){
 // showConfirm/showAlert/_confirmOk/_confirmCancel live in utils.js
 
 // showToast lives in utils.js
-  el.classList.add('show');
-  clearTimeout(showToast._t);
-  showToast._t=setTimeout(()=>el.classList.remove('show'),2400);
-}
 function confirmReset(){
   showConfirm({
     icon:'🗑️', title:'Reset all data?',
