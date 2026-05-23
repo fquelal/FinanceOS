@@ -17,7 +17,7 @@ let txnMonth='';
 let pinBuffer='';
 
 // $, usd, today, fmtDate, daysUntil, pct live in utils.js
-const pct=n=>(n||0).toFixed(2)+'%';
+
 
 // t(), applyTranslations(), setLanguage(), TRANSLATIONS live in utils.js
 
