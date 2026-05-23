@@ -456,7 +456,7 @@ canvas{width:100%!important;}
 
 
 /* ── ONBOARDING ── */
-#onboarding-overlay{position:fixed;inset:0;background:rgba(8,8,18,.92);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;}
+#onboarding-overlay{position:fixed;inset:0;background:rgba(8,8,18,1);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;}
 #onboarding-overlay.hidden{display:none;}
 .ob-card{background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:32px;max-width:420px;width:100%;text-align:center;transition:border-color .3s,box-shadow .3s;}
 .ob-steps{display:flex;justify-content:center;gap:8px;margin-bottom:28px;}
@@ -975,4 +975,3 @@ canvas{width:100%!important;}
   color:var(--text);line-height:1.6;}
 .about-tip strong{color:var(--yellow);}
 .about-version{text-align:center;font-size:11px;color:var(--border2);margin-top:24px;padding-top:16px;border-top:1px solid var(--border);}
-
