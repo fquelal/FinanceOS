@@ -151,3 +151,8 @@ async function advisorSend() {
 }
 
 function advisorKeyPress(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    advisorSend();
+  }
+}
