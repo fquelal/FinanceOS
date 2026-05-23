@@ -2607,7 +2607,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v2.1.9';
+const APP_VERSION='v2.2.1';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -3684,7 +3684,7 @@ function openEditPurchase(id){
   // Reuse openPurchaseModal to populate dropdowns, then override fields
   openPurchaseModal();
   if($('pu-edit-id')) $('pu-edit-id').value=tx.id;
-  if($('pu-modal-title')) $('pu-modal-title').textContent='✏️ Edit Purchase';
+  if($('pu-modal-title')) $('pu-modal-title').textContent='Edit Purchase';
   $('pu-desc').value=tx.description||'';
   $('pu-amount').value=tx.amount||'';
   $('pu-date').value=tx.date||today();
@@ -4507,8 +4507,11 @@ function saveIncome(){
   // If base amount changed, clear occurrenceOverrides so new amount reflects on all cards
   const amountChanged=prev&&prev.amount!==amt;
   const occurrenceOverrides=amountChanged?{}:(prev&&prev.occurrenceOverrides?prev.occurrenceOverrides:{});
-  // Reverse previous account credit if editing
-  if(prev&&prev.accountId) adjustAccountBalance(prev.accountId,-prev.amount);
+  // Only touch account balance for brand-new income entries.
+  // Editing an existing income (recurring or otherwise) must NOT re-credit or re-debit
+  // the account — the original deposit already happened and occurrence overrides handle
+  // per-paycheck adjustments via saveOccurrenceOverride.
+  const isNew=!eid;
   // Auto-mark as Received if the logged date is today or in the past
   // One-time: mark that specific date
   // Recurring: mark only the initial date entry (user manages future occurrences manually)
@@ -4522,7 +4525,7 @@ function saveIncome(){
     occurrenceOverrides,
     incomeStatusOverrides:existingOverrides};
   data.income=eid?data.income.map(i=>i.id===eid?item:i):[...data.income,item];
-  if(acId) adjustAccountBalance(acId,amt);
+  if(isNew&&acId) adjustAccountBalance(acId,amt);
   closeModal('income');saveData();renderSections('alerts','bills','dashboard','insights');
 }
 
@@ -4547,12 +4550,26 @@ function saveOccurrenceOverride(){
   const i=data.income.find(x=>x.id===id);
   if(!i) return;
   if(!i.occurrenceOverrides) i.occurrenceOverrides={};
+
+  // Determine previous and new amounts so we can adjust the account by the difference
+  const prevOverride=(i.occurrenceOverrides)[date];
+  const scheduledAmt=i.amount; // base scheduled amount
+  const prevAmt=prevOverride!=null?prevOverride:scheduledAmt;
+
+  let newAmt;
   if(raw===''||isNaN(val)||val<0){
     delete i.occurrenceOverrides[date];
+    newAmt=scheduledAmt; // reverting to scheduled
   } else {
     i.occurrenceOverrides[date]=parseFloat(val.toFixed(2));
+    newAmt=parseFloat(val.toFixed(2));
   }
-  saveData();closeModal('occurrence');renderSections('bills','dashboard','insights');
+
+  // Apply the difference to the linked account if one exists
+  const diff=parseFloat((newAmt-prevAmt).toFixed(2));
+  if(diff!==0&&i.accountId) adjustAccountBalance(i.accountId,diff);
+
+  saveData();closeModal('occurrence');renderSections('bills','dashboard','insights','networth');
   showToast('Payment updated');
 }
 function clearOccurrenceOverride(){
@@ -4639,7 +4656,7 @@ function renderIncomeCard(income, occ, idx, total){
   if(isFirst){
     actionBtns+='<button class="btn btn-sm"'
       +' style="'+_btn+';background:rgba(255,255,255,.08);color:var(--text);border:1px solid var(--border2)"'
-      +' onclick="event.stopPropagation();openEditIncome('+income.id+')">✏️ Edit</button>';
+      +' onclick="event.stopPropagation();openEditIncome('+income.id+')">Edit</button>';
   }
   return '<div class="card" style="margin-bottom:8px;border-left:3px solid #22c55e;border-radius:4px 12px 12px 4px;cursor:pointer"'
     +' onclick="toggleCardExpand(\''+cid+'\')">'
@@ -6364,7 +6381,17 @@ function renderBills(){
     });
   });
 
-  if(!data.bills.length && !incomeItems.length){
+  // Deduplicate: One-time items can appear in both current and next month loops if their date
+  // falls near a month boundary — keep only the first occurrence of each income+date combo.
+  const _seenOcc=new Set();
+  const incomeItemsUniq=incomeItems.filter(it=>{
+    const key=it.income.id+'|'+it.occ.date;
+    if(_seenOcc.has(key)) return false;
+    _seenOcc.add(key);
+    return true;
+  });
+
+  if(!data.bills.length && !incomeItemsUniq.length){
     $('bill-list').innerHTML=emptyState('📋','No bills or income yet','Add bills, loans, credit cards, and income to track everything in one place.',"+ Add a Bill","openModal('bill')");
     return;
   }
@@ -6497,7 +6524,7 @@ function renderBills(){
 
   if(billSort==='type'){
     // ── GROUP BY TYPE ──────────────────────────────
-    const incomeCards  = incomeItems.map(it=>renderIncomeCard(it.income,it.occ,it.idx,it.total));
+    const incomeCards  = incomeItemsUniq.map(it=>renderIncomeCard(it.income,it.occ,it.idx,it.total));
     const billCards    = data.bills.filter(b=>b.btype==='bill').map((b,i)=>renderBillCard(b,i===0));
     const expenseCards = data.expenses.filter(e=>e.amount>0).map(e=>renderExpenseCard(e));
     const loanCards    = data.bills.filter(b=>(b.btype==='loan'||b.btype==='promo')&&b.balance>0).map((b,i)=>renderBillCard(b,i===0));
@@ -6549,7 +6576,7 @@ function renderBills(){
         const eff=isPaid?'Paid':(e.frequency&&e.frequency!=='One-time'&&d<0?'Overdue':'Pending');
         return{_kind:'expense',expense:e,_date:e.date||'',_amount:e.amount,_status:eff};
       }),
-      ...incomeItems
+      ...incomeItemsUniq
     ];
 
     if(billSort==='date') allItems.sort((a,b)=>new Date(a._date||'9999')-new Date(b._date||'9999'));
@@ -7018,7 +7045,7 @@ function renderTxns(){
       </div>
       <div class="row-actions">
         <span style="color:${color};font-weight:600">${tx.type==='Transfer'?'→ ':'- '}${usd(tx.amount)}</span>
-        <button class="btn btn-secondary btn-sm show-desktop" onclick="openEditTxn(${tx.id})">✏️</button>
+        <button class="btn btn-secondary btn-sm show-desktop" onclick="openEditTxn(${tx.id})">Edit</button>
         <button class="btn btn-danger btn-sm show-desktop" onclick="deleteItem('transactions',${tx.id})">✕</button>
       </div>
     </div>`;
