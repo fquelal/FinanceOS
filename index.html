@@ -1119,9 +1119,13 @@ canvas{width:100%!important;}
             <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)">Projected Balance</div>
             <span id="d-projected-acct" style="font-size:11px;font-weight:600;color:var(--accent2)"></span>
           </div>
-          <div style="display:flex;flex-direction:column;align-items:center;gap:2px;flex:1">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1">
             <div id="d-projected" style="font-family:var(--font-d);font-size:18px;font-weight:800;letter-spacing:-.5px">$0.00</div>
             <div id="d-projected-sub" style="font-size:10px;color:var(--muted)"></div>
+            <div style="display:flex;gap:4px;margin-top:2px">
+              <button id="proj-btn-scheduled" onclick="setProjectedToggle('scheduled')" style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;border:1px solid rgba(80,112,240,.3);background:rgba(80,112,240,.25);color:var(--accent2);cursor:pointer;font-family:var(--font-b)">Scheduled</button>
+              <button id="proj-btn-minimum" onclick="setProjectedToggle('minimum')" style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;border:1px solid rgba(80,112,240,.3);background:transparent;color:var(--muted);cursor:pointer;font-family:var(--font-b)">Minimums</button>
+            </div>
           </div>
         </div>
       </div>
@@ -1167,6 +1171,11 @@ canvas{width:100%!important;}
       <div class="view-toggle">
         <button class="view-btn active" id="bill-view-list" onclick="setBillView('list')">☰ List</button>
         <button class="view-btn" id="bill-view-cal" onclick="setBillView('calendar')">📅 Calendar</button>
+      </div>
+      <div class="month-nav" id="bill-month-toggle">
+        <button class="mn-btn" onclick="shiftBillMonth(-1)">&#8249;</button>
+        <span class="mn-label" id="bill-month-label">--</span>
+        <button class="mn-btn" onclick="shiftBillMonth(1)" id="bill-month-next">&#8250;</button>
       </div>
       <div class="sort-bar" id="bill-sort-bar">
         <button class="sort-btn active" onclick="setBillSort('date')" id="bs-date" data-i18n="Due Date">Due Date</button>
@@ -2621,6 +2630,9 @@ const SAVE_TS_KEY='financeOS_lastSaved';
 let insightsTab='categories';
 let txnFilter='All';
 let billSort='date';
+let _billMonth=''; // YYYY-MM string, empty = init to current month on first use
+let projToggle='scheduled'; // 'scheduled' | 'minimum'
+function setProjectedToggle(val){projToggle=val;renderDashboard();}
 let txnSearch='';
 let txnAllMonths=false;
 let txnMonth='';
@@ -4999,6 +5011,18 @@ function setBillSort(s){
   renderBills();
 }
 
+function initBillMonth(){
+  if(!_billMonth) _billMonth=today().slice(0,7);
+}
+
+function shiftBillMonth(dir){
+  initBillMonth();
+  const [y,m]=_billMonth.split('-').map(Number);
+  const d=new Date(y,m-1+dir,1);
+  _billMonth=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+  renderBills();
+}
+
 // ── TRANSACTION SEARCH ──────────────────────────────
 function setTxnSearch(val){
   txnSearch=val.trim().toLowerCase();
@@ -6038,7 +6062,8 @@ function renderDashboard(){
   const ti=data.income.reduce((s,i)=>s+getEffectiveIncome(i,new Date().getFullYear(),new Date().getMonth()),0);
   const te=data.expenses.reduce((s,e)=>s+e.amount,0);
   const td=data.bills.filter(b=>b.btype==='creditcard'||b.btype==='loan').reduce((s,b)=>s+(b.balance||0),0);
-  const tt=data.transactions.filter(t=>!t.promoRef).reduce((s,t)=>s+t.amount,0);
+  // Only count transactions that actually hit a bank account (exclude credit card purchases where accountId===0)
+  const tt=data.transactions.filter(t=>!t.promoRef&&t.accountId!==0).reduce((s,t)=>s+t.amount,0);
   // Money Out = expenses + active bill payments + spending transactions (no bill payments — already in bills)
   const tb=data.bills.filter(b=>{
     if((b.btype==='creditcard'||b.btype==='loan'||b.btype==='promo')&&!(b.balance>0)) return false;
@@ -6062,17 +6087,20 @@ function renderDashboard(){
     balEl.style.color=net>=0?'var(--green)':'var(--red)';
   }
 
-  // Projected Balance = account balances − unpaid bills/expenses due this month
+  // Projected Balance = account balances minus unpaid bills/expenses due this month
   const projEl=$('d-projected');
   const projSub=$('d-projected-sub');
   if(projEl){
     const todayStr=today();
     const monthStr=todayStr.slice(0,7);
-    const unpaidBills=data.bills.filter(b=>{
+    const useScheduled=projToggle==='scheduled';
+    const projBillFilter=b=>{
       if(b.status==='Paid') return false;
       if((b.btype==='creditcard'||b.btype==='loan'||b.btype==='promo')&&!(b.balance>0)) return false;
       return b.dueDate && b.dueDate.slice(0,7)===monthStr;
-    }).reduce((s,b)=>s+(b.scheduledAmount||b.amount||0),0);
+    };
+    const unpaidBills=data.bills.filter(projBillFilter)
+      .reduce((s,b)=>s+(useScheduled?(b.scheduledAmount||b.amount||0):(b.amount||0)),0);
     const unpaidExp=data.expenses.filter(e=>{
       if(e.paidMonth===monthStr) return false;
       return e.date && e.date.slice(0,7)===monthStr;
@@ -6080,18 +6108,21 @@ function renderDashboard(){
     const projected=totalAccounts-unpaidBills-unpaidExp;
     projEl.textContent=usd(projected);
     projEl.style.color=projected>=0?'var(--green)':'var(--red)';
+    const btnS=$('proj-btn-scheduled'), btnM=$('proj-btn-minimum');
+    if(btnS&&btnM){
+      btnS.style.background=useScheduled?'rgba(80,112,240,.25)':'transparent';
+      btnS.style.color=useScheduled?'var(--accent2)':'var(--muted)';
+      btnM.style.background=!useScheduled?'rgba(80,112,240,.25)':'transparent';
+      btnM.style.color=!useScheduled?'var(--accent2)':'var(--muted)';
+    }
     if(projSub){
-      const billCount=data.bills.filter(b=>{
-        if(b.status==='Paid') return false;
-        if((b.btype==='creditcard'||b.btype==='loan'||b.btype==='promo')&&!(b.balance>0)) return false;
-        return b.dueDate && b.dueDate.slice(0,7)===monthStr;
-      }).length;
+      const billCount=data.bills.filter(projBillFilter).length;
       const expCount=data.expenses.filter(e=>{
         if(e.paidMonth===monthStr) return false;
         return e.date && e.date.slice(0,7)===monthStr;
       }).length;
       const totalCount=billCount+expCount;
-      projSub.textContent=`after ${totalCount} item${totalCount===1?'':'s'}`;  
+      projSub.textContent=`after ${totalCount} item${totalCount===1?'':'s'} \u00b7 ${useScheduled?'scheduled':'minimums'}`;
     }
   }
 
@@ -6249,20 +6280,77 @@ function renderMoneySummaryCards(){
   if(!el) return;
   const now=new Date();
   const yr=now.getFullYear(), mo=now.getMonth();
-  const monthName=now.toLocaleString('default',{month:'long'});
   const todayStr=today();
 
-  // Expected Income — sum of all income sources for current month
-  const expectedIncome=data.income.reduce((s,i)=>s+getEffectiveIncome(i,yr,mo),0);
+  // Month strings
+  const curMonthStr=todayStr.slice(0,7);
+  const nxtMo=mo===11?0:mo+1, nxtYr=mo===11?yr+1:yr;
+  const nxtMonthStr=nxtYr+'-'+String(nxtMo+1).padStart(2,'0');
+  const curMonthName=now.toLocaleString('default',{month:'short'});
+  const nxtMonthName=new Date(nxtYr,nxtMo,1).toLocaleString('default',{month:'short'});
 
-  // Available Now — total account balances
+  // Default account balance (already includes all received income)
   const accounts=data.accounts||[];
-  const defaultAcct2=(accounts||[]).find(a=>a.isDefault)||(accounts||[]).find(a=>a.type==='checking')||(accounts||[])[0]||{};
-  const availableNow=defaultAcct2.balance||0;
-  const acctCount=accounts.length;
-  const acctSub=acctCount>0?acctCount+' account'+(acctCount===1?'':'s'):'No accounts linked';
+  const defaultAcct=(accounts).find(a=>a.isDefault)||(accounts).find(a=>a.type==='checking')||(accounts)[0]||{};
+  const availableNow=defaultAcct.balance||0;
 
-  // ── Monthly Health ─────────────────────────────
+  // ── Helper: bill passes zero-balance filter ──────────────────
+  const billHasBalance=b=>{
+    if((b.btype==='creditcard'||b.btype==='loan'||b.btype==='promo')&&!(b.balance>0)) return false;
+    return true;
+  };
+
+  // ── Helper: effective payment amount per toggle ──────────────
+  const effAmt=b=>projToggle==='scheduled'?(b.scheduledAmount||b.amount||0):(b.amount||0);
+
+  // ── Helper: unreceived future income for a given month ───────
+  // Only counts occurrences dated AFTER today that are not marked Received
+  const unreceivedIncome=(targetYr,targetMo)=>{
+    let total=0;
+    data.income.forEach(inc=>{
+      const occs=getIncomeOccurrences(inc,targetYr,targetMo);
+      occs.forEach(occ=>{
+        if(occ.date<=todayStr) return; // already in balance or missed
+        const status=getIncomeOccurrenceStatus(inc,occ.date);
+        if(status==='Received') return; // already in balance
+        if(status==='Missed') return;   // not coming
+        total+=occ.amount;
+      });
+    });
+    return parseFloat(total.toFixed(2));
+  };
+
+  // ── MAY (current month) ──────────────────────────────────────
+  const mayBills=data.bills.filter(b=>b.dueDate&&b.dueDate.slice(0,7)===curMonthStr&&billHasBalance(b));
+  const mayExps=data.expenses.filter(e=>e.date&&e.date.slice(0,7)===curMonthStr);
+  const mayUnpaidBills=mayBills.filter(b=>b.status!=='Paid').reduce((s,b)=>s+effAmt(b),0);
+  const mayUnpaidExps=mayExps.filter(e=>e.paidMonth!==curMonthStr).reduce((s,e)=>s+e.amount,0);
+  // May income: no unreceived future income added — all May income already in balance or missed
+  const mayBalance=parseFloat((availableNow-mayUnpaidBills-mayUnpaidExps).toFixed(2));
+
+  // Paid progress — May
+  const mayTotal=mayBills.length+mayExps.length;
+  const mayPaid=mayBills.filter(b=>b.status==='Paid'||b.status==='Scheduled').length
+    +mayExps.filter(e=>e.paidMonth===curMonthStr).length;
+  const mayPct=mayTotal>0?Math.round(mayPaid/mayTotal*100):0;
+  const mayPCol=mayPct===100?'var(--green)':mayPct>=50?'var(--blue)':'var(--yellow)';
+
+  // ── JUNE (next month) — cascades from May ending balance ─────
+  const junBills=data.bills.filter(b=>b.dueDate&&b.dueDate.slice(0,7)===nxtMonthStr&&billHasBalance(b));
+  const junExps=data.expenses.filter(e=>e.date&&e.date.slice(0,7)===nxtMonthStr);
+  const junUnpaidBills=junBills.filter(b=>b.status!=='Paid').reduce((s,b)=>s+effAmt(b),0);
+  const junUnpaidExps=junExps.filter(e=>e.paidMonth!==nxtMonthStr).reduce((s,e)=>s+e.amount,0);
+  const junIncome=unreceivedIncome(nxtYr,nxtMo);
+  const junBalance=parseFloat((mayBalance+junIncome-junUnpaidBills-junUnpaidExps).toFixed(2));
+
+  // Paid progress — June
+  const junTotal=junBills.length+junExps.length;
+  const junPaid=junBills.filter(b=>b.status==='Paid'||b.status==='Scheduled').length
+    +junExps.filter(e=>e.paidMonth===nxtMonthStr).length;
+  const junPct=junTotal>0?Math.round(junPaid/junTotal*100):0;
+  const junPCol=junPct===100?'var(--green)':junPct>=50?'var(--blue)':'var(--yellow)';
+
+  // ── Monthly Health (unchanged — uses current month scope) ────
   const overdue=data.bills.filter(b=>{
     if(b.status==='Paid'||b.status==='Scheduled') return false;
     if(!b.dueDate) return false;
@@ -6276,77 +6364,65 @@ function renderMoneySummaryCards(){
     if(!b.dueDate) return false;
     return b.dueDate>=todayStr&&b.dueDate<=in7Str;
   });
+  const expectedIncome=data.income.reduce((s,i)=>s+getEffectiveIncome(i,yr,mo),0);
   const totalBillsOut=data.bills.filter(b=>b.amount>0&&!((b.btype==='creditcard'||b.btype==='loan'||b.btype==='promo')&&!(b.balance>0))).reduce((s,b)=>s+(b.scheduledAmount||b.amount),0);
   const netMonth=expectedIncome-totalBillsOut-data.expenses.reduce((s,e)=>s+e.amount,0);
   const overdueAmt=overdue.reduce((s,b)=>s+b.amount,0);
-
-  // Health verdict
-  let healthStatus, healthColor, healthIcon, healthMsg;
+  let healthStatus,healthColor,healthIcon,healthMsg;
   if(overdue.length===0&&netMonth>=0&&availableNow>=totalBillsOut*0.5){
-    healthStatus='Healthy'; healthColor='var(--green)'; healthIcon='✅';
-    healthMsg=dueSoon.length
-      ?dueSoon.length+' bill'+(dueSoon.length>1?'s':'')+' due this week totaling '+usd(dueSoon.reduce((s,b)=>s+b.amount,0))+'. You are on track.'
+    healthStatus='Healthy';healthColor='var(--green)';healthIcon='✅';
+    healthMsg=dueSoon.length?dueSoon.length+' bill'+(dueSoon.length>1?'s':'')+' due this week totaling '+usd(dueSoon.reduce((s,b)=>s+b.amount,0))+'. You are on track.'
       :'No overdue bills and positive cash flow. Looking good this month.';
   } else if(overdue.length<=2&&netMonth>=-200){
-    healthStatus='Caution'; healthColor='var(--yellow)'; healthIcon='⚠️';
-    healthMsg=overdue.length
-      ?overdue.length+' overdue bill'+(overdue.length>1?'s':'')+' totaling '+usd(overdueAmt)+'. Take care of '+(overdue.length>1?'these':'this')+' soon.'
+    healthStatus='Caution';healthColor='var(--yellow)';healthIcon='⚠️';
+    healthMsg=overdue.length?overdue.length+' overdue bill'+(overdue.length>1?'s':'')+' totaling '+usd(overdueAmt)+'. Take care of '+(overdue.length>1?'these':'this')+' soon.'
       :'Cash flow is tight this month. Watch your spending.';
   } else {
-    healthStatus='At Risk'; healthColor='var(--red)'; healthIcon='🔴';
-    healthMsg=overdue.length
-      ?overdue.length+' overdue bill'+(overdue.length>1?'s':'')+' totaling '+usd(overdueAmt)+'. Immediate attention needed.'
+    healthStatus='At Risk';healthColor='var(--red)';healthIcon='🔴';
+    healthMsg=overdue.length?overdue.length+' overdue bill'+(overdue.length>1?'s':'')+' totaling '+usd(overdueAmt)+'. Immediate attention needed.'
       :'Spending exceeds income this month. Review your bills and expenses.';
   }
 
-  // Money Left calculation
-  const thisMonthStr=todayStr.slice(0,7);
-  const pendingBillAmt=data.bills.filter(b=>{
-    if(b.status==='Paid') return false;
-    if((b.btype==='creditcard'||b.btype==='loan')&&!(b.balance>0)) return false;
-    return true;
-  }).reduce((s,b)=>s+(b.scheduledAmount||b.amount||0),0);
-  const pendingExpAmt=data.expenses.filter(e=>!e.paidMonth||e.paidMonth!==thisMonthStr).reduce((s,e)=>s+(e.amount||0),0);
-  const moneyLeft=availableNow-pendingBillAmt-pendingExpAmt;
-
-  // Paid Progress calculation
-  const billsDue=data.bills.filter(b=>{
-    if((b.btype==='creditcard'||b.btype==='loan')&&!(b.balance>0)) return false;
-    return b.dueDate&&b.dueDate.slice(0,7)===thisMonthStr;
-  });
-  const expsDue=data.expenses.filter(e=>e.date&&e.date.slice(0,7)===thisMonthStr);
-  const totalItems=billsDue.length+expsDue.length;
-  const paidItems=billsDue.filter(b=>b.status==='Paid'||b.status==='Scheduled').length
-    +expsDue.filter(e=>e.paidMonth===thisMonthStr).length;
-  const progressPct=totalItems>0?Math.round(paidItems/totalItems*100):0;
-  const progressCol=progressPct===100?'var(--green)':progressPct>=50?'var(--blue)':'var(--yellow)';
-
+  // ── Render helpers ───────────────────────────────────────────
   const statPill=(label,val,col)=>
     '<div style="flex:1;text-align:center;padding:8px 4px;background:rgba(255,255,255,.03);border-radius:8px">'
     +'<div style="font-size:16px;font-weight:800;color:'+col+'">'+val+'</div>'
     +'<div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-top:2px">'+label+'</div>'
     +'</div>';
 
-  const progressPill=
-    '<div style="flex:1;text-align:center;padding:8px 4px;background:rgba(255,255,255,.03);border-radius:8px">'
-    +'<div style="font-size:16px;font-weight:800;color:'+progressCol+'">'+paidItems+'/'+totalItems+'</div>'
-    +'<div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-top:2px">Paid</div>'
-    +'<div style="height:3px;border-radius:2px;background:rgba(255,255,255,.08);margin-top:5px;overflow:hidden">'
-    +'<div style="height:100%;width:'+progressPct+'%;background:'+progressCol+';border-radius:2px;transition:width .4s"></div>'
-    +'</div></div>';
+  const progressBar=(paid,total,pct,col,monthLabel,incomeNote)=>
+    '<div style="flex:1;padding:8px 6px;background:rgba(255,255,255,.03);border-radius:8px">'
+    +'<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px">'
+    +'<div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">'+monthLabel+'</div>'
+    +'<div style="font-size:14px;font-weight:800;color:'+col+'">'+paid+'/'+total+'</div>'
+    +'</div>'
+    +'<div style="height:3px;border-radius:2px;background:rgba(255,255,255,.08);overflow:hidden">'
+    +'<div style="height:100%;width:'+pct+'%;background:'+col+';border-radius:2px;transition:width .4s"></div>'
+    +'</div>'
+    +(incomeNote?'<div style="font-size:9px;color:var(--teal);margin-top:3px">+'+usd(incomeNote)+' projected</div>':'')
+    +'</div>';
+
+  const moneyLeftPill=(val,label)=>{
+    const col=val>=0?'var(--green)':'var(--red)';
+    return '<div style="flex:1;text-align:center;padding:8px 4px;background:rgba(255,255,255,.03);border-radius:8px">'
+    +'<div style="font-size:13px;font-weight:800;color:'+col+'">'+(val>=0?'':'-')+usd(Math.abs(val))+'</div>'
+    +'<div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-top:2px">'+label+'</div>'
+    +'</div>';
+  };
 
   el.innerHTML=
-    // Health card full width
     '<div style="background:var(--surface);border:1px solid '+healthColor+'44;border-radius:14px;padding:14px 16px;position:relative;overflow:hidden">'
     +'<div style="position:absolute;inset:0;background:linear-gradient(135deg,'+healthColor+'08,transparent);pointer-events:none"></div>'
     +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">'
     +'<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:'+healthColor+'">Monthly Health</div>'
     +'<div style="font-size:11px;font-weight:800;color:'+healthColor+';background:'+healthColor+'18;border:1px solid '+healthColor+'33;border-radius:20px;padding:2px 10px">'+healthIcon+' '+healthStatus+'</div>'
     +'</div>'
-    +'<div style="display:flex;gap:6px;margin-bottom:10px">'
-    +statPill('Money Left',(moneyLeft>=0?'':'-')+usd(Math.abs(moneyLeft)),moneyLeft>=0?'var(--green)':'var(--red)')
-    +progressPill
-    +statPill('Net Month',(netMonth>=0?'+':'')+usd(netMonth),netMonth>=0?'var(--green)':'var(--red)')
+    // Row 1: Money Left May | progress May | progress June | Money Left June
+    +'<div style="display:flex;gap:6px;margin-bottom:8px">'
+    +moneyLeftPill(mayBalance,'After '+curMonthName)
+    +progressBar(mayPaid,mayTotal,mayPct,mayPCol,curMonthName+' Paid',0)
+    +progressBar(junPaid,junTotal,junPct,junPCol,nxtMonthName+' Paid',junIncome)
+    +moneyLeftPill(junBalance,'After '+nxtMonthName)
     +'</div>'
     +'<div style="font-size:12px;color:var(--muted);line-height:1.5;border-top:1px solid var(--border);padding-top:8px">'+healthMsg+'</div>'
     +'</div>';
@@ -6355,15 +6431,21 @@ function renderMoneySummaryCards(){
 function renderBills(){
   autoProcessScheduledBillsWithNotify();
   renderMoneySummaryCards();
+  initBillMonth();
 
-  const now=new Date();
-  const yr=now.getFullYear(), mo=now.getMonth();
-  const nxtMo=mo===11?0:mo+1, nxtYr=mo===11?yr+1:yr;
+  // Parse selected month
+  const [showYr, showMoRaw]=_billMonth.split('-').map(Number);
+  const showMo=showMoRaw-1; // 0-indexed
+  const showKey=_billMonth; // YYYY-MM
 
-  // Build income occurrence items for current month + next month
+  // Update nav label
+  const lbl=$('bill-month-label');
+  if(lbl) lbl.textContent=new Date(showYr,showMo,1).toLocaleString('default',{month:'long',year:'numeric'});
+
+  // Build income occurrence items for the selected month only
   const incomeItems=[];
   data.income.forEach(inc=>{
-    const occs=getIncomeOccurrences(inc,yr,mo);
+    const occs=getIncomeOccurrences(inc,showYr,showMo);
     occs.forEach((occ,idx)=>{
       incomeItems.push({
         _kind:'income', income:inc, occ, idx, total:occs.length,
@@ -6371,18 +6453,9 @@ function renderBills(){
         _status:getIncomeOccurrenceStatus(inc,occ.date)
       });
     });
-    const nextOccs=getIncomeOccurrences(inc,nxtYr,nxtMo);
-    nextOccs.forEach((occ,idx)=>{
-      incomeItems.push({
-        _kind:'income', income:inc, occ, idx, total:nextOccs.length,
-        _date:occ.date, _amount:occ.amount,
-        _status:getIncomeOccurrenceStatus(inc,occ.date)
-      });
-    });
   });
 
-  // Deduplicate: One-time items can appear in both current and next month loops if their date
-  // falls near a month boundary — keep only the first occurrence of each income+date combo.
+  // Deduplicate income items
   const _seenOcc=new Set();
   const incomeItemsUniq=incomeItems.filter(it=>{
     const key=it.income.id+'|'+it.occ.date;
@@ -6390,6 +6463,46 @@ function renderBills(){
     _seenOcc.add(key);
     return true;
   });
+
+  // Helper: given a bill's stored dueDate and recurrence, compute what its due date
+  // would be in the selected month (showYr/showMo). Returns null if it can't be projected.
+  function projectedBillDate(b){
+    if(!b.dueDate) return null;
+    if(!b.recurring || b.recurring==='No' || b.recurring==='One-time'){
+      // One-time: only show in its actual month
+      return b.dueDate.slice(0,7)===showKey ? b.dueDate : null;
+    }
+    // Recurring: walk the dueDate forward/backward to land in showYr/showMo
+    const day=parseInt(b.dueDate.split('-')[2])||1;
+    // Clamp day to valid days in target month
+    const daysInTarget=new Date(showYr,showMo+1,0).getDate();
+    const clampedDay=Math.min(day,daysInTarget);
+    const projected=showYr+'-'+String(showMo+1).padStart(2,'0')+'-'+String(clampedDay).padStart(2,'0');
+    return projected;
+  }
+
+  // Helper: should a bill appear? Returns the display date or null.
+  function billInMonth(b){
+    return projectedBillDate(b) !== null;
+  }
+
+  // Helper: given an expense's stored date and frequency, get display date for selected month.
+  function projectedExpenseDate(e){
+    if(!e.date) return null;
+    if(!e.frequency || e.frequency==='One-time'){
+      return e.date.slice(0,7)===showKey ? e.date : null;
+    }
+    // Recurring expense: project to same day-of-month in selected month
+    const day=parseInt(e.date.split('-')[2])||1;
+    const daysInTarget=new Date(showYr,showMo+1,0).getDate();
+    const clampedDay=Math.min(day,daysInTarget);
+    return showYr+'-'+String(showMo+1).padStart(2,'0')+'-'+String(clampedDay).padStart(2,'0');
+  }
+
+  // Helper: should an expense appear?
+  function expenseInMonth(e){
+    return projectedExpenseDate(e) !== null;
+  }
 
   if(!data.bills.length && !incomeItemsUniq.length){
     $('bill-list').innerHTML=emptyState('📋','No bills or income yet','Add bills, loans, credit cards, and income to track everything in one place.',"+ Add a Bill","openModal('bill')");
@@ -6525,10 +6638,10 @@ function renderBills(){
   if(billSort==='type'){
     // ── GROUP BY TYPE ──────────────────────────────
     const incomeCards  = incomeItemsUniq.map(it=>renderIncomeCard(it.income,it.occ,it.idx,it.total));
-    const billCards    = data.bills.filter(b=>b.btype==='bill').map((b,i)=>renderBillCard(b,i===0));
-    const expenseCards = data.expenses.filter(e=>e.amount>0).map(e=>renderExpenseCard(e));
-    const loanCards    = data.bills.filter(b=>(b.btype==='loan'||b.btype==='promo')&&b.balance>0).map((b,i)=>renderBillCard(b,i===0));
-    const cardCards    = data.bills.filter(b=>b.btype==='creditcard'&&b.balance>0).map((b,i)=>renderBillCard(b,i===0));
+    const billCards    = data.bills.filter(b=>b.btype==='bill'&&projectedBillDate(b)!==null).map((b,i)=>renderBillCard(b,i===0));
+    const expenseCards = data.expenses.filter(e=>e.amount>0&&projectedExpenseDate(e)!==null).map(e=>renderExpenseCard(e));
+    const loanCards    = data.bills.filter(b=>(b.btype==='loan'||b.btype==='promo')&&b.balance>0&&projectedBillDate(b)!==null).map((b,i)=>renderBillCard(b,i===0));
+    const cardCards    = data.bills.filter(b=>b.btype==='creditcard'&&b.balance>0&&projectedBillDate(b)!==null).map((b,i)=>renderBillCard(b,i===0));
 
     if(incomeCards.length){
       html+=sectionDiv('💰 Income',0);
@@ -6556,26 +6669,40 @@ function renderBills(){
     const statusOrder={'Overdue':0,'Missed':0,'Pending':1,'Expected':1,'Scheduled':2,'Paid':3,'Received':3};
 
     // Normalise all items to sortable shape
+    const isCurrentMonthView = showKey===today().slice(0,7);
     const allItems=[
       ...data.bills
         .filter(b=>{
           const isDebt=b.btype==='creditcard'||b.btype==='loan'||b.btype==='promo';
-          return !isDebt||(b.balance>0);
+          const proj=projectedBillDate(b);
+          return proj!==null&&(!isDebt||(b.balance>0));
         })
         .map(b=>{
-        const d=daysUntil(b.dueDate);
+        const proj=projectedBillDate(b)||b.dueDate||'';
         const isDebt=b.btype==='creditcard'||b.btype==='loan'||b.btype==='promo';
         const isZeroBalance=isDebt&&!(b.balance>0);
-        let eff=b.status;
-        if(eff!=='Paid'&&eff!=='Scheduled'&&d<0&&!isZeroBalance) eff='Overdue';
-        return{_kind:'bill',bill:b,_date:b.dueDate||'',_amount:b.amount,_status:eff};
+        // For the current month use real status; for other months derive from projected date
+        let eff;
+        if(isCurrentMonthView){
+          eff=b.status;
+          const d=daysUntil(b.dueDate);
+          if(eff!=='Paid'&&eff!=='Scheduled'&&d<0&&!isZeroBalance) eff='Overdue';
+        } else {
+          // Future month: show as Pending. Past month: show as historical (Paid if paid last cycle).
+          const projD=daysUntil(proj);
+          eff = projD < 0 ? 'Paid' : 'Pending';
+        }
+        return{_kind:'bill',bill:b,_date:proj,_amount:b.amount,_status:eff};
       }),
-      ...data.expenses.filter(e=>e.amount>0).map(e=>{
-        const isPaid=e.paidMonth===currentMonth;
-        const d=daysUntil(e.date);
-        const eff=isPaid?'Paid':(e.frequency&&e.frequency!=='One-time'&&d<0?'Overdue':'Pending');
-        return{_kind:'expense',expense:e,_date:e.date||'',_amount:e.amount,_status:eff};
-      }),
+      ...data.expenses
+        .filter(e=>e.amount>0&&projectedExpenseDate(e)!==null)
+        .map(e=>{
+          const proj=projectedExpenseDate(e)||e.date||'';
+          const isPaid=isCurrentMonthView&&(e.paidMonth===currentMonth);
+          const projD=daysUntil(proj);
+          const eff=isPaid?'Paid':(projD<0&&!isCurrentMonthView?'Paid':projD<0?'Overdue':'Pending');
+          return{_kind:'expense',expense:e,_date:proj,_amount:e.amount,_status:eff};
+        }),
       ...incomeItemsUniq
     ];
 
@@ -6583,34 +6710,13 @@ function renderBills(){
     else if(billSort==='amount') allItems.sort((a,b)=>b._amount-a._amount);
     else if(billSort==='status') allItems.sort((a,b)=>(statusOrder[a._status]??9)-(statusOrder[b._status]??9));
 
-    let lastMonthKey='';
-    const unpaidItems = allItems.filter(i => i._status !== 'Paid' && i._status !== 'Received');
-    const paidItems   = allItems.filter(i => i._status === 'Paid'  || i._status === 'Received');
-
-    unpaidItems.forEach((item,idx)=>{
-      if(billSort==='date'){
-        const monthKey=item._date?item._date.slice(0,7):'';
-        if(monthKey&&monthKey!==lastMonthKey){
-          lastMonthKey=monthKey;
-          const label=item._date?new Date(item._date+'T12:00:00').toLocaleDateString('en-US',{month:'long',year:'numeric'}):'';
-          html+=sectionDiv(label,idx);
-        }
-      }
+    // Render all items in their sorted order — no paid/received segregation
+    allItems.forEach((item,idx)=>{
       if(item._kind==='bill') html+=renderBillCard(item.bill,false);
       else if(item._kind==='expense') html+=renderExpenseCard(item.expense);
       else html+=renderIncomeCard(item.income,item.occ,item.idx,item.total);
       html+='<div class="mb-8"></div>';
     });
-
-    if(paidItems.length){
-      html+=sectionDiv('✅ Paid / Received', unpaidItems.length ? 1 : 0);
-      paidItems.forEach(item=>{
-        if(item._kind==='bill') html+=renderBillCard(item.bill,false);
-        else if(item._kind==='expense') html+=renderExpenseCard(item.expense);
-        else html+=renderIncomeCard(item.income,item.occ,item.idx,item.total);
-        html+='<div class="mb-8"></div>';
-      });
-    }
   }
 
   $('bill-list').innerHTML=html||emptyState('📋','Nothing here yet','Add bills, loans, credit cards, and income to get started.',"+ Add a Bill","openModal('bill')");
@@ -9569,10 +9675,12 @@ function setBillView(view){
   const listBtn = $('bill-view-list');
   const calBtn  = $('bill-view-cal');
 
+  const monthToggle = $('bill-month-toggle');
   if(view === 'calendar'){
     if(listEl) listEl.classList.add('calendar-mode');
     if(calEl)  calEl.classList.add('active');
     if(sortBar) sortBar.style.display = 'none';
+    if(monthToggle) monthToggle.style.display = 'none';
     if(listBtn) listBtn.classList.remove('active');
     if(calBtn)  calBtn.classList.add('active');
     renderBillCalendar();
@@ -9580,6 +9688,7 @@ function setBillView(view){
     if(listEl) listEl.classList.remove('calendar-mode');
     if(calEl)  calEl.classList.remove('active');
     if(sortBar) sortBar.style.display = '';
+    if(monthToggle) monthToggle.style.display = 'flex';
     if(listBtn) listBtn.classList.add('active');
     if(calBtn)  calBtn.classList.remove('active');
   }
