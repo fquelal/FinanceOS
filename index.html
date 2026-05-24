@@ -1810,7 +1810,7 @@ canvas{width:100%!important;}
 <!-- ══ MODALS ══ -->
 
 <!-- CONFIRM DIALOG -->
-<div class="overlay" id="modal-confirm">
+<div class="overlay" id="modal-confirm" style="z-index:150;background:rgba(0,0,0,.45)">
   <div class="modal" style="max-width:380px;padding:28px 24px 24px">
     <div style="text-align:center;margin-bottom:18px">
       <div id="confirm-icon" style="font-size:36px;margin-bottom:10px"></div>
@@ -1825,7 +1825,7 @@ canvas{width:100%!important;}
 </div>
 
 <!-- ALERT DIALOG -->
-<div class="overlay" id="modal-alert">
+<div class="overlay" id="modal-alert" style="z-index:150;background:rgba(0,0,0,.45)">
   <div class="modal" style="max-width:360px;padding:28px 24px 24px">
     <div style="text-align:center;margin-bottom:20px">
       <div id="alert-icon" style="font-size:36px;margin-bottom:10px"></div>
@@ -2616,7 +2616,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v2.2.4';
+const APP_VERSION='v2.2.5';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -3124,6 +3124,11 @@ function getIncomeOccurrences(income, yr, mo){
   const now = new Date();
   const targetYr = yr != null ? yr : now.getFullYear();
   const targetMo = mo != null ? mo : now.getMonth();
+  // Don't show income in months before it was created
+  if(income.createdAt){
+    const viewKey = targetYr+'-'+String(targetMo+1).padStart(2,'0');
+    if(viewKey < income.createdAt.slice(0,7)) return [];
+  }
   const base = parseFloat((income.amount||0).toFixed(2));
   const monthStart = new Date(targetYr, targetMo, 1);
   const monthEnd   = new Date(targetYr, targetMo+1, 0);
@@ -3269,6 +3274,13 @@ function confirmReset(){
       localStorage.removeItem(ONBOARD_KEY);
       localStorage.removeItem(NW_HISTORY_KEY);
       localStorage.removeItem(THEME_KEY);
+      localStorage.removeItem(BILL_RESET_KEY);
+      localStorage.removeItem(AUTO_LOG_KEY);
+      localStorage.removeItem(BACKUP_KEY);
+      localStorage.removeItem('financeOS_billResetNotify');
+      localStorage.removeItem('financeOS_autoLogNotify');
+      localStorage.removeItem('financeOS_autoProcessNotify');
+      localStorage.removeItem('financeOS_debtInfoDismissed');
       appTheme='auto';
       applyTheme('auto');
       updateThemeButtons();
@@ -4425,7 +4437,7 @@ function openModal(type,extra){
   setTimeout(()=>{const f=$('modal-'+type).querySelector('input:not([type=hidden])');if(f)f.focus();},260);
 }
 function closeModal(type){$('modal-'+type).classList.remove('open');}
-document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o&&o.id!=='modal-confirm'&&o.id!=='modal-alert')o.classList.remove('open');}));
 
 function toggleDebtFields(){
   const t=$('b-type').value;
@@ -4562,7 +4574,8 @@ function saveIncome(){
     actualAmount:null,actualMonth:null,
     lastPayDate:lastPayDate||null,
     occurrenceOverrides,
-    incomeStatusOverrides:existingOverrides};
+    incomeStatusOverrides:existingOverrides,
+    createdAt:eid?(prev&&prev.createdAt||undefined):today()};
   data.income=eid?data.income.map(i=>i.id===eid?item:i):[...data.income,item];
   if(isNew&&acId) adjustAccountBalance(acId,amt);
   closeModal('income');saveData();renderSections('alerts','bills','dashboard','insights');
@@ -4746,7 +4759,7 @@ function saveExpense(){
   const _doSaveExpense=()=>{
     // Reverse previous account debit if editing
     if(prev&&prev.accountId) adjustAccountBalance(prev.accountId,prev.amount);
-    const item={id:eid||Date.now(),category:cat,description:desc,amount:amt,date:dt,frequency:freq,accountId:acId,autoLog,autoLogAccountId};
+    const item={id:eid||Date.now(),category:cat,description:desc,amount:amt,date:dt,frequency:freq,accountId:acId,autoLog,autoLogAccountId,createdAt:eid?(prev&&prev.createdAt||undefined):today()};
     data.expenses=eid?data.expenses.map(e=>e.id===eid?item:e):[...data.expenses,item];
     if(acId) adjustAccountBalance(acId,-amt);
     closeModal('expense');saveData();renderSections('alerts','bills','dashboard','insights','debt');
@@ -4876,7 +4889,8 @@ function saveBill(){
     autoLog,autoLogAccountId,
     scheduledAmount:prev?prev.scheduledAmount:null,
     scheduledAccountId:prev?prev.scheduledAccountId:null,
-    url:billUrl||undefined
+    url:billUrl||undefined,
+    createdAt:eid?(prev&&prev.createdAt||undefined):today()
   };
   data.bills=eid?data.bills.map(b=>b.id===eid?item:b):[...data.bills,item];
   closeModal('bill');updateOriginalBalances();saveData();renderSections('alerts','bills','dashboard','debt','networth','insights');
@@ -6508,6 +6522,8 @@ function renderBills(){
   // Walks forward or backward from dueDate until we hit showKey or overshoot. Returns null if no match.
   function projectedBillDate(b){
     if(!b.dueDate) return null;
+    // Don't show item in months before it was created
+    if(b.createdAt && showKey < b.createdAt.slice(0,7)) return null;
     if(!b.recurring || b.recurring==='No' || b.recurring==='One-time'){
       return b.dueDate.slice(0,7)===showKey ? b.dueDate : null;
     }
@@ -6544,6 +6560,8 @@ function renderBills(){
   // Helper: same logic for expenses
   function projectedExpenseDate(e){
     if(!e.date) return null;
+    // Don't show item in months before it was created
+    if(e.createdAt && showKey < e.createdAt.slice(0,7)) return null;
     if(!e.frequency || e.frequency==='One-time'){
       return e.date.slice(0,7)===showKey ? e.date : null;
     }
