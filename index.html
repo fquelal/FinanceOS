@@ -2616,7 +2616,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v2.2.3';
+const APP_VERSION='v2.2.4';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -3137,14 +3137,16 @@ function getIncomeOccurrences(income, yr, mo){
   if(income.frequency === 'Weekly'){
     const anchorStr = income.date || new Date().toISOString().split('T')[0];
     const anchor = new Date(anchorStr + 'T12:00:00');
+    const lastDay = new Date(targetYr, targetMo+1, 0).getDate();
+    const mStart  = new Date(targetYr, targetMo, 1, 12, 0, 0);
+    const mEnd    = new Date(targetYr, targetMo, lastDay, 12, 0, 0);
     let d = new Date(anchor);
-    // Walk to vicinity of month
-    while(d > monthEnd)   d.setDate(d.getDate() - 7);
-    while(d < monthStart) d.setDate(d.getDate() + 7);
+    while(d > mEnd)   d.setDate(d.getDate() - 7);
+    while(d < mStart) d.setDate(d.getDate() + 7);
     const dates = [];
-    while(d <= monthEnd){
+    while(d <= mEnd){
       const ds = d.toISOString().split('T')[0];
-      if(d >= monthStart) dates.push({ date: ds, amount: resolveAmt(ds) });
+      if(d >= mStart) dates.push({ date: ds, amount: resolveAmt(ds) });
       d = new Date(d);
       d.setDate(d.getDate() + 7);
     }
@@ -3162,8 +3164,33 @@ function getIncomeOccurrences(income, yr, mo){
     });
   }
 
-  // Monthly, One-time, Yearly — single entry using recorded date
-  return [{ date: income.date || new Date().toISOString().split('T')[0], amount: base }];
+  // Monthly: project to same day-of-month in target month
+  if(income.frequency === 'Monthly'){
+    const rawDate = income.date || new Date().toISOString().split('T')[0];
+    const day = parseInt(rawDate.split('-')[2]) || 1;
+    const daysInTarget = new Date(targetYr, targetMo+1, 0).getDate();
+    const clampedDay = Math.min(day, daysInTarget);
+    const projected = targetYr+'-'+String(targetMo+1).padStart(2,'0')+'-'+String(clampedDay).padStart(2,'0');
+    return [{ date: projected, amount: resolveAmt(projected) }];
+  }
+
+  // Yearly: only show in its anniversary month
+  if(income.frequency === 'Yearly' || income.frequency === 'Annually'){
+    const rawDate = income.date || new Date().toISOString().split('T')[0];
+    const [, srcMoStr, srcDay] = rawDate.split('-');
+    const srcMo = parseInt(srcMoStr) - 1;
+    if(srcMo !== targetMo) return [];
+    const daysInTarget = new Date(targetYr, targetMo+1, 0).getDate();
+    const clampedDay = Math.min(parseInt(srcDay), daysInTarget);
+    const projected = targetYr+'-'+String(targetMo+1).padStart(2,'0')+'-'+String(clampedDay).padStart(2,'0');
+    return [{ date: projected, amount: resolveAmt(projected) }];
+  }
+
+  // One-time: only show in its exact month
+  const rawDate = income.date || new Date().toISOString().split('T')[0];
+  const targetKey = targetYr+'-'+String(targetMo+1).padStart(2,'0');
+  if(rawDate.slice(0,7) !== targetKey) return [];
+  return [{ date: rawDate, amount: base }];
 }
 
 function getEffectiveIncome(i, yr, mo){
@@ -6464,45 +6491,86 @@ function renderBills(){
     return true;
   });
 
-  // Helper: given a bill's stored dueDate and recurrence, compute what its due date
-  // would be in the selected month (showYr/showMo). Returns null if it can't be projected.
+  // Walk a date forward/backward by one recurrence step
+  function stepDate(dateStr, recurring, forward){
+    const d=new Date(dateStr+'T12:00:00');
+    const dir=forward?1:-1;
+    if(recurring==='Monthly')    d.setMonth(d.getMonth()+dir);
+    else if(recurring==='Weekly')     d.setDate(d.getDate()+(7*dir));
+    else if(recurring==='Bi-weekly')  d.setDate(d.getDate()+(14*dir));
+    else if(recurring==='Quarterly')  d.setMonth(d.getMonth()+(3*dir));
+    else if(recurring==='Annually')   d.setFullYear(d.getFullYear()+dir);
+    else return null; // unknown recurrence
+    return d.toISOString().split('T')[0];
+  }
+
+  // Helper: given a bill's stored dueDate and recurrence, find its due date in showKey.
+  // Walks forward or backward from dueDate until we hit showKey or overshoot. Returns null if no match.
   function projectedBillDate(b){
     if(!b.dueDate) return null;
     if(!b.recurring || b.recurring==='No' || b.recurring==='One-time'){
-      // One-time: only show in its actual month
       return b.dueDate.slice(0,7)===showKey ? b.dueDate : null;
     }
-    // Recurring: walk the dueDate forward/backward to land in showYr/showMo
-    const day=parseInt(b.dueDate.split('-')[2])||1;
-    // Clamp day to valid days in target month
-    const daysInTarget=new Date(showYr,showMo+1,0).getDate();
-    const clampedDay=Math.min(day,daysInTarget);
-    const projected=showYr+'-'+String(showMo+1).padStart(2,'0')+'-'+String(clampedDay).padStart(2,'0');
-    return projected;
+    // Monthly is by far the most common — fast path: just construct the date directly
+    if(b.recurring==='Monthly'){
+      const day=parseInt(b.dueDate.split('-')[2])||1;
+      const daysInTarget=new Date(showYr,showMo+1,0).getDate();
+      const clampedDay=Math.min(day,daysInTarget);
+      return showYr+'-'+String(showMo+1).padStart(2,'0')+'-'+String(clampedDay).padStart(2,'0');
+    }
+    // For other recurrences: walk from dueDate toward showKey
+    const targetStart=showKey+'-01';
+    const targetEnd=showKey+'-'+String(new Date(showYr,showMo+1,0).getDate()).padStart(2,'0');
+    let cur=b.dueDate;
+    // Walk forward toward showKey (max 60 steps)
+    let steps=0;
+    if(cur < targetStart){
+      while(cur < targetStart && steps++ < 60){
+        const next=stepDate(cur,b.recurring,true);
+        if(!next) return null;
+        cur=next;
+      }
+    } else if(cur > targetEnd){
+      while(cur > targetEnd && steps++ < 60){
+        const next=stepDate(cur,b.recurring,false);
+        if(!next) return null;
+        cur=next;
+      }
+    }
+    // Check if we landed in showKey
+    return cur.slice(0,7)===showKey ? cur : null;
   }
 
-  // Helper: should a bill appear? Returns the display date or null.
-  function billInMonth(b){
-    return projectedBillDate(b) !== null;
-  }
-
-  // Helper: given an expense's stored date and frequency, get display date for selected month.
+  // Helper: same logic for expenses
   function projectedExpenseDate(e){
     if(!e.date) return null;
     if(!e.frequency || e.frequency==='One-time'){
       return e.date.slice(0,7)===showKey ? e.date : null;
     }
-    // Recurring expense: project to same day-of-month in selected month
-    const day=parseInt(e.date.split('-')[2])||1;
-    const daysInTarget=new Date(showYr,showMo+1,0).getDate();
-    const clampedDay=Math.min(day,daysInTarget);
-    return showYr+'-'+String(showMo+1).padStart(2,'0')+'-'+String(clampedDay).padStart(2,'0');
+    if(e.frequency==='Monthly'){
+      const day=parseInt(e.date.split('-')[2])||1;
+      const daysInTarget=new Date(showYr,showMo+1,0).getDate();
+      const clampedDay=Math.min(day,daysInTarget);
+      return showYr+'-'+String(showMo+1).padStart(2,'0')+'-'+String(clampedDay).padStart(2,'0');
+    }
+    const targetStart=showKey+'-01';
+    const targetEnd=showKey+'-'+String(new Date(showYr,showMo+1,0).getDate()).padStart(2,'0');
+    // Map expense frequency to bill recurring label
+    const rec={'Weekly':'Weekly','Bi-weekly':'Bi-weekly','Quarterly':'Quarterly','Annually':'Annually','Annual':'Annually','Yearly':'Annually'}[e.frequency];
+    if(!rec) return null;
+    let cur=e.date;
+    let steps=0;
+    if(cur < targetStart){
+      while(cur < targetStart && steps++ < 60){ const n=stepDate(cur,rec,true); if(!n)return null; cur=n; }
+    } else if(cur > targetEnd){
+      while(cur > targetEnd && steps++ < 60){ const n=stepDate(cur,rec,false); if(!n)return null; cur=n; }
+    }
+    return cur.slice(0,7)===showKey ? cur : null;
   }
 
-  // Helper: should an expense appear?
-  function expenseInMonth(e){
-    return projectedExpenseDate(e) !== null;
-  }
+  // Helper: should a bill/expense appear this month?
+  function billInMonth(b){ return projectedBillDate(b) !== null; }
+  function expenseInMonth(e){ return projectedExpenseDate(e) !== null; }
 
   if(!data.bills.length && !incomeItemsUniq.length){
     $('bill-list').innerHTML=emptyState('📋','No bills or income yet','Add bills, loans, credit cards, and income to track everything in one place.',"+ Add a Bill","openModal('bill')");
@@ -6510,18 +6578,25 @@ function renderBills(){
   }
 
   // Helper: render a bill card (Option B - tap to expand)
-  function renderBillCard(b, isFirst){
+  function renderBillCard(b, isFirst, displayDate){
     const cid='bill'+b.id;
-    const d=daysUntil(b.dueDate);
+    const useDate = displayDate || b.dueDate;
+    const isCurrentMonth = showKey===today().slice(0,7);
+    const d=daysUntil(useDate);
     const isDebt=b.btype==='creditcard'||b.btype==='loan'||b.btype==='promo';
-    let eff=b.status;
+    let eff;
     const isZeroBalance=isDebt&&!(b.balance>0);
-    if(eff!=='Paid'&&eff!=='Scheduled'&&d<0&&!isZeroBalance) eff='Overdue';
+    if(isCurrentMonth){
+      eff=b.status;
+      if(eff!=='Paid'&&eff!=='Scheduled'&&daysUntil(b.dueDate)<0&&!isZeroBalance) eff='Overdue';
+    } else {
+      eff = daysUntil(useDate) < 0 ? 'Paid' : 'Pending';
+    }
     const sc=statusColor(eff);
     // Left border color by type
     const typeColor=b.btype==='creditcard'?'#ef4444':b.btype==='loan'?'#3b82f6':'#f59e0b';
     // Sub line
-    const subLine='Due: '+fmtDate(b.dueDate)+(b.recurring&&b.recurring!=='No'?' \u00b7 '+b.recurring:'');
+    const subLine='Due: '+fmtDate(useDate)+(b.recurring&&b.recurring!=='No'?' \u00b7 '+b.recurring:'');
     // Type badge
     const typeBadge=b.btype==='creditcard'?'<span style="font-size:12px;font-weight:700;padding:2px 7px;border-radius:6px;background:rgba(239,68,68,.15);color:#ef4444;flex-shrink:0">Card</span>'
       :b.btype==='loan'?'<span style="font-size:12px;font-weight:700;padding:2px 7px;border-radius:6px;background:rgba(59,130,246,.15);color:#3b82f6;flex-shrink:0">Loan</span>'
@@ -6594,14 +6669,21 @@ function renderBills(){
   const currentMonth=today().slice(0,7);
 
   // Helper: render an expense card
-  function renderExpenseCard(e){
+  function renderExpenseCard(e, displayDate){
     const ecid='exp'+e.id;
-    const isPaid=e.paidMonth===currentMonth;
-    const d=daysUntil(e.date);
-    const eff=isPaid?'Paid':(e.frequency&&e.frequency!=='One-time'&&d<0?'Overdue':'Pending');
+    const isCurrentMonth = showKey===today().slice(0,7);
+    const useDate = displayDate || e.date;
+    const isPaid=isCurrentMonth&&(e.paidMonth===currentMonth);
+    const d=daysUntil(useDate);
+    let eff;
+    if(isCurrentMonth){
+      eff=isPaid?'Paid':(e.frequency&&e.frequency!=='One-time'&&d<0?'Overdue':'Pending');
+    } else {
+      eff = d < 0 ? 'Paid' : 'Pending';
+    }
     const sc=statusColor(eff);
     const statusBadge='<span style="font-size:12px;font-weight:700;padding:2px 8px;border-radius:20px;background:'+sc+'22;color:'+sc+'">'+eff+'</span>';
-    const subLine=(e.date?'Due: '+fmtDate(e.date):'')+(e.frequency&&e.frequency!=='One-time'?' · '+e.frequency:'')+(e.category?' · '+e.category:'');
+    const subLine=(useDate?'Due: '+fmtDate(useDate):'')+(e.frequency&&e.frequency!=='One-time'?' · '+e.frequency:'')+(e.category?' · '+e.category:'');
     let actionBtns='';
     if(!e.autoLog){
       if(eff==='Paid'){
@@ -6638,10 +6720,10 @@ function renderBills(){
   if(billSort==='type'){
     // ── GROUP BY TYPE ──────────────────────────────
     const incomeCards  = incomeItemsUniq.map(it=>renderIncomeCard(it.income,it.occ,it.idx,it.total));
-    const billCards    = data.bills.filter(b=>b.btype==='bill'&&projectedBillDate(b)!==null).map((b,i)=>renderBillCard(b,i===0));
-    const expenseCards = data.expenses.filter(e=>e.amount>0&&projectedExpenseDate(e)!==null).map(e=>renderExpenseCard(e));
-    const loanCards    = data.bills.filter(b=>(b.btype==='loan'||b.btype==='promo')&&b.balance>0&&projectedBillDate(b)!==null).map((b,i)=>renderBillCard(b,i===0));
-    const cardCards    = data.bills.filter(b=>b.btype==='creditcard'&&b.balance>0&&projectedBillDate(b)!==null).map((b,i)=>renderBillCard(b,i===0));
+    const billCards    = data.bills.filter(b=>b.btype==='bill'&&projectedBillDate(b)!==null).map((b,i)=>renderBillCard(b,i===0,projectedBillDate(b)));
+    const expenseCards = data.expenses.filter(e=>e.amount>0&&projectedExpenseDate(e)!==null).map(e=>renderExpenseCard(e,projectedExpenseDate(e)));
+    const loanCards    = data.bills.filter(b=>(b.btype==='loan'||b.btype==='promo')&&b.balance>0&&projectedBillDate(b)!==null).map((b,i)=>renderBillCard(b,i===0,projectedBillDate(b)));
+    const cardCards    = data.bills.filter(b=>b.btype==='creditcard'&&b.balance>0&&projectedBillDate(b)!==null).map((b,i)=>renderBillCard(b,i===0,projectedBillDate(b)));
 
     if(incomeCards.length){
       html+=sectionDiv('💰 Income',0);
@@ -6712,8 +6794,8 @@ function renderBills(){
 
     // Render all items in their sorted order — no paid/received segregation
     allItems.forEach((item,idx)=>{
-      if(item._kind==='bill') html+=renderBillCard(item.bill,false);
-      else if(item._kind==='expense') html+=renderExpenseCard(item.expense);
+      if(item._kind==='bill') html+=renderBillCard(item.bill,false,item._date);
+      else if(item._kind==='expense') html+=renderExpenseCard(item.expense,item._date);
       else html+=renderIncomeCard(item.income,item.occ,item.idx,item.total);
       html+='<div class="mb-8"></div>';
     });
@@ -9497,11 +9579,13 @@ function getPaycheckDates(income, year, month){
   // Returns array of Date objects for paychecks in the given year/month
   if(income.frequency !== 'Bi-weekly' || !income.lastPayDate) return null;
 
+  // Use T12:00:00 noon throughout to avoid DST/timezone midnight edge cases
   const anchor = new Date(income.lastPayDate + 'T12:00:00');
-  const monthStart = new Date(year, month, 1);
-  const monthEnd   = new Date(year, month+1, 0); // last day
+  const monthStart = new Date(year, month, 1, 12, 0, 0);
+  const lastDay    = new Date(year, month+1, 0).getDate();
+  const monthEnd   = new Date(year, month, lastDay, 12, 0, 0);
 
-  // Walk backward from anchor until we're before monthStart
+  // Walk to vicinity of month
   let d = new Date(anchor);
   while(d > monthEnd)   d.setDate(d.getDate() - 14);
   while(d < monthStart) d.setDate(d.getDate() + 14);
