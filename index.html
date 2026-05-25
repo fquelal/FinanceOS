@@ -2603,7 +2603,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v2.2.6';
+const APP_VERSION='v2.2.5';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -6607,6 +6607,8 @@ function renderBills(){
       return e.date.slice(0,7)===showKey ? e.date : null;
     }
     if(e.frequency==='Monthly'){
+      // Don't show in months before the expense's own start month
+      if(showKey < e.date.slice(0,7)) return null;
       const day=parseInt(e.date.split('-')[2])||1;
       const daysInTarget=new Date(showYr,showMo+1,0).getDate();
       const clampedDay=Math.min(day,daysInTarget);
