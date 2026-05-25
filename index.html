@@ -2603,7 +2603,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v2.2.7';
+const APP_VERSION='v2.2.8';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -6423,9 +6423,19 @@ function renderMoneySummaryCards(){
   const viewPCol=viewPct===100?'var(--green)':viewPct>=50?'var(--blue)':'var(--yellow)';
 
   // ── Pending amount for viewed month ─────────────────────────
-  const viewPendingAmt=viewBills.filter(b=>b.status==='Pending'||b.status==='Overdue')
-    .reduce((s,b)=>s+(b.amount||0),0)
-    +viewExps.filter(e=>e.paidMonth!==viewMonth).reduce((s,e)=>s+e.amount,0);
+  // Pending = items that need manual action (exclude auto-log, exclude $0 balance)
+  const viewPendingAmt=isFuture
+    ? viewBills.filter(b=>!b.autoLog&&b.status!=='Paid').reduce((s,b)=>s+(b.amount||0),0)
+      + viewExps.filter(e=>!e.autoLog).reduce((s,e)=>s+e.amount,0)
+    : viewBills.filter(b=>!b.autoLog&&(b.status==='Pending'||b.status==='Overdue')).reduce((s,b)=>s+(b.amount||0),0)
+      + viewExps.filter(e=>!e.autoLog&&e.paidMonth!==viewMonth).reduce((s,e)=>s+e.amount,0);
+
+  // Scheduled = manually scheduled + auto-log items (committed)
+  const viewScheduledAmt=isFuture
+    ? viewBills.filter(b=>b.autoLog||(b.status==='Scheduled'&&b.dueDate&&b.dueDate.slice(0,7)===viewMonth)).reduce((s,b)=>s+(b.scheduledAmount||b.amount||0),0)
+      + viewExps.filter(e=>e.autoLog||e.scheduledMonth===viewMonth).reduce((s,e)=>s+e.amount,0)
+    : viewBills.filter(b=>b.autoLog||b.status==='Scheduled').reduce((s,b)=>s+(b.scheduledAmount||b.amount||0),0)
+      + viewExps.filter(e=>e.autoLog||e.scheduledMonth===viewMonth).reduce((s,e)=>s+e.amount,0);
 
   // ── Money Left calculation — depends on month type ───────────
   let moneyLeftVal, moneyLeftLabel, moneyLeftNote;
@@ -6546,6 +6556,7 @@ function renderMoneySummaryCards(){
     +'</div>'
     +'<div style="display:flex;gap:6px;margin-bottom:8px">'
     +moneyLeftPill(moneyLeftVal,moneyLeftLabel,moneyLeftNote)
+    +moneyLeftPill(viewScheduledAmt,'Scheduled',null,'var(--blue)')
     +moneyLeftPill(viewPendingAmt,'Pending',null,'var(--yellow)')
     +progressBar(viewPaid,viewTotal,viewPct,viewPCol,'Bills Paid')
     +'</div>'
@@ -6703,9 +6714,10 @@ function renderBills(){
     const isZeroBalance=isDebt&&!(b.balance>0);
     if(isCurrentMonth){
       eff=b.status;
+      if(eff!=='Paid'&&eff!=='Scheduled'&&b.autoLog&&b.autoLogAccountId) eff='Scheduled';
       if(eff!=='Paid'&&eff!=='Scheduled'&&daysUntil(b.dueDate)<0&&!isZeroBalance) eff='Overdue';
     } else {
-      eff = daysUntil(useDate) < 0 ? 'Paid' : 'Pending';
+      eff = daysUntil(useDate) < 0 ? 'Paid' : (b.autoLog&&b.autoLogAccountId ? 'Scheduled' : 'Pending');
     }
     const sc=statusColor(eff);
     // Left border color by type
@@ -6798,9 +6810,9 @@ function renderBills(){
     const d=daysUntil(useDate);
     let eff;
     if(isCurrentMonth){
-      eff=isPaid?'Paid':(e.frequency&&e.frequency!=='One-time'&&d<0?'Overdue':'Pending');
+      eff=isPaid?'Paid':(e.autoLog&&e.autoLogAccountId?'Scheduled':(e.frequency&&e.frequency!=='One-time'&&d<0?'Overdue':'Pending'));
     } else {
-      eff = d < 0 ? 'Paid' : 'Pending';
+      eff = d < 0 ? 'Paid' : (e.autoLog&&e.autoLogAccountId ? 'Scheduled' : 'Pending');
     }
     const sc=statusColor(eff);
     const statusBadge='<span style="font-size:12px;font-weight:700;padding:2px 8px;border-radius:20px;background:'+sc+'22;color:'+sc+'">'+eff+'</span>';
