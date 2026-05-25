@@ -2603,7 +2603,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v2.2.5';
+const APP_VERSION='v2.2.6';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -3281,13 +3281,20 @@ function confirmReset(){
 }
 function exportData(){
   try{
+    const filename=`financeos-backup-${today()}.json`;
     const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    // Use Web Share API on iOS — shows native share sheet with "Save to Files"
+    if(navigator.canShare&&navigator.canShare({files:[new File([blob],filename,{type:'application/json'})]})){
+      const file=new File([blob],filename,{type:'application/json'});
+      navigator.share({files:[file],title:'FinanceOS Backup'})
+        .then(()=>{ showToast(t('Backup downloaded!')); markBackupDone(); })
+        .catch(err=>{ if(err.name!=='AbortError') showAlert({icon:'❌',title:'Export failed',msg:err.message}); });
+      return;
+    }
+    // Fallback for desktop/non-iOS
     const url=URL.createObjectURL(blob);
     const a=document.createElement('a');
-    a.href=url;
-    const d=new Date();
-    a.download=`financeos-backup-${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}.json`;
-    a.click();
+    a.href=url; a.download=filename; a.click();
     URL.revokeObjectURL(url);
     showToast(t('Backup downloaded!'));
     markBackupDone();
@@ -6359,14 +6366,51 @@ function renderMoneySummaryCards(){
     return true;
   };
 
-  // Bills and expenses for the viewed month
-  const viewBills=data.bills.filter(b=>b.dueDate&&b.dueDate.slice(0,7)===viewMonth&&billHasBalance(b));
-  const viewExps=data.expenses.filter(e=>e.date&&e.date.slice(0,7)===viewMonth);
+  // Bills and expenses for the viewed month — use same projection logic as bills list
+  // We need showYr/showMo/showKey in scope for projectedBillDate/projectedExpenseDate
+  // So we compute them here for use in the projection helpers
+  const _projDay=(dateStr,yr,mo)=>{
+    if(!dateStr) return null;
+    const day=parseInt(dateStr.split('-')[2])||1;
+    const dim=new Date(yr,mo+1,0).getDate();
+    return yr+'-'+String(mo+1).padStart(2,'0')+'-'+String(Math.min(day,dim)).padStart(2,'0');
+  };
+  const _billInMonth=(b,vYr,vMo,vKey)=>{
+    if(!b.dueDate) return false;
+    if(b.createdAt&&vKey<b.createdAt.slice(0,7)) return false;
+    if(!b.recurring||b.recurring==='No'||b.recurring==='One-time'){
+      return b.dueDate.slice(0,7)===vKey;
+    }
+    if(b.recurring==='Monthly'){
+      if(vKey<b.dueDate.slice(0,7)) return false;
+      return true;
+    }
+    return b.dueDate.slice(0,7)===vKey;
+  };
+  const _expInMonth=(e,vKey)=>{
+    if(!e.date) return false;
+    if(e.createdAt&&vKey<e.createdAt.slice(0,7)) return false;
+    if(!e.frequency||e.frequency==='One-time') return e.date.slice(0,7)===vKey;
+    if(e.frequency==='Monthly'){
+      if(vKey<e.date.slice(0,7)) return false;
+      return true;
+    }
+    return e.date.slice(0,7)===vKey;
+  };
+  const viewBills=data.bills.filter(b=>billHasBalance(b)&&_billInMonth(b,viewYr,viewMo,viewMonth));
+  const viewExps=data.expenses.filter(e=>_expInMonth(e,viewMonth));
 
-  // ── Bills Paid progress (works for all months) ───────────────
+  // ── Bills Paid progress ───────────────────────────────────
   const viewTotal=viewBills.length+viewExps.length;
-  const viewPaid=viewBills.filter(b=>b.status==='Paid'||b.status==='Scheduled').length
-    +viewExps.filter(e=>e.paidMonth===viewMonth).length;
+  // Auto-log items are always counted as handled (will be auto-deducted)
+  const isAutoHandled=b=>b.autoLog&&b.autoLogAccountId;
+  const isAutoExpHandled=e=>e.autoLog&&e.autoLogAccountId;
+  // For current month: Paid or Scheduled or auto counts. For future: auto + Scheduled. For past: Paid only.
+  const viewPaid=isFuture
+    ? viewBills.filter(b=>isAutoHandled(b)||(b.status==='Scheduled'&&b.dueDate&&b.dueDate.slice(0,7)===viewMonth)).length
+      + viewExps.filter(e=>isAutoExpHandled(e)||e.scheduledMonth===viewMonth).length
+    : viewBills.filter(b=>b.status==='Paid'||b.status==='Scheduled'||isAutoHandled(b)).length
+      + viewExps.filter(e=>e.paidMonth===viewMonth||isAutoExpHandled(e)).length;
   const viewPct=viewTotal>0?Math.round(viewPaid/viewTotal*100):0;
   const viewPCol=viewPct===100?'var(--green)':viewPct>=50?'var(--blue)':'var(--yellow)';
 
@@ -6570,6 +6614,8 @@ function renderBills(){
     }
     // Monthly is by far the most common — fast path: just construct the date directly
     if(b.recurring==='Monthly'){
+      // Don't show in months before the bill's own start month
+      if(showKey < b.dueDate.slice(0,7)) return null;
       const day=parseInt(b.dueDate.split('-')[2])||1;
       const daysInTarget=new Date(showYr,showMo+1,0).getDate();
       const clampedDay=Math.min(day,daysInTarget);
@@ -7783,7 +7829,18 @@ const NW_HISTORY_KEY='financeOS_nwHistory';
 let obStep = 0;
 
 function showOnboarding(){
+  // Skip if already onboarded
   if(localStorage.getItem(ONBOARD_KEY)) return;
+  // Skip if user already has data — don't interrupt returning users after a version push
+  try {
+    const existing = localStorage.getItem('financeOS_v4');
+    if(existing){
+      const parsed = JSON.parse(existing);
+      const hasData = (parsed.bills&&parsed.bills.length) || (parsed.income&&parsed.income.length)
+        || (parsed.accounts&&parsed.accounts.length) || (parsed.transactions&&parsed.transactions.length);
+      if(hasData){ localStorage.setItem(ONBOARD_KEY,'1'); return; }
+    }
+  } catch(e){}
   obStep = 0;
   var ov = document.getElementById('onboarding-overlay');
   if(ov) ov.classList.remove('hidden');
