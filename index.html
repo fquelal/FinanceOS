@@ -1109,33 +1109,20 @@ canvas{width:100%!important;}
     <!-- DASHBOARD -->
     <div id="dashboard" class="section active">
 
-      <!-- Hero card — Net Balance -->
+      <!-- Hero card — Money Left This Month -->
       <div id="d-hero-card" style="background:linear-gradient(135deg,rgba(80,112,240,.18),rgba(80,112,240,.06));border:1px solid rgba(80,112,240,.25);border-radius:16px;padding:14px 16px 12px;margin-bottom:12px;text-align:center">
-        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:4px">Net Balance</div>
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:4px">Money Left This Month</div>
         <div id="d-balance" style="font-family:var(--font-d);font-size:34px;font-weight:800;letter-spacing:-1px;line-height:1">$0.00</div>
+        <div id="d-hero-breakdown" style="display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:4px 10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:20px;font-size:11px;color:var(--muted)"></div>
         <div id="d-summary-line" style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.4"></div>
-        <div style="margin-top:12px;padding-top:10px;border-top:1px solid rgba(80,112,240,.2);display:flex;align-items:flex-start;gap:8px">
-          <div style="display:flex;flex-direction:column;gap:2px;flex:1">
-            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)">Projected Balance</div>
-            <span id="d-projected-acct" style="font-size:11px;font-weight:600;color:var(--accent2)"></span>
-          </div>
-          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1">
-            <div id="d-projected" style="font-family:var(--font-d);font-size:18px;font-weight:800;letter-spacing:-.5px">$0.00</div>
-            <div id="d-projected-sub" style="font-size:10px;color:var(--muted)"></div>
-            <div style="display:flex;gap:4px;margin-top:2px">
-              <button id="proj-btn-scheduled" onclick="setProjectedToggle('scheduled')" style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;border:1px solid rgba(80,112,240,.3);background:rgba(80,112,240,.25);color:var(--accent2);cursor:pointer;font-family:var(--font-b)">Scheduled</button>
-              <button id="proj-btn-minimum" onclick="setProjectedToggle('minimum')" style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;border:1px solid rgba(80,112,240,.3);background:transparent;color:var(--muted);cursor:pointer;font-family:var(--font-b)">Minimums</button>
-            </div>
-          </div>
-        </div>
       </div>
 
       <!-- 4 supporting stats -->
       <div class="card-grid" style="grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
-        <div class="stat-card"><div class="stat-label" data-i18n="Income">Income</div><div class="stat-value" id="d-income" style="color:var(--teal)">$0.00</div></div>
-        <div class="stat-card"><div class="stat-label">Money Out</div><div class="stat-value" id="d-expenses" class="txt-yellow">$0.00</div></div>
-        <div class="stat-card"><div class="stat-label" data-i18n="Total Debt">Total Debt</div><div class="stat-value" id="d-debt" class="txt-red">$0.00</div></div>
-        <div class="stat-card"><div class="stat-label">Accounts</div><div class="stat-value" id="d-acct-total" class="txt-accent">$0.00</div></div>
+        <div class="stat-card"><div class="stat-label">Total Accounts</div><div class="stat-value" id="d-acct-total" style="color:var(--blue)">$0.00</div></div>
+        <div class="stat-card"><div class="stat-label">Total Debt</div><div class="stat-value" id="d-debt" style="color:var(--red)">$0.00</div></div>
+        <div class="stat-card"><div class="stat-label">Pending Bills</div><div class="stat-value" id="d-pending" style="color:var(--yellow)">$0.00</div></div>
+        <div class="stat-card"><div class="stat-label">Net Worth</div><div class="stat-value" id="d-networth" style="color:var(--green)">$0.00</div></div>
       </div>
 
       <!-- Account chip strip (tap to expand) -->
@@ -1174,7 +1161,7 @@ canvas{width:100%!important;}
       </div>
       <div class="month-nav" id="bill-month-toggle">
         <button class="mn-btn" onclick="shiftBillMonth(-1)">&#8249;</button>
-        <span class="mn-label" id="bill-month-label">--</span>
+        <button class="mn-label" id="bill-month-label" onclick="goToCurrentMonth()" title="Tap to go to current month" style="background:none;border:none;cursor:pointer;font-family:var(--font-b)">--</button>
         <button class="mn-btn" onclick="shiftBillMonth(1)" id="bill-month-next">&#8250;</button>
       </div>
       <div class="sort-bar" id="bill-sort-bar">
@@ -2616,7 +2603,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v2.2.5';
+const APP_VERSION='v2.2.6';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -3402,19 +3389,21 @@ function loadDemoData(skipConfirm){
     bills:[
       // Pending — shows on 7-day timeline
       {id:3001, name:'Phone Bill',        amount:65,   dueDate:dt(3),           recurring:'Monthly', status:'Pending',   btype:'bill',       balance:0,    apr:0,     creditLimit:0,    scheduledAmount:null, scheduledAccountId:null, url:'https://verizon.com'},
-      // Scheduled — blue badge
+      // Scheduled — blue badge; counts against Money Left
       {id:3002, name:'Internet',          amount:79,   dueDate:dt(5),           recurring:'Monthly', status:'Scheduled', btype:'bill',       balance:0,    apr:0,     creditLimit:0,    scheduledAmount:79,   scheduledAccountId:8001, url:'https://xfinity.com'},
-      // Paid — checkmark
+      // Paid — already out of account, not subtracted from Money Left
       {id:3003, name:'Car Insurance',     amount:187,  dueDate:ago(3),          recurring:'Monthly', status:'Paid',      btype:'bill',       balance:0,    apr:0,     creditLimit:0,    scheduledAmount:null, scheduledAccountId:null, url:'https://geico.com'},
-      // Overdue — red alert
+      // Overdue — red alert, shows in Pending Bills stat
       {id:3004, name:'Gym Membership',    amount:45,   dueDate:ago(2),          recurring:'Monthly', status:'Overdue',   btype:'bill',       balance:0,    apr:0,     creditLimit:0,    scheduledAmount:null, scheduledAccountId:null},
-      // Credit card — shows revolving + promo split, APR badge, utilization
+      // Credit card with balance — shows revolving + promo split, APR badge, utilization
       {id:3005, name:'Chase Sapphire',    amount:85,   dueDate:dt(4),           recurring:'Monthly', status:'Pending',   btype:'creditcard', balance:2801, apr:22.99, creditLimit:10000,scheduledAmount:null, scheduledAccountId:null, originalBalance:5800, revolvingBalance:2801, url:'https://chase.com'},
+      // $0 balance credit card — filters out of alerts, shows "No balance" / inactive reminder
+      {id:3009, name:'Citi Double Cash',  amount:25,   dueDate:dt(8),           recurring:'Monthly', status:'Pending',   btype:'creditcard', balance:0,    apr:20.49, creditLimit:8000, scheduledAmount:null, scheduledAccountId:null, url:'https://citi.com'},
       // Loan with original amount → payoff progress bar in Debt Planner
       {id:3006, name:'Car Loan',          amount:340,  dueDate:dt(2),           recurring:'Monthly', status:'Pending',   btype:'loan',       balance:9800, apr:7.49,  creditLimit:0,    scheduledAmount:null, scheduledAccountId:null, originalBalance:14000, originalLoanAmount:14000, url:'https://pnc.com'},
-      // Loan with same-day scheduled → processes immediately
-      {id:3007, name:'Student Loan',      amount:210,  dueDate:today(),         recurring:'Monthly', status:'Scheduled', btype:'loan',       balance:18400,apr:5.75,  creditLimit:0,    scheduledAmount:210,  scheduledAccountId:8001, originalBalance:24000, originalLoanAmount:24000, url:'https://mohela.com'},
-      // Next-month bills → month divider in calendar view
+      // Loan scheduled — counts against Money Left
+      {id:3007, name:'Student Loan',      amount:210,  dueDate:dt(1),           recurring:'Monthly', status:'Scheduled', btype:'loan',       balance:18400,apr:5.75,  creditLimit:0,    scheduledAmount:210,  scheduledAccountId:8001, originalBalance:24000, originalLoanAmount:24000, url:'https://mohela.com'},
+      // Next-month bill → visible when browsing ahead
       {id:3008, name:'Rent',              amount:1450, dueDate:nextMonth(1,1),  recurring:'Monthly', status:'Pending',   btype:'bill',       balance:0,    apr:0,     creditLimit:0,    scheduledAmount:null, scheduledAccountId:null},
     ],
 
@@ -3485,11 +3474,13 @@ function loadDemoData(skipConfirm){
       {id:9002, name:'Japan Trip',     target:4500,  date:nextMonth(12,1), accountId:0,    saved:900,  notes:'Flights + hotels + fun', createdAt:monthAgo(2,1)},
     ],
 
-    // ── ACCOUNTS (with APY on savings) ─────────────────────────
+    // ── ACCOUNTS ───────────────────────────────────────────────
+    // Accounts card = checking + savings = $5,100 + $9,200 = $14,300
+    // Money Left hero = checking ($5,100) − scheduled (Internet $79 + Student Loan $210) = $4,811
     accounts:[
       {id:8001, name:'Chase Checking',      type:'checking', balance:5100, notes:'Primary',        isDefault:true,  apy:0,   url:'https://chase.com'},
       {id:8002, name:'Marcus Savings',      type:'savings',  balance:9200, notes:'Emergency fund', isDefault:false, apy:4.6, url:'https://marcus.com'},
-      {id:8003, name:'Cash Wallet',         type:'cash',     balance:120,  notes:'',              isDefault:false, apy:0},
+      {id:8003, name:'Cash Wallet',         type:'cash',     balance:120,  notes:'',               isDefault:false, apy:0},
     ]
   };
 
@@ -4488,6 +4479,27 @@ function openEditBill(id){
   $('b-id').value=b.id;$('b-name').value=b.name;$('b-amount').value=b.amount;$('b-date').value=b.dueDate;$('b-recur').value=b.recurring;
   $('b-type').value=b.btype||'bill';$('b-balance').value=b.balance||'';$('b-apr').value=b.apr||'';$('b-limit').value=b.creditLimit||'';$('b-original').value=b.originalLoanAmount||'';
   if($('b-url'))$('b-url').value=b.url||'';
+  // Show zero-balance hint beneath the min payment field
+  let zeroHintEl=$('b-zero-balance-hint');
+  if(!zeroHintEl){
+    zeroHintEl=document.createElement('div');
+    zeroHintEl.id='b-zero-balance-hint';
+    zeroHintEl.className='txt-muted-sm-top';
+    const amtField=$('b-amount');
+    if(amtField&&amtField.parentNode) amtField.parentNode.appendChild(zeroHintEl);
+  }
+  if(zeroHintEl){
+    const isZeroBalEdit=(b.btype==='creditcard'||b.btype==='loan')&&!(b.balance>0);
+    if(isZeroBalEdit&&b.btype==='creditcard'){
+      zeroHintEl.textContent='Typical minimum: '+usd(b.amount||0)+' — will apply when balance is added.';
+      zeroHintEl.style.display='block';
+    } else if(isZeroBalEdit&&b.btype==='loan'){
+      zeroHintEl.textContent='✅ Loan is paid off — consider removing this entry.';
+      zeroHintEl.style.display='block';
+    } else {
+      zeroHintEl.style.display='none';
+    }
+  }
   toggleDebtFields();
   // Always expand More options on edit so existing data is visible
   expandBillMore();
@@ -5064,6 +5076,14 @@ function shiftBillMonth(dir){
   renderBills();
 }
 
+function goToCurrentMonth(){
+  const cur=today().slice(0,7);
+  if(_billMonth===cur) return;
+  _billMonth=cur;
+  renderBills();
+  showToast("Back to "+new Date().toLocaleString("default",{month:"long",year:"numeric"}));
+}
+
 // ── TRANSACTION SEARCH ──────────────────────────────
 function setTxnSearch(val){
   txnSearch=val.trim().toLowerCase();
@@ -5336,7 +5356,7 @@ function openPayDebt(id){
   $('pd-name').textContent=b.name;
   $('pd-balance').textContent=usd(b.balance||0);
   $('pd-apr').textContent=pct(b.apr||0);
-  const minAmt=b.amount||0;
+  const minAmt=b.balance>0?(b.amount||0):0;
   const fullAmt=b.balance||0;
   $('pd-min-val').textContent=usd(minAmt);
   $('pd-sug-val').textContent=usd(minAmt);
@@ -5416,7 +5436,7 @@ function selectPayAmount(type){
   _payDebtType=type;
   const niChk=$('pd-no-interest'),niWrap=$('pd-no-interest-wrap');
   if(type==='min'){
-    _payDebtAmount=b.amount||0;
+    _payDebtAmount=b.balance>0?(b.amount||0):0;
     highlightPayBtn('pd-min-btn');
     _noInterest=false;
     if(niChk) niChk.checked=false;
@@ -5955,7 +5975,7 @@ function buildAlerts(){
   // ── BILLS: overdue + due within 7 days ──────────────────────
   data.bills.forEach(b=>{
     const d=daysUntil(b.dueDate);
-    const isZeroBalance=(b.btype==='creditcard'||b.btype==='loan')&&!b.balance&&!b.amount;
+    const isZeroBalance=(b.btype==='creditcard'||b.btype==='loan')&&!(b.balance>0);
     if(isZeroBalance) return;
     if(b.status!=='Paid'&&b.status!=='Scheduled'&&d<0){
       alerts.push({
@@ -5963,9 +5983,10 @@ function buildAlerts(){
         msg:`${b.name} is overdue by ${Math.abs(d)} day${Math.abs(d)===1?'':'s'}`,
       });
     } else if(b.status!=='Paid'&&b.status!=='Scheduled'&&d<=7&&d>=0){
+      const effAmt=(b.btype==='creditcard'||b.btype==='loan')&&!(b.balance>0)?0:(b.amount||0);
       alerts.push({
         section:'bills', color:'#f59e0b', icon:'📋',
-        msg:`${b.name} due in ${d===0?'today':(d+' day'+(d===1?'':'s'))} - ${usd(b.amount)}`,
+        msg:`${b.name} due in ${d===0?'today':(d+' day'+(d===1?'':'s'))} - ${usd(effAmt)}`,
       });
     }
   });
@@ -6099,97 +6120,87 @@ function renderDashboard(){
     }
   }
 
-  // Stat calculations
-  const ti=data.income.reduce((s,i)=>s+getEffectiveIncome(i,new Date().getFullYear(),new Date().getMonth()),0);
-  const te=data.expenses.reduce((s,e)=>s+e.amount,0);
-  const td=data.bills.filter(b=>b.btype==='creditcard'||b.btype==='loan').reduce((s,b)=>s+(b.balance||0),0);
-  // Only count transactions that actually hit a bank account (exclude credit card purchases where accountId===0)
-  const tt=data.transactions.filter(t=>!t.promoRef&&t.accountId!==0).reduce((s,t)=>s+t.amount,0);
-  // Money Out = expenses + active bill payments + spending transactions (no bill payments — already in bills)
-  const tb=data.bills.filter(b=>{
-    if((b.btype==='creditcard'||b.btype==='loan'||b.btype==='promo')&&!(b.balance>0)) return false;
-    return (b.amount||0)>0;
-  }).reduce((s,b)=>s+(b.scheduledAmount||b.amount||0),0);
-  const tw=data.transactions.filter(t=>!t.promoRef&&t.type!=='Transfer'&&t.type!=='Bill Payment'&&t.type!=='Debt Payment').reduce((s,t)=>s+t.amount,0);
-  const totalOut=te+tb+tw;
-  const net=ti-te-tt;
-  const defaultAcct=(data.accounts||[]).find(a=>a.isDefault)||(data.accounts||[]).find(a=>a.type==='checking')||(data.accounts||[])[0]||{};
-  const totalAccounts=defaultAcct.balance||0;
-  const acctNameEl=$('d-projected-acct');
-  if(acctNameEl){
-    const defaultAcct2=(data.accounts||[]).find(a=>a.isDefault);
-    acctNameEl.textContent=defaultAcct2?defaultAcct2.name:((data.accounts||[]).length>1?'All accounts':'');
-  }
+  // ── Base calculations ────────────────────────────────────────
+  const todayStr=today();
+  const curMonthStr=todayStr.slice(0,7);
+  const accounts=data.accounts||[];
 
-  // Hero card — Net Balance
+  // Accounts: sum of checking + savings
+  const liquidAccounts=accounts.filter(a=>a.type==='checking'||a.type==='savings');
+  const totalLiquid=liquidAccounts.reduce((s,a)=>s+(a.balance||0),0);
+
+  // Default checking for Money Left
+  const defaultAcct=accounts.find(a=>a.isDefault)||accounts.find(a=>a.type==='checking')||accounts[0]||{};
+  const checkingBal=defaultAcct.balance||0;
+
+  // Total Debt
+  const td=data.bills.filter(b=>b.btype==='creditcard'||b.btype==='loan').reduce((s,b)=>s+(b.balance||0),0);
+
+  // Pending bills this month (not paid, not scheduled)
+  const pendingBills=data.bills.filter(b=>{
+    if(b.status!=='Pending') return false;
+    if(!b.dueDate||b.dueDate.slice(0,7)!==curMonthStr) return false;
+    if((b.btype==='creditcard'||b.btype==='loan')&&!(b.balance>0)) return false;
+    return true;
+  });
+  const pendingAmt=pendingBills.reduce((s,b)=>s+(b.amount||0),0);
+
+  // Net Worth: liquid + assets − debt
+  const totalAssets=(data.assets||[]).reduce((s,a)=>s+(a.value||0),0);
+  const netWorth=totalLiquid+totalAssets-td;
+
+  // Money Left This Month: checking balance − scheduled bills/expenses this month
+  const scheduledBills=data.bills.filter(b=>
+    b.status==='Scheduled'&&b.dueDate&&b.dueDate.slice(0,7)===curMonthStr
+    &&!((b.btype==='creditcard'||b.btype==='loan')&&!(b.balance>0))
+  ).reduce((s,b)=>s+(b.scheduledAmount||b.amount||0),0);
+  const scheduledExps=data.expenses.filter(e=>e.scheduledMonth===curMonthStr)
+    .reduce((s,e)=>s+e.amount,0);
+  const moneyLeft=parseFloat((checkingBal-scheduledBills-scheduledExps).toFixed(2));
+
+  // Hero — Money Left This Month
   const balEl=$('d-balance');
   if(balEl){
-    balEl.textContent=usd(net);
-    balEl.style.color=net>=0?'var(--green)':'var(--red)';
+    balEl.textContent=usd(moneyLeft);
+    balEl.style.color=moneyLeft>=0?'var(--green)':'var(--red)';
   }
-
-  // Projected Balance = account balances minus unpaid bills/expenses due this month
-  const projEl=$('d-projected');
-  const projSub=$('d-projected-sub');
-  if(projEl){
-    const todayStr=today();
-    const monthStr=todayStr.slice(0,7);
-    const useScheduled=projToggle==='scheduled';
-    const projBillFilter=b=>{
-      if(b.status==='Paid') return false;
-      if((b.btype==='creditcard'||b.btype==='loan'||b.btype==='promo')&&!(b.balance>0)) return false;
-      return b.dueDate && b.dueDate.slice(0,7)===monthStr;
-    };
-    const unpaidBills=data.bills.filter(projBillFilter)
-      .reduce((s,b)=>s+(useScheduled?(b.scheduledAmount||b.amount||0):(b.amount||0)),0);
-    const unpaidExp=data.expenses.filter(e=>{
-      if(e.paidMonth===monthStr) return false;
-      return e.date && e.date.slice(0,7)===monthStr;
-    }).reduce((s,e)=>s+e.amount,0);
-    const projected=totalAccounts-unpaidBills-unpaidExp;
-    projEl.textContent=usd(projected);
-    projEl.style.color=projected>=0?'var(--green)':'var(--red)';
-    const btnS=$('proj-btn-scheduled'), btnM=$('proj-btn-minimum');
-    if(btnS&&btnM){
-      btnS.style.background=useScheduled?'rgba(80,112,240,.25)':'transparent';
-      btnS.style.color=useScheduled?'var(--accent2)':'var(--muted)';
-      btnM.style.background=!useScheduled?'rgba(80,112,240,.25)':'transparent';
-      btnM.style.color=!useScheduled?'var(--accent2)':'var(--muted)';
-    }
-    if(projSub){
-      const billCount=data.bills.filter(projBillFilter).length;
-      const expCount=data.expenses.filter(e=>{
-        if(e.paidMonth===monthStr) return false;
-        return e.date && e.date.slice(0,7)===monthStr;
-      }).length;
-      const totalCount=billCount+expCount;
-      projSub.textContent=`after ${totalCount} item${totalCount===1?'':'s'} \u00b7 ${useScheduled?'scheduled':'minimums'}`;
+  // Breakdown pill: "🏦 Chase Checking $5,100 − $289 scheduled"
+  const breakdownEl=$('d-hero-breakdown');
+  if(breakdownEl){
+    const totalScheduled=scheduledBills+scheduledExps;
+    const acctIcon=defaultAcct.type==='savings'?'💰':defaultAcct.type==='cash'?'💵':'🏦';
+    const acctName=defaultAcct.name||'Checking';
+    if(totalScheduled>0){
+      breakdownEl.innerHTML=`<span style="color:var(--accent2)">${acctName}</span>`
+        +`<span style="color:var(--muted);font-size:10px">−</span>`
+        +`<span style="color:var(--yellow)">${usd(totalScheduled)} scheduled</span>`;
+    } else {
+      breakdownEl.innerHTML=`<span style="color:var(--accent2)">${acctName}</span>`
+        +`<span style="color:var(--muted);font-size:10px"> · no scheduled payments</span>`;
     }
   }
 
-  // Contextual summary line
+  // Summary line
   const summaryEl=$('d-summary-line');
   if(summaryEl){
-    const overdueBills=(data.bills||[]).filter(b=>b.status==='Overdue').length;
-    const dueSoon=(data.bills||[]).filter(b=>{
-      if(b.status==='Paid'||b.status==='Overdue') return false;
-      const d=daysUntil(b.dueDate);
-      return d>=0&&d<=7;
-    }).length;
+    const overdueBills=(data.bills||[]).filter(b=>b.status==='Overdue'&&!((b.btype==='creditcard'||b.btype==='loan')&&!(b.balance>0))).length;
     const parts=[];
     if(overdueBills>0) parts.push(`<span class="txt-red">${overdueBills} overdue bill${overdueBills>1?'s':''}</span>`);
-    if(dueSoon>0) parts.push(`<span class="txt-yellow">${dueSoon} due this week</span>`);
-    if(net>0&&!overdueBills&&!dueSoon) parts.push(`<span class="txt-green">↑ Looking good this month</span>`);
-    if(net<0) parts.push(`<span class="txt-red">↓ Spending exceeds income</span>`);
+    if(pendingBills.length>0) parts.push(`<span style="color:var(--yellow)">${pendingBills.length} pending this month</span>`);
+    if(!overdueBills&&!pendingBills.length&&moneyLeft>0) parts.push(`<span class="txt-green">↑ Looking good this month</span>`);
+    if(moneyLeft<0) parts.push(`<span class="txt-red">↓ Scheduled payments exceed balance</span>`);
     summaryEl.innerHTML=parts.join(' &nbsp;·&nbsp; ')||'&nbsp;';
   }
 
-  // Supporting stat cards
-  $('d-income').textContent=usd(ti);
-  $('d-expenses').textContent=usd(totalOut);
-  $('d-debt').textContent=usd(td);
+  // 4 stat cards
   const acctTotalEl=$('d-acct-total');
-  if(acctTotalEl) acctTotalEl.textContent=usd(totalAccounts);
+  if(acctTotalEl) acctTotalEl.textContent=usd(totalLiquid);
+  const debtEl=$('d-debt');
+  if(debtEl) debtEl.textContent=usd(td);
+  const pendingEl=$('d-pending');
+  if(pendingEl) pendingEl.textContent=usd(pendingAmt);
+  const nwEl=$('d-networth');
+  if(nwEl){ nwEl.textContent=usd(netWorth); nwEl.style.color=netWorth>=0?'var(--green)':'var(--red)'; }
 
   // Account chip strip
   const accs=data.accounts||[];
@@ -6204,7 +6215,7 @@ function renderDashboard(){
   }
 
   // ── 7-DAY TIMELINE ────────────────────────────
-  const todayStr=today();
+  // ── 7-DAY TIMELINE ────────────────────────────
   function dtOffset(days){ const d=new Date(); d.setDate(d.getDate()+days); return d.toISOString().split('T')[0]; }
   const past7=dtOffset(-7), next7=dtOffset(7);
 
@@ -6268,9 +6279,10 @@ function renderDashboard(){
     return;
   }
 
-  // Split into overdue, upcoming, past
+  // Split into overdue, upcoming, today, past
   const overdue=items.filter(i=>i.isOverdue).sort((a,b)=>a.sortKey.localeCompare(b.sortKey));
   const upcoming=items.filter(i=>i.future&&!i.isOverdue).sort((a,b)=>a.sortKey.localeCompare(b.sortKey));
+  const todayItems=items.filter(i=>i.isToday&&!i.isOverdue).sort((a,b)=>a.sortKey.localeCompare(b.sortKey));
   const past=items.filter(i=>!i.future&&!i.isToday&&!i.isOverdue).sort((a,b)=>b.sortKey.localeCompare(a.sortKey));
 
   let html='';
@@ -6291,16 +6303,19 @@ function renderDashboard(){
     html+=upcoming.map(i=>i.render()).join('');
   }
 
-  // TODAY divider — only render when there is content above (upcoming/overdue) or below (past)
+  // TODAY divider + today's items
   const hasAbove=overdue.length||upcoming.length;
-  const hasBelow=past.length;
+  const hasBelow=past.length||todayItems.length;
   if(hasAbove||hasBelow){
     html+=`<div style="display:flex;align-items:center;gap:10px;margin:12px 0"><div style="flex:1;height:1px;background:var(--accent);opacity:.3"></div><div style="font-size:11px;font-weight:700;color:var(--accent);letter-spacing:1px">${t('TODAY')}</div><div style="flex:1;height:1px;background:var(--accent);opacity:.3"></div></div>`;
+  }
+  if(todayItems.length){
+    html+=todayItems.map(i=>i.render()).join('');
   }
 
   // Past/recent group
   if(past.length){
-    html+=`<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin-bottom:8px">Recent</div>`;
+    html+=`<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin-bottom:8px;margin-top:${todayItems.length?'12px':'0'}">Recent</div>`;
     html+=past.map(i=>i.render()).join('');
   }
 
@@ -6320,17 +6335,20 @@ function renderMoneySummaryCards(){
   const el=$('money-summary-cards');
   if(!el) return;
   const now=new Date();
-  const yr=now.getFullYear(), mo=now.getMonth();
   const todayStr=today();
-
-  // Month strings
   const curMonthStr=todayStr.slice(0,7);
-  const nxtMo=mo===11?0:mo+1, nxtYr=mo===11?yr+1:yr;
-  const nxtMonthStr=nxtYr+'-'+String(nxtMo+1).padStart(2,'0');
-  const curMonthName=now.toLocaleString('default',{month:'short'});
-  const nxtMonthName=new Date(nxtYr,nxtMo,1).toLocaleString('default',{month:'short'});
 
-  // Default account balance (already includes all received income)
+  // Which month is the bills view showing?
+  initBillMonth();
+  const viewMonth=_billMonth||curMonthStr;
+  const [viewYr,viewMoRaw]=viewMonth.split('-').map(Number);
+  const viewMo=viewMoRaw-1;
+  const viewMonthName=new Date(viewYr,viewMo,1).toLocaleString('default',{month:'long',year:'numeric'});
+  const isPast=viewMonth<curMonthStr;
+  const isCurrent=viewMonth===curMonthStr;
+  const isFuture=viewMonth>curMonthStr;
+
+  // Default account balance
   const accounts=data.accounts||[];
   const defaultAcct=(accounts).find(a=>a.isDefault)||(accounts).find(a=>a.type==='checking')||(accounts)[0]||{};
   const availableNow=defaultAcct.balance||0;
@@ -6341,61 +6359,76 @@ function renderMoneySummaryCards(){
     return true;
   };
 
-  // ── Helper: effective payment amount per toggle ──────────────
-  const effAmt=b=>projToggle==='scheduled'?(b.scheduledAmount||b.amount||0):(b.amount||0);
+  // Bills and expenses for the viewed month
+  const viewBills=data.bills.filter(b=>b.dueDate&&b.dueDate.slice(0,7)===viewMonth&&billHasBalance(b));
+  const viewExps=data.expenses.filter(e=>e.date&&e.date.slice(0,7)===viewMonth);
 
-  // ── Helper: unreceived future income for a given month ───────
-  // Only counts occurrences dated AFTER today that are not marked Received
-  const unreceivedIncome=(targetYr,targetMo)=>{
-    let total=0;
-    data.income.forEach(inc=>{
-      const occs=getIncomeOccurrences(inc,targetYr,targetMo);
-      occs.forEach(occ=>{
-        if(occ.date<=todayStr) return; // already in balance or missed
-        const status=getIncomeOccurrenceStatus(inc,occ.date);
-        if(status==='Received') return; // already in balance
-        if(status==='Missed') return;   // not coming
-        total+=occ.amount;
-      });
-    });
-    return parseFloat(total.toFixed(2));
-  };
+  // ── Bills Paid progress (works for all months) ───────────────
+  const viewTotal=viewBills.length+viewExps.length;
+  const viewPaid=viewBills.filter(b=>b.status==='Paid'||b.status==='Scheduled').length
+    +viewExps.filter(e=>e.paidMonth===viewMonth).length;
+  const viewPct=viewTotal>0?Math.round(viewPaid/viewTotal*100):0;
+  const viewPCol=viewPct===100?'var(--green)':viewPct>=50?'var(--blue)':'var(--yellow)';
 
-  // ── MAY (current month) ──────────────────────────────────────
-  const mayBills=data.bills.filter(b=>b.dueDate&&b.dueDate.slice(0,7)===curMonthStr&&billHasBalance(b));
-  const mayExps=data.expenses.filter(e=>e.date&&e.date.slice(0,7)===curMonthStr);
-  const mayUnpaidBills=mayBills.filter(b=>b.status!=='Paid').reduce((s,b)=>s+effAmt(b),0);
-  const mayUnpaidExps=mayExps.filter(e=>e.paidMonth!==curMonthStr).reduce((s,e)=>s+e.amount,0);
-  // May income: no unreceived future income added — all May income already in balance or missed
-  const mayBalance=parseFloat((availableNow-mayUnpaidBills-mayUnpaidExps).toFixed(2));
+  // ── Pending amount for viewed month ─────────────────────────
+  const viewPendingAmt=viewBills.filter(b=>b.status==='Pending'||b.status==='Overdue')
+    .reduce((s,b)=>s+(b.amount||0),0)
+    +viewExps.filter(e=>e.paidMonth!==viewMonth).reduce((s,e)=>s+e.amount,0);
 
-  // Paid progress — May
-  const mayTotal=mayBills.length+mayExps.length;
-  const mayPaid=mayBills.filter(b=>b.status==='Paid'||b.status==='Scheduled').length
-    +mayExps.filter(e=>e.paidMonth===curMonthStr).length;
-  const mayPct=mayTotal>0?Math.round(mayPaid/mayTotal*100):0;
-  const mayPCol=mayPct===100?'var(--green)':mayPct>=50?'var(--blue)':'var(--yellow)';
+  // ── Money Left calculation — depends on month type ───────────
+  let moneyLeftVal, moneyLeftLabel, moneyLeftNote;
 
-  // ── JUNE (next month) — cascades from May ending balance ─────
-  const junBills=data.bills.filter(b=>b.dueDate&&b.dueDate.slice(0,7)===nxtMonthStr&&billHasBalance(b));
-  const junExps=data.expenses.filter(e=>e.date&&e.date.slice(0,7)===nxtMonthStr);
-  const junUnpaidBills=junBills.filter(b=>b.status!=='Paid').reduce((s,b)=>s+effAmt(b),0);
-  const junUnpaidExps=junExps.filter(e=>e.paidMonth!==nxtMonthStr).reduce((s,e)=>s+e.amount,0);
-  const junIncome=unreceivedIncome(nxtYr,nxtMo);
-  const junBalance=parseFloat((mayBalance+junIncome-junUnpaidBills-junUnpaidExps).toFixed(2));
+  if(isCurrent){
+    // Checking balance − scheduled (committed) items this month
+    const scheduledBills=viewBills.filter(b=>b.status==='Scheduled').reduce((s,b)=>s+(b.scheduledAmount||b.amount||0),0);
+    const scheduledExps=viewExps.filter(e=>e.scheduledMonth===viewMonth).reduce((s,e)=>s+e.amount,0);
+    moneyLeftVal=parseFloat((availableNow-scheduledBills-scheduledExps).toFixed(2));
+    moneyLeftLabel='Money Left';
+    moneyLeftNote=null;
+  } else if(isFuture){
+    // Checking balance − all scheduled items from today through end of viewed month
+    let totalCommitted=0;
+    // Current month remaining scheduled
+    const curScheduled=data.bills.filter(b=>b.dueDate&&b.dueDate.slice(0,7)===curMonthStr&&billHasBalance(b)&&b.status==='Scheduled')
+      .reduce((s,b)=>s+(b.scheduledAmount||b.amount||0),0);
+    totalCommitted+=curScheduled;
+    // Every month between current+1 and viewMonth (inclusive): count scheduled items
+    let scanYr=now.getFullYear(), scanMo=now.getMonth()+1; // start from next month
+    while(true){
+      const scanKey=scanYr+'-'+String(scanMo+1).padStart(2,'0');
+      const scanBills=data.bills.filter(b=>b.dueDate&&b.dueDate.slice(0,7)===scanKey&&billHasBalance(b)&&b.status==='Scheduled')
+        .reduce((s,b)=>s+(b.scheduledAmount||b.amount||0),0);
+      const scanExps=data.expenses.filter(e=>e.date&&e.date.slice(0,7)===scanKey&&e.scheduledMonth===scanKey)
+        .reduce((s,e)=>s+e.amount,0);
+      totalCommitted+=scanBills+scanExps;
+      if(scanKey===viewMonth) break;
+      scanMo++;
+      if(scanMo>11){scanMo=0;scanYr++;}
+      if(scanKey>viewMonth) break; // safety
+    }
+    moneyLeftVal=parseFloat((availableNow-totalCommitted).toFixed(2));
+    moneyLeftLabel='Projected Left';
+    moneyLeftNote='Based on scheduled payments through '+viewMonthName;
+  } else {
+    // Past month: net cash flow = income received − bills paid − expenses paid
+    const pastIncome=data.income.reduce((s,inc)=>{
+      const occs=getIncomeOccurrences(inc,viewYr,viewMo);
+      return s+occs.filter(o=>getIncomeOccurrenceStatus(inc,o.date)==='Received').reduce((a,o)=>a+o.amount,0);
+    },0);
+    const pastBillsPaid=viewBills.filter(b=>b.status==='Paid'||b.status==='Scheduled').reduce((s,b)=>s+(b.scheduledAmount||b.amount||0),0);
+    const pastExpsPaid=viewExps.filter(e=>e.paidMonth===viewMonth).reduce((s,e)=>s+e.amount,0);
+    moneyLeftVal=parseFloat((pastIncome-pastBillsPaid-pastExpsPaid).toFixed(2));
+    moneyLeftLabel='Net Cash Flow';
+    moneyLeftNote=null;
+  }
 
-  // Paid progress — June
-  const junTotal=junBills.length+junExps.length;
-  const junPaid=junBills.filter(b=>b.status==='Paid'||b.status==='Scheduled').length
-    +junExps.filter(e=>e.paidMonth===nxtMonthStr).length;
-  const junPct=junTotal>0?Math.round(junPaid/junTotal*100):0;
-  const junPCol=junPct===100?'var(--green)':junPct>=50?'var(--blue)':'var(--yellow)';
-
-  // ── Monthly Health (unchanged — uses current month scope) ────
+  // ── Health status — always based on current month ────────────
+  const yr=now.getFullYear(), mo=now.getMonth();
+  const effBillAmt=b=>(b.btype==='creditcard'||b.btype==='loan')&&!(b.balance>0)?0:(b.amount||0);
   const overdue=data.bills.filter(b=>{
     if(b.status==='Paid'||b.status==='Scheduled') return false;
     if(!b.dueDate) return false;
-    if((b.btype==='creditcard'||b.btype==='loan')&&!b.balance&&!b.amount) return false;
+    if((b.btype==='creditcard'||b.btype==='loan')&&!(b.balance>0)) return false;
     return b.dueDate<todayStr;
   });
   const in7=new Date(now); in7.setDate(in7.getDate()+7);
@@ -6403,16 +6436,17 @@ function renderMoneySummaryCards(){
   const dueSoon=data.bills.filter(b=>{
     if(b.status==='Paid'||b.status==='Scheduled') return false;
     if(!b.dueDate) return false;
+    if((b.btype==='creditcard'||b.btype==='loan')&&!(b.balance>0)) return false;
     return b.dueDate>=todayStr&&b.dueDate<=in7Str;
   });
   const expectedIncome=data.income.reduce((s,i)=>s+getEffectiveIncome(i,yr,mo),0);
   const totalBillsOut=data.bills.filter(b=>b.amount>0&&!((b.btype==='creditcard'||b.btype==='loan'||b.btype==='promo')&&!(b.balance>0))).reduce((s,b)=>s+(b.scheduledAmount||b.amount),0);
   const netMonth=expectedIncome-totalBillsOut-data.expenses.reduce((s,e)=>s+e.amount,0);
-  const overdueAmt=overdue.reduce((s,b)=>s+b.amount,0);
+  const overdueAmt=overdue.reduce((s,b)=>s+effBillAmt(b),0);
   let healthStatus,healthColor,healthIcon,healthMsg;
   if(overdue.length===0&&netMonth>=0&&availableNow>=totalBillsOut*0.5){
     healthStatus='Healthy';healthColor='var(--green)';healthIcon='✅';
-    healthMsg=dueSoon.length?dueSoon.length+' bill'+(dueSoon.length>1?'s':'')+' due this week totaling '+usd(dueSoon.reduce((s,b)=>s+b.amount,0))+'. You are on track.'
+    healthMsg=dueSoon.length?dueSoon.length+' bill'+(dueSoon.length>1?'s':'')+' due this week totaling '+usd(dueSoon.reduce((s,b)=>s+effBillAmt(b),0))+'. You are on track.'
       :'No overdue bills and positive cash flow. Looking good this month.';
   } else if(overdue.length<=2&&netMonth>=-200){
     healthStatus='Caution';healthColor='var(--yellow)';healthIcon='⚠️';
@@ -6425,47 +6459,49 @@ function renderMoneySummaryCards(){
   }
 
   // ── Render helpers ───────────────────────────────────────────
-  const statPill=(label,val,col)=>
-    '<div style="flex:1;text-align:center;padding:8px 4px;background:rgba(255,255,255,.03);border-radius:8px">'
-    +'<div style="font-size:16px;font-weight:800;color:'+col+'">'+val+'</div>'
-    +'<div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-top:2px">'+label+'</div>'
-    +'</div>';
-
-  const progressBar=(paid,total,pct,col,monthLabel,incomeNote)=>
+  const progressBar=(paid,total,pct,col,label)=>
     '<div style="flex:1;padding:8px 6px;background:rgba(255,255,255,.03);border-radius:8px">'
     +'<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px">'
-    +'<div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">'+monthLabel+'</div>'
+    +'<div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">'+label+'</div>'
     +'<div style="font-size:14px;font-weight:800;color:'+col+'">'+paid+'/'+total+'</div>'
     +'</div>'
     +'<div style="height:3px;border-radius:2px;background:rgba(255,255,255,.08);overflow:hidden">'
     +'<div style="height:100%;width:'+pct+'%;background:'+col+';border-radius:2px;transition:width .4s"></div>'
     +'</div>'
-    +(incomeNote?'<div style="font-size:9px;color:var(--teal);margin-top:3px">+'+usd(incomeNote)+' projected</div>':'')
     +'</div>';
 
-  const moneyLeftPill=(val,label)=>{
-    const col=val>=0?'var(--green)':'var(--red)';
+  const moneyLeftPill=(val,label,note,forceColor)=>{
+    const col=forceColor||(val>=0?'var(--green)':'var(--red)');
     return '<div style="flex:1;text-align:center;padding:8px 4px;background:rgba(255,255,255,.03);border-radius:8px">'
     +'<div style="font-size:13px;font-weight:800;color:'+col+'">'+(val>=0?'':'-')+usd(Math.abs(val))+'</div>'
     +'<div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-top:2px">'+label+'</div>'
+    +(note?'<div style="font-size:9px;color:var(--muted);margin-top:2px;white-space:normal;line-height:1.3">'+note+'</div>':'')
     +'</div>';
   };
+
+  // Month context badge
+  const monthBadge=isCurrent?''
+    :isPast?'<span style="font-size:9px;font-weight:700;padding:1px 7px;border-radius:10px;background:rgba(119,119,119,.15);color:var(--muted);margin-left:6px">PAST</span>'
+    :'<span style="font-size:9px;font-weight:700;padding:1px 7px;border-radius:10px;background:rgba(80,112,240,.15);color:var(--accent2);margin-left:6px">FUTURE</span>';
 
   el.innerHTML=
     '<div style="background:var(--surface);border:1px solid '+healthColor+'44;border-radius:14px;padding:14px 16px;position:relative;overflow:hidden">'
     +'<div style="position:absolute;inset:0;background:linear-gradient(135deg,'+healthColor+'08,transparent);pointer-events:none"></div>'
     +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">'
-    +'<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:'+healthColor+'">Monthly Health</div>'
+    +'<div style="display:flex;align-items:center;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:'+healthColor+'">'
+    +viewMonthName+monthBadge+'</div>'
     +'<div style="font-size:11px;font-weight:800;color:'+healthColor+';background:'+healthColor+'18;border:1px solid '+healthColor+'33;border-radius:20px;padding:2px 10px">'+healthIcon+' '+healthStatus+'</div>'
     +'</div>'
-    // Row 1: Money Left May | progress May | progress June | Money Left June
     +'<div style="display:flex;gap:6px;margin-bottom:8px">'
-    +moneyLeftPill(mayBalance,'After '+curMonthName)
-    +progressBar(mayPaid,mayTotal,mayPct,mayPCol,curMonthName+' Paid',0)
-    +progressBar(junPaid,junTotal,junPct,junPCol,nxtMonthName+' Paid',junIncome)
-    +moneyLeftPill(junBalance,'After '+nxtMonthName)
+    +moneyLeftPill(moneyLeftVal,moneyLeftLabel,moneyLeftNote)
+    +moneyLeftPill(viewPendingAmt,'Pending',null,'var(--yellow)')
+    +progressBar(viewPaid,viewTotal,viewPct,viewPCol,'Bills Paid')
     +'</div>'
-    +'<div style="font-size:12px;color:var(--muted);line-height:1.5;border-top:1px solid var(--border);padding-top:8px">'+healthMsg+'</div>'
+    +(isCurrent
+      ?'<div style="font-size:12px;color:var(--muted);line-height:1.5;border-top:1px solid var(--border);padding-top:8px">'+healthMsg+'</div>'
+      :isPast
+        ?'<div style="font-size:12px;color:var(--muted);line-height:1.5;border-top:1px solid var(--border);padding-top:8px">Income received minus bills &amp; expenses paid that month.</div>'
+        :'<div style="font-size:12px;color:var(--muted);line-height:1.5;border-top:1px solid var(--border);padding-top:8px">Checking balance after all scheduled payments through this month. No income assumed.</div>')
     +'</div>';
 }
 
@@ -6481,7 +6517,12 @@ function renderBills(){
 
   // Update nav label
   const lbl=$('bill-month-label');
-  if(lbl) lbl.textContent=new Date(showYr,showMo,1).toLocaleString('default',{month:'long',year:'numeric'});
+  if(lbl){
+    const isCurrentMo=_billMonth===today().slice(0,7);
+    lbl.textContent=new Date(showYr,showMo,1).toLocaleString('default',{month:'long',year:'numeric'})+(isCurrentMo?'':' ↩');
+    lbl.style.color=isCurrentMo?'':'var(--accent)';
+    lbl.title=isCurrentMo?'Current month':'Tap to return to current month';
+  }
 
   // Build income occurrence items for the selected month only
   const incomeItems=[];
@@ -6631,7 +6672,13 @@ function renderBills(){
         +'<button class="btn btn-sm" style="background:rgba(255,255,255,.06);color:var(--muted)"'
         +' onclick="event.stopPropagation();revertToPending('+b.id+')">Cancel</button>';
     } else if(isZeroBalance){
-      actionBtns='<span class="txt-muted-xs">No balance</span>';
+      if(b.btype==='loan'){
+        actionBtns='<span class="txt-muted-xs" style="color:var(--green)">✅ Paid off</span>'
+          +'<button class="btn btn-sm" style="background:rgba(239,68,68,.15);color:var(--red)"'
+          +' onclick="event.stopPropagation();deleteBillFromModal('+b.id+')">Remove</button>';
+      } else {
+        actionBtns='<span class="txt-muted-xs">No balance</span>';
+      }
     } else {
       const schedLabel=eff==='Overdue'?'Schedule Now':'Schedule';
       actionBtns='<button class="btn btn-sm" style="background:rgba(59,130,246,.15);color:var(--blue)"'
@@ -6663,10 +6710,10 @@ function renderBills(){
       +'<div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0">'
       +statusBadge
       +'<div style="display:flex;align-items:center;gap:6px">'
-      +'<span style="font-weight:700;font-size:15px">'+usd(b.scheduledAmount||b.amount)+'</span>'
+      +'<span style="font-weight:700;font-size:15px">'+usd(isZeroBalance?0:(b.scheduledAmount||b.amount))+'</span>'
       +'<span id="cchev-'+cid+'" style="color:var(--muted);font-size:11px">&#9662;</span>'
       +'</div>'
-      +(b.scheduledAmount?'<div style="font-size:11px;color:var(--muted)">min '+usd(b.amount)+'</div>':'')
+      +((!isZeroBalance&&b.scheduledAmount)?'<div style="font-size:11px;color:var(--muted)">min '+usd(b.amount)+'</div>':'')
       +'</div></div>'
       +utilBar
       +(isDebt?renderPromoItems(b.id):'')
@@ -6792,7 +6839,7 @@ function renderBills(){
           const projD=daysUntil(proj);
           eff = projD < 0 ? 'Paid' : 'Pending';
         }
-        return{_kind:'bill',bill:b,_date:proj,_amount:b.amount,_status:eff};
+        return{_kind:'bill',bill:b,_date:proj,_amount:isZeroBalance?0:(b.amount||0),_status:eff};
       }),
       ...data.expenses
         .filter(e=>e.amount>0&&projectedExpenseDate(e)!==null)
@@ -7462,7 +7509,7 @@ function renderSnapshot(){
   // This month
   const thisIncome   = data.income.filter(i => inMonth(i.date, yr, mo)).reduce((s,i) => s + getEffectiveIncome(i, yr, mo), 0);
   const thisExpenses = data.expenses.filter(e => inMonth(e.date, yr, mo)).reduce((s,e) => s + e.amount, 0);
-  const thisBillsOut = data.bills.filter(b => inMonth(b.dueDate, yr, mo)).reduce((s,b) => s + b.amount, 0);
+  const thisBillsOut = data.bills.filter(b => inMonth(b.dueDate, yr, mo) && !((b.btype==='creditcard'||b.btype==='loan')&&!(b.balance>0))).reduce((s,b) => s + (b.scheduledAmount||b.amount||0), 0);
   const thisOut      = thisExpenses + thisBillsOut;
   const thisNet      = thisIncome - thisOut;
   const thisBillsPaid= data.bills.filter(b => inMonth(b.dueDate, yr, mo) && b.status === 'Paid').length;
@@ -7471,7 +7518,7 @@ function renderSnapshot(){
   // Last month
   const lastIncome   = data.income.filter(i => inMonth(i.date, prevYr, prevMo)).reduce((s,i) => s + getEffectiveIncome(i, prevYr, prevMo), 0);
   const lastExpenses = data.expenses.filter(e => inMonth(e.date, prevYr, prevMo)).reduce((s,e) => s + e.amount, 0);
-  const lastBillsOut = data.bills.filter(b => inMonth(b.dueDate, prevYr, prevMo)).reduce((s,b) => s + b.amount, 0);
+  const lastBillsOut = data.bills.filter(b => inMonth(b.dueDate, prevYr, prevMo) && !((b.btype==='creditcard'||b.btype==='loan')&&!(b.balance>0))).reduce((s,b) => s + (b.scheduledAmount||b.amount||0), 0);
   const lastOut      = lastExpenses + lastBillsOut;
   const lastNet      = lastIncome - lastOut;
 
@@ -8640,7 +8687,7 @@ function exportToExcel(){
   // ── CALCULATED TOTALS ────────────────────────────────────────
   const totalIncome   = data.income.reduce((s,i)=>s+getEffectiveIncome(i,new Date().getFullYear(),new Date().getMonth()),0);
   const totalExpenses = data.expenses.reduce((s,e)=>s+e.amount,0);
-  const totalBills    = data.bills.reduce((s,b)=>s+b.amount,0);
+  const totalBills    = data.bills.filter(b=>!((b.btype==='creditcard'||b.btype==='loan')&&!(b.balance>0))).reduce((s,b)=>s+(b.scheduledAmount||b.amount||0),0);
   const totalDebt     = data.bills.filter(b=>b.btype==='creditcard'||b.btype==='loan').reduce((s,b)=>s+(b.balance||0),0);
   const totalAssets   = (data.assets||[]).reduce((s,a)=>s+a.value,0);
   const totalAccounts = (data.accounts||[]).reduce((s,a)=>s+a.balance,0);
