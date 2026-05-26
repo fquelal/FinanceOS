@@ -3284,26 +3284,11 @@ function exportData(){
     const filename=`financeos-backup-${today()}.json`;
     const json=JSON.stringify(data,null,2);
     const blob=new Blob([json],{type:'application/json'});
-    // On iOS Safari, open in new tab so user can use the native Share → Save to Files
-    const isIOS=/iPhone|iPad|iPod/i.test(navigator.userAgent);
-    if(isIOS){
-      const url=URL.createObjectURL(blob);
-      const w=window.open(url,'_blank');
-      if(!w){
-        // Popup blocked fallback
-        const a=document.createElement('a');
-        a.href=url; a.download=filename; a.click();
-      }
-      setTimeout(()=>URL.revokeObjectURL(url),10000);
-      showToast('Tap Share → Save to Files');
-      markBackupDone();
-      return;
-    }
-    // Desktop fallback
     const url=URL.createObjectURL(blob);
     const a=document.createElement('a');
-    a.href=url; a.download=filename; a.click();
-    URL.revokeObjectURL(url);
+    a.href=url; a.download=filename;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(url),10000);
     showToast(t('Backup downloaded!'));
     markBackupDone();
   }catch(e){showAlert({icon:'❌',title:'Export failed',msg:e.message});}
@@ -8883,19 +8868,14 @@ function exportToExcel(){
 
   // ── DOWNLOAD ─────────────────────────────────────────────────
   const filename=`FinanceOS-${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}.xlsx`;
-  const isIOS=/iPhone|iPad|iPod/i.test(navigator.userAgent);
-  if(isIOS){
-    const wbout=XLSX.write(wb,{bookType:'xlsx',type:'array'});
-    const blob=new Blob([wbout],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
-    const url=URL.createObjectURL(blob);
-    const w=window.open(url,'_blank');
-    if(!w){ const a=document.createElement('a'); a.href=url; a.download=filename; a.click(); }
-    setTimeout(()=>URL.revokeObjectURL(url),10000);
-    showToast('Tap Share → Save to Files');
-  } else {
-    XLSX.writeFile(wb, filename);
-    showToast('Excel file downloaded!');
-  }
+  const wbout=XLSX.write(wb,{bookType:'xlsx',type:'array'});
+  const blob=new Blob([wbout],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url; a.download=filename;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(()=>URL.revokeObjectURL(url),10000);
+  showToast('Excel file downloaded!');
   markBackupDone();
 }
 
