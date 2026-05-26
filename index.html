@@ -2603,7 +2603,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v2.2.8';
+const APP_VERSION='v2.2.5';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -6284,7 +6284,7 @@ function renderDashboard(){
           <div class="row-label">${typeIcon[tx.type]||'📝'} ${tx.description}</div>
           <div class="row-sub">${fmtDate(tx.date)}${method?' · '+method:''}${tx.category?' · '+tx.category:''}</div>
         </div>
-        <div style="color:var(--red);font-weight:600">-${usd(tx.amount)}</div>
+        <div style="color:${tx.type==='Reconciliation'?(tx.amount>=0?'var(--green)':'var(--red)'):'var(--red)'};font-weight:600">${tx.type==='Reconciliation'?(tx.amount>=0?'+':'')+usd(tx.amount):'-'+usd(tx.amount)}</div>
       </div>`
     });
   });
@@ -6470,7 +6470,7 @@ function renderMoneySummaryCards(){
     }
     moneyLeftVal=parseFloat((availableNow-totalCommitted).toFixed(2));
     moneyLeftLabel='Projected Left';
-    moneyLeftNote='Based on scheduled payments through '+viewMonthName;
+    moneyLeftNote=null;
   } else {
     // Past month: net cash flow = income received − bills paid − expenses paid
     const pastIncome=data.income.reduce((s,inc)=>{
@@ -10337,7 +10337,7 @@ function confirmReconcile(){
     data.transactions.push({
       id: Date.now(),
       description: 'Reconciliation adjustment: '+reason,
-      amount: parseFloat(Math.abs(diff).toFixed(2)),
+      amount: parseFloat(diff.toFixed(2)), // signed: positive = added, negative = removed
       type: 'Reconciliation',
       date: today(),
       accountId: id,
