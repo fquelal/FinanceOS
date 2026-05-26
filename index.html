@@ -2603,7 +2603,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v2.3.1;
+const APP_VERSION='v2.3.1';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -8885,6 +8885,17 @@ function exportToExcel(){
   const filename=`FinanceOS-${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}.xlsx`;
   const wbout=XLSX.write(wb,{bookType:'xlsx',type:'array'});
   const blob=new Blob([wbout],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+  const isIOS=/iPhone|iPad|iPod/i.test(navigator.userAgent);
+  if(isIOS && navigator.share && navigator.canShare){
+    const file=new File([blob],filename,{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+    if(navigator.canShare({files:[file]})){
+      navigator.share({files:[file],title:'FinanceOS Export'})
+        .then(()=>{ markBackupDone(); })
+        .catch(err=>{ if(err.name!=='AbortError') showAlert({icon:'❌',title:'Export failed',msg:err.message}); });
+      return;
+    }
+  }
+  // Desktop / fallback
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');
   a.href=url; a.download=filename;
