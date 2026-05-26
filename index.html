@@ -2603,7 +2603,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v2.3.0';
+const APP_VERSION='v2.2.9';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -3284,26 +3284,22 @@ function exportData(){
     const filename=`financeos-backup-${today()}.json`;
     const json=JSON.stringify(data,null,2);
     const blob=new Blob([json],{type:'application/json'});
-    const url=URL.createObjectURL(blob);
     const isIOS=/iPhone|iPad|iPod/i.test(navigator.userAgent);
-    if(isIOS){
-      // window.open triggers the native iOS Files sheet
-      const w=window.open(url,'_blank');
-      if(!w){
-        // Popup blocked fallback
-        const a=document.createElement('a');
-        a.href=url; a.download=filename;
-        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    if(isIOS && navigator.share && navigator.canShare){
+      const file=new File([blob],filename,{type:'application/json'});
+      if(navigator.canShare({files:[file]})){
+        navigator.share({files:[file],title:'FinanceOS Backup'})
+          .then(()=>{ markBackupDone(); })
+          .catch(err=>{ if(err.name!=='AbortError') showAlert({icon:'❌',title:'Export failed',msg:err.message}); });
+        return;
       }
-      setTimeout(()=>URL.revokeObjectURL(url),10000);
-      markBackupDone();
-      return;
     }
-    // Desktop
+    // Desktop / fallback
+    const url=URL.createObjectURL(blob);
     const a=document.createElement('a');
     a.href=url; a.download=filename;
     document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    setTimeout(()=>URL.revokeObjectURL(url),10000);
     showToast(t('Backup downloaded!'));
     markBackupDone();
   }catch(e){showAlert({icon:'❌',title:'Export failed',msg:e.message});}
