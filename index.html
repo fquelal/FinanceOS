@@ -3283,23 +3283,18 @@ function exportData(){
   try{
     const filename=`financeos-backup-${today()}.json`;
     const json=JSON.stringify(data,null,2);
+    const blob=new Blob([json],{type:'application/json'});
     const isIOS=/iPhone|iPad|iPod/i.test(navigator.userAgent);
-    // Use octet-stream on iOS so Safari treats it as a download, not a preview, and avoids the duplicate .txt bug
-    const mime=isIOS?'application/octet-stream':'application/json';
-    const blob=new Blob([json],{type:mime});
-    const url=URL.createObjectURL(blob);
-    if(isIOS){
-      const w=window.open(url,'_blank');
-      if(!w){
-        const a=document.createElement('a');
-        a.href=url; a.download=filename;
-        document.body.appendChild(a); a.click(); document.body.removeChild(a);
-      }
-      setTimeout(()=>URL.revokeObjectURL(url),10000);
-      markBackupDone();
+    const file=new File([blob],filename,{type:'application/json'});
+    // No title param — avoids the duplicate .txt bug on iOS
+    if(isIOS && navigator.canShare && navigator.canShare({files:[file]})){
+      navigator.share({files:[file]})
+        .then(()=>{ markBackupDone(); })
+        .catch(err=>{ if(err.name!=='AbortError') showAlert({icon:'❌',title:'Export failed',msg:err.message}); });
       return;
     }
-    // Desktop
+    // Desktop / fallback
+    const url=URL.createObjectURL(blob);
     const a=document.createElement('a');
     a.href=url; a.download=filename;
     document.body.appendChild(a); a.click(); document.body.removeChild(a);
@@ -8893,7 +8888,8 @@ function exportToExcel(){
   if(isIOS && navigator.share && navigator.canShare){
     const file=new File([blob],filename,{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
     if(navigator.canShare({files:[file]})){
-      navigator.share({files:[file],title:'FinanceOS Export'})
+      // No title param — avoids the duplicate .txt bug on iOS
+      navigator.share({files:[file]})
         .then(()=>{ markBackupDone(); })
         .catch(err=>{ if(err.name!=='AbortError') showAlert({icon:'❌',title:'Export failed',msg:err.message}); });
       return;
