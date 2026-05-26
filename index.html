@@ -3285,10 +3285,25 @@ function exportData(){
     const json=JSON.stringify(data,null,2);
     const blob=new Blob([json],{type:'application/json'});
     const url=URL.createObjectURL(blob);
+    const isIOS=/iPhone|iPad|iPod/i.test(navigator.userAgent);
+    if(isIOS){
+      // window.open triggers the native iOS Files sheet
+      const w=window.open(url,'_blank');
+      if(!w){
+        // Popup blocked fallback
+        const a=document.createElement('a');
+        a.href=url; a.download=filename;
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      }
+      setTimeout(()=>URL.revokeObjectURL(url),10000);
+      markBackupDone();
+      return;
+    }
+    // Desktop
     const a=document.createElement('a');
     a.href=url; a.download=filename;
     document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    setTimeout(()=>URL.revokeObjectURL(url),10000);
+    URL.revokeObjectURL(url);
     showToast(t('Backup downloaded!'));
     markBackupDone();
   }catch(e){showAlert({icon:'❌',title:'Export failed',msg:e.message});}
@@ -8356,6 +8371,10 @@ function autoResetRecurringBills(){
 let _pwaPrompt=null;
 
 function initPWA(){
+  // Register service worker for offline support
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.register('/sw.js').catch(err=>console.warn('[PWA] SW registration failed:',err));
+  }
   if(localStorage.getItem(PWA_PROMPT_KEY)) return;
   const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
   const isInStandalone=window.navigator.standalone===true||window.matchMedia('(display-mode: standalone)').matches;
