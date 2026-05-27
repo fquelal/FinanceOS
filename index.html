@@ -2603,7 +2603,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v2.3.3';
+const APP_VERSION='v2.3.4';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -5147,7 +5147,8 @@ function autoProcessScheduledBills(){
     const d=daysUntil(b.dueDate);
     if(d>0) return; // only process today (d===0) or overdue (d<0)
     const amt=b.scheduledAmount||b.amount||0;
-    const acId=b.scheduledAccountId||0;
+    // Fall back to autoLogAccountId for auto-log bills that never had scheduledAccountId set
+    const acId=b.scheduledAccountId||b.autoLogAccountId||0;
     // Debit linked account
     if(acId) adjustAccountBalance(acId,-amt);
     // If debt, reduce balance
@@ -6623,6 +6624,16 @@ function renderBills(){
     if(!b.dueDate) return null;
     // Don't show item in months before it was created
     if(b.createdAt && showKey < b.createdAt.slice(0,7)) return null;
+    // If bill is Paid and has a payment transaction in showKey, show it in that month
+    // even if the due date has already advanced to the next cycle (e.g. after auto-processing)
+    if(b.status==='Paid'){
+      const paidTxn=data.transactions.find(tx=>
+        (tx.autoLogRef===b.id||(tx.description&&tx.description.startsWith(b.name)))
+        &&tx.date&&tx.date.slice(0,7)===showKey
+        &&(tx.type==='Bill Payment'||tx.type==='Debt Payment')
+      );
+      if(paidTxn) return paidTxn.date;
+    }
     if(!b.recurring || b.recurring==='No' || b.recurring==='One-time'){
       return b.dueDate.slice(0,7)===showKey ? b.dueDate : null;
     }
