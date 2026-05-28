@@ -1111,9 +1111,9 @@ canvas{width:100%!important;}
 
       <!-- Hero card — Money Left This Month -->
       <div id="d-hero-card" style="background:linear-gradient(135deg,rgba(80,112,240,.18),rgba(80,112,240,.06));border:1px solid rgba(80,112,240,.25);border-radius:16px;padding:14px 16px 12px;margin-bottom:12px;text-align:center">
-        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:4px">Money Left This Month</div>
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:4px">Available This Month</div>
         <div id="d-balance" style="font-family:var(--font-d);font-size:34px;font-weight:800;letter-spacing:-1px;line-height:1">$0.00</div>
-        <div id="d-hero-breakdown" style="display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:4px 10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:20px;font-size:11px;color:var(--muted)"></div>
+        <div id="d-hero-breakdown" style="margin-top:10px;width:100%;max-width:240px;display:inline-block"></div>
         <div id="d-summary-line" style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.4"></div>
       </div>
 
@@ -2603,7 +2603,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v2.3.6';
+const APP_VERSION='v1.1.61';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -6175,19 +6175,21 @@ function renderDashboard(){
     balEl.textContent=usd(moneyLeft);
     balEl.style.color=moneyLeft>=0?'var(--green)':'var(--red)';
   }
-  // Breakdown pill: "🏦 Chase Checking $5,100 − $289 scheduled"
+  // Breakdown: account balance − scheduled = money left
   const breakdownEl=$('d-hero-breakdown');
   if(breakdownEl){
-    const totalScheduled=scheduledBills+scheduledExps;
-    const acctIcon=defaultAcct.type==='savings'?'💰':defaultAcct.type==='cash'?'💵':'🏦';
+    const totalScheduled=parseFloat((scheduledBills+scheduledExps).toFixed(2));
     const acctName=defaultAcct.name||'Checking';
+    const rowStyle='display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:2px 0';
+    const dividerStyle='border:none;border-top:1px solid rgba(255,255,255,.1);margin:5px 0';
     if(totalScheduled>0){
-      breakdownEl.innerHTML=`<span style="color:var(--accent2)">${acctName}</span>`
-        +`<span style="color:var(--muted);font-size:10px">−</span>`
-        +`<span style="color:var(--yellow)">${usd(totalScheduled)} scheduled</span>`;
+      breakdownEl.innerHTML=
+        `<div style="${rowStyle}"><span style="color:var(--muted)">${acctName}</span><span style="color:var(--text)">${usd(checkingBal)}</span></div>`
+        +`<div style="${rowStyle}"><span style="color:var(--muted)">− Scheduled</span><span style="color:var(--yellow)">−${usd(totalScheduled)}</span></div>`
     } else {
-      breakdownEl.innerHTML=`<span style="color:var(--accent2)">${acctName}</span>`
-        +`<span style="color:var(--muted);font-size:10px"> · no scheduled payments</span>`;
+      breakdownEl.innerHTML=
+        `<div style="${rowStyle}"><span style="color:var(--muted)">${acctName}</span><span style="color:var(--text)">${usd(checkingBal)}</span></div>`
+        +`<div style="${rowStyle}"><span style="color:var(--muted)">− Scheduled</span><span style="color:var(--muted)">$0.00</span></div>`;
     }
   }
 
@@ -6441,7 +6443,7 @@ function renderMoneySummaryCards(){
     const scheduledBills=viewBills.filter(b=>b.status==='Scheduled').reduce((s,b)=>s+(b.scheduledAmount||b.amount||0),0);
     const scheduledExps=viewExps.filter(e=>e.scheduledMonth===viewMonth).reduce((s,e)=>s+e.amount,0);
     moneyLeftVal=parseFloat((availableNow-scheduledBills-scheduledExps).toFixed(2));
-    moneyLeftLabel='Money Left';
+    moneyLeftLabel='Available';
     moneyLeftNote=null;
   } else if(isFuture){
     // Checking balance − all scheduled items from today through end of viewed month
@@ -6465,7 +6467,7 @@ function renderMoneySummaryCards(){
       if(scanKey>viewMonth) break; // safety
     }
     moneyLeftVal=parseFloat((availableNow-totalCommitted).toFixed(2));
-    moneyLeftLabel='Projected Left';
+    moneyLeftLabel='Projected Available';
     moneyLeftNote=null;
   } else {
     // Past month: net cash flow = income received − bills paid − expenses paid
