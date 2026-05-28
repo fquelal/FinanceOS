@@ -6185,7 +6185,7 @@ function renderDashboard(){
     if(totalScheduled>0){
       breakdownEl.innerHTML=
         `<div style="${rowStyle}"><span style="color:var(--muted)">${acctName}</span><span style="color:var(--text)">${usd(checkingBal)}</span></div>`
-        +`<div style="${rowStyle}"><span style="color:var(--muted)">− Scheduled</span><span style="color:var(--yellow)">−${usd(totalScheduled)}</span></div>`
+        +`<div style="${rowStyle}"><span style="color:var(--muted)">Scheduled</span><span style="color:var(--yellow)">−${usd(totalScheduled)}</span></div>`
     } else {
       breakdownEl.innerHTML=
         `<div style="${rowStyle}"><span style="color:var(--muted)">${acctName}</span><span style="color:var(--text)">${usd(checkingBal)}</span></div>`
