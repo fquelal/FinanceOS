@@ -2603,7 +2603,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v2.3.5';
+const APP_VERSION='v2.3.6';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -6626,6 +6626,7 @@ function renderBills(){
     if(b.createdAt && showKey < b.createdAt.slice(0,7)) return null;
     // If bill is Paid and has a payment transaction in showKey, show it in that month
     // even if the due date has already advanced to the next cycle (e.g. after auto-processing)
+    // This check must come before ANY early-return path (including Monthly fast path)
     if(b.status==='Paid'){
       const paidTxn=data.transactions.find(tx=>
         (tx.autoLogRef===b.id||(tx.description&&tx.description.startsWith(b.name)))
@@ -6639,7 +6640,7 @@ function renderBills(){
     }
     // Monthly is by far the most common — fast path: just construct the date directly
     if(b.recurring==='Monthly'){
-      // Don't show in months before the bill's own start month
+      // Don't show in months before the bill's own start month (but Paid check above handles already-paid)
       if(showKey < b.dueDate.slice(0,7)) return null;
       const day=parseInt(b.dueDate.split('-')[2])||1;
       const daysInTarget=new Date(showYr,showMo+1,0).getDate();
