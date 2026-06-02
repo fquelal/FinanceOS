@@ -556,12 +556,6 @@ canvas{width:100%!important;}
 .anomaly-item .an-badge{font-size:13px;font-weight:700;white-space:nowrap;}
 
 
-/* ── NW HISTORY ── */
-.nwh-btn{background:rgba(255,255,255,.06);border:none;border-radius:8px;
-  padding:5px 12px;font-size:11px;font-weight:600;color:var(--muted);
-  cursor:pointer;font-family:var(--font-b);transition:all .15s;}
-.nwh-btn.active{background:var(--accent);color:#fff;}
-
 
 /* ── CARD DROPDOWN MENU ── */
 .card-menu-btn{background:rgba(255,255,255,.08);border:none;color:var(--muted);font-size:20px;
@@ -1148,18 +1142,16 @@ canvas{width:100%!important;}
       <div id="money-summary-cards" style="margin-bottom:14px"></div>
       <div class="view-toggle">
         <button class="view-btn active" id="bill-view-list" onclick="setBillView('list')">☰ List</button>
-        <button class="view-btn" id="bill-view-cal" onclick="setBillView('calendar')">📅 Calendar</button>
+        <button class="view-btn" id="bill-view-cal" onclick="setBillView('calendar')">Calendar</button>
+        <button class="view-btn" id="bill-today-btn" onclick="goToCurrentMonth()" style="display:none;background:rgba(80,112,240,.15);color:var(--accent2);border-color:rgba(80,112,240,.3)">↩ Today</button>
       </div>
-      <div class="month-nav" id="bill-month-toggle">
-        <button class="mn-btn" onclick="shiftBillMonth(-1)">&#8249;</button>
-        <button class="mn-label" id="bill-month-label" onclick="goToCurrentMonth()" title="Tap to go to current month" style="background:none;border:none;cursor:pointer;font-family:var(--font-b)">--</button>
-        <button class="mn-btn" onclick="shiftBillMonth(1)" id="bill-month-next">&#8250;</button>
-      </div>
-      <div class="sort-bar" id="bill-sort-bar">
+      <div class="sort-bar" id="bill-sort-bar" style="display:flex;align-items:center;gap:6px;margin-bottom:14px">
+        <button class="sort-btn" onclick="shiftBillMonth(-1)" style="flex-shrink:0;padding:8px 12px;font-size:16px;line-height:1">&#8249;</button>
         <button class="sort-btn active" onclick="setBillSort('date')" id="bs-date">Date <span id="bs-date-arrow">↓</span></button>
         <button class="sort-btn" onclick="setBillSort('status')" id="bs-status">Status</button>
         <button class="sort-btn" onclick="setBillSort('amount')" id="bs-amount">Amount <span id="bs-amount-arrow" style="display:none"></span></button>
         <button class="sort-btn" onclick="setBillSort('type')" id="bs-type">Type</button>
+        <button class="sort-btn" onclick="shiftBillMonth(1)" id="bill-month-next" style="flex-shrink:0;padding:8px 12px;font-size:16px;line-height:1;margin-left:auto">&#8250;</button>
       </div>
       <div id="bill-list"></div>
       <div class="bill-calendar" id="bill-calendar">
@@ -1300,6 +1292,15 @@ canvas{width:100%!important;}
         <div id="account-list"></div>
       </div>
 
+      <!-- Income subsection -->
+      <div class="card" style="margin-bottom:20px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+          <div class="section-label" style="color:var(--green);margin-bottom:0">Income</div>
+          <button class="btn btn-primary btn-sm" onclick="openModal('income')">+ Income</button>
+        </div>
+        <div id="income-manage-list"></div>
+      </div>
+
       <!-- Savings Goals subsection -->
       <div class="card" class="mb-16">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
@@ -1315,20 +1316,6 @@ canvas{width:100%!important;}
           <button class="btn btn-primary btn-sm" onclick="openModal('asset')">+ Asset</button>
         </div>
         <div id="asset-list"></div>
-      </div>
-
-      <!-- Net Worth History Chart -->
-      <div class="card" style="margin-bottom:20px" id="nw-history-card">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px">
-          <div class="section-label" style="color:var(--muted);margin-bottom:0" data-i18n="Net Worth History">Net Worth History</div>
-          <div class="plan-toggle" class="mb-0">
-            <button class="nwh-btn active" onclick="setNWHWindow(6,this)">6mo</button>
-            <button class="nwh-btn" onclick="setNWHWindow(12,this)">12mo</button>
-            <button class="nwh-btn" onclick="setNWHWindow(24,this)">All</button>
-          </div>
-        </div>
-        <div class="chart-wrap"><canvas id="nw-history-chart"></canvas></div>
-        <div id="nw-history-empty" style="display:none;font-size:12px;color:var(--muted);padding:8px 0;text-align:center">Keep using the app monthly to build your history.</div>
       </div>
     </div>
 
@@ -2661,7 +2648,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v1.2.2';
+const APP_VERSION='v1.2.3';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -3326,7 +3313,6 @@ function confirmReset(){
       localStorage.removeItem(STORAGE_KEY);
       localStorage.removeItem(SAVE_TS_KEY);
       localStorage.removeItem(ONBOARD_KEY);
-      localStorage.removeItem(NW_HISTORY_KEY);
       localStorage.removeItem(THEME_KEY);
       localStorage.removeItem(BILL_RESET_KEY);
       localStorage.removeItem(AUTO_LOG_KEY);
@@ -3984,7 +3970,7 @@ function renderNetWorth(){
   $('nw-assets').textContent=usd(totalAssets);
   $('nw-debts').textContent=usd(totalDebt);
   const nwEl=$('nw-total');
-  if(nwEl){nwEl.textContent=usd(netWorth);snapshotNetWorth(netWorth);drawNWHistoryChart();nwEl.style.color=netWorth>=0?'var(--green)':'var(--red)';}
+  if(nwEl){nwEl.textContent=usd(netWorth);nwEl.style.color=netWorth>=0?'var(--green)':'var(--red)';}
   // Render accounts in Net Worth section
   const acList=$('account-list');
   if(acList){
@@ -4378,7 +4364,7 @@ function showSub(sec,parentSec){
   renderAlerts();
   if(sec==='bills') renderBills();
   else if(sec==='dashboard') renderDashboard();
-  else if(sec==='networth') renderNetWorth();
+  else if(sec==='networth') { renderNetWorth(); setTimeout(()=>renderIncomeManage(),50); }
   else if(sec==='debt') renderDebt();
   else if(sec==='insights') renderInsights();
   if(sec==='cards') setTimeout(()=>renderCards(),50);
@@ -4434,7 +4420,7 @@ function _initSwipe(){
   },{passive:true});
 }
 function show(sec,btn){
-  if(sec==='networth') setTimeout(drawNWHistoryChart,80);
+
   // Collapse simulator when leaving debt section
   if(sec!=='debt'){
     const inputs=$('promo-sim-inputs'); if(inputs) inputs.style.display='none';
@@ -4865,11 +4851,7 @@ function renderIncomeCard(income, occ, idx, total){
   actionBtns+='<button class="btn btn-sm"'
     +' style="'+_btn+';background:rgba(80,112,240,.12);color:var(--accent2);border:1px solid rgba(80,112,240,.25)"'
     +' onclick="event.stopPropagation();openOccurrenceModal('+income.id+',\''+occ.date+'\','+income.amount+')">$ Update</button>';
-  if(isFirst){
-    actionBtns+='<button class="btn btn-sm"'
-      +' style="'+_btn+';background:rgba(255,255,255,.08);color:var(--text);border:1px solid var(--border2)"'
-      +' onclick="event.stopPropagation();openEditIncome('+income.id+')">Edit</button>';
-  }
+
   return '<div class="card" style="margin-bottom:8px;border-left:3px solid #22c55e;border-radius:4px 12px 12px 4px;cursor:pointer"'
     +' onclick="toggleCardExpand(\''+cid+'\')">'
     +'<div style="display:flex;align-items:center;justify-content:space-between;gap:8px">'
@@ -6826,8 +6808,8 @@ function renderMoneySummaryCards(){
   const progressBar=(paid,total,pct,col,label)=>
     '<div style="flex:1;padding:8px 6px;background:rgba(255,255,255,.03);border-radius:8px">'
     +'<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px">'
-    +'<div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">'+label+'</div>'
-    +'<div style="font-size:14px;font-weight:800;color:'+col+'">'+paid+'/'+total+'</div>'
+    +'<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">'+label+'</div>'
+    +'<div style="font-size:17px;font-weight:800;color:'+col+'">'+paid+'/'+total+'</div>'
     +'</div>'
     +'<div style="height:3px;border-radius:2px;background:rgba(255,255,255,.08);overflow:hidden">'
     +'<div style="height:100%;width:'+pct+'%;background:'+col+';border-radius:2px;transition:width .4s"></div>'
@@ -6837,8 +6819,8 @@ function renderMoneySummaryCards(){
   const moneyLeftPill=(val,label,note,forceColor)=>{
     const col=forceColor||(val>=0?'var(--green)':'var(--red)');
     return '<div style="flex:1;text-align:center;padding:8px 4px;background:rgba(255,255,255,.03);border-radius:8px">'
-    +'<div style="font-size:13px;font-weight:800;color:'+col+'">'+(val>=0?'':'-')+usd(Math.abs(val))+'</div>'
-    +'<div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-top:2px">'+label+'</div>'
+    +'<div style="font-size:17px;font-weight:800;color:'+col+'">'+(val>=0?'':'-')+usd(Math.abs(val))+'</div>'
+    +'<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-top:2px">'+label+'</div>'
     +(note?'<div style="font-size:9px;color:var(--muted);margin-top:2px;white-space:normal;line-height:1.3">'+note+'</div>':'')
     +'</div>';
   };
@@ -6852,7 +6834,7 @@ function renderMoneySummaryCards(){
     '<div style="background:var(--surface);border:1px solid '+healthColor+'44;border-radius:14px;padding:14px 16px;position:relative;overflow:hidden">'
     +'<div style="position:absolute;inset:0;background:linear-gradient(135deg,'+healthColor+'08,transparent);pointer-events:none"></div>'
     +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">'
-    +'<div style="display:flex;align-items:center;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:'+healthColor+'">'
+    +'<div style="display:flex;align-items:center;font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:'+healthColor+'">'
     +viewMonthName+monthBadge+'</div>'
     +'<div style="font-size:11px;font-weight:800;color:'+healthColor+';background:'+healthColor+'18;border:1px solid '+healthColor+'33;border-radius:20px;padding:2px 10px">'+healthIcon+' '+healthStatus+'</div>'
     +'</div>'
@@ -6878,19 +6860,14 @@ function renderBills(){
   renderMoneySummaryCards();
   initBillMonth();
 
+  // Show/hide Today button
+  const todayBtn=$('bill-today-btn');
+  if(todayBtn) todayBtn.style.display=_billMonth===today().slice(0,7)?'none':'';
+
   // Parse selected month
   const [showYr, showMoRaw]=_billMonth.split('-').map(Number);
   const showMo=showMoRaw-1; // 0-indexed
   const showKey=_billMonth; // YYYY-MM
-
-  // Update nav label
-  const lbl=$('bill-month-label');
-  if(lbl){
-    const isCurrentMo=_billMonth===today().slice(0,7);
-    lbl.textContent=new Date(showYr,showMo,1).toLocaleString('default',{month:'long',year:'numeric'})+(isCurrentMo?'':' ↩');
-    lbl.style.color=isCurrentMo?'':'var(--accent)';
-    lbl.title=isCurrentMo?'Current month':'Tap to return to current month';
-  }
 
   // Build income occurrence items for the selected month only
   const incomeItems=[];
@@ -7389,6 +7366,33 @@ function renderBillsManage(){
     }
   }
 }
+
+function renderIncomeManage(){
+  const el=$('income-manage-list');
+  if(!el) return;
+  const recurring=data.income.filter(i=>i.frequency&&i.frequency!=='One-time');
+  if(!recurring.length){
+    el.innerHTML='<div style="color:var(--muted);font-size:13px;text-align:center;padding:12px 0">No recurring income added yet.</div>';
+    return;
+  }
+  el.innerHTML=recurring.map(i=>{
+    const freqColor='#22c55e';
+    return `<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 0;border-bottom:1px solid var(--border)">
+      <div style="min-width:0;flex:1">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
+          <span style="font-size:12px;font-weight:700;padding:2px 7px;border-radius:6px;background:${freqColor}22;color:${freqColor};flex-shrink:0">${escHtml(i.frequency)}</span>
+          <span style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escHtml(i.source)}</span>
+        </div>
+        <div style="font-size:12px;color:var(--muted)">${usd(i.amount)} · Started ${fmtDate(i.date)}</div>
+      </div>
+      <div style="display:flex;gap:6px;flex-shrink:0">
+        <button class="btn btn-secondary btn-sm" onclick="openEditIncome(${i.id})">Edit</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteItem('income',${i.id});renderIncomeManage()">&#x2715;</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
 function quickUpdateCardBalance(id){
   const b=data.bills.find(x=>x.id===id);
   if(!b) return;
@@ -8246,7 +8250,6 @@ function loadTheme(){
 const ONBOARD_KEY='financeOS_onboarded';
 const BILL_RESET_KEY='financeOS_billResetMonth';
 const PWA_PROMPT_KEY='financeOS_pwaPromptDismissed';
-const NW_HISTORY_KEY='financeOS_nwHistory';
 // ══════════════════════════════════════════════════════════════
 // ONBOARDING - clean rewrite
 // ══════════════════════════════════════════════════════════════
@@ -8929,129 +8932,6 @@ function velocityHtml(spentPct, monthPct){
     <span class="vel-dot" style="background:${dotColor}"></span>
     <span style="color:${color}">${msg}</span>
   </div>`;
-}
-
-
-
-// ── NET WORTH HISTORY ─────────────────────────────────────────
-let nwhWindow = 6;
-
-function setNWHWindow(n, btn){
-  nwhWindow = n;
-  document.querySelectorAll('.nwh-btn').forEach(b => b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  drawNWHistoryChart();
-}
-
-function snapshotNetWorth(value){
-  const month = today().slice(0,7);
-  let history = [];
-  try { history = JSON.parse(localStorage.getItem(NW_HISTORY_KEY)||'[]'); } catch(e){}
-  const existing = history.find(h => h.month === month);
-  if(existing){
-    existing.value = value; // Update current month snapshot
-  } else {
-    history.push({month, value});
-  }
-  // Keep max 36 months
-  history.sort((a,b) => a.month.localeCompare(b.month));
-  if(history.length > 36) history = history.slice(-36);
-  localStorage.setItem(NW_HISTORY_KEY, JSON.stringify(history));
-  return history;
-}
-
-function drawNWHistoryChart(){
-  const canvas = $('nw-history-chart');
-  const empty  = $('nw-history-empty');
-  if(!canvas) return;
-
-  let history = [];
-  try { history = JSON.parse(localStorage.getItem(NW_HISTORY_KEY)||'[]'); } catch(e){}
-  history.sort((a,b) => a.month.localeCompare(b.month));
-
-  // Filter to window
-  const sliced = nwhWindow === 0 ? history : history.slice(-nwhWindow);
-
-  if(sliced.length < 2){
-    canvas.style.display = 'none';
-    if(empty) empty.style.display = 'block';
-    return;
-  }
-  canvas.style.display = 'block';
-  if(empty) empty.style.display = 'none';
-
-  const W = canvas.parentElement.offsetWidth || 300;
-  if(W === 0){ setTimeout(drawNWHistoryChart, 150); return; }
-  const H = 160;
-  canvas.width  = W;
-  canvas.height = H;
-  const ctx = canvas.getContext('2d');
-  ctx.clearRect(0,0,W,H);
-
-  const values = sliced.map(h => h.value);
-  const minV   = Math.min(...values);
-  const maxV   = Math.max(...values);
-  const range  = maxV - minV || 1;
-  const pad    = { top:20, right:16, bottom:28, left:16 };
-  const chartW = W - pad.left - pad.right;
-  const chartH = H - pad.top  - pad.bottom;
-
-  // Gradient fill
-  const grad = ctx.createLinearGradient(0, pad.top, 0, H - pad.bottom);
-  grad.addColorStop(0,  'rgba(26,168,216,0.25)');
-  grad.addColorStop(1,  'rgba(26,168,216,0.00)');
-
-  const pts = sliced.map((h,i) => ({
-    x: pad.left + (i / (sliced.length-1)) * chartW,
-    y: pad.top  + (1 - (h.value - minV) / range) * chartH,
-    v: h.value,
-    m: h.month,
-  }));
-
-  // Fill
-  ctx.beginPath();
-  ctx.moveTo(pts[0].x, H - pad.bottom);
-  pts.forEach(p => ctx.lineTo(p.x, p.y));
-  ctx.lineTo(pts[pts.length-1].x, H - pad.bottom);
-  ctx.closePath();
-  ctx.fillStyle = grad;
-  ctx.fill();
-
-  // Line
-  ctx.beginPath();
-  ctx.strokeStyle = '#5070f0';
-  ctx.lineWidth = 2;
-  ctx.lineJoin  = 'round';
-  pts.forEach((p,i) => i===0 ? ctx.moveTo(p.x,p.y) : ctx.lineTo(p.x,p.y));
-  ctx.stroke();
-
-  // Dots + labels
-  pts.forEach((p, i) => {
-    // Dot
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, 3, 0, Math.PI*2);
-    ctx.fillStyle = '#5070f0';
-    ctx.fill();
-
-    // Month label (first, last, and every 3rd)
-    if(i===0 || i===pts.length-1 || i%3===0){
-      const d = new Date(p.m+'-15');
-      const lbl = d.toLocaleString('default',{month:'short', year:'2-digit'});
-      ctx.font = '9px -apple-system,sans-serif';
-      ctx.fillStyle = 'rgba(136,136,153,0.9)';
-      ctx.textAlign = i===0?'left':i===pts.length-1?'right':'center';
-      ctx.fillText(lbl, p.x, H - 6);
-    }
-
-    // Value label on last point
-    if(i===pts.length-1){
-      const isPositive = p.v >= 0;
-      ctx.font = 'bold 11px -apple-system,sans-serif';
-      ctx.fillStyle = isPositive ? '#22c55e' : '#ef4444';
-      ctx.textAlign = 'right';
-      ctx.fillText(usd(p.v), p.x, p.y - 8);
-    }
-  });
 }
 
 
@@ -10333,12 +10213,11 @@ function setBillView(view){
   const listBtn = $('bill-view-list');
   const calBtn  = $('bill-view-cal');
 
-  const monthToggle = $('bill-month-toggle');
+  const monthToggle = null; // removed — arrows now in sort bar
   if(view === 'calendar'){
     if(listEl) listEl.classList.add('calendar-mode');
     if(calEl)  calEl.classList.add('active');
     if(sortBar) sortBar.style.display = 'none';
-    if(monthToggle) monthToggle.style.display = 'none';
     if(listBtn) listBtn.classList.remove('active');
     if(calBtn)  calBtn.classList.add('active');
     renderBillCalendar();
@@ -10346,7 +10225,6 @@ function setBillView(view){
     if(listEl) listEl.classList.remove('calendar-mode');
     if(calEl)  calEl.classList.remove('active');
     if(sortBar) sortBar.style.display = '';
-    if(monthToggle) monthToggle.style.display = 'flex';
     if(listBtn) listBtn.classList.add('active');
     if(calBtn)  calBtn.classList.remove('active');
   }
@@ -11606,7 +11484,7 @@ function renderAll(){
     _renderAllScheduled=false;
     updateOriginalBalances();
     renderAlerts();renderDashboard();renderBills();renderDebt();
-    renderNetWorth();renderInsights();renderCashFlow();renderCards();renderLoans();renderTxns();
+    renderNetWorth();renderInsights();renderCashFlow();renderCards();renderLoans();renderTxns();renderIncomeManage();
     renderSnapshot();updateInsightsBadge();updateBillsBadge();
     updateLastSavedUI();checkBackupReminder();
     setTimeout(attachSwipes,50);
