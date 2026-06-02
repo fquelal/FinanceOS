@@ -338,7 +338,9 @@ canvas{width:100%!important;}
 .empty-state .es-btn:hover{opacity:.85;}
 /* Bill sort toggles */
 .sort-bar{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
-.sort-btn{background:rgba(255,255,255,.06);border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;font-family:var(--font-b);transition:all .15s;flex-shrink:1;white-space:nowrap;min-width:0;}
+.sort-btn{background:rgba(255,255,255,.06);border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;font-family:var(--font-b);transition:all .15s;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:44px;text-align:center;}
+.sb-main{line-height:1.2;}
+.sb-sub{font-size:11px;font-weight:700;line-height:1.2;margin-top:2px;}
 .sort-btn.active{background:var(--accent);color:#fff;}
 /* Search bar */
 .search-bar{position:relative;margin-bottom:14px;}
@@ -1145,13 +1147,13 @@ canvas{width:100%!important;}
         <button class="view-btn" id="bill-view-cal" onclick="setBillView('calendar')">Calendar</button>
         <button class="view-btn" id="bill-today-btn" onclick="goToCurrentMonth()" style="display:none;background:rgba(80,112,240,.15);color:var(--accent2);border-color:rgba(80,112,240,.3)">↩ Today</button>
       </div>
-      <div class="sort-bar" id="bill-sort-bar" style="display:flex;align-items:center;gap:4px;margin-bottom:14px;flex-wrap:nowrap;overflow:hidden">
-        <button class="sort-btn" onclick="shiftBillMonth(-1)" style="flex-shrink:0;padding:8px 10px;font-size:16px;line-height:1">&#8249;</button>
-        <button class="sort-btn active" onclick="setBillSort('date')" id="bs-date">Date <span id="bs-date-arrow">↓</span></button>
-        <button class="sort-btn" onclick="setBillSort('status')" id="bs-status">Status</button>
-        <button class="sort-btn" onclick="setBillSort('amount')" id="bs-amount">Amount <span id="bs-amount-arrow" style="display:none"></span></button>
-        <button class="sort-btn" onclick="setBillSort('type')" id="bs-type">Type</button>
-        <button class="sort-btn" onclick="shiftBillMonth(1)" id="bill-month-next" style="flex-shrink:0;padding:8px 10px;font-size:16px;line-height:1;margin-left:auto">&#8250;</button>
+      <div class="sort-bar" id="bill-sort-bar" style="display:flex;align-items:center;gap:6px;margin-bottom:14px">
+        <button class="sort-btn" onclick="shiftBillMonth(-1)" style="flex-shrink:0;padding:8px 12px;font-size:16px;line-height:1;min-height:44px">&#8249;</button>
+        <button class="sort-btn active" onclick="setBillSort('date')" id="bs-date"><span class="sb-main">Date</span><span class="sb-sub" id="bs-date-arrow">↓</span></button>
+        <button class="sort-btn" onclick="setBillSort('status')" id="bs-status"><span class="sb-main">Status</span><span class="sb-sub" id="bs-status-sub" style="display:none"></span></button>
+        <button class="sort-btn" onclick="setBillSort('amount')" id="bs-amount"><span class="sb-main">Amount</span><span class="sb-sub" id="bs-amount-arrow" style="display:none"></span></button>
+        <button class="sort-btn" onclick="setBillSort('type')" id="bs-type"><span class="sb-main">Type</span><span class="sb-sub" id="bs-type-sub" style="display:none"></span></button>
+        <button class="sort-btn" onclick="shiftBillMonth(1)" id="bill-month-next" style="flex-shrink:0;padding:8px 12px;font-size:16px;line-height:1;margin-left:auto;min-height:44px">&#8250;</button>
       </div>
       <div id="bill-list"></div>
       <div class="bill-calendar" id="bill-calendar">
@@ -5246,17 +5248,25 @@ function setBillSort(s){
     dateArrow.textContent=billSortDir==='asc'?'↓':'↑';
   }
   if(amtArrow){
-    amtArrow.style.display=billSort==='amount'?'inline':'none';
+    amtArrow.style.display=billSort==='amount'?'':'none';
     amtArrow.textContent=billSortDir==='desc'?'↑':'↓';
   }
-  // Update Status button label
+  // Update Status sub-label
   const cycleLabels=[null,'Overdue','Pending','Scheduled','Paid'];
-  const statusBtn=$('bs-status');
-  if(statusBtn) statusBtn.textContent=s==='status'&&billStatusCycle>0?'Status · '+cycleLabels[billStatusCycle]:'Status';
-  // Update Type button label
+  const statusSub=$('bs-status-sub');
+  if(statusSub){
+    const lbl=s==='status'&&billStatusCycle>0?cycleLabels[billStatusCycle]:null;
+    statusSub.textContent=lbl||'';
+    statusSub.style.display=lbl?'':'none';
+  }
+  // Update Type sub-label
   const typeLabels=[null,'Income','Bills','Expenses','Loans','Cards'];
-  const typeBtn=$('bs-type');
-  if(typeBtn) typeBtn.textContent=s==='type'&&billTypeCycle>0?'Type · '+typeLabels[billTypeCycle]:'Type';
+  const typeSub=$('bs-type-sub');
+  if(typeSub){
+    const lbl=s==='type'&&billTypeCycle>0?typeLabels[billTypeCycle]:null;
+    typeSub.textContent=lbl||'';
+    typeSub.style.display=lbl?'':'none';
+  }
   renderBills();
 }
 
