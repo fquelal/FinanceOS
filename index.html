@@ -338,9 +338,7 @@ canvas{width:100%!important;}
 .empty-state .es-btn:hover{opacity:.85;}
 /* Bill sort toggles */
 .sort-bar{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
-.sort-btn{background:rgba(255,255,255,.06);border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;font-family:var(--font-b);transition:all .15s;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:44px;text-align:center;}
-.sb-main{line-height:1.2;}
-.sb-sub{font-size:11px;font-weight:700;line-height:1.2;margin-top:2px;}
+.sort-btn{background:rgba(255,255,255,.06);border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;font-family:var(--font-b);transition:all .15s;}
 .sort-btn.active{background:var(--accent);color:#fff;}
 /* Search bar */
 .search-bar{position:relative;margin-bottom:14px;}
@@ -1146,14 +1144,15 @@ canvas{width:100%!important;}
         <button class="view-btn active" id="bill-view-list" onclick="setBillView('list')">☰ List</button>
         <button class="view-btn" id="bill-view-cal" onclick="setBillView('calendar')">Calendar</button>
         <button class="view-btn" id="bill-today-btn" onclick="goToCurrentMonth()" style="display:none;background:rgba(80,112,240,.15);color:var(--accent2);border-color:rgba(80,112,240,.3)">↩ Today</button>
+        <button class="view-btn" id="bill-filter-pill" onclick="clearBillSort()" style="display:none;background:rgba(80,112,240,.15);color:var(--accent2);border-color:rgba(80,112,240,.3)"></button>
       </div>
       <div class="sort-bar" id="bill-sort-bar" style="display:flex;align-items:center;gap:6px;margin-bottom:14px">
-        <button class="sort-btn" onclick="shiftBillMonth(-1)" style="flex-shrink:0;padding:8px 12px;font-size:16px;line-height:1;min-height:44px">&#8249;</button>
-        <button class="sort-btn active" onclick="setBillSort('date')" id="bs-date"><span class="sb-main">Date</span><span class="sb-sub" id="bs-date-arrow">↓</span></button>
-        <button class="sort-btn" onclick="setBillSort('status')" id="bs-status"><span class="sb-main">Status</span><span class="sb-sub" id="bs-status-sub" style="display:none"></span></button>
-        <button class="sort-btn" onclick="setBillSort('amount')" id="bs-amount"><span class="sb-main">Amount</span><span class="sb-sub" id="bs-amount-arrow" style="display:none"></span></button>
-        <button class="sort-btn" onclick="setBillSort('type')" id="bs-type"><span class="sb-main">Type</span><span class="sb-sub" id="bs-type-sub" style="display:none"></span></button>
-        <button class="sort-btn" onclick="shiftBillMonth(1)" id="bill-month-next" style="flex-shrink:0;padding:8px 12px;font-size:16px;line-height:1;margin-left:auto;min-height:44px">&#8250;</button>
+        <button class="sort-btn" onclick="shiftBillMonth(-1)" style="flex-shrink:0;padding:8px 12px;font-size:16px;line-height:1">&#8249;</button>
+        <button class="sort-btn" onclick="setBillSort('date')" id="bs-date">Date</button>
+        <button class="sort-btn" onclick="setBillSort('status')" id="bs-status">Status</button>
+        <button class="sort-btn" onclick="setBillSort('amount')" id="bs-amount">Amount</button>
+        <button class="sort-btn" onclick="setBillSort('type')" id="bs-type">Type</button>
+        <button class="sort-btn" onclick="shiftBillMonth(1)" id="bill-month-next" style="flex-shrink:0;padding:8px 12px;font-size:16px;line-height:1;margin-left:auto">&#8250;</button>
       </div>
       <div id="bill-list"></div>
       <div class="bill-calendar" id="bill-calendar">
@@ -5224,49 +5223,55 @@ function attachSwipes(){
 }
 
 // ── BILL SORT ─────────────────────────────────────────
-function setBillSort(s){
-  if(s==='status'&&billSort==='status'){
-    billStatusCycle=(billStatusCycle+1)%5;
-  } else if(s==='type'&&billSort==='type'){
-    billTypeCycle=(billTypeCycle+1)%6;
-  } else if((s==='date'||s==='amount')&&billSort===s){
-    billSortDir=billSortDir==='asc'?'desc':'asc';
+function clearBillSort(){
+  billSort='date';
+  billSortDir='asc';
+  billStatusCycle=0;
+  billTypeCycle=0;
+  updateFilterPill();
+  renderBills();
+}
+
+function updateFilterPill(){
+  const pill=$('bill-filter-pill');
+  if(!pill) return;
+  let label=null;
+  if(billSort==='date'&&billSortDir==='desc') label='Oldest ↑';
+  else if(billSort==='date'&&billSortDir==='asc') label=null; // default, hide pill
+  else if(billSort==='amount'&&billSortDir==='desc') label='Highest ↑';
+  else if(billSort==='amount'&&billSortDir==='asc') label='Lowest ↓';
+  else if(billSort==='status'&&billStatusCycle>0){
+    const labels=[null,'Overdue','Pending','Scheduled','Paid'];
+    label=labels[billStatusCycle];
+  }
+  else if(billSort==='type'&&billTypeCycle>0){
+    const labels=[null,'Income','Bills','Expenses','Loans','Cards'];
+    label=labels[billTypeCycle];
+  }
+  if(label){
+    pill.textContent=label+' ✕';
+    pill.style.display='';
   } else {
-    billStatusCycle=0;
-    billTypeCycle=0;
-    billSortDir=s==='amount'?'desc':'asc';
+    pill.style.display='none';
+  }
+}
+
+function setBillSort(s){
+  if(s==='date'){
+    if(billSort==='date') billSortDir=billSortDir==='asc'?'desc':'asc';
+    else { billSort='date'; billSortDir='asc'; billStatusCycle=0; billTypeCycle=0; }
+  } else if(s==='amount'){
+    if(billSort==='amount') billSortDir=billSortDir==='desc'?'asc':'desc';
+    else { billSort='amount'; billSortDir='desc'; billStatusCycle=0; billTypeCycle=0; }
+  } else if(s==='status'){
+    if(billSort==='status') billStatusCycle=(billStatusCycle+1)%5;
+    else { billSort='status'; billStatusCycle=1; billTypeCycle=0; }
+  } else if(s==='type'){
+    if(billSort==='type') billTypeCycle=(billTypeCycle+1)%6;
+    else { billSort='type'; billTypeCycle=1; billStatusCycle=0; }
   }
   billSort=s;
-  ['date','status','amount','type'].forEach(k=>{
-    const b=$('bs-'+k);if(b)b.classList.toggle('active',k===s);
-  });
-  // Update arrow indicators
-  const dateArrow=$('bs-date-arrow');
-  const amtArrow=$('bs-amount-arrow');
-  if(dateArrow){
-    dateArrow.style.display=billSort==='date'?'':'none';
-    dateArrow.textContent=billSortDir==='asc'?'↓':'↑';
-  }
-  if(amtArrow){
-    amtArrow.style.display=billSort==='amount'?'':'none';
-    amtArrow.textContent=billSortDir==='desc'?'↑':'↓';
-  }
-  // Update Status sub-label
-  const cycleLabels=[null,'Overdue','Pending','Scheduled','Paid'];
-  const statusSub=$('bs-status-sub');
-  if(statusSub){
-    const lbl=s==='status'&&billStatusCycle>0?cycleLabels[billStatusCycle]:null;
-    statusSub.textContent=lbl||'';
-    statusSub.style.display=lbl?'':'none';
-  }
-  // Update Type sub-label
-  const typeLabels=[null,'Income','Bills','Expenses','Loans','Cards'];
-  const typeSub=$('bs-type-sub');
-  if(typeSub){
-    const lbl=s==='type'&&billTypeCycle>0?typeLabels[billTypeCycle]:null;
-    typeSub.textContent=lbl||'';
-    typeSub.style.display=lbl?'':'none';
-  }
+  updateFilterPill();
   renderBills();
 }
 
