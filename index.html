@@ -1114,13 +1114,13 @@ canvas{width:100%!important;}
         <button class="view-btn" id="bill-today-btn" onclick="goToCurrentMonth()" style="display:none;background:rgba(80,112,240,.15);color:var(--accent2);border-color:rgba(80,112,240,.3)">↩ Today</button>
         <button class="view-btn" id="bill-filter-pill" onclick="clearBillSort()" style="display:none;background:rgba(80,112,240,.15);color:var(--accent2);border-color:rgba(80,112,240,.3)"></button>
       </div>
-      <div class="sort-bar" id="bill-sort-bar" style="display:flex;align-items:center;gap:6px;margin-bottom:14px">
+      <div class="sort-bar" id="bill-sort-bar" style="display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:14px">
         <button class="sort-btn" onclick="shiftBillMonth(-1)" style="flex-shrink:0;padding:8px 12px;font-size:16px;line-height:1">&#8249;</button>
         <button class="sort-btn" onclick="setBillSort('date')" id="bs-date">Date</button>
         <button class="sort-btn" onclick="setBillSort('status')" id="bs-status">Status</button>
         <button class="sort-btn" onclick="setBillSort('amount')" id="bs-amount">Amount</button>
         <button class="sort-btn" onclick="setBillSort('type')" id="bs-type">Type</button>
-        <button class="sort-btn" onclick="shiftBillMonth(1)" id="bill-month-next" style="flex-shrink:0;padding:8px 12px;font-size:16px;line-height:1;margin-left:auto">&#8250;</button>
+        <button class="sort-btn" onclick="shiftBillMonth(1)" id="bill-month-next" style="flex-shrink:0;padding:8px 12px;font-size:16px;line-height:1">&#8250;</button>
       </div>
       <div id="bill-list"></div>
       <div class="bill-calendar" id="bill-calendar">
@@ -2617,7 +2617,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v1.2.3';
+const APP_VERSION='v1.2.5';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -4792,7 +4792,7 @@ function renderIncomeCard(income, occ, idx, total){
     :('<span style="font-weight:700;color:var(--green)">'+usd(occ.amount)+'</span>');
   const statusBadge='<span style="font-size:12px;font-weight:700;padding:2px 8px;border-radius:20px;'
     +'background:'+sc+'22;color:'+sc+'">'+status+'</span>';
-  const _btn='flex:1;padding:8px 4px;font-size:11px;font-weight:700;justify-content:center;text-align:center;min-width:0';
+  const _btn='flex:1;padding:8px 4px;font-size:13px;font-weight:700;justify-content:center;text-align:center;min-width:0';
   let actionBtns='';
   if(status==='Received'){
     actionBtns='<button class="btn btn-sm" style="'+_btn+';background:rgba(34,197,94,.15);color:var(--green)"'
@@ -6782,9 +6782,6 @@ function renderMoneySummaryCards(){
     '<div style="flex:1;text-align:center;padding:8px 4px;background:rgba(255,255,255,.03);border-radius:8px">'
     +'<div style="font-size:14px;font-weight:800;color:'+col+'">'+paid+'/'+total+'</div>'
     +'<div style="font-size:13px;font-weight:700;text-transform:none;letter-spacing:0;color:var(--muted);margin-top:2px">'+label+'</div>'
-    +'<div style="height:3px;border-radius:2px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:5px">'
-    +'<div style="height:100%;width:'+pct+'%;background:'+col+';border-radius:2px;transition:width .4s"></div>'
-    +'</div>'
     +'</div>';
 
   const moneyLeftPill=(val,label,note,forceColor)=>{
