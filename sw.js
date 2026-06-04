@@ -1,4 +1,4 @@
-const CACHE_NAME = 'financeos-v1.2.9';
+const CACHE_NAME = 'financeos-v1.3.0';
 
 const PRECACHE_URLS = [
   '/',
