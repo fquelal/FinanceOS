@@ -6834,6 +6834,12 @@ function renderMoneySummaryCards(){
     return b.dueDate>=todayStr&&b.dueDate<=in7Str;
   });
   const expectedIncome=data.income.reduce((s,i)=>s+getEffectiveIncome(i,yr,mo),0);
+  // Income already received this month is already in the account balance — only add what's still pending
+  const receivedIncome=data.income.reduce((s,i)=>{
+    const occs=getIncomeOccurrences(i,yr,mo);
+    return s+occs.filter(o=>getIncomeOccurrenceStatus(i,o.date)==='Received').reduce((a,o)=>a+o.amount,0);
+  },0);
+  const pendingIncome=parseFloat((expectedIncome-receivedIncome).toFixed(2));
   const totalBillsOut=data.bills.filter(b=>b.amount>0&&!((b.btype==='creditcard'||b.btype==='loan'||b.btype==='promo')&&!(b.balance>0))).reduce((s,b)=>s+(b.scheduledAmount||b.amount),0);
   const netMonth=expectedIncome-totalBillsOut-data.expenses.reduce((s,e)=>s+e.amount,0);
   const overdueAmt=overdue.reduce((s,b)=>s+effBillAmt(b),0);
@@ -6886,7 +6892,7 @@ function renderMoneySummaryCards(){
       +'</div>';
   };
 
-  const endOfMonth=parseFloat((availableNow-viewScheduledAmt-viewPendingAmt+expectedIncome).toFixed(2));
+  const endOfMonth=parseFloat((availableNow-viewScheduledAmt-viewPendingAmt+pendingIncome).toFixed(2));
   const afterCommitted=parseFloat((availableNow-viewScheduledAmt-viewPendingAmt).toFixed(2));
 
   el.innerHTML=
@@ -6903,7 +6909,7 @@ function renderMoneySummaryCards(){
         +ledgerRow('After Scheduled',usd(parseFloat((availableNow-viewScheduledAmt).toFixed(2))),(availableNow-viewScheduledAmt)>=0?'var(--blue)':'var(--red)',false,true,false,'var(--text)')
         +ledgerRow('− Pending','−'+usd(viewPendingAmt),'var(--red)',false,false,false)
         +ledgerRow('After All Bills',usd(afterCommitted),afterCommitted>=0?'var(--blue)':'var(--red)',false,true,false,'var(--text)')
-        +ledgerRow('+ Expected Income','+'+usd(expectedIncome),'var(--green)',false,false,false)
+        +ledgerRow('+ Expected Income'+(receivedIncome>0?' (remaining)':''),'+'+usd(pendingIncome),'var(--green)',false,false,false)
         +ledgerRow('End of Month',usd(endOfMonth),endOfMonth>=0?'var(--green)':'var(--red)',true,true,true,'var(--text)')
         +'<div style="font-size:12px;color:var(--muted);line-height:1.5;border-top:1px solid var(--border);margin-top:8px;padding-top:8px">'+healthMsg+'</div>'
       : isPast
