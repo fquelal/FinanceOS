@@ -1059,6 +1059,12 @@ canvas{width:100%!important;}
       <button class="btn btn-secondary btn-full" style="justify-content:flex-start;gap:14px;padding:14px 16px;margin-bottom:8px" onclick="closeModal('fab');openModal('purchase')">
         <span style="font-size:20px">🛒</span><span style="font-size:14px;font-weight:600">Log Transaction</span>
       </button>
+      <button class="btn btn-secondary btn-full" style="justify-content:flex-start;gap:14px;padding:14px 16px;margin-bottom:8px" onclick="closeModal('fab');openWithdrawal()">
+        <span style="font-size:20px">💵</span><span style="font-size:14px;font-weight:600">Cash Withdrawal</span>
+      </button>
+      <button class="btn btn-secondary btn-full" style="justify-content:flex-start;gap:14px;padding:14px 16px;margin-bottom:8px" onclick="closeModal('fab');openTransferModal()">
+        <span style="font-size:20px">🔁</span><span style="font-size:14px;font-weight:600">Transfer Between Accounts</span>
+      </button>
       <button class="btn btn-secondary btn-full" style="color:var(--accent2);margin-top:4px" onclick="closeModal('fab')">Cancel</button>
     </div>
   </div>
@@ -1535,7 +1541,7 @@ canvas{width:100%!important;}
       <div id="quick-alerts"></div>
       <div class="quick-grid">
         <div class="quick-tile" onclick="openWithdrawal()"><div class="quick-icon">💵</div><div class="quick-label" data-i18n="Cash Withdrawal">Cash Withdrawal</div></div>
-        <div class="quick-tile" onclick="openModal('purchase')"><div class="quick-icon">🛒</div><div class="quick-label" data-i18n="New Purchase">New Purchase</div></div>
+        <div class="quick-tile" onclick="openModal('purchase')"><div class="quick-icon">🛒</div><div class="quick-label" data-i18n="New Purchase">New Transaction</div></div>
         <div class="quick-tile" onclick="openTransferModal()"><div class="quick-icon">🔁</div><div class="quick-label">Transfer</div></div>
       </div>
       <div class="card">
@@ -2218,7 +2224,7 @@ canvas{width:100%!important;}
 <!-- NEW PURCHASE -->
 <div class="overlay" id="modal-purchase">
   <div class="modal">
-    <div class="modal-header"><span class="modal-title" id="pu-modal-title">🛒 New Purchase</span><button class="close-btn" onclick="closeModal('purchase')">✕</button></div>
+    <div class="modal-header"><span class="modal-title" id="pu-modal-title">🛒 New Transaction</span><button class="close-btn" onclick="closeModal('purchase')">✕</button></div>
     <input type="hidden" id="pu-edit-id"/>
     <div class="field"><label data-i18n="Description">Description</label><input id="pu-desc" placeholder="e.g. Amazon, Gas Station, Whole Foods"/></div>
     <div class="field-row">
@@ -2267,7 +2273,7 @@ canvas{width:100%!important;}
       <div id="pu-promo-calc" style="font-size:12px;color:var(--muted);margin-top:8px;padding:8px 10px;background:rgba(0,0,0,.15);border-radius:8px;display:none"></div>
     </div>
 
-    <button class="btn btn-primary btn-full" onclick="confirmPurchase()" data-i18n="Log Purchase">Log Purchase</button>
+    <button class="btn btn-primary btn-full" onclick="confirmPurchase()" data-i18n="Log Purchase">Log Transaction</button>
   </div>
 </div>
 
@@ -2622,7 +2628,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v1.2.9';
+const APP_VERSION='v1.3.0';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -2637,8 +2643,8 @@ let insightsTab='categories';
 let txnFilter='All';
 let billSort='date';
 let billSortDir='asc'; // 'asc' | 'desc' — used by date and amount sorts
-let billStatusCycle=0; // 0=grouped, 1-4 filter by Overdue/Pending/Scheduled/Paid
-let billTypeCycle=0;   // 0=grouped, 1-5 filter by Income/Bills/Expenses/Loans/Cards
+let billStatusCycle=0; // 0=grouped, 1-4 filter by Paid/Scheduled/Pending/Overdue
+let billTypeCycle=0;   // 0=grouped, 1-5 filter by Cards/Loans/Expenses/Bills/Income
 let _billMonth=''; // YYYY-MM string, empty = init to current month on first use
 
 let txnSearch='';
@@ -2788,7 +2794,7 @@ const TRANSLATIONS={
     'New Purchase':'Nueva Compra',
     'No updates logged yet.':'Sin actualizaciones registradas.',
     'Log Withdrawal':'Registrar Retiro',
-    'Log Purchase':'Registrar Compra',
+    'Log Transaction':'Registrar Compra',
     // Settings
     'Auto-Save Active':'Guardado Automatico Activo',
     'Backup & Restore':'Respaldo y Restauracion',
@@ -2881,7 +2887,7 @@ const TRANSLATIONS={
     'Set Budget Target':'Establecer Meta',
     'Add Account':'Agregar Cuenta',
     'Edit Account':'Editar Cuenta',
-    '🛒 New Purchase':'🛒 Nueva Compra',
+    '🛒 New Transaction':'🛒 Nueva Compra',
     '📅 Schedule Payment':'📅 Programar Pago',
     '💳 Record Payment':'💳 Registrar Pago',
     '📅 Add to Calendar':'📅 Agregar al Calendario',
@@ -3746,7 +3752,7 @@ function openPurchaseModal(){
   $('pu-category').value='';
   if($('pu-note'))$('pu-note').value='';
   if($('pu-edit-id')) $('pu-edit-id').value='';
-  if($('pu-modal-title')) $('pu-modal-title').textContent='🛒 New Purchase';
+  if($('pu-modal-title')) $('pu-modal-title').textContent='🛒 New Transaction';
   $('pu-method').value='';
   $('pu-overdraft-warn').style.display='none';
   // Populate unified payment method dropdown
@@ -4188,7 +4194,7 @@ function getMonthlyExpenses(months){
       return ed.getFullYear()===yr&&ed.getMonth()===mo;
     }).reduce((s,e)=>s+e.amount,0);
     const txns=data.transactions.filter(tx=>{
-      if(!tx.date||tx.type==='Transfer'||tx.type==='Bill Payment'||tx.type==='Debt Payment'||tx.type==='Reconciliation')return false;
+      if(!tx.date||tx.type==='Transfer'||tx.type==='Deposit'||tx.type==='Bill Payment'||tx.type==='Debt Payment'||tx.type==='Reconciliation')return false;
       const td=new Date(tx.date);
       return td.getFullYear()===yr&&td.getMonth()===mo;
     }).reduce((s,tx)=>s+tx.amount,0);
@@ -4772,8 +4778,46 @@ function setIncomeOccurrenceStatus(incomeId, date, status){
   const i=data.income.find(x=>x.id===incomeId);
   if(!i) return;
   if(!i.incomeStatusOverrides) i.incomeStatusOverrides={};
-  if(status==='Expected') delete i.incomeStatusOverrides[date];
-  else i.incomeStatusOverrides[date]=status;
+
+  const prevStatus=i.incomeStatusOverrides[date]||'Expected';
+
+  // Resolve actual amount for this occurrence
+  const occAmt=(i.occurrenceOverrides&&i.occurrenceOverrides[date]!=null)
+    ?i.occurrenceOverrides[date]:i.amount;
+
+  if(status==='Expected'){
+    // Undo Received: reverse the deposit if one exists
+    if(prevStatus==='Received'&&i.accountId){
+      const txnIdx=data.transactions.findIndex(tx=>
+        tx.incomeRef===incomeId&&tx.date===date&&tx.type==='Deposit'
+      );
+      if(txnIdx!==-1){
+        const txn=data.transactions[txnIdx];
+        const acct=data.accounts.find(a=>a.id===i.accountId);
+        if(acct) acct.balance=parseFloat((acct.balance-txn.amount).toFixed(2));
+        data.transactions.splice(txnIdx,1);
+      }
+    }
+    delete i.incomeStatusOverrides[date];
+  } else {
+    i.incomeStatusOverrides[date]=status;
+    // On Received: deposit to linked account and log transaction
+    if(status==='Received'&&i.accountId&&prevStatus!=='Received'){
+      const acct=data.accounts.find(a=>a.id===i.accountId);
+      if(acct){
+        acct.balance=parseFloat((acct.balance+occAmt).toFixed(2));
+        data.transactions.push({
+          id:Date.now(),
+          description:i.source+' deposit',
+          amount:occAmt,
+          type:'Deposit',
+          date:date,
+          accountId:i.accountId,
+          incomeRef:incomeId
+        });
+      }
+    }
+  }
   saveData(); renderSections('alerts','bills','dashboard');
 }
 function incomeStatusColor(s){
@@ -5213,11 +5257,11 @@ function updateFilterPill(){
   else if(billSort==='amount'&&billSortDir==='desc') label='Highest ↑';
   else if(billSort==='amount'&&billSortDir==='asc') label='Lowest ↓';
   else if(billSort==='status'&&billStatusCycle>0){
-    const labels=[null,'Overdue','Pending','Scheduled','Paid'];
+    const labels=[null,'Paid','Scheduled','Pending','Overdue'];
     label=labels[billStatusCycle];
   }
   else if(billSort==='type'&&billTypeCycle>0){
-    const labels=[null,'Income','Bills','Expenses','Loans','Cards'];
+    const labels=[null,'Cards','Loans','Expenses','Bills','Income'];
     label=labels[billTypeCycle];
   }
   if(label){
@@ -5226,6 +5270,13 @@ function updateFilterPill(){
   } else {
     pill.style.display='none';
   }
+}
+
+function updateSortBtnActive(){
+  ['date','status','amount','type'].forEach(k=>{
+    const el=$('bs-'+k);
+    if(el) el.classList.toggle('active', billSort===k);
+  });
 }
 
 function setBillSort(s){
@@ -5243,6 +5294,7 @@ function setBillSort(s){
     else { billSort='type'; billTypeCycle=1; billStatusCycle=0; }
   }
   billSort=s;
+  updateSortBtnActive();
   updateFilterPill();
   renderBills();
 }
@@ -6504,7 +6556,7 @@ function renderDashboard(){
     });
   });
 
-  const typeIcon={'Withdrawal':'💵','Purchase':'🛒','Bill Payment':'📋','Debt Payment':'💳','Transfer':'🔁'};
+  const typeIcon={'Withdrawal':'💵','Purchase':'🛒','Bill Payment':'📋','Debt Payment':'💳','Transfer':'🔁','Deposit':'💰'};
   recentTxns.forEach(tx=>{
     const isToday=tx.date===todayStr;
     const acct=(data.accounts||[]).find(a=>a.id===tx.accountId);
@@ -7066,6 +7118,13 @@ function renderBills(){
       :b.btype==='loan'?'<span style="font-size:12px;font-weight:700;padding:2px 7px;border-radius:6px;background:rgba(59,130,246,.15);color:#3b82f6;flex-shrink:0">Loan</span>'
       :b.btype==='bill'?'<span style="font-size:12px;font-weight:700;padding:2px 7px;border-radius:6px;background:rgba(245,158,11,.15);color:#f59e0b;flex-shrink:0">Bill</span>':'';
     const scheduledAmt=b.scheduledAmount?' \u00b7 '+usd(b.scheduledAmount):'';
+    // For Paid cards, look up actual paid amount from transaction log
+    const paidTxn=eff==='Paid'?data.transactions.find(tx=>
+      (tx.autoLogRef===b.id||(tx.description&&tx.description.startsWith(b.name)))
+      &&tx.date&&tx.date.slice(0,7)===showKey
+      &&(tx.type==='Bill Payment'||tx.type==='Debt Payment')
+    ):null;
+    const paidAmt=paidTxn?' \u00b7 '+usd(paidTxn.amount):scheduledAmt;
     const statusBadge='<span style="font-size:12px;font-weight:700;padding:2px 8px;border-radius:20px;background:'+sc+'22;color:'+sc+'">'+eff+'</span>';
     // Action buttons
     let actionBtns='';
@@ -7074,7 +7133,7 @@ function renderBills(){
         +'<button class="btn btn-sm" style="background:rgba(255,255,255,.06);color:var(--muted)"'
         +' onclick="event.stopPropagation();unskipBillMonth('+b.id+')">Undo</button>';
     } else if(eff==='Paid'){
-      actionBtns='<span style="font-size:12px;color:var(--green);font-weight:700">&#x2713; Paid'+scheduledAmt+'</span>';
+      actionBtns='<span style="font-size:12px;color:var(--green);font-weight:700">&#x2713; Paid'+paidAmt+'</span>';
     } else if(eff==='Scheduled'){
       actionBtns='<button class="btn btn-sm" style="background:rgba(59,130,246,.15);color:var(--blue)"'
         +' onclick="event.stopPropagation();openPayDebt('+b.id+')">Edit Payment</button>'
@@ -7122,17 +7181,32 @@ function renderBills(){
       +'</div>'
       +'<div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0">'
       +statusBadge
-      +'<div style="display:flex;align-items:center;gap:6px">'
-      +'<span style="font-weight:700;font-size:15px">'+usd(isZeroBalance?0:(b.scheduledAmount||b.amount))+'</span>'
-      +'<span id="cchev-'+cid+'" style="color:var(--muted);font-size:11px">&#9662;</span>'
-      +'</div>'
-      +((!isZeroBalance&&b.scheduledAmount)?'<div style="font-size:11px;color:var(--muted)">min '+usd(b.amount)+'</div>':'')
+      +(eff==='Paid'&&paidTxn&&paidTxn.amount!==b.amount
+        // Paid with different amount: strikethrough expected, actual in white
+        ?'<div style="display:flex;align-items:center;gap:6px">'
+          +'<span style="color:var(--muted);text-decoration:line-through;font-size:11px">'+usd(b.amount)+'</span>'
+          +' <span style="font-weight:700;font-size:15px">'+usd(paidTxn.amount)+'</span>'
+          +'</div>'
+        // Paid same amount, or no txn found: just show amount, no chevron
+        :(eff==='Paid'
+          ?'<div style="display:flex;align-items:center;gap:6px">'
+            +'<span style="font-weight:700;font-size:15px">'+usd(isZeroBalance?0:(paidTxn?paidTxn.amount:(b.scheduledAmount||b.amount)))+'</span>'
+            +'</div>'
+          // Not paid: normal display with chevron
+          :'<div style="display:flex;align-items:center;gap:6px">'
+            +'<span style="font-weight:700;font-size:15px">'+usd(isZeroBalance?0:(b.scheduledAmount||b.amount))+'</span>'
+            +'<span id="cchev-'+cid+'" style="color:var(--muted);font-size:11px">&#9662;</span>'
+            +'</div>'
+            +((!isZeroBalance&&b.scheduledAmount)?'<div style="font-size:11px;color:var(--muted)">min '+usd(b.amount)+'</div>':'')
+        ))
       +'</div></div>'
       +utilBar
       +(isDebt?renderPromoItems(b.id):'')
-    +'<div id="cact-'+cid+'"'
-      +' style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);flex-wrap:nowrap;gap:6px;overflow:hidden">'
-      +actionBtns+'</div>'
+    +(eff!=='Paid'
+      ?'<div id="cact-'+cid+'"'
+        +' style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);flex-wrap:nowrap;gap:6px;overflow:hidden">'
+        +actionBtns+'</div>'
+      :'')
       +'</div>';
   }
 
@@ -7207,11 +7281,11 @@ function renderBills(){
     const cardCards    = data.bills.filter(b=>b.btype==='creditcard'&&b.balance>0&&projectedBillDate(b)!==null&&!(b.skipMonths&&b.skipMonths.includes(showKey))).map((b,i)=>renderBillCard(b,i===0,projectedBillDate(b)));
 
     const typeGroups=[
-      {label:'Income',cards:incomeCards},
-      {label:'Bills',cards:billCards},
-      {label:'Expenses',cards:expenseCards},
+      {label:'Credit Cards',cards:cardCards},
       {label:'Loans',cards:loanCards},
-      {label:'Credit Cards',cards:cardCards}
+      {label:'Expenses',cards:expenseCards},
+      {label:'Bills',cards:billCards},
+      {label:'Income',cards:incomeCards}
     ];
 
     if(billTypeCycle===0){
@@ -7256,9 +7330,18 @@ function renderBills(){
         // For the current month use real status; for other months derive from projected date
         let eff;
         if(isCurrentMonthView){
-          eff=b.status;
-          const d=daysUntil(b.dueDate);
-          if(eff!=='Paid'&&eff!=='Scheduled'&&d<0&&!isZeroBalance) eff='Overdue';
+          const hasPaidTxnThisMonth=data.transactions.some(tx=>
+            (tx.autoLogRef===b.id||(tx.description&&tx.description.startsWith(b.name)))
+            &&tx.date&&tx.date.slice(0,7)===showKey
+            &&(tx.type==='Bill Payment'||tx.type==='Debt Payment')
+          );
+          if(hasPaidTxnThisMonth){
+            eff='Paid';
+          } else {
+            eff=b.status;
+            const d=daysUntil(b.dueDate);
+            if(eff!=='Paid'&&eff!=='Scheduled'&&d<0&&!isZeroBalance) eff='Overdue';
+          }
         } else {
           // Future month → Pending. Past month → check for real payment transaction.
           const projD=daysUntil(proj);
@@ -7295,7 +7378,7 @@ function renderBills(){
     if(billSort==='date') allItems.sort((a,b)=>billSortDir==='asc'?new Date(a._date||'9999')-new Date(b._date||'9999'):new Date(b._date||'0000')-new Date(a._date||'0000'));
     else if(billSort==='amount') allItems.sort((a,b)=>billSortDir==='desc'?b._amount-a._amount:a._amount-b._amount);
     else if(billSort==='status'){
-      const allGroups=['Overdue','Pending','Scheduled','Paid'];
+      const allGroups=['Paid','Scheduled','Pending','Overdue'];
       const matchesGroup=(it,group)=>it._status===group||(group==='Overdue'&&it._status==='Missed')||(group==='Paid'&&it._status==='Received');
       if(billStatusCycle===0){
         // Grouped view — divider bar per group, skip empty groups
@@ -7339,6 +7422,7 @@ function renderBills(){
   }
 
   $('bill-list').innerHTML=html||emptyState('📋','Nothing here yet','Add bills, loans, credit cards, and income to get started.',"+ Add Expense / Bill","openModal('expense')");
+  updateSortBtnActive();
 }
 
 
@@ -7733,7 +7817,7 @@ function renderTxns(){
   const sumEl=$('txn-summary');
   if(sumEl){
     if(monthAll.length){
-      const spendingTxns=monthAll.filter(tx=>tx.type!=='Transfer');
+      const spendingTxns=monthAll.filter(tx=>tx.type!=='Transfer'&&tx.type!=='Deposit');
       const totalSpent=spendingTxns.reduce((s,tx)=>s+tx.amount,0);
       const purchaseCt=monthAll.filter(tx=>tx.type==='Purchase').length;
       const withdrawCt=monthAll.filter(tx=>tx.type==='Withdrawal').length;
@@ -7764,14 +7848,14 @@ function renderTxns(){
     }
   }
 
-  const typeColor={'Withdrawal':'var(--red)','Purchase':'var(--yellow)','Bill Payment':'var(--blue)','Debt Payment':'var(--accent2)','Transfer':'var(--green)'};
-  const typeIcon={'Withdrawal':'💵','Purchase':'🛒','Bill Payment':'📋','Debt Payment':'💳','Transfer':'🔁'};
+  const typeColor={'Withdrawal':'var(--red)','Purchase':'var(--yellow)','Bill Payment':'var(--blue)','Debt Payment':'var(--accent2)','Transfer':'var(--green)','Deposit':'var(--green)'};
+  const typeIcon={'Withdrawal':'💵','Purchase':'🛒','Bill Payment':'📋','Debt Payment':'💳','Transfer':'🔁','Deposit':'💰'};
 
   if(!filtered.length){
     const noData=!data.transactions.length;
     const noMonth=data.transactions.length>0&&!monthAll.length;
     $('txn-list').innerHTML=noData
-      ? emptyState('⚡','Log your first transaction','Tap Cash Withdrawal or New Purchase above to start tracking your spending.','','')
+      ? emptyState('⚡','Log your first transaction','Tap Cash Withdrawal or New Transaction above to start tracking your spending.','','')
       : noMonth
         ? emptyState('📅','No transactions this month','Use the arrows to browse other months, or log a new transaction above.','','')
         : '<div class="empty-state"><div class="es-icon">🔍</div><div class="es-title">No results</div><div class="es-desc">No transactions match your search.</div></div>';
@@ -7784,7 +7868,7 @@ function renderTxns(){
     const method=tx.methodLabel||(tx.accountId?(data.accounts||[]).find(a=>a.id===tx.accountId)?.name:'');
     const catLabel=tx.category?catIcon(tx.category)+tx.category:'';
     const sub=[fmtDate(tx.date),tx.type,method,catLabel].filter(Boolean).join(' - ');
-    const rowHtml=`<div class="row" style="margin-bottom:0;border-radius:12px${tx.type==='Transfer'?';background:rgba(34,197,94,.05);border:1px solid rgba(34,197,94,.12)':''}">
+    const rowHtml=`<div class="row" style="margin-bottom:0;border-radius:12px${(tx.type==='Transfer'||tx.type==='Deposit')?';background:rgba(34,197,94,.05);border:1px solid rgba(34,197,94,.12)':''}">
       <div>
         <div class="row-label">${tx.description}</div>
         <div class="row-sub">${sub}</div>
@@ -7796,7 +7880,7 @@ function renderTxns(){
         ${tx.tags&&tx.tags.length?`<div class="txn-tags">${tx.tags.map(g=>`<span class="txn-tag${_activeTxnTagFilter===g?' active-filter':''}" onclick="setTagFilter(_activeTxnTagFilter==='${g}'?null:'${g}')">#${g}</span>`).join('')}</div>`:''}
       </div>
       <div class="row-actions">
-        <span style="color:${color};font-weight:600">${tx.type==='Transfer'?'→ ':'- '}${usd(tx.amount)}</span>
+        <span style="color:${color};font-weight:600">${tx.type==='Transfer'?'→ ':tx.type==='Deposit'?'+ ':'- '}${usd(tx.amount)}</span>
         <button class="btn btn-secondary btn-sm show-desktop" onclick="openEditTxn(${tx.id})">Edit</button>
         <button class="btn btn-danger btn-sm show-desktop" onclick="deleteItem('transactions',${tx.id})">✕</button>
       </div>
