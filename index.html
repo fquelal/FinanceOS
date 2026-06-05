@@ -2628,7 +2628,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v1.3.2';
+const APP_VERSION='v1.3.3';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -6757,7 +6757,7 @@ function renderMoneySummaryCards(){
   const viewPaid=isFuture
     ? viewBills.filter(b=>isAutoHandled(b)||(b.status==='Scheduled'&&b.dueDate&&b.dueDate.slice(0,7)===viewMonth)).length
       + viewExps.filter(e=>isAutoExpHandled(e)||e.scheduledMonth===viewMonth).length
-    : viewBills.filter(b=>b.status==='Paid'||b.status==='Scheduled'||isAutoHandled(b)).length
+    : viewBills.filter(b=>(b.status==='Paid'||(b.status==='Scheduled'&&b.dueDate&&b.dueDate.slice(0,7)===viewMonth)||isAutoHandled(b))).length
       + viewExps.filter(e=>e.paidMonth===viewMonth||isAutoExpHandled(e)).length;
   const viewPct=viewTotal>0?Math.round(viewPaid/viewTotal*100):0;
   const viewPCol=viewPct===100?'var(--green)':viewPct>=50?'var(--blue)':'var(--yellow)';
@@ -6782,7 +6782,7 @@ function renderMoneySummaryCards(){
       + viewExps.filter(e=>e.autoLog||e.scheduledMonth===viewMonth).reduce((s,e)=>s+e.amount,0)
     : viewBills.filter(b=>{
         if(b.autoLog&&b.autoLogAccountId) return b.status!=='Paid';
-        return b.status==='Scheduled';
+        return b.status==='Scheduled'&&b.dueDate&&b.dueDate.slice(0,7)===viewMonth;
       }).reduce((s,b)=>s+(b.scheduledAmount||b.amount||0),0)
       + viewExps.filter(e=>{
         if(e.autoLog&&e.autoLogAccountId){
