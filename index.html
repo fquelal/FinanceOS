@@ -2628,7 +2628,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v1.3.0';
+const APP_VERSION='v1.3.1';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -5651,7 +5651,12 @@ function openPayDebt(id){
   migrateRevolvingBalance(b);
   const revolving=getRevolvingBalance(b);
   const promoTotal=Math.max(0,(b.balance||0)-revolving);
-  const hasPromo=promoTotal>0;
+  // Only show promo split if there are actual active promo transactions on this card
+  const activePromoItems=data.transactions.filter(tx=>tx.cardId===id&&tx.promoType&&tx.promoEnd).filter(tx=>{
+    const paid=data.transactions.filter(t=>t.promoRef===tx.id).reduce((s,t)=>s+t.amount,0);
+    return tx.amount-paid>0.01;
+  });
+  const hasPromo=promoTotal>0&&activePromoItems.length>0;
   const splitEl=$('pd-balance-split');
   if(splitEl) splitEl.style.display=hasPromo?'flex':'none';
   if(hasPromo){
@@ -9948,9 +9953,14 @@ function getRevolvingBalance(b){
 }
 
 function migrateRevolvingBalance(b){
-  // Called on load - set revolvingBalance if not yet set
+  const promoBalance=getPromoBalance(b.id);
+  // If revolvingBalance is null, set it
   if(b.revolvingBalance == null){
-    b.revolvingBalance = Math.max(0, (b.balance||0) - getPromoBalance(b.id));
+    b.revolvingBalance = Math.max(0, (b.balance||0) - promoBalance);
+  }
+  // If revolvingBalance is 0 but there are no promo items, it was set incorrectly — fix it
+  if(b.revolvingBalance===0 && promoBalance===0 && (b.balance||0)>0){
+    b.revolvingBalance = b.balance;
   }
 }
 
