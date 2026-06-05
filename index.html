@@ -6748,10 +6748,17 @@ function renderMoneySummaryCards(){
   const viewPCol=viewPct===100?'var(--green)':viewPct>=50?'var(--blue)':'var(--yellow)';
 
   // ── Pending amount ─────────────────────────────────────────
+  // A bill is truly pending only if dueDate is in viewMonth AND no payment txn exists for it this month
+  const billDueInViewMonth=b=>b.dueDate&&b.dueDate.slice(0,7)===viewMonth;
+  const billHasPaidTxn=b=>data.transactions.some(tx=>
+    (tx.autoLogRef===b.id||(tx.description&&tx.description.startsWith(b.name)))
+    &&tx.date&&tx.date.slice(0,7)===viewMonth
+    &&(tx.type==='Bill Payment'||tx.type==='Debt Payment')
+  );
   const viewPendingAmt=isFuture
-    ? viewBills.filter(b=>!b.autoLog&&b.status!=='Paid').reduce((s,b)=>s+(b.amount||0),0)
+    ? viewBills.filter(b=>!b.autoLog&&b.status!=='Paid'&&billDueInViewMonth(b)&&!billHasPaidTxn(b)).reduce((s,b)=>s+(b.amount||0),0)
       + viewExps.filter(e=>!e.autoLog).reduce((s,e)=>s+e.amount,0)
-    : viewBills.filter(b=>!b.autoLog&&(b.status==='Pending'||b.status==='Overdue')).reduce((s,b)=>s+(b.amount||0),0)
+    : viewBills.filter(b=>!b.autoLog&&(b.status==='Pending'||b.status==='Overdue')&&billDueInViewMonth(b)&&!billHasPaidTxn(b)).reduce((s,b)=>s+(b.amount||0),0)
       + viewExps.filter(e=>!e.autoLog&&e.paidMonth!==viewMonth).reduce((s,e)=>s+e.amount,0);
 
   // ── Scheduled amount ────────────────────────────────────────
