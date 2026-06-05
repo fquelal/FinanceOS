@@ -338,7 +338,7 @@ canvas{width:100%!important;}
 .empty-state .es-btn:hover{opacity:.85;}
 /* Bill sort toggles */
 .sort-bar{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
-.sort-btn{background:rgba(255,255,255,.06);border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;font-family:var(--font-b);transition:all .15s;}
+.sort-btn{background:rgba(255,255,255,.06);border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;font-family:var(--font-b);transition:all .15s;flex-shrink:0;}
 .sort-btn.active{background:var(--accent);color:#fff;}
 /* Search bar */
 .search-bar{position:relative;margin-bottom:14px;}
@@ -1120,7 +1120,7 @@ canvas{width:100%!important;}
         <button class="view-btn" id="bill-today-btn" onclick="goToCurrentMonth()" style="display:none;background:rgba(80,112,240,.15);color:var(--accent2);border-color:rgba(80,112,240,.3)">↩ Today</button>
         <button class="view-btn" id="bill-filter-pill" onclick="clearBillSort()" style="display:none;background:rgba(80,112,240,.15);color:var(--accent2);border-color:rgba(80,112,240,.3)"></button>
       </div>
-      <div class="sort-bar" id="bill-sort-bar" style="display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:14px">
+      <div class="sort-bar" id="bill-sort-bar" style="display:flex;align-items:center;gap:6px;margin-bottom:14px">
         <button class="sort-btn" onclick="shiftBillMonth(-1)" style="flex-shrink:0;padding:8px 12px;font-size:16px;line-height:1">&#8249;</button>
         <button class="sort-btn" onclick="setBillSort('date')" id="bs-date">Date</button>
         <button class="sort-btn" onclick="setBillSort('status')" id="bs-status">Status</button>
@@ -2628,7 +2628,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v1.3.1';
+const APP_VERSION='v1.3.2';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -6255,12 +6255,21 @@ function buildAlerts(){
     const d=daysUntil(b.dueDate);
     const isZeroBalance=(b.btype==='creditcard'||b.btype==='loan')&&!(b.balance>0);
     if(isZeroBalance) return;
-    if(b.status!=='Paid'&&b.status!=='Scheduled'&&d<0){
+    if(b.status==='Paid'||b.status==='Scheduled') return;
+    // Check if a payment transaction already exists for this bill this month
+    const curMo=today().slice(0,7);
+    const hasPaidTxn=data.transactions.some(tx=>
+      (tx.autoLogRef===b.id||(tx.description&&tx.description.startsWith(b.name)))
+      &&tx.date&&tx.date.slice(0,7)===curMo
+      &&(tx.type==='Bill Payment'||tx.type==='Debt Payment')
+    );
+    if(hasPaidTxn) return;
+    if(d<0){
       alerts.push({
         section:'bills', color:'#ef4444', icon:'📋',
         msg:`${b.name} is overdue by ${Math.abs(d)} day${Math.abs(d)===1?'':'s'}`,
       });
-    } else if(b.status!=='Paid'&&b.status!=='Scheduled'&&d<=7&&d>=0){
+    } else if(d<=7&&d>=0){
       const effAmt=(b.btype==='creditcard'||b.btype==='loan')&&!(b.balance>0)?0:(b.amount||0);
       alerts.push({
         section:'bills', color:'#f59e0b', icon:'📋',
@@ -6420,7 +6429,13 @@ function renderDashboard(){
     if(!b.dueDate||b.dueDate.slice(0,7)!==curMonthStr) return false;
     if((b.btype==='creditcard'||b.btype==='loan')&&!(b.balance>0)) return false;
     if(b.skipMonths&&b.skipMonths.includes(curMonthStr)) return false;
-    return true;
+    // Exclude if a payment transaction already exists for this bill this month
+    const hasPaidTxn=data.transactions.some(tx=>
+      (tx.autoLogRef===b.id||(tx.description&&tx.description.startsWith(b.name)))
+      &&tx.date&&tx.date.slice(0,7)===curMonthStr
+      &&(tx.type==='Bill Payment'||tx.type==='Debt Payment')
+    );
+    return !hasPaidTxn;
   });
   const pendingAmt=pendingBills.reduce((s,b)=>s+(b.amount||0),0);
 
@@ -6831,10 +6846,16 @@ function renderMoneySummaryCards(){
   // ── Health status — always based on current month ────────────
   const yr=now.getFullYear(), mo=now.getMonth();
   const effBillAmt=b=>(b.btype==='creditcard'||b.btype==='loan')&&!(b.balance>0)?0:(b.amount||0);
+  const _hasPaidTxnThisMo=b=>data.transactions.some(tx=>
+    (tx.autoLogRef===b.id||(tx.description&&tx.description.startsWith(b.name)))
+    &&tx.date&&tx.date.slice(0,7)===curMonthStr
+    &&(tx.type==='Bill Payment'||tx.type==='Debt Payment')
+  );
   const overdue=data.bills.filter(b=>{
     if(b.status==='Paid'||b.status==='Scheduled') return false;
     if(!b.dueDate) return false;
     if((b.btype==='creditcard'||b.btype==='loan')&&!(b.balance>0)) return false;
+    if(_hasPaidTxnThisMo(b)) return false;
     return b.dueDate<todayStr;
   });
   const in7=new Date(now); in7.setDate(in7.getDate()+7);
@@ -6843,6 +6864,7 @@ function renderMoneySummaryCards(){
     if(b.status==='Paid'||b.status==='Scheduled') return false;
     if(!b.dueDate) return false;
     if((b.btype==='creditcard'||b.btype==='loan')&&!(b.balance>0)) return false;
+    if(_hasPaidTxnThisMo(b)) return false;
     return b.dueDate>=todayStr&&b.dueDate<=in7Str;
   });
   const expectedIncome=data.income.reduce((s,i)=>s+getEffectiveIncome(i,yr,mo),0);
