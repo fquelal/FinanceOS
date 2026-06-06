@@ -630,7 +630,7 @@ canvas{width:100%!important;}
 .promo-card-toggle.selected .pct-check{background:var(--accent);border-color:var(--accent);color:#fff;}
 .promo-card-toggle .pct-info{min-width:0;}
 .promo-card-toggle .pct-name{font-size:13px;font-weight:600;color:var(--text);}
-.promo-card-toggle .pct-sub{font-size:11px;color:var(--muted);margin-top:1px;}
+.promo-card-toggle .pct-sub{font-size:11px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .promo-card-toggle .pct-bal{font-size:13px;font-weight:700;color:var(--red);white-space:nowrap;flex-shrink:0;}
 .promo-limit-warn{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);
   border-radius:8px;padding:8px 12px;font-size:12px;color:var(--red);margin-top:8px;display:none;}
@@ -1110,7 +1110,7 @@ canvas{width:100%!important;}
 
       <!-- Account pill strip -->
       <div id="d-accounts-wrap" style="max-height:0;opacity:0;overflow:hidden;transition:max-height .32s ease,opacity .25s ease,margin-bottom .32s ease;margin-bottom:0">
-        <div id="d-accounts" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:6px 0 2px"></div>
+        <div id="d-accounts" style="display:flex;flex-wrap:nowrap;gap:6px;padding:6px 0 2px"></div>
       </div>
 
       <!-- Notification pill (desktop) -->
@@ -4060,7 +4060,7 @@ function renderNetWorth(){
   const wrap=$('d-accounts-wrap'),grid=$('d-accounts');
   if(wrap&&grid){
     wrap.style.display=accs.length?'block':'none';
-    grid.innerHTML=accs.map(a=>`<div style="background:var(--surface);border:1px solid var(--green);border-radius:14px;padding:6px 14px;flex-shrink:0;text-align:center"><div style="font-size:13px;font-weight:600;color:${a.balance>=0?'var(--text)':'var(--red)'}">${usd(a.balance)}</div><div style="font-size:11px;color:var(--muted);margin-top:1px">${escHtml(a.name)}</div></div>`).join('');
+    grid.innerHTML=accs.map(a=>`<div style="background:var(--surface);border:1px solid var(--green);border-radius:14px;padding:5px 8px;flex:1;text-align:center;min-width:0"><div style="font-size:13px;font-weight:600;color:${a.balance>=0?'var(--text)':'var(--red)'}">${usd(a.balance)}</div><div style="font-size:11px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escHtml(a.name)}</div></div>`).join('');
   }
 }
 
@@ -6535,7 +6535,7 @@ function renderDashboard(){
   const accs=data.accounts||[];
   const wrap=$('d-accounts-wrap'),grid=$('d-accounts');
   if(wrap&&grid){
-    grid.innerHTML=accs.map(a=>`<div style="background:var(--surface);border:1px solid var(--green);border-radius:14px;padding:6px 14px;flex-shrink:0;text-align:center"><div style="font-size:13px;font-weight:600;color:${a.balance>=0?'var(--text)':'var(--red)'}">${usd(a.balance)}</div><div style="font-size:11px;color:var(--muted);margin-top:1px">${escHtml(a.name)}</div></div>`).join('');
+    grid.innerHTML=accs.map(a=>`<div style="background:var(--surface);border:1px solid var(--green);border-radius:14px;padding:5px 8px;flex:1;text-align:center;min-width:0"><div style="font-size:13px;font-weight:600;color:${a.balance>=0?'var(--text)':'var(--red)'}">${usd(a.balance)}</div><div style="font-size:11px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escHtml(a.name)}</div></div>`).join('');
   }
 
   // ── 7-DAY TIMELINE ────────────────────────────
@@ -6955,7 +6955,7 @@ function renderMoneySummaryCards(){
   } else if(overdue.length===0&&netMonth>=0&&availableNow>=totalBillsOut*0.5){
     healthStatus='Healthy';healthColor='var(--green)';healthIcon='✅';
     healthMsg=dueSoon.length?dueSoon.length+' bill'+(dueSoon.length>1?'s':'')+' due this week totaling '+usd(dueSoon.reduce((s,b)=>s+effBillAmt(b),0))+'. You are on track.'
-      :'No overdue bills and positive cash flow. Looking good this month.';
+      :'Bills paid & positive cash flow. Looking good this month.';
   } else if(overdue.length<=2&&netMonth>=-200){
     healthStatus='Caution';healthColor='var(--yellow)';healthIcon='⚠️';
     healthMsg=overdue.length?overdue.length+' overdue bill'+(overdue.length>1?'s':'')+' totaling '+usd(overdueAmt)+'. Take care of '+(overdue.length>1?'these':'this')+' soon.'
