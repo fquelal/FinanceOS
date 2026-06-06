@@ -339,7 +339,10 @@ canvas{width:100%!important;}
 /* Bill sort toggles */
 .sort-bar{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
 .sort-btn{background:rgba(255,255,255,.06);border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;font-family:var(--font-b);transition:all .15s;flex-shrink:0;}
-.sort-btn.active{background:var(--accent);color:#fff;}
+.sort-btn.active{color:var(--accent);}
+#bs-date.active,#bs-status.active,#bs-amount.active,#bs-type.active{color:#fff;background:var(--accent);}
+.sort-strip-btn{background:none;border:none;flex:1;padding:9px 6px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;font-family:var(--font-b);transition:background .15s,color .15s;}
+.sort-strip-btn.active{background:var(--accent);color:#fff;}
 /* Search bar */
 .search-bar{position:relative;margin-bottom:14px;}
 .search-bar input{width:100%;background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:11px 14px 11px 40px;font-size:14px;color:var(--text);font-family:var(--font-b);box-sizing:border-box;}
@@ -1082,20 +1085,32 @@ canvas{width:100%!important;}
         <div id="d-summary-line" style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.4"></div>
       </div>
 
-      <!-- 4 supporting stats -->
-      <div class="card-grid" style="grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
-        <div class="stat-card"><div class="stat-value" id="d-acct-total" style="color:var(--blue)">$0.00</div><div class="stat-label">Total Accounts</div></div>
-        <div class="stat-card"><div class="stat-value" id="d-debt" style="color:var(--red)">$0.00</div><div class="stat-label">Total Debt</div></div>
-        <div class="stat-card"><div class="stat-value" id="d-pending" style="color:var(--yellow)">$0.00</div><div class="stat-label">Pending Bills</div></div>
-        <div class="stat-card"><div class="stat-value" id="d-networth" style="color:var(--green)">$0.00</div><div class="stat-label">Net Worth</div></div>
+      <!-- 4 supporting stats — single strip -->
+      <div style="background:var(--surface);border:1px solid var(--blue);border-radius:12px;display:flex;align-items:center;margin-bottom:10px">
+        <div style="flex:1;text-align:center;padding:10px 6px">
+          <div class="stat-value" id="d-acct-total" style="color:var(--blue);font-size:15px">$0.00</div>
+          <div class="stat-label" style="font-size:11px;margin-top:2px">Accounts</div>
+        </div>
+        <div style="width:1px;height:32px;background:var(--border)"></div>
+        <div style="flex:1;text-align:center;padding:10px 6px">
+          <div class="stat-value" id="d-debt" style="color:var(--red);font-size:15px">$0.00</div>
+          <div class="stat-label" style="font-size:11px;margin-top:2px">Debt</div>
+        </div>
+        <div style="width:1px;height:32px;background:var(--border)"></div>
+        <div style="flex:1;text-align:center;padding:10px 6px">
+          <div class="stat-value" id="d-pending" style="color:var(--yellow);font-size:15px">$0.00</div>
+          <div class="stat-label" style="font-size:11px;margin-top:2px">Pending</div>
+        </div>
+        <div style="width:1px;height:32px;background:var(--border)"></div>
+        <div style="flex:1;text-align:center;padding:10px 6px">
+          <div class="stat-value" id="d-networth" style="color:var(--green);font-size:15px">$0.00</div>
+          <div class="stat-label" style="font-size:11px;margin-top:2px">Net Worth</div>
+        </div>
       </div>
 
-      <!-- Account chip strip (tap to expand) -->
-      <div id="d-accounts-wrap" style="display:none;margin-bottom:16px">
-        <button onclick="toggleDashAccounts()" style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:9px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;color:var(--muted);font-size:12px;font-weight:600;font-family:var(--font-b)">
-          <span>Account balances</span><span id="d-acct-chevron">▾</span>
-        </button>
-        <div id="d-accounts" style="display:none;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:8px"></div>
+      <!-- Account pill strip -->
+      <div id="d-accounts-wrap" style="display:none;margin-bottom:14px">
+        <div id="d-accounts" style="display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none"></div>
       </div>
 
       <!-- Notification pill (desktop) -->
@@ -1120,13 +1135,16 @@ canvas{width:100%!important;}
         <button class="view-btn" id="bill-today-btn" onclick="goToCurrentMonth()" style="display:none;background:rgba(80,112,240,.15);color:var(--accent2);border-color:rgba(80,112,240,.3)">↩ Today</button>
         <button class="view-btn" id="bill-filter-pill" onclick="clearBillSort()" style="display:none;background:rgba(80,112,240,.15);color:var(--accent2);border-color:rgba(80,112,240,.3)"></button>
       </div>
-      <div class="sort-bar" id="bill-sort-bar" style="display:flex;align-items:center;gap:6px;margin-bottom:14px">
-        <button class="sort-btn" onclick="shiftBillMonth(-1)" style="flex-shrink:0;padding:8px 12px;font-size:16px;line-height:1">&#8249;</button>
-        <button class="sort-btn" onclick="setBillSort('date')" id="bs-date">Date</button>
-        <button class="sort-btn" onclick="setBillSort('status')" id="bs-status">Status</button>
-        <button class="sort-btn" onclick="setBillSort('amount')" id="bs-amount">Amount</button>
-        <button class="sort-btn" onclick="setBillSort('type')" id="bs-type">Type</button>
-        <button class="sort-btn" onclick="shiftBillMonth(1)" id="bill-month-next" style="flex-shrink:0;padding:8px 12px;font-size:16px;line-height:1">&#8250;</button>
+      <div id="bill-sort-bar" style="background:var(--surface);border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;margin-bottom:14px;overflow:hidden">
+        <button onclick="shiftBillMonth(-1)" style="background:none;border:none;border-right:1px solid var(--border);padding:9px 14px;font-size:16px;line-height:1;color:var(--muted);cursor:pointer;flex-shrink:0;font-family:var(--font-b)">&#8249;</button>
+        <button onclick="setBillSort('date')" id="bs-date" style="background:none;border:none;flex:1;padding:9px 6px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;font-family:var(--font-b)">Date</button>
+        <div style="width:1px;height:20px;background:var(--border);flex-shrink:0"></div>
+        <button onclick="setBillSort('status')" id="bs-status" style="background:none;border:none;flex:1;padding:9px 6px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;font-family:var(--font-b)">Status</button>
+        <div style="width:1px;height:20px;background:var(--border);flex-shrink:0"></div>
+        <button onclick="setBillSort('amount')" id="bs-amount" style="background:none;border:none;flex:1;padding:9px 6px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;font-family:var(--font-b)">Amount</button>
+        <div style="width:1px;height:20px;background:var(--border);flex-shrink:0"></div>
+        <button onclick="setBillSort('type')" id="bs-type" style="background:none;border:none;flex:1;padding:9px 6px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;font-family:var(--font-b)">Type</button>
+        <button onclick="shiftBillMonth(1)" id="bill-month-next" style="background:none;border:none;border-left:1px solid var(--border);padding:9px 14px;font-size:16px;line-height:1;color:var(--muted);cursor:pointer;flex-shrink:0;font-family:var(--font-b)">&#8250;</button>
       </div>
       <div id="bill-list"></div>
       <div class="bill-calendar" id="bill-calendar">
@@ -2628,7 +2646,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v1.3.3';
+const APP_VERSION='v1.3.5';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -2643,7 +2661,7 @@ let insightsTab='categories';
 let txnFilter='All';
 let billSort='date';
 let billSortDir='asc'; // 'asc' | 'desc' — used by date and amount sorts
-let billStatusCycle=0; // 0=grouped, 1-4 filter by Paid/Scheduled/Pending/Overdue
+let billStatusCycle=0; // 0=grouped, 1-4 filter by Pending/Scheduled/Paid/Overdue
 let billTypeCycle=0;   // 0=grouped, 1-5 filter by Cards/Loans/Expenses/Bills/Income
 let _billMonth=''; // YYYY-MM string, empty = init to current month on first use
 
@@ -4036,11 +4054,7 @@ function renderNetWorth(){
   const wrap=$('d-accounts-wrap'),grid=$('d-accounts');
   if(wrap&&grid){
     wrap.style.display=accs.length?'block':'none';
-    grid.innerHTML=accs.map(a=>`
-      <div class="stat-card">
-        <div class="stat-label">${acTypeIcon[a.type]||''} ${a.name}</div>
-        <div class="stat-value" style="color:${a.balance>=0?'var(--green)':'var(--red)'}">${usd(a.balance)}</div>
-      </div>`).join('');
+    grid.innerHTML=accs.map(a=>`<div style="background:var(--surface);border:1px solid var(--green);border-radius:14px;padding:6px 14px;flex-shrink:0;text-align:center"><div style="font-size:13px;font-weight:600;color:${a.balance>=0?'var(--text)':'var(--red)'}">${usd(a.balance)}</div><div style="font-size:11px;color:var(--muted);margin-top:1px">${escHtml(a.name)}</div></div>`).join('');
   }
 }
 
@@ -5257,7 +5271,7 @@ function updateFilterPill(){
   else if(billSort==='amount'&&billSortDir==='desc') label='Highest ↑';
   else if(billSort==='amount'&&billSortDir==='asc') label='Lowest ↓';
   else if(billSort==='status'&&billStatusCycle>0){
-    const labels=[null,'Paid','Scheduled','Pending','Overdue'];
+    const labels=[null,'Pending','Scheduled','Paid','Overdue'];
     label=labels[billStatusCycle];
   }
   else if(billSort==='type'&&billTypeCycle>0){
@@ -5275,7 +5289,10 @@ function updateFilterPill(){
 function updateSortBtnActive(){
   ['date','status','amount','type'].forEach(k=>{
     const el=$('bs-'+k);
-    if(el) el.classList.toggle('active', billSort===k);
+    if(el){
+      const isActive=billSort===k;
+      el.style.color=isActive?'var(--accent)':'var(--muted)';
+    }
   });
 }
 
@@ -5288,10 +5305,10 @@ function setBillSort(s){
     else { billSort='amount'; billSortDir='desc'; billStatusCycle=0; billTypeCycle=0; }
   } else if(s==='status'){
     if(billSort==='status') billStatusCycle=(billStatusCycle+1)%5;
-    else { billSort='status'; billStatusCycle=1; billTypeCycle=0; }
+    else { billSort='status'; billStatusCycle=0; billTypeCycle=0; }
   } else if(s==='type'){
     if(billSort==='type') billTypeCycle=(billTypeCycle+1)%6;
-    else { billSort='type'; billTypeCycle=1; billStatusCycle=0; }
+    else { billSort='type'; billTypeCycle=0; billStatusCycle=0; }
   }
   billSort=s;
   updateSortBtnActive();
@@ -6480,7 +6497,7 @@ function renderDashboard(){
     if(totalScheduled>0){
       breakdownEl.innerHTML=
         `<div style="${rowStyle}"><span style="color:var(--muted)">${acctName}</span><span style="color:var(--text)">${usd(checkingBal)}</span></div>`
-        +`<div style="${rowStyle}"><span style="color:var(--muted)">Scheduled</span><span style="color:var(--blue)">−${usd(totalScheduled)}</span></div>`
+        +`<div style="${rowStyle}"><span style="color:var(--muted)">Scheduled</span><span style="color:var(--yellow)">−${usd(totalScheduled)}</span></div>`
     } else {
       breakdownEl.innerHTML=
         `<div style="${rowStyle}"><span style="color:var(--muted)">${acctName}</span><span style="color:var(--text)">${usd(checkingBal)}</span></div>`
@@ -6515,11 +6532,7 @@ function renderDashboard(){
   const wrap=$('d-accounts-wrap'),grid=$('d-accounts');
   if(wrap&&grid){
     wrap.style.display=accs.length?'block':'none';
-    grid.innerHTML=accs.map(a=>`
-      <div class="stat-card">
-        <div class="stat-value" style="color:${a.balance>=0?'var(--green)':'var(--red)'};">${usd(a.balance)}</div>
-        <div class="stat-label">${a.name}</div>
-      </div>`).join('');
+    grid.innerHTML=accs.map(a=>`<div style="background:var(--surface);border:1px solid var(--green);border-radius:14px;padding:6px 14px;flex-shrink:0;text-align:center"><div style="font-size:13px;font-weight:600;color:${a.balance>=0?'var(--text)':'var(--red)'}">${usd(a.balance)}</div><div style="font-size:11px;color:var(--muted);margin-top:1px">${escHtml(a.name)}</div></div>`).join('');
   }
 
   // ── 7-DAY TIMELINE ────────────────────────────
@@ -6550,48 +6563,46 @@ function renderDashboard(){
 
   const items=[];
 
+  // Unified card renderer for all timeline item types
+  const tlCard=(accentColor, topLeft, bottomLeft, topRight, bottomRight, pillText, pillColor)=>{
+    const pill=pillText?`<div style="font-size:10px;font-weight:700;letter-spacing:.3px;background:${pillColor}22;color:${pillColor};border-radius:20px;padding:2px 8px;display:inline-block;white-space:nowrap">${pillText}</div>`:'';
+    return `<div style="display:flex;align-items:center;background:var(--surface);border:1px solid var(--border);border-left:3px solid ${accentColor};border-radius:4px 10px 10px 4px;padding:10px 12px;margin-bottom:6px;gap:10px">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px">${topLeft}</div>
+        <div style="font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${bottomLeft}</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div style="font-size:14px;font-weight:700;color:${topRight[0]};margin-bottom:3px">${topRight[1]}</div>
+        ${pill}
+      </div>
+    </div>`;
+  };
+
   upcomingBills.forEach(b=>{
     const d=daysUntil(b.dueDate);
     const eff=b.status!=='Paid'&&b.status!=='Scheduled'&&d<0?'Overdue':b.status;
     const isPast=d<0;
     const isToday=b.dueDate===todayStr;
+    const sc=statusColor(eff);
+    const label=isToday?'Due today':isPast?`${Math.abs(d)}d overdue`:`Due in ${d}d`;
     items.push({
       date:b.dueDate, sortKey:b.dueDate, future:!isPast, isToday, isOverdue:eff==='Overdue', isBill:true,
-      render:()=>{
-        const sc=statusColor(eff);
-        const label=isToday?'Due TODAY':isPast?`${Math.abs(d)} day${Math.abs(d)===1?'':'s'} overdue`:`Due in ${d} ${d===1?'day':'days'}`;
-        return`<div style="display:flex;justify-content:space-between;align-items:center;
-          background:${sc}0f;border-left:3px solid ${sc};border-radius:0 8px 8px 0;
-          padding:8px 10px;margin-bottom:6px">
-          <div style="min-width:0">
-            <div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${b.name}</div>
-            <div style="font-size:11px;color:${sc};font-weight:600;margin-top:1px">${label}</div>
-          </div>
-          <div style="text-align:right;flex-shrink:0;margin-left:10px">
-            <div style="font-weight:700;font-size:14px;color:${sc}">${usd(b.scheduledAmount||b.amount)}</div>
-            <div style="font-size:10px;font-weight:700;background:${sc}22;color:${sc};border-radius:4px;padding:1px 5px;display:inline-block;margin-top:2px">${eff}</div>
-          </div>
-        </div>`;
-      }
+      render:()=>tlCard('var(--border2)', escHtml(b.name), label, [sc, usd(b.scheduledAmount||b.amount)], '', eff, sc)
     });
   });
 
-  const typeIcon={'Withdrawal':'💵','Purchase':'🛒','Bill Payment':'📋','Debt Payment':'💳','Transfer':'🔁','Deposit':'💰'};
   recentTxns.forEach(tx=>{
     const isToday=tx.date===todayStr;
     const acct=(data.accounts||[]).find(a=>a.id===tx.accountId);
-    const method=tx.methodLabel||acct?.name||'';
+    const sub=tx.methodLabel||acct?.name||tx.category||tx.type;
+    const isRecon=tx.type==='Reconciliation';
+    const amtColor=isRecon?(tx.amount>=0?'var(--green)':'var(--red)'):'var(--red)';
+    const amtStr=isRecon?(tx.amount>=0?'+':'')+usd(tx.amount):'-'+usd(tx.amount);
+    const txPillMap={'Bill Payment':['var(--yellow)','Bill Payment'],'Debt Payment':['var(--yellow)','Debt Payment'],'Transfer':['var(--teal)','Transfer'],'Purchase':['var(--blue)','Purchase'],'Withdrawal':['var(--muted)','Withdrawal'],'Reconciliation':['var(--muted)','Reconcile']};
+    const [pillC, pillL]=txPillMap[tx.type]||['var(--muted)',tx.type];
     items.push({
       date:tx.date, sortKey:tx.date+'_'+tx.id, future:false, isToday, isOverdue:false, isBill:false,
-      render:()=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0">
-        <div style="min-width:0">
-          <div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${typeIcon[tx.type]||'📝'} ${tx.description}</div>
-          <div style="font-size:11px;color:var(--muted);margin-top:1px">${method||tx.category||tx.type}</div>
-        </div>
-        <div style="font-weight:700;font-size:14px;flex-shrink:0;margin-left:10px;color:${tx.type==='Reconciliation'?(tx.amount>=0?'var(--green)':'var(--red)'):'var(--red)'}">
-          ${tx.type==='Reconciliation'?(tx.amount>=0?'+':'')+usd(tx.amount):'-'+usd(tx.amount)}
-        </div>
-      </div>`
+      render:()=>tlCard('var(--border2)', escHtml(tx.description), escHtml(sub), [amtColor, amtStr], '', pillL, pillC)
     });
   });
 
@@ -6599,21 +6610,10 @@ function renderDashboard(){
     const isToday=occ.date===todayStr;
     const isPast=occ.date<todayStr;
     const d=daysUntil(occ.date);
-    const label=isToday?'Expected TODAY':isPast?'Expected (past)':'Expected in '+d+' day'+(d===1?'':'s');
+    const label=isToday?'Expected today':isPast?'Past expected':'In '+d+'d';
     items.push({
       date:occ.date, sortKey:occ.date+'_'+inc.id, future:!isPast, isToday, isOverdue:false, isBill:false,
-      render:()=>'<div style="display:flex;justify-content:space-between;align-items:center;'
-        +'background:rgba(34,197,94,.06);border-left:3px solid var(--green);border-radius:0 8px 8px 0;'
-        +'padding:8px 10px;margin-bottom:6px">'
-        +'<div style="min-width:0">'
-        +'<div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+escHtml(inc.source)+'</div>'
-        +'<div style="font-size:11px;color:var(--green);font-weight:600;margin-top:1px">'+label+'</div>'
-        +'</div>'
-        +'<div style="text-align:right;flex-shrink:0;margin-left:10px">'
-        +'<div style="font-weight:700;font-size:14px;color:var(--green)">'+usd(occ.amount)+'</div>'
-        +'<div style="font-size:10px;font-weight:700;background:rgba(34,197,94,.15);color:var(--green);border-radius:4px;padding:1px 5px;display:inline-block;margin-top:2px">Income</div>'
-        +'</div>'
-        +'</div>'
+      render:()=>tlCard('var(--border2)', escHtml(inc.source), label, ['var(--green)', '+'+usd(occ.amount)], '', 'Income', 'var(--green)')
     });
   });
 
@@ -6629,34 +6629,37 @@ function renderDashboard(){
   const past=items.filter(i=>!i.future&&!i.isToday&&!i.isOverdue).sort((a,b)=>b.sortKey.localeCompare(a.sortKey));
 
   const secLabel=(txt,color='var(--muted)',mt=0)=>
-    `<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:${color};margin:${mt}px 0 8px">${txt}</div>`;
+    `<div style="display:flex;align-items:center;gap:8px;margin:${mt}px 0 10px">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:${color}">${txt}</div>
+      <div style="flex:1;height:1px;background:var(--border)"></div>
+    </div>`;
 
   let html='';
 
   // Overdue
   if(overdue.length){
-    html+=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--red)">⚠ Overdue</div>
+    html+=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--red)">Overdue</div>
       <div style="background:var(--red);color:#fff;border-radius:10px;padding:1px 7px;font-size:10px;font-weight:700">${overdue.length}</div>
+      <div style="flex:1;height:1px;background:var(--border)"></div>
     </div>`;
     html+=overdue.map(i=>i.render()).join('');
-    html+=`<div style="height:1px;background:var(--border);margin:12px 0"></div>`;
   }
 
   // Upcoming bills
   if(upcoming.length){
-    html+=secLabel('Upcoming','var(--accent2)');
+    html+=secLabel('Upcoming','var(--accent2)',overdue.length?12:0);
     html+=upcoming.map(i=>i.render()).join('');
   }
 
-  // TODAY divider — only if there's content above or below
+  // TODAY divider
   const hasAbove=overdue.length||upcoming.length;
   const hasBelow=past.length||todayItems.length;
   if(hasAbove&&hasBelow){
-    html+=`<div style="display:flex;align-items:center;gap:10px;margin:12px 0">
-      <div style="flex:1;height:1px;background:var(--accent);opacity:.3"></div>
-      <div style="font-size:11px;font-weight:700;color:var(--accent);letter-spacing:1px">TODAY</div>
-      <div style="flex:1;height:1px;background:var(--accent);opacity:.3"></div>
+    html+=`<div style="display:flex;align-items:center;gap:10px;margin:14px 0 10px">
+      <div style="flex:1;height:1px;background:var(--accent);opacity:.25"></div>
+      <div style="font-size:10px;font-weight:700;color:var(--accent);letter-spacing:1.2px;text-transform:uppercase">Today</div>
+      <div style="flex:1;height:1px;background:var(--accent);opacity:.25"></div>
     </div>`;
   } else if(hasBelow&&!hasAbove){
     html+=secLabel('Today','var(--accent)');
@@ -6665,8 +6668,6 @@ function renderDashboard(){
 
   // Past — grouped by date
   if(past.length){
-    html+=`<div style="height:1px;background:var(--border);margin:${todayItems.length?12:0}px 0 10px"></div>`;
-    // Group by date
     const byDate={};
     past.forEach(i=>{ if(!byDate[i.date]) byDate[i.date]=[]; byDate[i.date].push(i); });
     const sortedDates=Object.keys(byDate).sort((a,b)=>b.localeCompare(a));
@@ -6678,9 +6679,11 @@ function renderDashboard(){
       return d.toLocaleDateString('default',{weekday:'short',month:'short',day:'numeric'});
     };
     sortedDates.forEach(ds=>{
-      html+=`<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px">${fmtGroupDate(ds)}</div>`;
+      html+=`<div style="display:flex;align-items:center;gap:8px;margin:12px 0 8px">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted)">${fmtGroupDate(ds)}</div>
+        <div style="flex:1;height:1px;background:var(--border)"></div>
+      </div>`;
       html+=byDate[ds].map(i=>i.render()).join('');
-      html+=`<div style="height:6px"></div>`;
     });
   }
 
@@ -6771,15 +6774,15 @@ function renderMoneySummaryCards(){
     &&(tx.type==='Bill Payment'||tx.type==='Debt Payment')
   );
   const viewPendingAmt=isFuture
-    ? viewBills.filter(b=>!b.autoLog&&b.status!=='Paid'&&billDueInViewMonth(b)&&!billHasPaidTxn(b)).reduce((s,b)=>s+(b.amount||0),0)
+    ? viewBills.filter(b=>!b.autoLog).reduce((s,b)=>s+(b.amount||0),0)
       + viewExps.filter(e=>!e.autoLog).reduce((s,e)=>s+e.amount,0)
     : viewBills.filter(b=>!b.autoLog&&(b.status==='Pending'||b.status==='Overdue')&&billDueInViewMonth(b)&&!billHasPaidTxn(b)).reduce((s,b)=>s+(b.amount||0),0)
       + viewExps.filter(e=>!e.autoLog&&e.paidMonth!==viewMonth).reduce((s,e)=>s+e.amount,0);
 
   // ── Scheduled amount ────────────────────────────────────────
   const viewScheduledAmt=isFuture
-    ? viewBills.filter(b=>b.autoLog||(b.status==='Scheduled'&&b.dueDate&&b.dueDate.slice(0,7)===viewMonth)).reduce((s,b)=>s+(b.scheduledAmount||b.amount||0),0)
-      + viewExps.filter(e=>e.autoLog||e.scheduledMonth===viewMonth).reduce((s,e)=>s+e.amount,0)
+    ? viewBills.filter(b=>b.autoLog&&b.autoLogAccountId).reduce((s,b)=>s+(b.scheduledAmount||b.amount||0),0)
+      + viewExps.filter(e=>e.autoLog&&e.autoLogAccountId).reduce((s,e)=>s+e.amount,0)
     : viewBills.filter(b=>{
         if(b.autoLog&&b.autoLogAccountId) return b.status!=='Paid';
         return b.status==='Scheduled'&&b.dueDate&&b.dueDate.slice(0,7)===viewMonth;
@@ -6811,25 +6814,47 @@ function renderMoneySummaryCards(){
 
   let moneyLeftVal, moneyLeftLabel, moneyLeftNote;
   if(isFuture){
-    let totalCommitted=0;
-    const curScheduled=data.bills.filter(b=>b.dueDate&&b.dueDate.slice(0,7)===curMonthStr&&billHasBalance(b)&&b.status==='Scheduled')
-      .reduce((s,b)=>s+(b.scheduledAmount||b.amount||0),0);
-    totalCommitted+=curScheduled;
+    // Rolling projection chain: start from current month After Scheduled, walk forward month by month
+    // Each month: + received income for that month - scheduled (auto-log) - pending (non-auto)
+    const curBills=data.bills.filter(b=>billHasBalance(b)&&_billInMonth(b,now.getFullYear(),now.getMonth(),curMonthStr));
+    const curExps=data.expenses.filter(e=>_expInMonth(e,curMonthStr));
+    const curMonthScheduled=curBills.filter(b=>{
+        if(b.autoLog&&b.autoLogAccountId) return b.status!=='Paid';
+        return b.status==='Scheduled'&&b.dueDate&&b.dueDate.slice(0,7)===curMonthStr;
+      }).reduce((s,b)=>s+(b.scheduledAmount||b.amount||0),0)
+      +curExps.filter(e=>{
+        if(e.autoLog&&e.autoLogAccountId){
+          const hasRun=data.transactions.some(tx=>tx.autoLogRef===e.id&&tx.date&&tx.date.slice(0,7)===curMonthStr);
+          return !hasRun;
+        }
+        return e.scheduledMonth===curMonthStr&&e.paidMonth!==curMonthStr;
+      }).reduce((s,e)=>s+e.amount,0);
+    let projBal=parseFloat((availableNow-curMonthScheduled).toFixed(2));
+    // Walk from next month up to viewMonth
     let scanYr=now.getFullYear(), scanMo=now.getMonth()+1;
     while(true){
-      const scanKey=scanYr+'-'+String(scanMo+1).padStart(2,'0');
-      const scanBills=data.bills.filter(b=>b.dueDate&&b.dueDate.slice(0,7)===scanKey&&billHasBalance(b)&&b.status==='Scheduled')
-        .reduce((s,b)=>s+(b.scheduledAmount||b.amount||0),0);
-      const scanExps=data.expenses.filter(e=>e.date&&e.date.slice(0,7)===scanKey&&e.scheduledMonth===scanKey)
-        .reduce((s,e)=>s+e.amount,0);
-      totalCommitted+=scanBills+scanExps;
-      if(scanKey===viewMonth) break;
-      scanMo++;
       if(scanMo>11){scanMo=0;scanYr++;}
+      const scanKey=scanYr+'-'+String(scanMo+1).padStart(2,'0');
+      // Add only received income for this scan month
+      const receivedInScan=data.income.reduce((s,inc)=>{
+        const occs=getIncomeOccurrences(inc,scanYr,scanMo);
+        return s+occs.filter(o=>getIncomeOccurrenceStatus(inc,o.date)==='Received').reduce((a,o)=>a+o.amount,0);
+      },0);
+      projBal=parseFloat((projBal+receivedInScan).toFixed(2));
+      if(scanKey===viewMonth) break;
+      // Only deduct bills for intermediate months (not the viewed month — card handles that)
+      const scanSched=data.bills.filter(b=>billHasBalance(b)&&b.autoLog&&b.autoLogAccountId&&_billInMonth(b,scanYr,scanMo,scanKey))
+        .reduce((s,b)=>s+(b.scheduledAmount||b.amount||0),0)
+        +data.expenses.filter(e=>e.autoLog&&e.autoLogAccountId&&_expInMonth(e,scanKey)).reduce((s,e)=>s+e.amount,0);
+      const scanPend=data.bills.filter(b=>billHasBalance(b)&&!b.autoLog&&_billInMonth(b,scanYr,scanMo,scanKey))
+        .reduce((s,b)=>s+(b.amount||0),0)
+        +data.expenses.filter(e=>!e.autoLog&&_expInMonth(e,scanKey)).reduce((s,e)=>s+e.amount,0);
+      projBal=parseFloat((projBal-scanSched-scanPend).toFixed(2));
+      scanMo++;
       if(scanKey>viewMonth) break;
     }
-    moneyLeftVal=parseFloat((availableNow-totalCommitted).toFixed(2));
-    moneyLeftLabel='Projected Available';
+    moneyLeftVal=projBal;
+    moneyLeftLabel='Projected Balance';
     moneyLeftNote=null;
   } else if(isPast){
     const pastIncome=data.income.reduce((s,inc)=>{
@@ -6838,9 +6863,11 @@ function renderMoneySummaryCards(){
     },0);
     const pastBillsPaid=viewBills.filter(b=>b.status==='Paid'||b.status==='Scheduled').reduce((s,b)=>s+(b.scheduledAmount||b.amount||0),0);
     const pastExpsPaid=viewExps.filter(e=>e.paidMonth===viewMonth).reduce((s,e)=>s+e.amount,0);
-    moneyLeftVal=parseFloat((pastIncome-pastBillsPaid-pastExpsPaid).toFixed(2));
+    const pastOut=parseFloat((pastBillsPaid+pastExpsPaid).toFixed(2));
+    moneyLeftVal=parseFloat((pastIncome-pastOut).toFixed(2));
     moneyLeftLabel='Net Cash Flow';
     moneyLeftNote=null;
+    var _pastIncome=pastIncome, _pastOut=pastOut;
   }
 
   // ── Health status — always based on current month ────────────
@@ -6878,7 +6905,19 @@ function renderMoneySummaryCards(){
   const netMonth=expectedIncome-totalBillsOut-data.expenses.reduce((s,e)=>s+e.amount,0);
   const overdueAmt=overdue.reduce((s,b)=>s+effBillAmt(b),0);
   let healthStatus,healthColor,healthIcon,healthMsg;
-  if(overdue.length===0&&netMonth>=0&&availableNow>=totalBillsOut*0.5){
+  if(isFuture){
+    const futureAfterAll=parseFloat((moneyLeftVal-viewScheduledAmt-viewPendingAmt).toFixed(2));
+    if(futureAfterAll>=0){
+      healthStatus='Healthy';healthColor='var(--green)';healthIcon='✅';
+      healthMsg='Projected balance covers all bills this month.';
+    } else if(futureAfterAll>=-500){
+      healthStatus='Caution';healthColor='var(--yellow)';healthIcon='⚠️';
+      healthMsg='Projected balance may fall short. Consider scheduling income or reducing payments.';
+    } else {
+      healthStatus='At Risk';healthColor='var(--red)';healthIcon='🔴';
+      healthMsg='Projected balance will not cover all bills this month. Income needed.';
+    }
+  } else if(overdue.length===0&&netMonth>=0&&availableNow>=totalBillsOut*0.5){
     healthStatus='Healthy';healthColor='var(--green)';healthIcon='✅';
     healthMsg=dueSoon.length?dueSoon.length+' bill'+(dueSoon.length>1?'s':'')+' due this week totaling '+usd(dueSoon.reduce((s,b)=>s+effBillAmt(b),0))+'. You are on track.'
       :'No overdue bills and positive cash flow. Looking good this month.';
@@ -6930,7 +6969,7 @@ function renderMoneySummaryCards(){
   const afterCommitted=parseFloat((availableNow-viewScheduledAmt-viewPendingAmt).toFixed(2));
 
   el.innerHTML=
-    '<div style="background:var(--surface);border:1px solid '+healthColor+'44;border-radius:14px;padding:14px 16px;position:relative;overflow:hidden">'
+    '<div style="background:var(--surface);border:1px solid var(--blue);border-radius:14px;padding:14px 16px;position:relative;overflow:hidden">'
     +'<div style="position:absolute;inset:0;background:linear-gradient(135deg,'+healthColor+'08,transparent);pointer-events:none"></div>'
     +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">'
     +'<div style="display:flex;align-items:center;font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--accent)">'
@@ -6947,18 +6986,52 @@ function renderMoneySummaryCards(){
         +ledgerRow('End of Month',usd(endOfMonth),endOfMonth>=0?'var(--green)':'var(--red)',true,true,true,'var(--text)')
         +'<div style="font-size:12px;color:var(--muted);line-height:1.5;border-top:1px solid var(--border);margin-top:8px;padding-top:8px">'+healthMsg+'</div>'
       : isPast
-        ? '<div style="display:flex;gap:6px;margin-bottom:8px">'
-          +moneyLeftPill(moneyLeftVal,moneyLeftLabel,moneyLeftNote)
-          +moneyLeftPill(viewScheduledAmt,'Scheduled',null,'var(--blue)')
-          +moneyLeftPill(viewPendingAmt,'Pending',null,'var(--yellow)')
-          +'</div>'
-          +'<div style="font-size:12px;color:var(--muted);line-height:1.5;border-top:1px solid var(--border);padding-top:8px">Income received minus bills &amp; expenses paid that month.</div>'
-        : '<div style="display:flex;gap:6px;margin-bottom:8px">'
-          +moneyLeftPill(moneyLeftVal,moneyLeftLabel,moneyLeftNote)
-          +moneyLeftPill(viewScheduledAmt,'Scheduled',null,'var(--blue)')
-          +moneyLeftPill(viewPendingAmt,'Pending',null,'var(--yellow)')
-          +'</div>'
-          +'<div style="font-size:12px;color:var(--muted);line-height:1.5;border-top:1px solid var(--border);padding-top:8px">Checking balance after all scheduled payments through this month. No income assumed.</div>'
+        ? ledgerRow('Total In','+'+usd(_pastIncome||0),'var(--green)',false,false,false,'var(--text)')
+          +ledgerRow('Total Out','−'+usd(_pastOut||0),'var(--red)',false,false,false,'var(--text)')
+          +ledgerRow('Net Cash Flow',usd(moneyLeftVal),moneyLeftVal>=0?'var(--green)':'var(--red)',true,true,true,'var(--text)')
+          +'<div style="font-size:12px;color:var(--muted);line-height:1.5;border-top:1px solid var(--border);margin-top:8px;padding-top:8px">Income received minus bills &amp; expenses paid that month.</div>'
+        : (()=>{
+          const runwayItems=[]
+            .concat(viewBills.map(b=>{
+              let projDate=b.dueDate||viewMonth+'-28';
+              if(b.recurring==='Monthly'&&b.dueDate&&b.dueDate.slice(0,7)!==viewMonth){
+                projDate=viewMonth+'-'+b.dueDate.slice(8,10);
+              }
+              return {name:b.name,date:projDate,amt:b.amount||0,isAuto:!!(b.autoLog&&b.autoLogAccountId)};
+            }))
+            .concat(viewExps.map(e=>{
+              let projDate=e.date||viewMonth+'-28';
+              if(e.frequency==='Monthly'&&e.date&&e.date.slice(0,7)!==viewMonth){
+                projDate=viewMonth+'-'+e.date.slice(8,10);
+              }
+              return {name:e.description||e.category,date:projDate,amt:e.amount||0,isAuto:!!(e.autoLog&&e.autoLogAccountId)};
+            }))
+            .filter(i=>i.amt>0)
+            .sort((a,b)=>{if(a.isAuto!==b.isAuto)return a.isAuto?-1:1;return a.date.localeCompare(b.date);});
+          let runBal=moneyLeftVal;
+          let lastPayable=null;
+          let coversAll=true;
+          for(const item of runwayItems){
+            if(runBal-item.amt>=0){
+              runBal-=item.amt;
+              lastPayable=item;
+            } else { coversAll=false; break; }
+          }
+          const fmtRunDate=ds=>new Date(ds+'T12:00:00').toLocaleDateString('default',{month:'short',day:'numeric'});
+          const runwayMsg=coversAll
+            ?'Your balance covers all bills this month.'
+            :lastPayable
+              ?'Your balance covers bills through <strong>'+escHtml(lastPayable.name)+'</strong> on '+fmtRunDate(lastPayable.date)+'.'
+              :'Your balance may not cover bills this month.';
+          const afterSched=parseFloat((moneyLeftVal-viewScheduledAmt).toFixed(2));
+          const afterAll=parseFloat((moneyLeftVal-viewScheduledAmt-viewPendingAmt).toFixed(2));
+          return ledgerRow('Projected Balance',usd(moneyLeftVal),'var(--text)',true,false,false,'var(--text)')
+            +ledgerRow('− Scheduled','−'+usd(viewScheduledAmt),'var(--yellow)',false,false,false)
+            +ledgerRow('After Scheduled',usd(afterSched),afterSched>=0?'var(--blue)':'var(--red)',false,true,false,'var(--text)')
+            +ledgerRow('− Pending','−'+usd(viewPendingAmt),'var(--red)',false,false,false)
+            +ledgerRow('After All Bills',usd(afterAll),afterAll>=0?'var(--blue)':'var(--red)',false,true,false,'var(--text)')
+            +'<div style="font-size:12px;color:var(--muted);line-height:1.5;border-top:1px solid var(--border);margin-top:8px;padding-top:8px">'+runwayMsg+'</div>';
+        })()
     )
     +'</div>';
 }
@@ -7418,7 +7491,7 @@ function renderBills(){
     if(billSort==='date') allItems.sort((a,b)=>billSortDir==='asc'?new Date(a._date||'9999')-new Date(b._date||'9999'):new Date(b._date||'0000')-new Date(a._date||'0000'));
     else if(billSort==='amount') allItems.sort((a,b)=>billSortDir==='desc'?b._amount-a._amount:a._amount-b._amount);
     else if(billSort==='status'){
-      const allGroups=['Paid','Scheduled','Pending','Overdue'];
+      const allGroups=['Pending','Scheduled','Paid','Overdue'];
       const matchesGroup=(it,group)=>it._status===group||(group==='Overdue'&&it._status==='Missed')||(group==='Paid'&&it._status==='Received');
       if(billStatusCycle===0){
         // Grouped view — divider bar per group, skip empty groups
