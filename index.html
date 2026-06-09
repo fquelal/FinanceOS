@@ -630,7 +630,7 @@ canvas{width:100%!important;}
 .promo-card-toggle.selected .pct-check{background:var(--accent);border-color:var(--accent);color:#fff;}
 .promo-card-toggle .pct-info{min-width:0;}
 .promo-card-toggle .pct-name{font-size:13px;font-weight:600;color:var(--text);}
-.promo-card-toggle .pct-sub{font-size:11px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.promo-card-toggle .pct-sub{font-size:11px;color:var(--muted);margin-top:1px;}
 .promo-card-toggle .pct-bal{font-size:13px;font-weight:700;color:var(--red);white-space:nowrap;flex-shrink:0;}
 .promo-limit-warn{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);
   border-radius:8px;padding:8px 12px;font-size:12px;color:var(--red);margin-top:8px;display:none;}
@@ -1087,9 +1087,9 @@ canvas{width:100%!important;}
 
       <!-- 4 supporting stats — single strip -->
       <div style="background:var(--surface);border:1px solid var(--blue);border-radius:12px;display:flex;align-items:center;margin-bottom:10px">
-        <div id="d-acct-tap" onclick="toggleDashAccounts()" style="flex:1;text-align:center;padding:10px 6px;cursor:pointer;-webkit-tap-highlight-color:transparent">
+        <div style="flex:1;text-align:center;padding:10px 6px">
           <div class="stat-value" id="d-acct-total" style="color:var(--blue);font-size:15px">$0.00</div>
-          <div class="stat-label" style="font-size:11px;margin-top:2px">Accounts <span id="d-acct-chevron" style="font-size:9px;opacity:.6">▾</span></div>
+          <div class="stat-label" style="font-size:11px;margin-top:2px">Accounts</div>
         </div>
         <div style="width:1px;height:32px;background:var(--border)"></div>
         <div style="flex:1;text-align:center;padding:10px 6px">
@@ -1109,22 +1109,20 @@ canvas{width:100%!important;}
       </div>
 
       <!-- Account pill strip -->
-      <div id="d-accounts-wrap" style="max-height:0;opacity:0;overflow:hidden;transition:max-height .32s ease,opacity .25s ease,margin-bottom .32s ease;margin-bottom:0">
-        <div id="d-accounts" style="display:flex;flex-wrap:nowrap;gap:6px;padding:6px 0 2px"></div>
+      <div id="d-accounts-wrap" style="display:none;margin-bottom:14px">
+        <div id="d-accounts" style="display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none"></div>
       </div>
 
       <!-- Notification pill (desktop) -->
-      <button id="notif-pill"></button>
+      <div class="mb-16"><button id="notif-pill"></button></div>
 
       <!-- 7-day timeline -->
-      <div id="d-scroll-area" style="overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none">
-        <div class="card">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-            <div class="section-label" style="color:var(--muted);margin-bottom:0">Activity</div>
-            <div class="txt-muted-sm">−7 to +7 days</div>
-          </div>
-          <div id="d-timeline"><div class="empty" data-i18n="No activity this week.">No activity this week.</div></div>
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+          <div class="section-label" style="color:var(--muted);margin-bottom:0">Activity</div>
+          <div class="txt-muted-sm">−7 to +7 days</div>
         </div>
+        <div id="d-timeline"><div class="empty" data-i18n="No activity this week.">No activity this week.</div></div>
       </div>
     </div>
 
@@ -1137,9 +1135,9 @@ canvas{width:100%!important;}
         <button class="view-btn" id="bill-today-btn" onclick="goToCurrentMonth()" style="display:none;background:rgba(80,112,240,.15);color:var(--accent2);border-color:rgba(80,112,240,.3)">↩ Today</button>
         <button class="view-btn" id="bill-filter-pill" onclick="clearBillSort()" style="display:none;background:rgba(80,112,240,.15);color:var(--accent2);border-color:rgba(80,112,240,.3)"></button>
       </div>
-      <div id="bill-sort-bar" style="background:var(--surface);border:1px solid var(--border);border-radius:12px;display:flex;flex-wrap:nowrap;align-items:center;margin-bottom:14px;overflow:hidden;min-width:0">
+      <div id="bill-sort-bar" style="background:var(--surface);border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;margin-bottom:14px;overflow:hidden">
         <button onclick="shiftBillMonth(-1)" style="background:none;border:none;border-right:1px solid var(--border);padding:9px 14px;font-size:16px;line-height:1;color:var(--muted);cursor:pointer;flex-shrink:0;font-family:var(--font-b)">&#8249;</button>
-        <button onclick="setBillSort('date')" id="bs-date" style="background:none;border:none;flex:1;padding:9px 6px;font-size:13px;font-weight:600;color:var(--accent);cursor:pointer;font-family:var(--font-b)">Date</button>
+        <button onclick="setBillSort('date')" id="bs-date" style="background:none;border:none;flex:1;padding:9px 6px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;font-family:var(--font-b)">Date</button>
         <div style="width:1px;height:20px;background:var(--border);flex-shrink:0"></div>
         <button onclick="setBillSort('status')" id="bs-status" style="background:none;border:none;flex:1;padding:9px 6px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;font-family:var(--font-b)">Status</button>
         <div style="width:1px;height:20px;background:var(--border);flex-shrink:0"></div>
@@ -1148,18 +1146,14 @@ canvas{width:100%!important;}
         <button onclick="setBillSort('type')" id="bs-type" style="background:none;border:none;flex:1;padding:9px 6px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;font-family:var(--font-b)">Type</button>
         <button onclick="shiftBillMonth(1)" id="bill-month-next" style="background:none;border:none;border-left:1px solid var(--border);padding:9px 14px;font-size:16px;line-height:1;color:var(--muted);cursor:pointer;flex-shrink:0;font-family:var(--font-b)">&#8250;</button>
       </div>
-      <div style="position:relative">
-        <div id="bill-scroll-area" style="overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none">
-          <div id="bill-list"></div>
-          <div class="bill-calendar" id="bill-calendar">
-            <div class="cal-nav">
-              <button class="cal-nav-btn" onclick="shiftCalMonth(-1)">&#8249;</button>
-              <div class="cal-nav-label" id="cal-month-label"></div>
-              <button class="cal-nav-btn" onclick="shiftCalMonth(1)">&#8250;</button>
-            </div>
-            <div class="cal-grid" id="cal-grid"></div>
-          </div>
+      <div id="bill-list"></div>
+      <div class="bill-calendar" id="bill-calendar">
+        <div class="cal-nav">
+          <button class="cal-nav-btn" onclick="shiftCalMonth(-1)">&#8249;</button>
+          <div class="cal-nav-label" id="cal-month-label"></div>
+          <button class="cal-nav-btn" onclick="shiftCalMonth(1)">&#8250;</button>
         </div>
+        <div class="cal-grid" id="cal-grid"></div>
       </div>
     </div>
 
@@ -2429,6 +2423,34 @@ canvas{width:100%!important;}
   </div>
 </div>
 
+<!-- EXTRA PAYMENT -->
+<div class="overlay" id="modal-extrapay">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Extra Payment</span>
+      <button class="close-btn" onclick="closeModal('extrapay')">✕</button>
+    </div>
+    <!-- Zero-balance warning (shown only when payment would clear balance) -->
+    <div id="ep-zero-warning" style="display:none;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);border-radius:10px;padding:12px 14px;margin-bottom:14px">
+      <div style="font-size:13px;font-weight:700;color:var(--yellow);margin-bottom:4px">⚠ This will bring the balance to $0</div>
+      <div id="ep-zero-msg" style="font-size:12px;color:var(--muted);line-height:1.5"></div>
+    </div>
+    <div class="field">
+      <label>Payment Amount</label>
+      <input id="ep-amount" type="number" inputmode="decimal" placeholder="0.00" oninput="onEpAmountChange()"/>
+    </div>
+    <div class="field">
+      <label>Pay from Account</label>
+      <select id="ep-account"><option value="">-- No account linked --</option></select>
+    </div>
+    <div class="field">
+      <label>Date</label>
+      <input id="ep-date" type="date"/>
+    </div>
+    <button class="btn btn-primary btn-full" onclick="confirmExtraPayment()">Confirm Extra Payment</button>
+  </div>
+</div>
+
 <!-- CALENDAR PICKER -->
 <div class="overlay" id="modal-calpick">
   <div class="modal">
@@ -2652,7 +2674,7 @@ canvas{width:100%!important;}
 <script>
 'use strict';
 const STORAGE_KEY='financeOS_v4';
-const APP_VERSION='v1.3.6';
+const APP_VERSION='v1.3.8';
 const PIN_KEY='financeOS_pin';
 let data={income:[],expenses:[],bills:[],cards:[],transactions:[],assets:[],targets:[],accounts:[]};
 let currentTxnType='Withdrawal';
@@ -2667,8 +2689,8 @@ let insightsTab='categories';
 let txnFilter='All';
 let billSort='date';
 let billSortDir='asc'; // 'asc' | 'desc' — used by date and amount sorts
-let billStatusCycle=0; // 0=all, 1-4 filter by Pending/Scheduled/Paid/Overdue
-let billTypeCycle=0;   // 0=all, 1-5 filter by Cards/Loans/Expenses/Bills/Income
+let billStatusCycle=0; // 0=grouped, 1-4 filter by Pending/Scheduled/Paid/Overdue
+let billTypeCycle=0;   // 0=grouped, 1-5 filter by Cards/Loans/Expenses/Bills/Income
 let _billMonth=''; // YYYY-MM string, empty = init to current month on first use
 
 let txnSearch='';
@@ -4060,7 +4082,7 @@ function renderNetWorth(){
   const wrap=$('d-accounts-wrap'),grid=$('d-accounts');
   if(wrap&&grid){
     wrap.style.display=accs.length?'block':'none';
-    grid.innerHTML=accs.map(a=>`<div style="background:var(--surface);border:1px solid var(--green);border-radius:14px;padding:5px 8px;flex:1;text-align:center;min-width:0"><div style="font-size:13px;font-weight:600;color:${a.balance>=0?'var(--text)':'var(--red)'}">${usd(a.balance)}</div><div style="font-size:11px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escHtml(a.name)}</div></div>`).join('');
+    grid.innerHTML=accs.map(a=>`<div style="background:var(--surface);border:1px solid var(--green);border-radius:14px;padding:6px 14px;flex-shrink:0;text-align:center"><div style="font-size:13px;font-weight:600;color:${a.balance>=0?'var(--text)':'var(--red)'}">${usd(a.balance)}</div><div style="font-size:11px;color:var(--muted);margin-top:1px">${escHtml(a.name)}</div></div>`).join('');
   }
 }
 
@@ -4361,8 +4383,8 @@ function showSub(sec,parentSec){
   const mt=$('mtab-'+(TAB_MAP[parentSec]||parentSec));
   if(mt) mt.classList.add('active');
   renderAlerts();
-  if(sec==='bills'){ window.scrollTo(0,0); const bsa=$('bill-scroll-area'); if(bsa) bsa.scrollTop=0; document.documentElement.style.overflow='hidden'; document.body.style.overflow='hidden'; renderBills(); }
-  else if(sec==='dashboard') { window.scrollTo(0,0); document.documentElement.style.overflow='hidden'; document.body.style.overflow='hidden'; renderDashboard(); }
+  if(sec==='bills') renderBills();
+  else if(sec==='dashboard') renderDashboard();
   else if(sec==='networth') { renderNetWorth(); setTimeout(()=>renderIncomeManage(),50); }
   else if(sec==='debt') renderDebt();
   else if(sec==='insights') renderInsights();
@@ -4419,8 +4441,7 @@ function _initSwipe(){
   },{passive:true});
 }
 function show(sec,btn){
-  document.documentElement.style.overflow='';
-  document.body.style.overflow='';
+
   // Collapse simulator when leaving debt section
   if(sec!=='debt'){
     const inputs=$('promo-sim-inputs'); if(inputs) inputs.style.display='none';
@@ -4457,8 +4478,8 @@ function show(sec,btn){
   );
   closeSidebar();
   renderAlerts();
-  if(sec==='dashboard') { window.scrollTo(0,0); document.documentElement.style.overflow='hidden'; document.body.style.overflow='hidden'; renderDashboard(); }
-  else if(sec==='bills'){ window.scrollTo(0,0); const bsa=$('bill-scroll-area'); if(bsa) bsa.scrollTop=0; document.documentElement.style.overflow='hidden'; document.body.style.overflow='hidden'; renderBills(); }
+  if(sec==='dashboard') renderDashboard();
+  else if(sec==='bills') renderBills();
   else if(sec==='networth') renderNetWorth();
   else if(sec==='debt') renderDebt();
   else if(sec==='cashflow') renderCashFlow();
@@ -5272,20 +5293,21 @@ function clearBillSort(){
 function updateFilterPill(){
   const pill=$('bill-filter-pill');
   if(!pill) return;
-  const parts=[];
-  if(billSort==='date'&&billSortDir==='desc') parts.push('Oldest ↑');
-  else if(billSort==='amount'&&billSortDir==='desc') parts.push('Highest ↑');
-  else if(billSort==='amount'&&billSortDir==='asc') parts.push('Lowest ↓');
-  if(billStatusCycle>0){
+  let label=null;
+  if(billSort==='date'&&billSortDir==='desc') label='Oldest ↑';
+  else if(billSort==='date'&&billSortDir==='asc') label=null; // default, hide pill
+  else if(billSort==='amount'&&billSortDir==='desc') label='Highest ↑';
+  else if(billSort==='amount'&&billSortDir==='asc') label='Lowest ↓';
+  else if(billSort==='status'&&billStatusCycle>0){
     const labels=[null,'Pending','Scheduled','Paid','Overdue'];
-    parts.push(labels[billStatusCycle]);
+    label=labels[billStatusCycle];
   }
-  if(billTypeCycle>0){
+  else if(billSort==='type'&&billTypeCycle>0){
     const labels=[null,'Cards','Loans','Expenses','Bills','Income'];
-    parts.push(labels[billTypeCycle]);
+    label=labels[billTypeCycle];
   }
-  if(parts.length){
-    pill.textContent=parts.join(' · ')+' ✕';
+  if(label){
+    pill.textContent=label+' ✕';
     pill.style.display='';
   } else {
     pill.style.display='none';
@@ -5293,28 +5315,30 @@ function updateFilterPill(){
 }
 
 function updateSortBtnActive(){
-  ['date','amount'].forEach(k=>{
+  ['date','status','amount','type'].forEach(k=>{
     const el=$('bs-'+k);
-    if(el) el.style.color=billSort===k?'var(--accent)':'var(--muted)';
+    if(el){
+      const isActive=billSort===k;
+      el.style.color=isActive?'var(--accent)':'var(--muted)';
+    }
   });
-  const statusEl=$('bs-status');
-  if(statusEl) statusEl.style.color=billStatusCycle>0?'var(--accent)':'var(--muted)';
-  const typeEl=$('bs-type');
-  if(typeEl) typeEl.style.color=billTypeCycle>0?'var(--accent)':'var(--muted)';
 }
 
 function setBillSort(s){
   if(s==='date'){
     if(billSort==='date') billSortDir=billSortDir==='asc'?'desc':'asc';
-    else { billSort='date'; billSortDir='asc'; }
+    else { billSort='date'; billSortDir='asc'; billStatusCycle=0; billTypeCycle=0; }
   } else if(s==='amount'){
     if(billSort==='amount') billSortDir=billSortDir==='desc'?'asc':'desc';
-    else { billSort='amount'; billSortDir='desc'; }
+    else { billSort='amount'; billSortDir='desc'; billStatusCycle=0; billTypeCycle=0; }
   } else if(s==='status'){
-    billStatusCycle=(billStatusCycle+1)%5;
+    if(billSort==='status') billStatusCycle=(billStatusCycle+1)%5;
+    else { billSort='status'; billStatusCycle=0; billTypeCycle=0; }
   } else if(s==='type'){
-    billTypeCycle=(billTypeCycle+1)%6;
+    if(billSort==='type') billTypeCycle=(billTypeCycle+1)%6;
+    else { billSort='type'; billTypeCycle=0; billStatusCycle=0; }
   }
+  billSort=s;
   updateSortBtnActive();
   updateFilterPill();
   renderBills();
@@ -5436,7 +5460,137 @@ function autoProcessScheduledBills(){
     changed=true;
   });
   if(changed) saveData();
+
+  // ── Process future extra payments whose date has arrived ──
+  let epChanged=false;
+  data.transactions.filter(tx=>tx.extraPayment&&!tx.processed&&tx.date&&tx.date<=today()).forEach(tx=>{
+    if(tx.accountId){
+      const ac=data.accounts.find(a=>a.id===tx.accountId);
+      if(ac) ac.balance=parseFloat((ac.balance-tx.amount).toFixed(2));
+    }
+    tx.processed=true;
+    epChanged=true;
+  });
+  if(epChanged) saveData();
 }
+let _extraPayTxnId=null; // null=new, set=editing existing
+
+function openExtraPayment(billId, txnId){
+  const b=data.bills.find(x=>x.id===billId);if(!b)return;
+  _extraPayId=billId;
+  _extraPayTxnId=txnId||null;
+  const existingTxn=txnId?data.transactions.find(t=>t.id===txnId):null;
+  const accs=data.accounts.filter(a=>a.type==='checking'||a.type==='savings'||a.type==='cash');
+  const defId=existingTxn?existingTxn.accountId:(getDefaultAccountId()||'');
+  $('ep-account').innerHTML='<option value="">-- No account linked --</option>'
+    +accs.map(a=>`<option value="${a.id}"${a.id==defId?' selected':''}>${acTypeIcon[a.type]||''} ${a.name} (${usd(a.balance)})</option>`).join('');
+  $('ep-amount').value=existingTxn?existingTxn.amount:'';
+  $('ep-date').value=existingTxn?existingTxn.date:today();
+  $('ep-zero-warning').style.display='none';
+  const titleEl=$('modal-extrapay').querySelector('.modal-title');
+  const btnEl=$('modal-extrapay').querySelector('.btn-primary');
+  if(titleEl) titleEl.textContent=existingTxn?'Edit Extra Payment':'Extra Payment';
+  if(btnEl) btnEl.textContent=existingTxn?'Update Payment':'Confirm Extra Payment';
+  $('modal-extrapay').classList.add('open');
+  setTimeout(()=>$('ep-amount').focus(),80);
+}
+
+function onEpAmountChange(){
+  const b=data.bills.find(x=>x.id===_extraPayId);if(!b)return;
+  const existingAmt=_extraPayTxnId?(data.transactions.find(t=>t.id===_extraPayTxnId)||{}).amount||0:0;
+  const amt=sanitizeNum($('ep-amount').value)||0;
+  // For edit: effective new balance = current balance + old amount - new amount
+  const currentBal=b.balance||0;
+  const newBal=Math.max(0,_extraPayTxnId?(currentBal+existingAmt-amt):(currentBal-amt));
+  const warn=$('ep-zero-warning');
+  if(newBal===0 && amt>0 && b.scheduledAmount){
+    $('ep-zero-msg').textContent=`You have a scheduled payment of ${usd(b.scheduledAmount)} still set. You may want to cancel it after this payment.`;
+    warn.style.display='block';
+  } else if(newBal===0 && amt>0){
+    $('ep-zero-msg').textContent='This payment will clear the remaining balance.';
+    warn.style.display='block';
+  } else {
+    warn.style.display='none';
+  }
+}
+
+function confirmExtraPayment(){
+  const b=data.bills.find(x=>x.id===_extraPayId);if(!b)return;
+  const amt=sanitizeNum($('ep-amount').value)||0;
+  if(amt<=0){$('ep-amount').focus();return;}
+  const acId=parseInt($('ep-account').value)||0;
+  const date=$('ep-date').value||today();
+  const isFuture=date>today();
+
+  if(_extraPayTxnId){
+    // ── EDIT existing extra payment ──
+    const txn=data.transactions.find(t=>t.id===_extraPayTxnId);
+    if(!txn)return;
+    const oldAmt=txn.amount;
+    const oldAcId=txn.accountId;
+    const wasProcessed=!!txn.processed;
+    const wasFuture=txn.date>today()&&!wasProcessed;
+    // Reverse old card balance effect
+    b.balance=parseFloat(((b.balance||0)+oldAmt).toFixed(2));
+    // Reverse old account deduction only if it was already deducted
+    if(!wasFuture&&oldAcId){
+      const oldAc=data.accounts.find(a=>a.id===oldAcId);
+      if(oldAc) oldAc.balance=parseFloat((oldAc.balance+oldAmt).toFixed(2));
+    }
+    // Apply new card balance effect
+    b.balance=Math.max(0,parseFloat((b.balance-amt).toFixed(2)));
+    // Apply new account deduction only if not future
+    if(!isFuture&&acId){
+      const ac=data.accounts.find(a=>a.id===acId);
+      if(ac) ac.balance=parseFloat((ac.balance-amt).toFixed(2));
+    }
+    // Update transaction in place
+    txn.amount=parseFloat(amt.toFixed(2));
+    txn.accountId=acId;
+    txn.date=date;
+    if(isFuture){ delete txn.processed; } else { txn.processed=true; }
+  } else {
+    // ── NEW extra payment ──
+    // Always reduce card balance immediately (committed reduction)
+    b.balance=Math.max(0,parseFloat(((b.balance||0)-amt).toFixed(2)));
+    // Only deduct from account if today or past
+    if(!isFuture&&acId){
+      const ac=data.accounts.find(a=>a.id===acId);
+      if(ac) ac.balance=parseFloat((ac.balance-amt).toFixed(2));
+    }
+    const newTxn={
+      id:Date.now(),
+      description:b.name+' extra payment',
+      amount:parseFloat(amt.toFixed(2)),
+      type:'Debt Payment',
+      date,
+      accountId:acId,
+      methodLabel:b.name,
+      extraPayment:true,
+      billId:_extraPayId
+    };
+    if(!isFuture) newTxn.processed=true;
+    data.transactions.push(newTxn);
+  }
+  closeModal('extrapay');
+  saveData();renderAll();
+  haptic('medium');
+}
+
+function cancelExtraPayment(txnId){
+  const txn=data.transactions.find(t=>t.id===txnId);if(!txn)return;
+  const wasProcessed=!!txn.processed;
+  // Always restore card balance (was always reduced at creation)
+  const b=data.bills.find(x=>x.id===txn.billId||(txn.description&&txn.description.startsWith(x.name)&&(x.btype==='creditcard'||x.btype==='loan')));
+  if(b) b.balance=parseFloat(((b.balance||0)+txn.amount).toFixed(2));
+  // Only restore account if payment was already processed (account was debited)
+  if(wasProcessed&&txn.accountId){
+    const ac=data.accounts.find(a=>a.id===txn.accountId);
+    if(ac) ac.balance=parseFloat((ac.balance+txn.amount).toFixed(2));
+  }
+  deleteItem('transactions',txnId);
+}
+// ─────────────────────────────────────────────────────────────────
 
 function revertToPending(id){
   const b=data.bills.find(x=>x.id===id);if(!b)return;
@@ -5621,6 +5775,7 @@ let _payDebtId=null;
 let _payDebtAmount=0;
 let _payDebtType='min';
 let _noInterest=false;
+let _extraPayId=null;
 
 function openPayDebt(id){
   const b=data.bills.find(x=>x.id===id);if(!b)return;
@@ -6280,7 +6435,8 @@ function buildAlerts(){
     // Check if a payment transaction already exists for this bill this month
     const curMo=today().slice(0,7);
     const hasPaidTxn=data.transactions.some(tx=>
-      (tx.autoLogRef===b.id||(tx.description&&tx.description.startsWith(b.name)))
+      !tx.extraPayment
+      &&(tx.autoLogRef===b.id||(tx.description&&tx.description.startsWith(b.name)))
       &&tx.date&&tx.date.slice(0,7)===curMo
       &&(tx.type==='Bill Payment'||tx.type==='Debt Payment')
     );
@@ -6452,7 +6608,8 @@ function renderDashboard(){
     if(b.skipMonths&&b.skipMonths.includes(curMonthStr)) return false;
     // Exclude if a payment transaction already exists for this bill this month
     const hasPaidTxn=data.transactions.some(tx=>
-      (tx.autoLogRef===b.id||(tx.description&&tx.description.startsWith(b.name)))
+      !tx.extraPayment
+      &&(tx.autoLogRef===b.id||(tx.description&&tx.description.startsWith(b.name)))
       &&tx.date&&tx.date.slice(0,7)===curMonthStr
       &&(tx.type==='Bill Payment'||tx.type==='Debt Payment')
     );
@@ -6467,13 +6624,26 @@ function renderDashboard(){
   // Money Left This Month: checking balance − scheduled bills/expenses this month
   // Include: status=Scheduled + autoLog bills due this month (they will auto-deduct)
   // Exclude: already-Paid, zero-balance cards
+  // For cards/loans: subtract any extra payments made this month from scheduled amount
   const scheduledBills=data.bills.filter(b=>{
     if((b.btype==='creditcard'||b.btype==='loan')&&!(b.balance>0)) return false;
     if(!b.dueDate||b.dueDate.slice(0,7)!==curMonthStr) return false;
     if(b.status==='Paid') return false;
     if(b.skipMonths&&b.skipMonths.includes(curMonthStr)) return false;
     return b.status==='Scheduled'||(b.autoLog&&b.autoLogAccountId);
-  }).reduce((s,b)=>s+(b.scheduledAmount||b.amount||0),0);
+  }).reduce((s,b)=>{
+    const scheduled=b.scheduledAmount||b.amount||0;
+    const extraPaid=data.transactions.filter(tx=>
+      tx.extraPayment&&tx.processed
+      &&(tx.billId===b.id||(tx.description&&tx.description.startsWith(b.name)))
+      &&tx.date&&tx.date.slice(0,7)===curMonthStr
+    ).reduce((sum,tx)=>sum+tx.amount,0);
+    return s+Math.max(0,scheduled-extraPaid);
+  },0)
+  // Add unprocessed future extra payments for this month
+  + data.transactions.filter(tx=>
+      tx.extraPayment&&!tx.processed&&tx.date&&tx.date.slice(0,7)===curMonthStr
+    ).reduce((s,tx)=>s+tx.amount,0);
   // Auto-log expenses: already transacted this month are already out of account (don't add again);
   // non-transacted auto-log expenses due this month should be counted as committed
   const scheduledExps=data.expenses.filter(e=>{
@@ -6535,7 +6705,8 @@ function renderDashboard(){
   const accs=data.accounts||[];
   const wrap=$('d-accounts-wrap'),grid=$('d-accounts');
   if(wrap&&grid){
-    grid.innerHTML=accs.map(a=>`<div style="background:var(--surface);border:1px solid var(--green);border-radius:14px;padding:5px 8px;flex:1;text-align:center;min-width:0"><div style="font-size:13px;font-weight:600;color:${a.balance>=0?'var(--text)':'var(--red)'}">${usd(a.balance)}</div><div style="font-size:11px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escHtml(a.name)}</div></div>`).join('');
+    wrap.style.display=accs.length?'block':'none';
+    grid.innerHTML=accs.map(a=>`<div style="background:var(--surface);border:1px solid var(--green);border-radius:14px;padding:6px 14px;flex-shrink:0;text-align:center"><div style="font-size:13px;font-weight:600;color:${a.balance>=0?'var(--text)':'var(--red)'}">${usd(a.balance)}</div><div style="font-size:11px;color:var(--muted);margin-top:1px">${escHtml(a.name)}</div></div>`).join('');
   }
 
   // ── 7-DAY TIMELINE ────────────────────────────
@@ -6691,47 +6862,15 @@ function renderDashboard(){
   }
 
   $('d-timeline').innerHTML=html;
-  sizeDashScrollArea();
-}
-
-function sizeDashScrollArea(){
-  if(window.innerWidth>680) return;
-  const area=$('d-scroll-area');
-  if(!area) return;
-  const rect=area.getBoundingClientRect();
-  area.style.height=Math.max(window.innerHeight-rect.top-8,'200')+'px';
-}
-
-function toggleMscDetails(){
-  const r1=$('msc-sub-rows'), r2=$('msc-sub-rows-2'), r3=$('msc-sub-rows-3');
-  const hint=$('msc-toggle-hint');
-  if(!r1) return;
-  const open=r1.style.display==='block';
-  const val=open?'none':'block';
-  if(r1) r1.style.display=val;
-  if(r2) r2.style.display=val;
-  if(r3) r3.style.display=val;
-  if(hint) hint.textContent=open?'▾':'▴';
 }
 
 function toggleDashAccounts(){
-  const wrap=$('d-accounts-wrap');
+  const grid=$('d-accounts');
   const chev=$('d-acct-chevron');
-  if(!wrap) return;
-  const open=wrap.dataset.open==='1';
-  if(open){
-    wrap.style.maxHeight='0';
-    wrap.style.opacity='0';
-    wrap.style.marginBottom='0';
-    wrap.dataset.open='0';
-    if(chev) chev.textContent='▾';
-  } else {
-    wrap.style.maxHeight='200px';
-    wrap.style.opacity='1';
-    wrap.style.marginBottom='14px';
-    wrap.dataset.open='1';
-    if(chev) chev.textContent='▴';
-  }
+  if(!grid) return;
+  const open=grid.style.display==='grid';
+  grid.style.display=open?'none':'grid';
+  if(chev) chev.textContent=open?'▾':'▴';
 }
 
 function renderMoneySummaryCards(){
@@ -6804,10 +6943,16 @@ function renderMoneySummaryCards(){
   // A bill is truly pending only if dueDate is in viewMonth AND no payment txn exists for it this month
   const billDueInViewMonth=b=>b.dueDate&&b.dueDate.slice(0,7)===viewMonth;
   const billHasPaidTxn=b=>data.transactions.some(tx=>
-    (tx.autoLogRef===b.id||(tx.description&&tx.description.startsWith(b.name)))
+    !tx.extraPayment
+    &&(tx.autoLogRef===b.id||(tx.description&&tx.description.startsWith(b.name)))
     &&tx.date&&tx.date.slice(0,7)===viewMonth
     &&(tx.type==='Bill Payment'||tx.type==='Debt Payment')
   );
+  const billExtraPaidAmt=b=>data.transactions.filter(tx=>
+    tx.extraPayment&&tx.processed
+    &&(tx.billId===b.id||(tx.description&&tx.description.startsWith(b.name)))
+    &&tx.date&&tx.date.slice(0,7)===viewMonth
+  ).reduce((s,tx)=>s+tx.amount,0);
   const viewPendingAmt=isFuture
     ? viewBills.filter(b=>!b.autoLog).reduce((s,b)=>s+(b.amount||0),0)
       + viewExps.filter(e=>!e.autoLog).reduce((s,e)=>s+e.amount,0)
@@ -6815,20 +6960,26 @@ function renderMoneySummaryCards(){
       + viewExps.filter(e=>!e.autoLog&&e.paidMonth!==viewMonth).reduce((s,e)=>s+e.amount,0);
 
   // ── Scheduled amount ────────────────────────────────────────
+  // Future extra payments (unprocessed, date in viewMonth) count as scheduled
+  const futureExtraPayAmt=data.transactions.filter(tx=>
+    tx.extraPayment&&!tx.processed&&tx.date&&tx.date.slice(0,7)===viewMonth
+  ).reduce((s,tx)=>s+tx.amount,0);
+
   const viewScheduledAmt=isFuture
     ? viewBills.filter(b=>b.autoLog&&b.autoLogAccountId).reduce((s,b)=>s+(b.scheduledAmount||b.amount||0),0)
       + viewExps.filter(e=>e.autoLog&&e.autoLogAccountId).reduce((s,e)=>s+e.amount,0)
     : viewBills.filter(b=>{
         if(b.autoLog&&b.autoLogAccountId) return b.status!=='Paid';
         return b.status==='Scheduled'&&b.dueDate&&b.dueDate.slice(0,7)===viewMonth;
-      }).reduce((s,b)=>s+(b.scheduledAmount||b.amount||0),0)
+      }).reduce((s,b)=>s+Math.max(0,(b.scheduledAmount||b.amount||0)-billExtraPaidAmt(b)),0)
       + viewExps.filter(e=>{
         if(e.autoLog&&e.autoLogAccountId){
           const hasRun=data.transactions.some(tx=>tx.autoLogRef===e.id&&tx.date&&tx.date.slice(0,7)===viewMonth);
           return !hasRun;
         }
         return e.scheduledMonth===viewMonth&&e.paidMonth!==viewMonth;
-      }).reduce((s,e)=>s+e.amount,0);
+      }).reduce((s,e)=>s+e.amount,0)
+      + futureExtraPayAmt;
 
   // ── Paid dollar total ────────────────────────────────────────
   const viewPaidAmt=
@@ -6909,7 +7060,8 @@ function renderMoneySummaryCards(){
   const yr=now.getFullYear(), mo=now.getMonth();
   const effBillAmt=b=>(b.btype==='creditcard'||b.btype==='loan')&&!(b.balance>0)?0:(b.amount||0);
   const _hasPaidTxnThisMo=b=>data.transactions.some(tx=>
-    (tx.autoLogRef===b.id||(tx.description&&tx.description.startsWith(b.name)))
+    !tx.extraPayment
+    &&(tx.autoLogRef===b.id||(tx.description&&tx.description.startsWith(b.name)))
     &&tx.date&&tx.date.slice(0,7)===curMonthStr
     &&(tx.type==='Bill Payment'||tx.type==='Debt Payment')
   );
@@ -6955,7 +7107,7 @@ function renderMoneySummaryCards(){
   } else if(overdue.length===0&&netMonth>=0&&availableNow>=totalBillsOut*0.5){
     healthStatus='Healthy';healthColor='var(--green)';healthIcon='✅';
     healthMsg=dueSoon.length?dueSoon.length+' bill'+(dueSoon.length>1?'s':'')+' due this week totaling '+usd(dueSoon.reduce((s,b)=>s+effBillAmt(b),0))+'. You are on track.'
-      :'Bills paid & positive cash flow. Looking good this month.';
+      :'No overdue bills and positive cash flow. Looking good this month.';
   } else if(overdue.length<=2&&netMonth>=-200){
     healthStatus='Caution';healthColor='var(--yellow)';healthIcon='⚠️';
     healthMsg=overdue.length?overdue.length+' overdue bill'+(overdue.length>1?'s':'')+' totaling '+usd(overdueAmt)+'. Take care of '+(overdue.length>1?'these':'this')+' soon.'
@@ -6991,7 +7143,7 @@ function renderMoneySummaryCards(){
   const ledgerRow=(label,val,col,bold,topBorder,large,lblCol)=>{
     const fs=large?'15px':'13px';
     const fw=bold?'800':'500';
-    const border=topBorder?'border-top:1px solid var(--border);margin-top:6px;padding-top:6px;':'';
+    const border=topBorder?'border-top:1px solid var(--border);margin-top:8px;padding-top:8px;':'';
     const valCol=col||'var(--text)';
     const labelCol=lblCol||'var(--muted)';
     return '<div style="display:flex;justify-content:space-between;align-items:center;'+border+'padding:2px 0">'
@@ -7004,31 +7156,22 @@ function renderMoneySummaryCards(){
   const afterCommitted=parseFloat((availableNow-viewScheduledAmt-viewPendingAmt).toFixed(2));
 
   el.innerHTML=
-    '<div style="background:var(--surface);border:1px solid var(--blue);border-radius:14px;padding:12px 14px;position:relative;overflow:hidden">'
+    '<div style="background:var(--surface);border:1px solid var(--blue);border-radius:14px;padding:14px 16px;position:relative;overflow:hidden">'
     +'<div style="position:absolute;inset:0;background:linear-gradient(135deg,'+healthColor+'08,transparent);pointer-events:none"></div>'
-    +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">'
+    +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">'
     +'<div style="display:flex;align-items:center;font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--accent)">'
     +viewMonthName+monthBadge+'</div>'
-    +'<div style="display:flex;align-items:center;gap:6px">'
-    +'<div style="font-size:11px;font-weight:800;color:'+healthColor+';background:'+healthColor+'18;border:1px solid '+healthColor+'33;border-radius:20px;padding:2px 9px">'+healthIcon+' '+healthStatus+'</div>'
-    +'<div id="msc-toggle-hint" onclick="toggleMscDetails()" style="font-size:14px;color:var(--muted);cursor:pointer;padding:2px 4px;-webkit-tap-highlight-color:transparent">▾</div>'
-    +'</div>'
+    +'<div style="font-size:11px;font-weight:800;color:'+healthColor+';background:'+healthColor+'18;border:1px solid '+healthColor+'33;border-radius:20px;padding:2px 10px">'+healthIcon+' '+healthStatus+'</div>'
     +'</div>'
     +(isCurrent
       ? ledgerRow('Current Balance',usd(availableNow),'var(--text)',true,false,false,'var(--text)')
-        +'<div id="msc-sub-rows" style="display:none">'
         +ledgerRow('− Scheduled','−'+usd(viewScheduledAmt),'var(--yellow)',false,false,false)
-        +'</div>'
         +ledgerRow('After Scheduled',usd(parseFloat((availableNow-viewScheduledAmt).toFixed(2))),(availableNow-viewScheduledAmt)>=0?'var(--blue)':'var(--red)',false,true,false,'var(--text)')
-        +'<div id="msc-sub-rows-2" style="display:none">'
         +ledgerRow('− Pending','−'+usd(viewPendingAmt),'var(--red)',false,false,false)
-        +'</div>'
         +ledgerRow('After All Bills',usd(afterCommitted),afterCommitted>=0?'var(--blue)':'var(--red)',false,true,false,'var(--text)')
-        +'<div id="msc-sub-rows-3" style="display:none">'
         +ledgerRow('+ Expected Income'+(receivedIncome>0?' (remaining)':''),'+'+usd(pendingIncome),'var(--green)',false,false,false)
-        +'</div>'
         +ledgerRow('End of Month',usd(endOfMonth),endOfMonth>=0?'var(--green)':'var(--red)',true,true,true,'var(--text)')
-        +'<div style="font-size:11.5px;color:var(--muted);line-height:1.4;border-top:1px solid var(--border);margin-top:7px;padding-top:7px">'+healthMsg+'</div>'
+        +'<div style="font-size:12px;color:var(--muted);line-height:1.5;border-top:1px solid var(--border);margin-top:8px;padding-top:8px">'+healthMsg+'</div>'
       : isPast
         ? ledgerRow('Total In','+'+usd(_pastIncome||0),'var(--green)',false,false,false,'var(--text)')
           +ledgerRow('Total Out','−'+usd(_pastOut||0),'var(--red)',false,false,false,'var(--text)')
@@ -7079,34 +7222,8 @@ function renderMoneySummaryCards(){
     )
     +'</div>';
 }
-let _billView = 'list';
-
-function syncBillView(){
-  const listEl=$('bill-list');
-  const calEl=$('bill-calendar');
-  const sortBar=$('bill-sort-bar');
-  const listBtn=$('bill-view-list');
-  const calBtn=$('bill-view-cal');
-  if(_billView==='calendar'){
-    if(listEl) listEl.classList.add('calendar-mode');
-    if(calEl)  calEl.classList.add('active');
-    if(sortBar) sortBar.style.display='none';
-    if(listBtn) listBtn.classList.remove('active');
-    if(calBtn)  calBtn.classList.add('active');
-  } else {
-    if(listEl) listEl.classList.remove('calendar-mode');
-    if(calEl)  calEl.classList.remove('active');
-    if(sortBar) sortBar.style.display='flex';
-    if(listBtn) listBtn.classList.add('active');
-    if(calBtn)  calBtn.classList.remove('active');
-    updateSortBtnActive();
-  }
-}
-
 function renderBills(){
   autoProcessScheduledBillsWithNotify();
-  syncBillView();
-  const blEl=$('bill-list'); if(blEl) blEl.innerHTML='';
   renderMoneySummaryCards();
   initBillMonth();
 
@@ -7263,7 +7380,8 @@ function renderBills(){
       // Check if a payment transaction exists for this bill this month
       // (covers recurring bills that were paid and advanced to next cycle)
       const hasPaidTxnThisMonth=data.transactions.some(tx=>
-        (tx.autoLogRef===b.id||(tx.description&&tx.description.startsWith(b.name)))
+        !tx.extraPayment
+        &&(tx.autoLogRef===b.id||(tx.description&&tx.description.startsWith(b.name)))
         &&tx.date&&tx.date.slice(0,7)===showKey
         &&(tx.type==='Bill Payment'||tx.type==='Debt Payment')
       );
@@ -7276,15 +7394,14 @@ function renderBills(){
     } else {
       // Past month: check if a payment transaction exists for this bill in showKey
       const hasPaidTxn = data.transactions.some(tx=>
-        (tx.autoLogRef===b.id||(tx.description&&tx.description.startsWith(b.name)))
+        !tx.extraPayment
+        &&(tx.autoLogRef===b.id||(tx.description&&tx.description.startsWith(b.name)))
         &&tx.date&&tx.date.slice(0,7)===showKey
         &&(tx.type==='Bill Payment'||tx.type==='Debt Payment')
       );
       if(hasPaidTxn){
         eff = 'Paid';
       } else if(b.autoLog&&b.autoLogAccountId){
-        eff = 'Scheduled';
-      } else if(daysUntil(useDate) < 0){
         // Due date is in the past and no payment found — show actual status (could be Overdue)
         eff = b.status === 'Paid' ? 'Paid' : b.status === 'Scheduled' ? 'Scheduled' : b.status === 'Overdue' ? 'Overdue' : 'Pending';
       } else {
@@ -7317,11 +7434,19 @@ function renderBills(){
         +' onclick="event.stopPropagation();unskipBillMonth('+b.id+')">Undo</button>';
     } else if(eff==='Paid'){
       actionBtns='<span style="font-size:12px;color:var(--green);font-weight:700">&#x2713; Paid'+paidAmt+'</span>';
+      if(isDebt&&b.balance>0){
+        actionBtns+='<button class="btn btn-sm" style="background:rgba(34,197,94,.15);color:var(--green)"'
+          +' onclick="event.stopPropagation();openExtraPayment('+b.id+')">Extra Payment</button>';
+      }
     } else if(eff==='Scheduled'){
       actionBtns='<button class="btn btn-sm" style="background:rgba(59,130,246,.15);color:var(--blue)"'
         +' onclick="event.stopPropagation();openPayDebt('+b.id+')">Edit Payment</button>'
         +'<button class="btn btn-sm" style="background:rgba(255,255,255,.06);color:var(--muted)"'
         +' onclick="event.stopPropagation();revertToPending('+b.id+')">Cancel</button>';
+      if(isDebt&&b.balance>0){
+        actionBtns+='<button class="btn btn-sm" style="background:rgba(34,197,94,.15);color:var(--green)"'
+          +' onclick="event.stopPropagation();openExtraPayment('+b.id+')">Extra Payment</button>';
+      }
     } else if(isZeroBalance){
       if(b.btype==='loan'){
         actionBtns='<span class="txt-muted-xs" style="color:var(--green)">✅ Paid off</span>'
@@ -7369,11 +7494,13 @@ function renderBills(){
         ?'<div style="display:flex;align-items:center;gap:6px">'
           +'<span style="color:var(--muted);text-decoration:line-through;font-size:11px">'+usd(b.amount)+'</span>'
           +' <span style="font-weight:700;font-size:15px">'+usd(paidTxn.amount)+'</span>'
+          +(isDebt&&b.balance>0?'<span id="cchev-'+cid+'" style="color:var(--muted);font-size:11px">&#9662;</span>':'')
           +'</div>'
-        // Paid same amount, or no txn found: just show amount, no chevron
+        // Paid: show amount; add chevron if extra payment available
         :(eff==='Paid'
           ?'<div style="display:flex;align-items:center;gap:6px">'
             +'<span style="font-weight:700;font-size:15px">'+usd(isZeroBalance?0:(paidTxn?paidTxn.amount:(b.scheduledAmount||b.amount)))+'</span>'
+            +(isDebt&&b.balance>0?'<span id="cchev-'+cid+'" style="color:var(--muted);font-size:11px">&#9662;</span>':'')
             +'</div>'
           // Not paid: normal display with chevron
           :'<div style="display:flex;align-items:center;gap:6px">'
@@ -7385,11 +7512,44 @@ function renderBills(){
       +'</div></div>'
       +utilBar
       +(isDebt?renderPromoItems(b.id):'')
-    +(eff!=='Paid'
+    +(actionBtns
       ?'<div id="cact-'+cid+'"'
         +' style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);flex-wrap:nowrap;gap:6px;overflow:hidden">'
         +actionBtns+'</div>'
       :'')
+      +'</div>';
+  }
+
+  // Helper: render an extra payment card
+  function renderExtraPayCard(tx){
+    const sc=statusColor(tx.date<=today()?'Paid':'Scheduled');
+    const eff=tx.date<=today()?'Paid':'Scheduled';
+    const statusBadge='<span style="font-size:12px;font-weight:700;padding:2px 8px;border-radius:20px;background:'+sc+'22;color:'+sc+'">'+eff+'</span>';
+    const acct=data.accounts.find(a=>a.id===tx.accountId);
+    const subLine='Date: '+fmtDate(tx.date)+(acct?' · '+acct.name:'');
+    // Find the parent bill id — stored on txn or match by name
+    const parentBill=data.bills.find(b=>tx.billId===b.id||(tx.description&&tx.description.startsWith(b.name)&&(b.btype==='creditcard'||b.btype==='loan')));
+    const billId=parentBill?parentBill.id:null;
+    const cid='ep-'+tx.id;
+    return '<div class="card" style="margin-bottom:8px;border-left:3px solid var(--green);border-radius:4px 12px 12px 4px;cursor:pointer" onclick="toggleCardExpand(\''+cid+'\')">'
+      +'<div style="display:flex;align-items:center;justify-content:space-between;gap:8px">'
+      +'<div style="min-width:0;flex:1">'
+      +'<div style="margin-bottom:3px;display:flex;gap:4px;flex-wrap:wrap">'
+      +'<span style="font-size:12px;font-weight:700;padding:2px 7px;border-radius:6px;background:rgba(34,197,94,.15);color:var(--green);flex-shrink:0">Extra Payment</span>'
+      +'</div>'
+      +'<div style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+escHtml(tx.description)+'</div>'
+      +'<div class="txt-muted-sm">'+subLine+'</div>'
+      +'</div>'
+      +'<div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0">'
+      +statusBadge
+      +'<div style="display:flex;align-items:center;gap:4px">'
+      +'<span style="font-weight:700;font-size:15px">'+usd(tx.amount)+'</span>'
+      +'<span id="cchev-'+cid+'" style="color:var(--muted);font-size:11px">&#9662;</span>'
+      +'</div></div></div>'
+      +'<div id="cact-'+cid+'" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);flex-wrap:nowrap;gap:6px;overflow:hidden">'
+      +(billId?'<button class="btn btn-sm" style="background:rgba(59,130,246,.15);color:var(--blue)" onclick="event.stopPropagation();openExtraPayment('+billId+','+tx.id+')">Edit</button>':'')
+      +'<button class="btn btn-sm" style="background:rgba(239,68,68,.12);color:#ef4444" onclick="event.stopPropagation();cancelExtraPayment('+tx.id+')">Cancel Payment</button>'
+      +'</div>'
       +'</div>';
   }
 
@@ -7455,8 +7615,45 @@ function renderBills(){
       +'</div>';
   }
 
-  if(true){
-    // ── SORTED + FILTERED COMBINED LIST ───────────────────────
+  if(billSort==='type'){
+    // ── GROUP BY TYPE ──────────────────────────────
+    const incomeCards  = incomeItemsUniq.map(it=>renderIncomeCard(it.income,it.occ,it.idx,it.total));
+    const billCards    = data.bills.filter(b=>b.btype==='bill'&&projectedBillDate(b)!==null&&!(b.skipMonths&&b.skipMonths.includes(showKey))).map((b,i)=>renderBillCard(b,i===0,projectedBillDate(b)));
+    const expenseCards = data.expenses.filter(e=>e.amount>0&&projectedExpenseDate(e)!==null).map(e=>renderExpenseCard(e,projectedExpenseDate(e)));
+    const loanCards    = data.bills.filter(b=>(b.btype==='loan'||b.btype==='promo')&&b.balance>0&&projectedBillDate(b)!==null&&!(b.skipMonths&&b.skipMonths.includes(showKey))).map((b,i)=>renderBillCard(b,i===0,projectedBillDate(b)));
+    const cardCards    = data.bills.filter(b=>b.btype==='creditcard'&&b.balance>0&&projectedBillDate(b)!==null&&!(b.skipMonths&&b.skipMonths.includes(showKey))).map((b,i)=>renderBillCard(b,i===0,projectedBillDate(b)));
+
+    const typeGroups=[
+      {label:'Credit Cards',cards:cardCards},
+      {label:'Loans',cards:loanCards},
+      {label:'Expenses',cards:expenseCards},
+      {label:'Bills',cards:billCards},
+      {label:'Income',cards:incomeCards}
+    ];
+
+    if(billTypeCycle===0){
+      // Grouped view — all types with dividers, skip empty
+      let firstNonEmpty=true;
+      typeGroups.forEach(g=>{
+        if(!g.cards.length) return;
+        html+=sectionDiv(g.label,firstNonEmpty?0:1);
+        firstNonEmpty=false;
+        html+=g.cards.join('<div class="mb-8"></div>');
+        html+='<div class="mb-8"></div>';
+      });
+    } else {
+      // Single type filter
+      const g=typeGroups[billTypeCycle-1];
+      html+=sectionDiv(g.label,0);
+      if(g.cards.length){
+        html+=g.cards.join('<div class="mb-8"></div>');
+      } else {
+        html+=emptyState('✓','No '+g.label,'Nothing of this type for the current period.','','');
+      }
+    }
+
+  } else {
+    // ── SORTED COMBINED LIST ───────────────────────
     const statusOrder={'Overdue':0,'Missed':0,'Pending':1,'Expected':1,'Scheduled':2,'Paid':3,'Received':3};
 
     // Normalise all items to sortable shape
@@ -7477,7 +7674,8 @@ function renderBills(){
         let eff;
         if(isCurrentMonthView){
           const hasPaidTxnThisMonth=data.transactions.some(tx=>
-            (tx.autoLogRef===b.id||(tx.description&&tx.description.startsWith(b.name)))
+            !tx.extraPayment
+            &&(tx.autoLogRef===b.id||(tx.description&&tx.description.startsWith(b.name)))
             &&tx.date&&tx.date.slice(0,7)===showKey
             &&(tx.type==='Bill Payment'||tx.type==='Debt Payment')
           );
@@ -7495,7 +7693,8 @@ function renderBills(){
             eff = b.autoLog&&b.autoLogAccountId ? 'Scheduled' : 'Pending';
           } else {
             const hasPaidTxn=data.transactions.some(tx=>
-              (tx.autoLogRef===b.id||(tx.description&&tx.description.startsWith(b.name)))
+              !tx.extraPayment
+              &&(tx.autoLogRef===b.id||(tx.description&&tx.description.startsWith(b.name)))
               &&tx.date&&tx.date.slice(0,7)===showKey
               &&(tx.type==='Bill Payment'||tx.type==='Debt Payment')
             );
@@ -7504,6 +7703,16 @@ function renderBills(){
         }
         return{_kind:'bill',bill:b,_date:proj,_amount:isZeroBalance?0:(b.amount||0),_status:eff};
       }),
+      // Extra payment transactions — show as their own line items
+      ...data.transactions
+        .filter(tx=>tx.extraPayment&&tx.date&&tx.date.slice(0,7)===showKey)
+        .map(tx=>({
+          _kind:'extrapay',
+          txn:tx,
+          _date:tx.date,
+          _amount:tx.amount,
+          _status: tx.date<=today()?'Paid':'Scheduled'
+        })),
       ...data.expenses
         .filter(e=>e.amount>0&&projectedExpenseDate(e)!==null)
         .map(e=>{
@@ -7521,59 +7730,59 @@ function renderBills(){
       ...incomeItemsUniq
     ];
 
-    // Apply sort
     if(billSort==='date') allItems.sort((a,b)=>billSortDir==='asc'?new Date(a._date||'9999')-new Date(b._date||'9999'):new Date(b._date||'0000')-new Date(a._date||'0000'));
     else if(billSort==='amount') allItems.sort((a,b)=>billSortDir==='desc'?b._amount-a._amount:a._amount-b._amount);
-
-    // Apply status filter
-    let filteredItems=allItems;
-    if(billStatusCycle>0){
+    else if(billSort==='status'){
       const allGroups=['Pending','Scheduled','Paid','Overdue'];
-      const filterGroup=allGroups[billStatusCycle-1];
       const matchesGroup=(it,group)=>it._status===group||(group==='Overdue'&&it._status==='Missed')||(group==='Paid'&&it._status==='Received');
-      filteredItems=filteredItems.filter(it=>matchesGroup(it,filterGroup));
+      if(billStatusCycle===0){
+        // Grouped view — divider bar per group, skip empty groups
+        let firstNonEmpty=true;
+        allGroups.forEach(group=>{
+          const groupItems=allItems.filter(it=>matchesGroup(it,group));
+          if(!groupItems.length) return;
+          html+=sectionDiv(group,firstNonEmpty?0:1);
+          firstNonEmpty=false;
+          groupItems.forEach(item=>{
+            if(item._kind==='bill') html+=renderBillCard(item.bill,false,item._date);
+            else if(item._kind==='expense') html+=renderExpenseCard(item.expense,item._date);
+            else if(item._kind==='extrapay') html+=renderExtraPayCard(item.txn);
+            else html+=renderIncomeCard(item.income,item.occ,item.idx,item.total);
+            html+='<div class="mb-8"></div>';
+          });
+        });
+      } else {
+        // Single group filter — show only items matching the selected status
+        const filterGroup=allGroups[billStatusCycle-1];
+        const groupItems=allItems.filter(it=>matchesGroup(it,filterGroup));
+        html+=sectionDiv(filterGroup,0);
+        groupItems.forEach(item=>{
+          if(item._kind==='bill') html+=renderBillCard(item.bill,false,item._date);
+          else if(item._kind==='expense') html+=renderExpenseCard(item.expense,item._date);
+          else if(item._kind==='extrapay') html+=renderExtraPayCard(item.txn);
+          else html+=renderIncomeCard(item.income,item.occ,item.idx,item.total);
+          html+='<div class="mb-8"></div>';
+        });
+        if(!groupItems.length) html+=emptyState('✓','No '+filterGroup+' items','Nothing in this group for the current period.','','');
+      }
+      $('bill-list').innerHTML=html||emptyState('📋','Nothing here yet','Add bills, loans, credit cards, and income to get started.',"+ Add Expense / Bill","openModal('expense')");
+      return;
     }
 
-    // Apply type filter
-    if(billTypeCycle>0){
-      const typeMap=['creditcard','loan','expense','bill','income'];
-      const filterType=typeMap[billTypeCycle-1];
-      filteredItems=filteredItems.filter(it=>{
-        if(filterType==='income') return it._kind==='income';
-        if(filterType==='expense') return it._kind==='expense';
-        if(filterType==='creditcard') return it._kind==='bill'&&it.bill.btype==='creditcard';
-        if(filterType==='loan') return it._kind==='bill'&&(it.bill.btype==='loan'||it.bill.btype==='promo');
-        if(filterType==='bill') return it._kind==='bill'&&it.bill.btype==='bill';
-        return true;
-      });
-    }
-
-    if(!filteredItems.length){
-      html+=emptyState('✓','No matching items','Try adjusting your filters.','','');
-    } else {
-      filteredItems.forEach((item,idx)=>{
-        if(item._kind==='bill') html+=renderBillCard(item.bill,false,item._date);
-        else if(item._kind==='expense') html+=renderExpenseCard(item.expense,item._date);
-        else html+=renderIncomeCard(item.income,item.occ,item.idx,item.total);
-        html+='<div class="mb-8"></div>';
-      });
-    }
+    // Render all items in their sorted order — no paid/received segregation
+    allItems.forEach((item,idx)=>{
+      if(item._kind==='bill') html+=renderBillCard(item.bill,false,item._date);
+      else if(item._kind==='expense') html+=renderExpenseCard(item.expense,item._date);
+      else if(item._kind==='extrapay') html+=renderExtraPayCard(item.txn);
+      else html+=renderIncomeCard(item.income,item.occ,item.idx,item.total);
+      html+='<div class="mb-8"></div>';
+    });
   }
 
   $('bill-list').innerHTML=html||emptyState('📋','Nothing here yet','Add bills, loans, credit cards, and income to get started.',"+ Add Expense / Bill","openModal('expense')");
   updateSortBtnActive();
-  sizeBillScrollArea();
 }
 
-
-function sizeBillScrollArea(){
-  if(window.innerWidth>680) return;
-  const area=$('bill-scroll-area');
-  if(!area) return;
-  const rect=area.getBoundingClientRect();
-  const remaining=window.innerHeight-rect.top-16;
-  area.style.height=Math.max(remaining,200)+'px';
-}
 
 function renderBillsManage(){
   // Bills list
@@ -10449,11 +10658,31 @@ function getDeferredInterestWarning(tx, remaining, daysLeft){
 // ══════════════════════════════════════════════════════════════
 
 let _calMonth = null; // {year, month} object
+let _billView = 'list';
+
 function setBillView(view){
   _billView = view;
-  syncBillView();
-  if(view==='calendar') renderBillCalendar();
-  else renderBills();
+  const listEl = $('bill-list');
+  const calEl  = $('bill-calendar');
+  const sortBar = $('bill-sort-bar');
+  const listBtn = $('bill-view-list');
+  const calBtn  = $('bill-view-cal');
+
+  const monthToggle = null; // removed — arrows now in sort bar
+  if(view === 'calendar'){
+    if(listEl) listEl.classList.add('calendar-mode');
+    if(calEl)  calEl.classList.add('active');
+    if(sortBar) sortBar.style.display = 'none';
+    if(listBtn) listBtn.classList.remove('active');
+    if(calBtn)  calBtn.classList.add('active');
+    renderBillCalendar();
+  } else {
+    if(listEl) listEl.classList.remove('calendar-mode');
+    if(calEl)  calEl.classList.remove('active');
+    if(sortBar) sortBar.style.display = '';
+    if(listBtn) listBtn.classList.add('active');
+    if(calBtn)  calBtn.classList.remove('active');
+  }
 }
 
 function shiftCalMonth(dir){
@@ -11722,6 +11951,7 @@ setInterval(updateLastSavedUI, 60000);
 
 document.addEventListener('DOMContentLoaded',()=>{
   const vEl=$('sidebar-version'); if(vEl) vEl.textContent=APP_VERSION;
+  // Ensure any stale undo pill is cleared on load
   dismissUndoPill();
   const av=$('about-version-text'); if(av) av.textContent=`FinanceOS \u2022 Built for personal use \u2022 Data never leaves your device \u2022 ${APP_VERSION} \u2022 2026`;
   loadTheme();
@@ -11733,9 +11963,6 @@ document.addEventListener('DOMContentLoaded',()=>{
   showOnboarding();
   initPWA();
   _initSwipe();
-  // Lock scroll on load since dashboard is default tab
-  document.documentElement.style.overflow='hidden';
-  document.body.style.overflow='hidden';
   setTimeout(()=>{
     renderAll();
     const months=parseInt($('chart-months')?$('chart-months').value:3)||3;
