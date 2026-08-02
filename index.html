@@ -1,0 +1,1729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-title" content="FinanceOS"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="theme-color" content="#5070f0"/>
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAAMrklEQVR42u2d2W8b1x2Fz+UmiptkUrIUy3YsJ97kJUuRNk0AI85DCzRJm7SO4aRO4NRZ7KzIc9EUaIH8BW3Wpi9dgLZpm2ZBFwR5yEPRJE5b1Ha91FocydpFkRLXIWduH7SYkriKnCE5c74Xe0hpOMvHn869M3OvQJ156MWkhAAkJBb+BZaWr/0fgFi5LAUAyMV/c5aX/w9IIXPeW7m8Yp2r1lf8cxfXkbOdJbdpabnEz+Rb59J2V3Qsim13oWNRcpvyrDPPORt/eIeop0+Gf/ixF1Ky5Emk0E0r9OrlyaM7DXXMYcSHPPJ8WuYeMGIdOn9zSS59SaaP6C+3rkI/+lxa5lYaYm06fntRSgAzR3aJphL6+LNpKSkyKUDodwtihx+svdg1FfqxZ5TlfExIKTa8fVECErOHd4uGEvp7Ty+JTEjltP/+ggSAyHeqF9tWvcwZlmNSE9r+cEHWVegTpygzqbXU56tyal2R4/GTGfZeEN0I/PG8lADmH9hTcQSpuEI/cTJLj4kh+N+pvFrbKDNpZHzv/FfqIvSTT1Fm0vhS2ygzaQa8fypPahsPFTETJYV+6kmV1Zk0TZUuKvRJykwaDM+75+S6hD75BGUmjUlrEamZoYn5M/QpVmfS6FX6vfxVmhWamIo193KcelyTvEuDlEIIDTd99VfLywMXDyEyu8nQbXC/d06m7tsrWKGJNTL0049rLM2kqXC/f1ayQpMaZI7GrH3LQj99gtWZNCctOVXawcNBysHlnodvwyg8/mm43DE4nMkV72/b8THSKT9SyTbE4yHEYx2IxUOQBo9lRKFJ8YzqC6O793P42seK/6m3qWj1RNDqiWBD6AoAQFWdmJvrQjh8PSLRHqiaXf8kBADPnNBkWcNfLQ81Vd7wVyvWWcnwVxwKrCGGAgtuPo+u3tMQNcjLY+N9GB65qbxzuPpYrNruQscifc8+wQpN8tLW1Y/u7Z813Xazl4OslcKhoPuG00257azQZA3+0DDsjnTe9zKKBxPDBxCf24hdt7y7/PrgpYOIx4NwtcTR6p2F1zeNQNsYHAXWo5vQz56QUvJSN8nBE5jM+7qUNvSf+RqUtH9NP7SUdihpLxTFi/n5jYDYBQkNXv8MOjoGoKpO/XtiPjgrWaHJ2irnSuZ9XUn6oaT8FYwqLhCLdSAW64BRYx4yQ5O1lbhA95rTHSsYRdgoJA1LJuXLL4tNRW/fR/D6JwGhsVFImoPYbA9CW87mz9f+adyw/6/QVlVxf9soslknEskNUFUHhSaNQzzSjeRcJ1oDU4X/tNvUFcud3RfR2X0RgEAy0YZopAfh2S2IJ4KMHKT+jFw4iEzas54EjlZPBN2bzqFv71+we/eH8HrDFJrUO0d7MfCvexGd2lbVevz+SezZ8zd0hAYoNKkv2YwbwxcO4n+f34+pkb1IJwPrWo8QGnq3fQKfd4YZmtSfdDKA8aEvYfzKrXC4EvD4p+H2hdG1+UwFUkts7vkPzl86xApNGiiKKB5Ew1sxMXzTysw9dBsGL9+Jueh1BX83EJiA3a5QaNL4KGkfZqe34fKFuxGe7i3YYPR6Zhk5Gg0BYFunHQe2OLGj246tITs2BuwIuAXcTgGbjg9pSABSApqUUFQgo0mksxKprEQiKxFXNMwpEnNpFeGUhnBKw1RCxXgii4mEiquxLFI6jyM0NXkjgh2Ded9zOtMUulHYHLTjGze7cHdfCzYGbHX7MgkB2ISAw7b4SkuFwiVVDEUzODOt4OXP1lbMru2nkYq3IzK5HeuZDl4rciOS3vP/UegyuL7DjhOHWnHHThfMMB1jZ6sdna12uB35v5ROdwyhzefQseUsZkZ3Izrdi2zWVfb6A+2jhaNJppVC1wuXQ+D4Xa04/BW3rjGiXgxGM0Xfb/FEsenGT9C9/TRikesQj3YhPr8RStq3RnAhVLS45xHsGEJ3T/7L5qrqRDwepND1ihcvHfaid6PdtPvYX0Lo5Z4Dm4pAcASB4EjB6NC78+OS65mZ2QYpbdDzzxyFzsO+LQ78+KgPPre553seiGTW/buVPjirKB6MjB7QfZ8o9Cr2b3Xg5e/60OIw/+TlAwUq9ET/bdCyTrR19dfkie902o8Llw5VlMMpdC1iRsiOHx21hsyaBIbmsnnfy6S9GL10B6aG96O9+zLau/rhdCUq/oxMxo2pqR0YG+uDKu0w4okVCp3TAHzpiBfeFmGJ/R2JZaGosmieVVJ+TAzdgskvbobbNwNv2zg8gSm43PNwtsRht1+r8GrWBUXxQlE8SMSDiMU6MTfXBW3pAww6rBR6keOH3Li+026Z/R2Mlp+fpRRIzHcgEQtBXl2U06biwO2/Xv6ZK/13LowPnWfAHCPhpW8AWzrseOD2Fkvtc38VDcJGhkIDOHaXOfuZa1WhKXQT0d1uw8E+p+X2uz+arW4FUlDoRuTrt7oghPX2e4CRw5zctc9luX2OpjXMpNQq19KYVcDSvRxbO+24boP1vtO1yM9SCvz778dW9Go0wuxplq7QN/da8/s8WG1+ZuRoTHb12C253wMm7eGwvNC9XdYU2qx90JbO0EIAPSFjvs+RpIYPzqbw6RUFQ7MqZpMqFFWumZbByCkpICi0qQj6bXAZcBPSPwYV/OD9KOKKzCsfodA1YVNQ/+o8Pqfi++9GkcxyQHlmaJ0xorvul58mkcpQZgpthNA6V2gJ4KOLaRpGoc0ROa7MqIgmNRpGoc0ROb4IZ2kXhTZPhb4aUWkXhTaGgEfAq/MT3SOzFJpCm6RBuFChmZ8ptEnyMyMHhTZVfs5qwMQchabQJokcY1EVGq+nUGjjIoe+d9mxQUihTRU5mJ8ptGG0ugTaffp22V1lhabQRtEdZA8HhTZVftZ/l0codN2w3P3Qmwx4SuXe/W5klq+r5L+Zf7kTZOmG/5zl1R0kMmdI22tPWK9evraOS+Es/jwQp9Cs0LXh4S976rqPvzgTs6zQzNAm5Oq8de/0s5zQmywhtEqhLZGv7EBnGys0hTZL3Nhgs8TAjKzQbBCahnlFw7yiUWhLCB1ifqbQpqrQ5h/6aziapdCs0Caq0DEKzQzNyEGhmw0hFno5zC80K7Ql6GyzwWGB0XNHWaEtEjeC1thVVmgKbRoiKQ0Jiw8OSaFZnSl0cwpt/mveVs/PgIXuh9a7Qn90Po0fvjePFVND5JkqYs1rOkxJwQpNoauGj11RaMNo9wm4XXo/6c2x7Ci0QRhxUz+HLqDQhsGhCyg083MFpDIS4RgjB4U2idCjERUcm5FCm0ZoDm5OoU3VKGSDkEIbhtct4Pfo22U3ygYhhTZL3AA4HjSFNhBDuux4UYVCm6VCZzVgkvOpUGjDhNb5wdixCOdTodAmqtBsEFJoUwnNLjsKbRguJxAK8C47Cm0SjBi2gBWaQpsmbgC8y45CGym0zj0cEgu9HIRCm6JCT0Y1ZOgzhTYsQ7PLjkKzQpcP7+Gg0IZhtwFd7XpXaHbZUWiD6Gy3wabz3rHLjkIbhhEzxvKiCoU2sEGo/zBCbBRSaAOF1nfXZuMakgpvs6PQBqH/TUmMGxTaSKFDvMuOQpsEIXhRhUKbiKBfwKXzQMGMHBTaNA1CRg4Kbar8TKEptLFC61yhYymJuSS77Ci0SYRmdW5cTDnHyj8vZzE8pQFioYou19KcuU4WluWaUUNz5ylZms9k5TLwxQyFptAG8uHnmUU55QpJc5flKqHzT96DPBP0MGowchBCoQmh0IRCE0KhCaHQhFBoQig0odCEUGhCKDQhFJqQsoT+yVtC8DAQM6Dcs0+wQhNGDkIoNCFGCf3Tt2zM0aSpSd+zT7BCE0YOQppC6FcYO0izxo179wlWaGL+yPHKz1ilSXORyqnOrNDE/I3CV1mlSbNU5/v2ipJCE2KqCg0Ar75pZ5UmDU0yT3VmhSbWqNAA8BqrNGnU6vzNvaJioQHgtTcoNWksEkVkLityvE6pSYMQ/1ZfSReZoYk1MnQub7zuYJUmDV+dK6rQlJrUi9j9fWW7V1HkePM1Sk0aV+Z1ZWhKTYxi/v49FbtWlZwnTmVk7twkQJG5Skr+jMyZ12RhufhcJwXWifxzqqxernaOlXzbXexYLP1Oeccr51gsfmZFx6LYdhc6FuWcw9XrzHPO1pzDPOen1PGKfnvPur2sqpfjrVedrNakplQjc9VCA8DPX6HUpFYy767apZrK+NgzimTkYOSoNHLMHt5dMw91qa7Hn01LCk2hSwkdfnBXzf3TNS48+lxaUmgKvfr8zBzZpZt3huTfR55PSwpNoaeP7NTdN8MbdMdeSEkKbR2hJ4/uNNSxuvdQPPRiUlJo8wg9/vCOujr1f3/nZAajay+BAAAAAElFTkSuQmCC"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+<title>FinanceOS</title>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<div id="toast"></div>
+<div id="pwa-banner">
+  <div class="pwa-icon">💰</div>
+  <div class="pwa-text">
+    <div class="pwa-title" id="pwa-title">Install FinanceOS</div>
+    <div class="pwa-sub" id="pwa-sub">Add to your home screen for quick access</div>
+  </div>
+  <button class="pwa-install" id="pwa-install-btn" onclick="pwaInstall()">Install</button>
+  <button class="pwa-dismiss" onclick="pwaDismiss()">✕</button>
+</div>
+
+<div id="onboarding-overlay" class="hidden">
+  <div class="ob-card" id="ob-card-inner">
+  </div>
+</div>
+<button id="hamburger" onclick="toggleSidebar()">&#9776;</button>
+<div id="overlay-bg" onclick="closeSidebar()"></div>
+
+<!-- PIN LOCK SCREEN -->
+<div id="pin-screen">
+  <div class="pin-logo">💼 FinanceOS<span data-i18n="Enter your PIN to continue">Enter your PIN to continue</span></div>
+  <div class="pin-dots">
+    <div class="pin-dot" id="pd0"></div>
+    <div class="pin-dot" id="pd1"></div>
+    <div class="pin-dot" id="pd2"></div>
+    <div class="pin-dot" id="pd3"></div>
+  </div>
+  <div class="pin-error" id="pin-error"></div>
+  <div class="pin-grid">
+    <button class="pin-key" onclick="pinKey('1')">1</button>
+    <button class="pin-key" onclick="pinKey('2')">2</button>
+    <button class="pin-key" onclick="pinKey('3')">3</button>
+    <button class="pin-key" onclick="pinKey('4')">4</button>
+    <button class="pin-key" onclick="pinKey('5')">5</button>
+    <button class="pin-key" onclick="pinKey('6')">6</button>
+    <button class="pin-key" onclick="pinKey('7')">7</button>
+    <button class="pin-key" onclick="pinKey('8')">8</button>
+    <button class="pin-key" onclick="pinKey('9')">9</button>
+    <button class="pin-key del" onclick="pinDel()">⌫</button>
+    <button class="pin-key" onclick="pinKey('0')">0</button>
+    <button class="pin-key" onclick="pinClear()" class="txt-muted-xs" data-i18n="Clear">Clear</button>
+  </div>
+</div>
+
+<!-- ── SIDEBAR ── -->
+<div id="sidebar">
+  <div class="brand">💼 FinanceOS</div>
+  <div class="nav-label">Navigate</div>
+  <button class="nav-item active" data-section="dashboard" onclick="show('dashboard',this)"><span class="ni">📊</span><span data-i18n="Dashboard">Dashboard</span></button>
+  <button class="nav-item" data-section="bills" onclick="show('bills',this)"><span class="ni">💰</span><span>Money</span><span id="bills-badge" class="nav-badge red" style="display:none"></span></button>
+  <button class="nav-item" data-section="networth" onclick="show('networth',this)"><span class="ni">🏦</span><span>Accounts</span></button>
+  <button class="nav-item" data-section="insights" onclick="show('insights',this)"><span class="ni">📈</span><span data-i18n="Insights">Insights</span><span id="insights-badge" class="nav-badge" style="display:none"></span></button>
+  <div class="nav-label">Quick Access</div>
+  <button class="nav-item" data-section="debt" onclick="show('debt',this)"><span class="ni">📉</span><span data-i18n="Debt Planner">Debt Planner</span></button>
+  <button class="nav-item" data-section="cards" onclick="show('cards',this)"><span class="ni">💳</span><span data-i18n="Cards">Cards</span></button>
+  <button class="nav-item" data-section="quick" onclick="showSub('quick','bills');closeSidebar()"><span class="ni">⚡</span><span>Transaction Log</span></button>
+  <div id="sidebar-footer">
+    <div id="last-saved" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 0;"><span id="ls-dot" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0;"></span><span id="ls-text" style="font-size:11px;color:#444460;font-weight:400;font-family:-apple-system,sans-serif;">Not saved yet</span></div>
+  </div>
+  <div class="nav-settings">
+    <div class="nav-label">App</div>
+    <button class="nav-item" onclick="lockApp()" id="lock-nav-btn" style="display:none"><span class="ni">🔒</span><span data-i18n="Lock App">Lock App</span></button>
+    <button class="nav-item" onclick="show('about',this)" data-section="about"><span class="ni">&#8505;&#65039;</span><span>About</span></button>
+    <button class="nav-item" onclick="openModal('settings')"><span class="ni">⚙️</span><span data-i18n="Settings">Settings</span></button>
+    <div style="text-align:center;padding:4px 0 8px;font-size:10px;color:#333350;font-weight:600;letter-spacing:.04em;font-family:-apple-system,sans-serif;" id="sidebar-version"></div>
+  </div>
+</div>
+
+
+
+<!-- ── CONTENT ── -->
+<div id="content">
+  <!-- Mobile header (two-row: brand row + tab strip) -->
+  <div id="mobile-header">
+    <div id="mobile-header-top">
+      <div id="mobile-brand"><span>FinanceOS</span></div>
+      <button id="mobile-add-btn" onclick="openModal('fab')" title="Quick add">+</button>
+      <button id="mobile-bell" onclick="openNotifDrawer()" title="Notifications">🔔<span id="mobile-bell-badge"></span></button>
+      <button id="mobile-ham" onclick="toggleSidebar()">&#9776;</button>
+    </div>
+    <div id="mobile-tabs">
+      <button class="mtab active" id="mtab-dashboard" onclick="show('dashboard',null)">Dashboard</button>
+      <button class="mtab" id="mtab-bills" onclick="show('bills',null)">Money</button>
+      <button class="mtab" id="mtab-insights" onclick="show('insights',null)">Insights</button>
+      <button class="mtab" id="mtab-networth" onclick="show('networth',null)">Accounts</button>
+    </div>
+  </div>
+
+  <!-- FAB action sheet -->
+  <div class="overlay" id="modal-fab">
+    <div class="modal" style="padding-bottom:36px">
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:14px;text-align:center">Quick Add</div>
+      <button class="btn btn-secondary btn-full" style="justify-content:flex-start;gap:14px;padding:14px 16px;margin-bottom:8px" onclick="closeModal('fab');openModal('income')">
+        <span style="font-size:20px">💵</span><span style="font-size:14px;font-weight:600">Log Income</span>
+      </button>
+      <button class="btn btn-secondary btn-full" style="justify-content:flex-start;gap:14px;padding:14px 16px;margin-bottom:8px" onclick="closeModal('fab');openModal('expense')">
+        <span style="font-size:20px">🧾</span><span style="font-size:14px;font-weight:600">Log Expense / Bill</span>
+      </button>
+      <button class="btn btn-secondary btn-full" style="justify-content:flex-start;gap:14px;padding:14px 16px;margin-bottom:8px" onclick="closeModal('fab');openModal('purchase')">
+        <span style="font-size:20px">🛒</span><span style="font-size:14px;font-weight:600">Log Transaction</span>
+      </button>
+      <button class="btn btn-secondary btn-full" style="justify-content:flex-start;gap:14px;padding:14px 16px;margin-bottom:8px" onclick="closeModal('fab');openWithdrawal()">
+        <span style="font-size:20px">💵</span><span style="font-size:14px;font-weight:600">Cash Withdrawal</span>
+      </button>
+      <button class="btn btn-secondary btn-full" style="justify-content:flex-start;gap:14px;padding:14px 16px;margin-bottom:8px" onclick="closeModal('fab');openTransferModal()">
+        <span style="font-size:20px">🔁</span><span style="font-size:14px;font-weight:600">Transfer Between Accounts</span>
+      </button>
+      <button class="btn btn-secondary btn-full" style="color:var(--accent2);margin-top:4px" onclick="closeModal('fab')">Cancel</button>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="section active">
+
+      <!-- Hero card — Money Left This Month -->
+      <div id="d-hero-card" style="background:linear-gradient(135deg,rgba(80,112,240,.18),rgba(80,112,240,.06));border:1px solid rgba(80,112,240,.25);border-radius:16px;padding:14px 16px 12px;margin-bottom:12px;text-align:center">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:4px">Available This Month</div>
+        <div id="d-balance" style="font-family:var(--font-d);font-size:34px;font-weight:800;letter-spacing:-1px;line-height:1">$0.00</div>
+        <div id="d-hero-breakdown" style="margin-top:10px;width:100%;max-width:240px;display:inline-block"></div>
+        <div id="d-summary-line" style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.4"></div>
+      </div>
+
+      <!-- 4 supporting stats — single strip -->
+      <div id="d-stat-strip" style="background:var(--surface);border:1px solid var(--blue);border-radius:12px;display:flex;align-items:center;margin-bottom:10px">
+        <div id="d-acct-tap" onclick="toggleDashAccounts()" style="flex:1;text-align:center;padding:10px 6px;cursor:pointer;-webkit-tap-highlight-color:transparent">
+          <div class="stat-value" id="d-acct-total" style="color:var(--blue);font-size:15px">$0.00</div>
+          <div class="stat-label" style="font-size:11px;margin-top:2px">Accounts <span id="d-acct-chevron" style="font-size:9px;opacity:.6">▾</span></div>
+        </div>
+        <div style="width:1px;height:32px;background:var(--border)"></div>
+        <div style="flex:1;text-align:center;padding:10px 6px">
+          <div class="stat-value" id="d-debt" style="color:var(--red);font-size:15px">$0.00</div>
+          <div class="stat-label" style="font-size:11px;margin-top:2px">Debt</div>
+        </div>
+        <div style="width:1px;height:32px;background:var(--border)"></div>
+        <div style="flex:1;text-align:center;padding:10px 6px">
+          <div class="stat-value" id="d-pending" style="color:var(--yellow);font-size:15px">$0.00</div>
+          <div class="stat-label" style="font-size:11px;margin-top:2px">Pending</div>
+        </div>
+        <div style="width:1px;height:32px;background:var(--border)"></div>
+        <div style="flex:1;text-align:center;padding:10px 6px">
+          <div class="stat-value" id="d-networth" style="color:var(--green);font-size:15px">$0.00</div>
+          <div class="stat-label" style="font-size:11px;margin-top:2px">Net Worth</div>
+        </div>
+      </div>
+
+      <!-- Account pill strip -->
+      <div id="d-accounts-wrap" data-open="0" style="max-height:0;opacity:0;overflow:hidden;transition:max-height .32s ease,opacity .25s ease,margin-bottom .32s ease;margin-bottom:0">
+        <div id="d-accounts" style="display:flex;flex-wrap:nowrap;gap:6px;padding:6px 0 2px;overflow-x:auto;scrollbar-width:none"></div>
+      </div>
+
+      <!-- Notification pill (desktop) -->
+      <div id="d-notif-wrap" class="mb-16"><button id="notif-pill"></button></div>
+
+      <!-- 7-day timeline -->
+      <div id="d-scroll-area" style="overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none">
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+            <div class="section-label" style="color:var(--muted);margin-bottom:0">Activity</div>
+            <div class="txt-muted-sm">−7 to +7 days</div>
+          </div>
+          <div id="d-timeline"><div class="empty" data-i18n="No activity this week.">No activity this week.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BILLS -->
+    <div id="bills" class="section">
+      <div id="money-summary-cards" style="margin-bottom:14px"></div>
+      <div class="view-toggle" id="view-toggle-wrap">
+        <button class="view-btn active" id="bill-view-list" onclick="setBillView('list')">☰ List</button>
+        <button class="view-btn" id="bill-view-cal" onclick="setBillView('calendar')">Calendar</button>
+        <button class="view-btn" id="bill-today-btn" onclick="goToCurrentMonth()" style="display:none;background:rgba(80,112,240,.15);color:var(--accent2);border-color:rgba(80,112,240,.3)">↩ Today</button>
+        <button class="view-btn" id="bill-filter-pill" onclick="clearBillSort()" style="display:none;background:rgba(80,112,240,.15);color:var(--accent2);border-color:rgba(80,112,240,.3)"></button>
+      </div>
+      <div id="bill-scroll-area" style="overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none">
+        <div id="bill-sort-bar" style="background:var(--surface);border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;margin-bottom:14px;overflow:hidden;position:sticky;top:0;z-index:10;box-shadow:0 2px 12px rgba(0,0,0,.35)">
+          <button onclick="shiftBillMonth(-1)" style="background:none;border:none;border-right:1px solid var(--border);padding:9px 14px;font-size:16px;line-height:1;color:var(--muted);cursor:pointer;flex-shrink:0;font-family:var(--font-b)">&#8249;</button>
+          <button onclick="setBillSort('date')" id="bs-date" class="sort-strip-btn">Date</button>
+          <div style="width:1px;height:20px;background:var(--border);flex-shrink:0"></div>
+          <button onclick="setBillSort('status')" id="bs-status" class="sort-strip-btn">Status</button>
+          <div style="width:1px;height:20px;background:var(--border);flex-shrink:0"></div>
+          <button onclick="setBillSort('amount')" id="bs-amount" class="sort-strip-btn">Amount</button>
+          <div style="width:1px;height:20px;background:var(--border);flex-shrink:0"></div>
+          <button onclick="setBillSort('type')" id="bs-type" class="sort-strip-btn">Type</button>
+          <button onclick="shiftBillMonth(1)" id="bill-month-next" style="background:none;border:none;border-left:1px solid var(--border);padding:9px 14px;font-size:16px;line-height:1;color:var(--muted);cursor:pointer;flex-shrink:0;font-family:var(--font-b)">&#8250;</button>
+        </div>
+        <div id="bill-list"></div>
+        <div class="bill-calendar" id="bill-calendar">
+          <div class="cal-nav">
+            <button class="cal-nav-btn" onclick="shiftCalMonth(-1)">&#8249;</button>
+            <div class="cal-nav-label" id="cal-month-label"></div>
+            <button class="cal-nav-btn" onclick="shiftCalMonth(1)">&#8250;</button>
+          </div>
+          <div class="cal-grid" id="cal-grid"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DEBT PLANNER -->
+    <div id="debt" class="section">
+      <div class="sub-header-row">
+        <div class="plan-toggle mb-0">
+          <button id="sub-debt-cashflow" onclick="showSub('cashflow','insights')">Cash Flow</button>
+          <button id="sub-debt-debt"     class="active" onclick="showSub('debt','insights')">Debt</button>
+          <button id="sub-debt-spending" onclick="showSub('insights','insights')">Spending</button>
+          <button id="sub-debt-log"      onclick="showSub('quick','insights')">Log</button>
+        </div>
+      </div>
+      <div id="debt-alerts"></div>
+
+      <!-- What is this? — shown until dismissed -->
+      <div id="debt-info-card" style="display:none;background:rgba(80,112,240,.08);border:1px solid rgba(80,112,240,.2);border-radius:12px;padding:12px 14px;margin-bottom:14px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+          <div style="flex:1">
+            <div style="font-size:12px;font-weight:700;color:var(--accent2);margin-bottom:6px">📉 How the Debt Planner works</div>
+            <div style="font-size:12px;color:var(--muted);line-height:1.6"><strong style="color:var(--text)">Avalanche</strong> — pays off highest APR first. Saves the most interest overall.<br><strong style="color:var(--text)">Snowball</strong> — pays off smallest balance first. Builds momentum with quick wins.</div>
+          </div>
+          <button onclick="dismissDebtInfo()" style="background:none;border:none;color:var(--muted);font-size:16px;cursor:pointer;padding:0;flex-shrink:0;line-height:1">✕</button>
+        </div>
+      </div>
+      <div id="debt-no-data" style="display:none">
+        <div class="card" style="text-align:center;padding:32px">
+          <div style="font-size:32px;margin-bottom:12px">📉</div>
+          <div style="font-size:15px;font-weight:600;margin-bottom:6px" data-i18n="No debts entered yet">No debts entered yet</div>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:16px" data-i18n="Add bills with a Balance and APR in the Bills section to use the planner.">Add bills with a Balance and APR in the Bills section to use the planner.</div>
+          <button class="btn btn-primary" onclick="show('bills',document.querySelector('[data-section=bills]'))" data-i18n="Go to Bills">Go to Bills</button>
+        </div>
+      </div>
+      <div id="debt-planner-content">
+
+        <!-- Debt-Free Countdown -->
+        <div id="debt-countdown-wrap" class="mb-16"></div>
+        <div class="mb-16">
+          <div class="plan-toggle">
+            <button id="btn-avalanche" class="active" onclick="setMethod('avalanche')"><span data-i18n="Avalanche">Avalanche</span><span id="chk-avalanche" class="method-active-chk">&#10003; Active</span></button>
+            <button id="btn-snowball" onclick="setMethod('snowball')"><span data-i18n="Snowball">Snowball</span><span id="chk-snowball" class="method-active-chk" style="display:none">&#10003; Active</span></button>
+          </div>
+          <div id="method-current" style="font-size:13px;font-weight:700;color:var(--text);margin-top:8px"></div>
+          <div id="method-desc" style="font-size:13px;color:var(--muted);margin-bottom:16px"></div>
+        </div>
+
+        <!-- Cash flow breakdown -->
+        <div class="card" style="margin-bottom:18px" id="cash-flow-panel">
+          <div class="section-label" class="txt-muted" data-i18n="Available Cash Breakdown">Available Cash Breakdown</div>
+          <div id="cash-flow-rows"></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-top:10px;margin-top:4px;border-top:1px solid var(--border)">
+            <span style="font-size:13px;font-weight:700" data-i18n="Available for Debt Payments">Available for Debt Payments</span>
+            <span id="cash-available" style="font-family:var(--font-d);font-size:20px;color:var(--green)">$0.00</span>
+          </div>
+        </div>
+
+        <!-- Debt Payoff Progress -->
+        <div class="debt-progress-wrap card" id="debt-progress-wrap" style="display:none;margin-bottom:18px">
+          <div class="debt-progress-header">
+            <div>
+              <div style="font-size:13px;font-weight:700;color:var(--text)" data-i18n="Overall Payoff Progress">Overall Payoff Progress</div>
+              <div class="txt-muted-sm" id="debt-progress-label"></div>
+            </div>
+            <div style="font-size:20px;font-weight:700;color:var(--green)" id="debt-progress-pct"></div>
+          </div>
+          <div class="debt-progress-bar"><div class="debt-progress-fill" id="debt-progress-fill" style="width:0%"></div></div>
+          <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:10px;color:var(--muted)">
+            <span id="debt-progress-paid"></span>
+            <span id="debt-progress-original"></span>
+          </div>
+        </div>
+        <div class="summary-grid" id="debt-summary"></div>
+        <div id="debt-list"></div>
+
+        <!-- Promo Simulator -->
+        <div id="promo-simulator">
+          <div class="promo-sim-title">🎁 Promo / 0% Offer Simulator</div>
+          <div class="promo-scenario-tabs">
+            <button class="promo-tab" id="ptab-promo" onclick="setPromoScenario('promo',this)">🎁 Promo APR</button>
+            <button class="promo-tab" id="ptab-transfer" onclick="setPromoScenario('transfer',this)">🔄 Balance Transfer</button>
+          </div>
+          <div id="promo-sim-inputs" style="display:none;grid-template-columns:1fr 1fr;gap:10px">
+            <div class="field" class="m-0"><label id="promo-amount-label">Amount ($)</label><input id="promo-amount" type="number" placeholder="5000" oninput="calcPromo()"/></div>
+            <div class="field" class="m-0"><label>Promo Months</label><input id="promo-months" type="number" placeholder="10" value="10" oninput="calcPromo()"/></div>
+            <div class="field" class="m-0"><label id="promo-fee-label">Fee (%)</label><input id="promo-fee" type="number" placeholder="3" step="0.1" oninput="calcPromo()"/></div>
+            <div class="field" class="m-0"><label>Regular APR After (%)</label><input id="promo-regular-apr" type="number" placeholder="24.99" step="0.01" oninput="calcPromo()"/></div>
+            <div class="field" class="m-0" id="promo-current-apr-wrap"><label>Current Debt APR (%)</label><input id="promo-current-apr" type="number" placeholder="22.99" step="0.01" oninput="calcPromo()"/></div>
+            <div class="field" class="m-0">
+              <label>Fee Type</label>
+              <select id="promo-fee-type" onchange="calcPromo()" style="background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:8px;color:var(--text);font-size:13px;width:100%">
+                <option value="percent">Percent (%)</option>
+                <option value="fixed">Fixed ($)</option>
+                <option value="none">No Fee</option>
+              </select>
+            </div>
+          </div>
+          <div id="promo-result"></div>
+          <div id="promo-sim-actions" style="display:none"><button class="btn btn-primary btn-full" style="margin-top:12px" onclick="trackPromo()">+ Track This Promo</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NET WORTH -->
+    <div id="networth" class="section">
+      <div class="sub-header-row">
+        <div class="plan-toggle" class="mb-0">
+          <button id="sub-acct-accounts" class="active" onclick="showSub('networth','networth')">Funds</button>
+          <button id="sub-acct-cards" onclick="showSub('cards','networth')">Cards</button>
+          <button id="sub-acct-loans" onclick="showSub('loans','networth')">Loans</button>
+          <button id="sub-acct-bills" onclick="showSub('bills-manage','networth')">Bills</button>
+        </div>
+      </div>
+
+      <div id="networth-alerts"></div>
+
+      <!-- Summary -->
+      <div class="nw-grid" style="margin-bottom:20px">
+        <div class="nw-card"><div class="stat-label" data-i18n="Account Balances">Account Balances</div><div class="stat-value" id="nw-accounts" style="color:var(--blue)">$0.00</div></div>
+        <div class="nw-card"><div class="stat-label" data-i18n="Total Assets">Total Assets</div><div class="stat-value" id="nw-assets" class="txt-green">$0.00</div></div>
+        <div class="nw-card"><div class="stat-label" data-i18n="Total Debt">Total Debt</div><div class="stat-value" id="nw-debts" class="txt-red">$0.00</div></div>
+        <div class="nw-card"><div class="stat-label" data-i18n="Net Worth">Net Worth</div><div class="stat-value" id="nw-total">$0.00</div></div>
+      </div>
+
+      <!-- Accounts subsection -->
+      <div class="card" class="mb-16">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <div class="section-label" style="color:var(--blue);margin-bottom:0" data-i18n="Accounts">Accounts</div>
+          <button class="btn btn-secondary btn-sm" onclick="openModal('account')">+ Account</button>
+        </div>
+        <div id="account-list"></div>
+      </div>
+
+      <!-- Income subsection -->
+      <div class="card" style="margin-bottom:20px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+          <div class="section-label" style="color:var(--green);margin-bottom:0">Income</div>
+          <button class="btn btn-primary btn-sm" onclick="openModal('income')">+ Income</button>
+        </div>
+        <div id="income-manage-list"></div>
+      </div>
+
+      <!-- Savings Goals subsection -->
+      <div class="card" class="mb-16">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+          <div class="section-label" style="color:var(--green);margin-bottom:0" data-i18n="Savings Goals">Savings Goals</div>
+          <button class="btn btn-primary btn-sm" onclick="openModal('goal')">+ Goal</button>
+        </div>
+        <div id="goals-list"></div>
+      </div>
+      <!-- Assets subsection -->
+      <div class="card" class="mb-16">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <div class="section-label" class="txt-muted" data-i18n="Assets">Assets</div>
+          <button class="btn btn-primary btn-sm" onclick="openModal('asset')">+ Asset</button>
+        </div>
+        <div id="asset-list"></div>
+      </div>
+    </div>
+
+
+    <!-- BILLS & EXPENSES MANAGE -->
+    <div id="bills-manage" class="section">
+      <div class="sub-header-row">
+        <div class="plan-toggle" class="mb-0">
+          <button id="sub-bills-accounts" onclick="showSub('networth','networth')">Funds</button>
+          <button id="sub-bills-cards"    onclick="showSub('cards','networth')">Cards</button>
+          <button id="sub-bills-loans"    onclick="showSub('loans','networth')">Loans</button>
+          <button id="sub-bills-bills"    class="active">Bills</button>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <div class="section-label" style="color:var(--blue);margin-bottom:0">Bills &amp; Expenses</div>
+          <button class="btn btn-primary btn-sm" onclick="openModal('expense')">+ Add</button>
+        </div>
+        <div id="bills-manage-list"></div>
+        <div id="expenses-manage-list"></div>
+      </div>
+    </div>
+
+    <!-- INSIGHTS -->
+    <!-- CASH FLOW (Insights sub-view) -->
+    <div id="cashflow" class="section">
+      <div class="sub-header-row">
+        <div class="plan-toggle" class="mb-0">
+          <button id="sub-cf-cashflow" class="active" onclick="showSub('cashflow','insights')">Cash Flow</button>
+          <button id="sub-cf-debt"     onclick="showSub('debt','insights')">Debt</button>
+          <button id="sub-cf-spending" onclick="showSub('insights','insights')">Spending</button>
+          <button id="sub-cf-log"      onclick="showSub('quick','insights')">Log</button>
+        </div>
+      </div>
+      <div class="card" class="mb-16">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+          <div class="section-label" style="color:var(--muted);margin-bottom:0">Monthly Cash Flow</div>
+          <select id="cf-chart-months" onchange="renderCashFlow()" style="background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:5px 10px;color:var(--text);font-size:12px;-webkit-appearance:none">
+            <option value="3" selected>Last 3 months</option>
+            <option value="6">Last 6 months</option>
+            <option value="12">Last 12 months</option>
+          </select>
+        </div>
+        <div class="chart-wrap"><canvas id="cf-chart"></canvas></div>
+        <div style="font-size:10px;color:var(--muted);text-align:center;margin-top:6px;opacity:.7">Tap any point to see values</div>
+      </div>
+      <div id="cashflow-content"></div>
+    </div>
+
+    <div id="insights" class="section">
+      <div class="sub-header-row">
+        <div class="plan-toggle" class="mb-0">
+          <button id="sub-ins-cashflow" onclick="showSub('cashflow','insights')">Cash Flow</button>
+          <button id="sub-ins-debt"     onclick="showSub('debt','insights')">Debt</button>
+          <button id="sub-ins-spending" class="active" onclick="showSub('insights','insights')">Spending</button>
+          <button id="sub-ins-log"      onclick="showSub('quick','insights')">Log</button>
+        </div>
+      </div>
+      <div id="insights-alerts"></div>
+
+      <!-- Spending Chart -->
+      <div class="card" class="mb-16">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+          <div class="section-label" style="color:var(--muted);margin-bottom:0" data-i18n="Monthly Spending Trend">Monthly Spending Trend</div>
+          <select id="chart-months" onchange="renderInsights()" style="background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:5px 10px;color:var(--text);font-size:12px;-webkit-appearance:none">
+            <option value="3" selected data-i18n="Last 3 months">Last 3 months</option>
+            <option value="6" data-i18n="Last 6 months">Last 6 months</option>
+            <option value="12" data-i18n="Last 12 months">Last 12 months</option>
+          </select>
+        </div>
+        <div class="chart-wrap"><canvas id="spending-chart"></canvas></div>
+        <div style="font-size:10px;color:var(--muted);text-align:center;margin-top:6px;opacity:.7">Tap any point to see values</div>
+      </div>
+
+      <!-- Spending Anomalies -->
+      <div class="card" class="mb-16" id="anomaly-card">
+        <div class="section-label" style="color:var(--muted);margin-bottom:14px" data-i18n="Spending Anomalies">Spending Anomalies</div>
+        <div id="anomaly-wrap"></div>
+      </div>
+
+      <!-- Budget vs Actual -->
+      <div class="card" class="mb-16">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+          <div class="section-label" style="color:var(--muted);margin-bottom:0" data-i18n="Budget vs Actual">Budget vs Actual</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:flex-end;min-width:0">
+            <div class="plan-toggle" class="mb-0">
+              <button id="tab-categories" class="active" onclick="setInsightsTab('categories')" data-i18n="Categories">Categories</button>
+              <button id="tab-cards" onclick="setInsightsTab('cards')" data-i18n="Cards">Cards</button>
+              <button id="tab-trends" onclick="setInsightsTab('trends')">&#128200; Trends</button>
+            </div>
+            <button class="btn btn-secondary btn-sm" id="add-target-btn" onclick="openAddTarget()">+ Set Target</button>
+          </div>
+        </div>
+      <div id="budget-targets"></div>
+      <div id="trends-wrap" style="display:none"></div>
+      </div>
+      <!-- Monthly Snapshot -->
+      <div class="card" id="snapshot-card" style="margin-top:4px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+          <span style="font-size:18px">📅</span>
+          <div>
+            <div class="section-label" style="color:var(--muted);margin-bottom:0" data-i18n="Monthly Snapshot">Monthly Snapshot</div>
+            <div class="txt-muted-sm" id="snap-subtitle">This month vs last month</div>
+          </div>
+        </div>
+        <div class="snap-grid" id="snap-grid"></div>
+        <div id="savings-rate-wrap" style="margin-top:12px"></div>
+        <div id="projection-wrap" style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border)">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+            <div style="font-size:12px;font-weight:700;color:var(--text)">📈 Income Projection</div>
+            <div class="proj-toggle">
+              <button class="proj-btn active" onclick="setProjWindow(3,this)">3mo</button>
+              <button class="proj-btn" onclick="setProjWindow(6,this)">6mo</button>
+              <button class="proj-btn" onclick="setProjWindow('year',this)">Year</button>
+            </div>
+          </div>
+          <div id="proj-content"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARDS -->
+    <div id="cards" class="section">
+      <div class="sub-header-row">
+        <div class="plan-toggle" class="mb-0">
+          <button id="sub-cards-accounts" onclick="showSub('networth','networth')">Funds</button>
+          <button id="sub-cards-cards" class="active" onclick="showSub('cards','networth')">Cards</button>
+          <button id="sub-cards-loans" onclick="showSub('loans','networth')">Loans</button>
+          <button id="sub-cards-bills" onclick="showSub('bills-manage','networth')">Bills</button>
+        </div>
+      </div>
+
+      <div id="cards-alerts"></div>
+      <!-- Credit Utilization Summary -->
+      <div id="credit-summary-wrap">
+        <div class="card" class="mb-16">
+          <div class="section-label" class="txt-muted" data-i18n="Overall Credit Utilization">Overall Credit Utilization</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:14px">
+            <div><div class="stat-label" data-i18n="Total Credit Limit">Total Credit Limit</div><div class="stat-value" id="cr-limit" style="font-size:18px">$0.00</div></div>
+            <div><div class="stat-label" data-i18n="Total Balance Used">Total Balance Used</div><div class="stat-value" id="cr-used" style="font-size:18px;color:var(--yellow)">$0.00</div></div>
+            <div><div class="stat-label" data-i18n="Available Credit">Available Credit</div><div class="stat-value" id="cr-avail" style="font-size:18px;color:var(--green)">$0.00</div></div>
+            <div><div class="stat-label" data-i18n="Utilization">Utilization</div><div class="stat-value" id="cr-pct" style="font-size:18px">0%</div></div>
+          </div>
+          <div class="target-bar-bg"><div id="cr-bar" class="target-bar-fill" style="width:0%;background:var(--green)"></div></div>
+          <div id="cr-tip" style="font-size:11px;color:var(--muted);margin-top:5px"></div>
+        </div>
+
+        <!-- Per-card utilization -->
+        <div class="section-label" style="color:var(--muted);margin-bottom:12px" data-i18n="Credit Cards">Credit Cards</div>
+        <div id="credit-card-list"></div>
+      </div>
+
+      <!-- Inactive Card Reminders -->
+      <div style="margin-top:24px">
+        <div class="sec-header" style="margin-bottom:12px">
+          <div class="section-label" style="color:var(--muted);margin-bottom:0" data-i18n="Inactive Card Reminders">Inactive Card Reminders</div>
+        </div>
+        <p style="color:var(--muted);font-size:13px;margin-bottom:14px" data-i18n="Credit cards with a $0 balance automatically appear here. Use them every 90 days to keep them active.">Credit cards with a $0 balance automatically appear here. Use them every 90 days to keep them active.</p>
+        <div id="card-list"></div>
+      </div>
+    </div>
+
+    <!-- LOANS -->
+    <div id="loans" class="section">
+      <div class="sub-header-row">
+        <div class="plan-toggle" class="mb-0">
+          <button id="sub-loans-accounts" onclick="showSub('networth','networth')">Funds</button>
+          <button id="sub-loans-cards"    onclick="showSub('cards','networth')">Cards</button>
+          <button id="sub-loans-loans"    class="active" onclick="showSub('loans','networth')">Loans</button>
+          <button id="sub-loans-bills"    onclick="showSub('bills-manage','networth')">Bills</button>
+        </div>
+      </div>
+
+      <!-- Loan Summary -->
+      <div class="card" class="mb-16" id="loan-summary-wrap">
+        <div class="section-label" style="color:var(--muted);margin-bottom:12px">Loan Overview</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-bottom:14px">
+          <div><div class="stat-label">Total Owed</div><div class="stat-value" id="loan-total-bal" style="font-size:18px;color:var(--red)">$0.00</div></div>
+          <div><div class="stat-label">Total Borrowed</div><div class="stat-value" id="loan-total-orig" style="font-size:18px">$0.00</div></div>
+          <div><div class="stat-label">Total Paid Off</div><div class="stat-value" id="loan-total-paid" style="font-size:18px;color:var(--green)">$0.00</div></div>
+          <div><div class="stat-label">Progress</div><div class="stat-value" id="loan-total-pct" style="font-size:18px">0%</div></div>
+        </div>
+        <div class="target-bar-bg"><div id="loan-total-bar" class="target-bar-fill" style="width:0%;background:var(--blue)"></div></div>
+      </div>
+
+      <div class="section-label" style="color:var(--muted);margin-bottom:12px">Loans</div>
+      <div id="loans-list"></div>
+    </div>
+
+    <!-- QUICK UPDATE -->
+    <div id="quick" class="section">
+      <div class="sub-header-row">
+        <div class="plan-toggle mb-0">
+          <button id="sub-quick-cashflow" onclick="showSub('cashflow','insights')">Cash Flow</button>
+          <button id="sub-quick-debt"     onclick="showSub('debt','insights')">Debt</button>
+          <button id="sub-quick-spending" onclick="showSub('insights','insights')">Spending</button>
+          <button id="sub-quick-log"      class="active">Log</button>
+        </div>
+      </div>
+
+      <div id="quick-alerts"></div>
+      <div class="quick-grid">
+        <div class="quick-tile" onclick="openWithdrawal()"><div class="quick-icon">💵</div><div class="quick-label" data-i18n="Cash Withdrawal">Cash Withdrawal</div></div>
+        <div class="quick-tile" onclick="openModal('purchase')"><div class="quick-icon">🛒</div><div class="quick-label" data-i18n="New Purchase">New Transaction</div></div>
+        <div class="quick-tile" onclick="openTransferModal()"><div class="quick-icon">🔁</div><div class="quick-label">Transfer</div></div>
+      </div>
+      <div class="card">
+
+        <!-- Summary bar -->
+        <div class="txn-summary" id="txn-summary"></div>
+        <!-- Filter + label -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+          <div class="section-label" style="color:var(--muted);margin-bottom:0" data-i18n="Transaction Log">Transaction Log</div>
+          <div class="plan-toggle" style="margin-bottom:0;flex-wrap:wrap">
+            <button id="tf-all"          class="active" onclick="setTxnFilter('All')" data-i18n="All">All</button>
+            <button id="tf-withdrawal"   onclick="setTxnFilter('Withdrawal')" data-i18n="Withdrawals">Withdrawals</button>
+            <button id="tf-purchase"     onclick="setTxnFilter('Purchase')" data-i18n="Purchases">Purchases</button>
+            <button id="tf-transfer"     onclick="setTxnFilter('Transfer')">Transfers</button>
+            <button id="tf-payments"     onclick="setTxnFilter('Payments')">Payments</button>
+            <button id="tf-reconciliation" onclick="setTxnFilter('Reconciliation')">Reconciliation</button>
+          </div>
+        </div>
+        <div class="month-nav">
+          <button class="mn-btn" onclick="shiftTxnMonth(-1)">‹</button>
+          <span class="mn-label" id="txn-month-label">--</span>
+          <button class="mn-btn" onclick="shiftTxnMonth(1)" id="txn-month-next">›</button>
+          <button id="txn-all-months-btn" class="mn-btn" style="margin-left:8px;font-size:11px;padding:4px 10px;border-radius:8px" onclick="toggleTxnAllMonths()">All</button>
+        </div>
+        <div class="search-bar">
+          <span class="search-icon">🔍</span>
+          <input id="txn-search" type="text" placeholder="Search Transactions" oninput="setTxnSearch(this.value)"/>
+          <button class="clear-btn" onclick="clearTxnSearch()" id="txn-clear" style="display:none">✕</button>
+        </div>
+        <div class="tag-filter-strip" id="tag-filter-strip" style="display:none"></div>
+        <div id="txn-list"></div>
+      </div>
+    </div>
+
+  
+    <!-- ABOUT -->
+    <div id="about" class="section">
+      <div class="about-hero">
+        <div class="about-hero-title">&#128188; FinanceOS</div>
+        <div class="about-hero-sub">Your personal finance command center. Track income, bills, debt, and accounts in one place &mdash; with no subscriptions, no cloud sync, and no data leaving your device.</div>
+        <div class="about-privacy-badge">&#128274; 100% Private &mdash; Everything stays on your device</div>
+      </div>
+
+      <div class="about-group">
+        <div class="about-group-title">Getting Started</div>
+        <div class="about-cards">
+          <div class="about-card">
+            <div class="about-card-top"><div class="about-card-icon">&#127974;</div><div><div class="about-card-title">Add Your Accounts First</div></div></div>
+            <div class="about-card-desc">Add checking, savings, and cash accounts with real balances. Set a default account and it auto-selects in every payment modal. Overdraft warnings only work when balances are set.</div>
+            <div class="about-card-q">"How do I track my bank balance?"</div>
+            <button class="about-card-goto" onclick="show('networth',null);closeSidebar()">Go to Accounts &#8594;</button>
+          </div>
+          <div class="about-card">
+            <div class="about-card-top"><div class="about-card-icon">&#128176;</div><div><div class="about-card-title">Add Income Sources</div></div></div>
+            <div class="about-card-desc">Add salary, freelance, or any recurring income. Weekly and bi-weekly income automatically expands into individual dated cards each month. Tap any card to mark it Received or Missed.</div>
+            <div class="about-card-q">"How does the app show my paychecks?"</div>
+            <button class="about-card-goto" onclick="show('bills',null);closeSidebar()">Go to Money &#8594;</button>
+          </div>
+          <div class="about-card">
+            <div class="about-card-top"><div class="about-card-icon">&#128203;</div><div><div class="about-card-title">Add Bills &amp; Subscriptions</div></div></div>
+            <div class="about-card-desc">Add recurring bills, credit cards, and loans. Each item gets a status (Pending, Scheduled, Paid, Overdue). The Monthly Health card at the top shows at a glance how the month looks.</div>
+            <div class="about-card-q">"How do I track what I owe each month?"</div>
+            <button class="about-card-goto" onclick="show('bills',null);closeSidebar()">Go to Money &#8594;</button>
+          </div>
+          <div class="about-card">
+            <div class="about-card-top"><div class="about-card-icon">&#128257;</div><div><div class="about-card-title">Auto-Log Recurring Payments</div></div></div>
+            <div class="about-card-desc">Enable "Auto-log" on any bill or expense and FinanceOS logs the payment and debits your account automatically on the 1st of each month. No manual entry needed for recurring items.</div>
+            <div class="about-card-q">"Can I stop manually logging the same things?"</div>
+            <button class="about-card-goto" onclick="show('bills',null);closeSidebar()">Go to Money &#8594;</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-group">
+        <div class="about-group-title">Money Section</div>
+        <div class="about-cards">
+          <div class="about-card">
+            <div class="about-card-top"><div class="about-card-icon">&#129354;</div><div><div class="about-card-title">Monthly Health Card</div></div></div>
+            <div class="about-card-desc">At the top of Money you get a live health score for the month &mdash; Healthy, Caution, or At Risk. It shows overdue count, bills due this week, and net month in one glance.</div>
+            <div class="about-card-q">"How is my month looking financially?"</div>
+            <button class="about-card-goto" onclick="show('bills',null);closeSidebar()">Go to Money &#8594;</button>
+          </div>
+          <div class="about-card">
+            <div class="about-card-top"><div class="about-card-icon">&#128196;</div><div><div class="about-card-title">Tap-to-Expand Cards</div></div></div>
+            <div class="about-card-desc">Every item in the Money list starts collapsed showing just name, date, amount, and status. Tap any card to expand it and reveal actions &mdash; mark income Received, schedule a bill, edit, or delete.</div>
+            <div class="about-card-q">"How do I mark a paycheck as received?"</div>
+            <button class="about-card-goto" onclick="show('bills',null);closeSidebar()">Go to Money &#8594;</button>
+          </div>
+          <div class="about-card">
+            <div class="about-card-top"><div class="about-card-icon">&#128197;</div><div><div class="about-card-title">Filter by Type</div></div></div>
+            <div class="about-card-desc">Use the Type sort button to group everything by category: Income, Bills, Loans, and Credit Cards. Switch to Date view to see everything in chronological order across all types.</div>
+            <div class="about-card-q">"How do I see just my income or just my bills?"</div>
+            <button class="about-card-goto" onclick="show('bills',null);closeSidebar()">Go to Money &#8594;</button>
+          </div>
+          <div class="about-card">
+            <div class="about-card-top"><div class="about-card-icon">&#128198;</div><div><div class="about-card-title">Calendar View</div></div></div>
+            <div class="about-card-desc">Switch to Calendar view to see paychecks and bills plotted by date. Income chips are color-coded by status (Expected, Received, Missed). Bill chips are color-coded by due status.</div>
+            <div class="about-card-q">"When are my bills and paychecks this month?"</div>
+            <button class="about-card-goto" onclick="show('bills',null);closeSidebar()">Go to Money &#8594;</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-group">
+        <div class="about-group-title">Income &amp; Paychecks</div>
+        <div class="about-cards">
+          <div class="about-card">
+            <div class="about-card-top"><div class="about-card-icon">&#128197;</div><div><div class="about-card-title">Bi-Weekly Paycheck Calculator</div></div></div>
+            <div class="about-card-desc">Enter your last paycheck date and FinanceOS calculates exactly which months have 2 vs 3 paychecks. Each paycheck appears as its own card with the correct deposit date.</div>
+            <div class="about-card-q">"Some months I get 3 paychecks &mdash; does the app know?"</div>
+            <button class="about-card-goto" onclick="show('bills',null);closeSidebar()">Go to Money &#8594;</button>
+          </div>
+          <div class="about-card">
+            <div class="about-card-top"><div class="about-card-icon">&#128290;</div><div><div class="about-card-title">Update Individual Payments</div></div></div>
+            <div class="about-card-desc">Each income occurrence can be updated independently. If one paycheck was short or had overtime, tap "$ Update" on that card to record the actual amount without changing the base schedule.</div>
+            <div class="about-card-q">"My check was different this week &mdash; how do I update just that one?"</div>
+            <button class="about-card-goto" onclick="show('bills',null);closeSidebar()">Go to Money &#8594;</button>
+          </div>
+          <div class="about-card">
+            <div class="about-card-top"><div class="about-card-icon">&#9989;</div><div><div class="about-card-title">Track Received vs Missed</div></div></div>
+            <div class="about-card-desc">Mark each paycheck as Received or Missed directly from the Money list. Status is stored per-occurrence &mdash; marking one paycheck received doesn't affect the others.</div>
+            <div class="about-card-q">"How do I know which paychecks have actually cleared?"</div>
+            <button class="about-card-goto" onclick="show('bills',null);closeSidebar()">Go to Money &#8594;</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-group">
+        <div class="about-group-title">Debt &amp; Credit</div>
+        <div class="about-cards">
+          <div class="about-card">
+            <div class="about-card-top"><div class="about-card-icon">&#128201;</div><div><div class="about-card-title">Debt Planner</div></div></div>
+            <div class="about-card-desc">Choose Avalanche (highest APR first) or Snowball (smallest balance first). See your exact payoff date and how much interest you'll save versus the other method.</div>
+            <div class="about-card-q">"When will I be debt-free?"</div>
+            <button class="about-card-goto" onclick="show('debt',null);closeSidebar()">Go to Debt Planner &#8594;</button>
+          </div>
+          <div class="about-card">
+            <div class="about-card-top"><div class="about-card-icon">&#128202;</div><div><div class="about-card-title">Loan Payoff Progress</div></div></div>
+            <div class="about-card-desc">Enter the original loan amount when adding a loan. The Debt Planner shows a progress bar with % paid off and amount remaining so you can see how far you have come.</div>
+            <div class="about-card-q">"How much of my car loan have I paid off?"</div>
+            <button class="about-card-goto" onclick="show('debt',null);closeSidebar()">Go to Debt Planner &#8594;</button>
+          </div>
+          <div class="about-card">
+            <div class="about-card-top"><div class="about-card-icon">&#127873;</div><div><div class="about-card-title">Promo / 0% Offer Simulator</div></div></div>
+            <div class="about-card-desc">Got a 0% balance transfer offer or promotional APR? The simulator calculates the fee, monthly payment needed, and whether it's worth it before you commit.</div>
+            <div class="about-card-q">"Is this balance transfer offer worth the fee?"</div>
+            <button class="about-card-goto" onclick="show('debt',null);closeSidebar()">Go to Debt Planner &#8594;</button>
+          </div>
+          <div class="about-card">
+            <div class="about-card-top"><div class="about-card-icon">&#127760;</div><div><div class="about-card-title">Go to Website &amp; Confirm</div></div></div>
+            <div class="about-card-desc">Add a URL to any bill or debt. When scheduling a payment, a "Go to Website" button opens your bank or biller directly. Come back to the app and confirm the schedule when done.</div>
+            <div class="about-card-q">"How do I jump to Chase to pay my credit card?"</div>
+            <button class="about-card-goto" onclick="show('bills',null);closeSidebar()">Go to Money &#8594;</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-group">
+        <div class="about-group-title">Insights</div>
+        <div class="about-cards">
+          <div class="about-card">
+            <div class="about-card-top"><div class="about-card-icon">&#128200;</div><div><div class="about-card-title">Cash Flow Chart</div></div></div>
+            <div class="about-card-desc">Insights &rarr; Cash Flow shows a monthly trend chart with Money In vs Money Out lines, followed by a detailed breakdown of every income source and outgoing item for the current month.</div>
+            <div class="about-card-q">"Am I spending more than I earn month to month?"</div>
+            <button class="about-card-goto" onclick="showSub('cashflow','insights');closeSidebar()">Go to Cash Flow &#8594;</button>
+          </div>
+          <div class="about-card">
+            <div class="about-card-top"><div class="about-card-icon">&#128083;</div><div><div class="about-card-title">Spending Anomalies</div></div></div>
+            <div class="about-card-desc">The Spending tab automatically flags categories where you spent significantly more than your recent average. Great for catching lifestyle creep before it becomes a habit.</div>
+            <div class="about-card-q">"Did I overspend somewhere this month?"</div>
+            <button class="about-card-goto" onclick="showSub('insights','insights');closeSidebar()">Go to Spending &#8594;</button>
+          </div>
+          <div class="about-card">
+            <div class="about-card-top"><div class="about-card-icon">&#128185;</div><div><div class="about-card-title">APY Interest Tracking</div></div></div>
+            <div class="about-card-desc">Add an APY to any savings account. The account card shows your projected annual interest earned based on the current balance &mdash; updates live as your balance changes.</div>
+            <div class="about-card-q">"How much interest will my HYSA earn this year?"</div>
+            <button class="about-card-goto" onclick="show('networth',null);closeSidebar()">Go to Accounts &#8594;</button>
+          </div>
+          <div class="about-card">
+            <div class="about-card-top"><div class="about-card-icon">&#127968;</div><div><div class="about-card-title">Home Equity Tracking</div></div></div>
+            <div class="about-card-desc">Link a property asset to its mortgage loan. The asset card automatically shows your home value, remaining mortgage, and current equity side by side &mdash; updates as you make payments.</div>
+            <div class="about-card-q">"How much equity do I have in my house?"</div>
+            <button class="about-card-goto" onclick="show('networth',null);closeSidebar()">Go to Accounts &#8594;</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-group">
+        <div class="about-group-title">Pro Tips</div>
+        <div class="about-tip">&#128161; <strong>Add accounts before anything else.</strong> Every payment modal pre-selects the default account, overdraft warnings only work when balances are set, and the Monthly Health card compares your balance to what's due.</div>
+        <div class="about-tip">&#128161; <strong>Use the Type filter in Money to focus.</strong> Tap Type in the sort bar to group everything by Income, Bills, Loans, and Credit Cards. Perfect for reviewing just one category at a time.</div>
+        <div class="about-tip">&#128161; <strong>Mark income Received as it clears.</strong> Tap any paycheck card to expand it and hit Received. This keeps your status badges accurate and lets the Monthly Health card reflect reality.</div>
+        <div class="about-tip">&#128161; <strong>Add a website URL to every bill.</strong> Edit a bill and fill in the Website field. When you go to schedule a payment, a Go to Website button opens your biller directly so you can pay and come back to confirm.</div>
+        <div class="about-tip">&#128161; <strong>Use transfers for savings contributions.</strong> Moving money to your emergency fund or HYSA? Use the Transfer tile in Quick Update &mdash; it moves the balance correctly and won't inflate your spending stats.</div>
+        <div class="about-tip">&#128161; <strong>Enter original loan amounts.</strong> When adding a car loan or student loan, fill in the Original Loan Amount field. The Debt Planner shows exactly how much progress you have made paying it down.</div>
+        <div class="about-tip">&#128161; <strong>The Debt Planner sorts 0% promos last on purpose.</strong> In Avalanche mode, 0% cards go to the bottom &mdash; that's correct. Let them ride free while you attack high-APR debt first.</div>
+        <div class="about-tip">&#128161; <strong>Undo any delete.</strong> Deleted something by accident? A purple undo bar appears for 8 seconds at the bottom of the screen. Tap it to restore.</div>
+        <div class="about-tip">&#128161; <strong>Export before big changes.</strong> Use Settings &rarr; Export to Excel to save a backup before loading demo data or resetting the app.</div>
+      </div>
+
+      <div class="about-version" id="about-version-text">FinanceOS &bull; Built for personal use &bull; Data never leaves your device &bull; 2026</div>
+    </div>
+
+</main>
+</div>
+
+<!-- ══ MODALS ══ -->
+
+<!-- CONFIRM DIALOG -->
+<div class="overlay" id="modal-confirm" style="z-index:150;background:rgba(0,0,0,.45)">
+  <div class="modal" style="max-width:380px;padding:28px 24px 24px">
+    <div style="text-align:center;margin-bottom:18px">
+      <div id="confirm-icon" style="font-size:36px;margin-bottom:10px"></div>
+      <div id="confirm-title" style="font-size:17px;font-weight:700;color:var(--text);margin-bottom:8px"></div>
+      <div id="confirm-msg" style="font-size:13px;color:var(--muted);line-height:1.6"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px">
+      <button class="btn btn-secondary btn-full" onclick="_confirmCancel()">Cancel</button>
+      <button class="btn btn-full" id="confirm-ok-btn" onclick="_confirmOk()">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- ALERT DIALOG -->
+<div class="overlay" id="modal-alert" style="z-index:150;background:rgba(0,0,0,.45)">
+  <div class="modal" style="max-width:360px;padding:28px 24px 24px">
+    <div style="text-align:center;margin-bottom:20px">
+      <div id="alert-icon" style="font-size:36px;margin-bottom:10px"></div>
+      <div id="alert-title" style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px"></div>
+      <div id="alert-msg" style="font-size:13px;color:var(--muted);line-height:1.6"></div>
+    </div>
+    <button class="btn btn-primary btn-full" onclick="document.getElementById('modal-alert').classList.remove('open')">OK</button>
+  </div>
+</div>
+
+<!-- QUICK BALANCE UPDATE -->
+<div class="overlay" id="modal-quickbalance" style="z-index:150;background:rgba(0,0,0,.45)">
+  <div class="modal" style="max-width:380px;padding:24px">
+    <div style="text-align:center;margin-bottom:16px">
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:2px">Update Balance</div>
+      <div id="qb-name" style="font-size:13px;color:var(--muted)"></div>
+    </div>
+    <div class="field" style="margin-bottom:18px">
+      <label>New Balance ($)</label>
+      <input id="qb-amount" type="number" inputmode="decimal" placeholder="0.00" onkeydown="if(event.key==='Enter')confirmQuickBalance()"/>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <button class="btn btn-secondary btn-full" onclick="closeModal('quickbalance')">Cancel</button>
+      <button class="btn btn-primary btn-full" onclick="confirmQuickBalance()">OK</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- NOTIFICATION DRAWER -->
+<div class="overlay" id="notif-drawer-overlay">
+  <div class="modal" style="max-height:85vh">
+    <div class="modal-header">
+      <span class="modal-title">🔔 Notifications</span>
+      <div style="display:flex;align-items:center;gap:8px">
+        <button class="btn btn-secondary btn-sm" onclick="dismissAllNotifs()" id="notif-dismiss-all">Dismiss all</button>
+        <button class="close-btn" onclick="closeNotifDrawer()">✕</button>
+      </div>
+    </div>
+    <div id="notif-drawer-content"></div>
+  </div>
+</div>
+
+<!-- SETTINGS -->
+<div class="overlay" id="modal-settings">
+  <div class="modal">
+    <div class="modal-header"><span class="modal-title">⚙️ Settings</span><button class="close-btn" onclick="closeModal('settings')">✕</button></div>
+
+    <!-- ── APPEARANCE ── -->
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:8px">Appearance</div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:18px">
+      <div style="padding:12px 14px;border-bottom:1px solid var(--border)">
+        <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:8px">🎨 <span data-i18n="Theme">Theme</span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+          <button id="theme-dark" class="btn btn-full" onclick="setTheme('dark')" style="padding:8px;font-size:12px">🌙 Dark</button>
+          <button id="theme-light" class="btn btn-full" onclick="setTheme('light')" style="padding:8px;font-size:12px">☀️ Light</button>
+          <button id="theme-auto" class="btn btn-full" onclick="setTheme('auto')" style="padding:8px;font-size:12px">⚙️ Auto</button>
+        </div>
+      </div>
+      <div style="padding:12px 14px">
+        <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:8px">🌐 <span data-i18n="Language">Language</span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <button id="lang-en" class="btn btn-full" onclick="setLanguage('en')" style="padding:8px;font-size:13px">🇺🇸 English</button>
+          <button id="lang-es" class="btn btn-full" onclick="setLanguage('es')" style="padding:8px;font-size:13px">🇵🇷 Español</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECURITY ── -->
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:8px">Security</div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:18px">
+      <div style="font-size:12px;font-weight:600;color:var(--accent2);margin-bottom:4px">🔒 PIN Lock</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.6" id="pin-status-text" data-i18n="No PIN set. Add a PIN to lock the app on startup.">No PIN set. Add a PIN to lock the app on startup.</div>
+      <button class="btn btn-full" style="background:rgba(129,140,248,.15);color:var(--accent2);padding:9px" id="pin-setup-btn" onclick="openPinSetup()">🔒 Set Up PIN</button>
+    </div>
+
+    <!-- ── DATA ── -->
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:8px">Data</div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:18px">
+
+      <!-- Auto-save -->
+      <div style="padding:12px 14px;border-bottom:1px solid var(--border)">
+        <div style="font-size:12px;font-weight:600;color:var(--accent2);margin-bottom:4px">💾 Auto-Save Active</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.6" id="autosave-desc">Saves automatically in <strong style="color:var(--text)">this browser only</strong> via local storage. Nothing is ever sent anywhere.</div>
+      </div>
+
+      <!-- Demo -->
+      <div style="padding:12px 14px;border-bottom:1px solid var(--border)">
+        <div style="font-size:12px;font-weight:600;color:#fb923c;margin-bottom:4px">🎭 Demo Mode</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.6">Loads realistic sample data to explore all features.</div>
+        <button class="btn btn-full" style="background:rgba(251,146,60,.15);color:#fb923c;padding:9px" onclick="loadDemoData()">🎭 Load Demo Data</button>
+      </div>
+
+      <!-- Backup & Restore -->
+      <div style="padding:12px 14px;border-bottom:1px solid var(--border)">
+        <div style="font-size:12px;font-weight:600;color:var(--green);margin-bottom:4px">📦 Backup & Restore</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.6">Export as <strong>.json</strong> to restore any time, even on a new device.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+          <button class="btn btn-full" style="background:rgba(34,197,94,.15);color:var(--green);padding:9px" onclick="exportData()">⬇️ Export</button>
+          <button class="btn btn-full" style="background:rgba(80,112,240,.15);color:var(--accent2);padding:9px" onclick="importData()">⬆️ Import</button>
+        </div>
+        <button class="btn btn-full" style="background:rgba(34,197,94,.1);color:var(--green);padding:9px" onclick="exportToExcel()">📊 Export to Excel / Numbers</button>
+      </div>
+
+      <!-- Reset -->
+      <div style="padding:12px 14px">
+        <div style="font-size:12px;font-weight:600;color:var(--red);margin-bottom:4px">⚠️ Reset All Data</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:10px">Permanently erases all data. Cannot be undone.</div>
+        <button class="btn btn-danger btn-full" onclick="confirmReset()">🗑️ Reset Everything</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- INCOME -->
+<div class="overlay" id="modal-income">
+  <div class="modal">
+    <div class="modal-header"><span class="modal-title" id="income-modal-title" data-i18n="Add Income">Add Income</span><button class="close-btn" onclick="closeModal('income')">✕</button></div>
+    <input type="hidden" id="i-id"/>
+    <div class="field"><label data-i18n="Source">Source</label><input id="i-source" placeholder="e.g. Salary, Freelance"/></div>
+    <div class="field-row">
+      <div class="field"><label data-i18n="Amount ($)">Amount ($)</label><input id="i-amount" type="number" inputmode="decimal" placeholder="0.00"/></div>
+      <div class="field"><label data-i18n="Date Received">Date Received</label><input id="i-date" type="date"/></div>
+    </div>
+    <div class="field"><label data-i18n="Deposit to Account">Deposit to Account</label><select id="i-account"><option value="">-- No account linked --</option></select></div>
+    <div class="field"><label data-i18n="Frequency">Frequency</label>
+      <select id="i-freq" onchange="onIncomeFreqChange()"><option data-i18n="One-time">One-time</option><option data-i18n="Weekly">Weekly</option><option data-i18n="Bi-weekly">Bi-weekly</option><option selected data-i18n="Monthly">Monthly</option><option data-i18n="Yearly">Yearly</option></select>
+    </div>
+    <div class="field" id="i-lastpay-wrap" style="display:none">
+      <label>Last Paycheck Date</label>
+      <input id="i-lastpay" type="date"/>
+      <div class="txt-muted-sm-top">Used to calculate which months have 2 vs 3 paychecks</div>
+    </div>
+    <div id="i-update-note" style="display:none;font-size:11px;color:var(--muted);background:rgba(80,112,240,.08);border:1px solid rgba(80,112,240,.2);border-radius:8px;padding:8px 12px;margin-bottom:12px">
+      💡 To update the amount for a single payment, close this and tap <strong class="txt-accent">$ Update</strong> on that payment card in Money.
+    </div>
+    <button class="btn btn-primary btn-full" onclick="saveIncome()" data-i18n="Save Income">Save Income</button>
+  </div>
+</div>
+
+<!-- OCCURRENCE OVERRIDE -->
+<div class="overlay" id="modal-occurrence">
+  <div class="modal">
+    <div class="modal-header"><span class="modal-title">Update This Payment</span><button class="close-btn" onclick="closeModal('occurrence')">✕</button></div>
+    <input type="hidden" id="occ-income-id"/>
+    <input type="hidden" id="occ-date"/>
+    <div style="background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:12px 14px;margin-bottom:14px;">
+      <div style="font-size:13px;font-weight:700;color:var(--text)" id="occ-source-label"></div>
+      <div style="font-size:12px;color:var(--muted);margin-top:3px" id="occ-date-label"></div>
+      <div style="font-size:12px;color:var(--muted);margin-top:2px">Scheduled: <span style="color:var(--green);font-weight:600" id="occ-scheduled"></span></div>
+    </div>
+    <div class="field">
+      <label>Actual Amount ($)</label>
+      <input id="occ-amount" type="number" inputmode="decimal" placeholder="Leave blank to use scheduled amount"/>
+      <div class="txt-muted-sm-top">Overrides the scheduled amount for this specific payment only. Leave blank to revert to scheduled.</div>
+    </div>
+    <button class="btn btn-primary btn-full" onclick="saveOccurrenceOverride()">Save</button>
+    <button class="btn btn-danger btn-full" onclick="clearOccurrenceOverride()" style="margin-top:8px;background:transparent;border:1px solid rgba(239,68,68,.3);">Clear Override</button>
+  </div>
+</div>
+
+<!-- EXPENSE -->
+<div class="overlay" id="modal-expense">
+  <div class="modal">
+    <div class="modal-header"><span class="modal-title" id="expense-modal-title">Add Expense / Bill</span><button class="close-btn" onclick="closeModal('expense')">✕</button></div>
+    <input type="hidden" id="e-id"/>
+    <input type="hidden" id="e-entry-type" value="expense"/>
+    <div class="overlap-warn" id="expense-overlap-warn"></div>
+
+    <!-- Category — drives which fields appear -->
+    <div class="field"><label>Category</label>
+      <select id="e-cat" onchange="onExpenseCatChange()">
+        <option value="">Select category...</option>
+        <optgroup label="Expenses">
+          <option value="Housing">Housing</option>
+          <option value="Food">Food</option>
+          <option value="Transport">Transport</option>
+          <option value="Utilities">Utilities</option>
+          <option value="Subscriptions">Subscriptions</option>
+          <option value="Healthcare">Healthcare</option>
+          <option value="Entertainment">Entertainment</option>
+          <option value="Savings">Savings</option>
+          <option value="Other">Other</option>
+        </optgroup>
+        <optgroup label="Bills &amp; Debt">
+          <option value="creditcard">Credit Card</option>
+          <option value="loan_car">Car Loan</option>
+          <option value="loan_student">Student Loan</option>
+          <option value="loan_mortgage">Mortgage</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <!-- EXPENSE FIELDS (shown for regular categories) -->
+    <div id="e-expense-fields">
+      <div class="field"><label>Description (optional)</label><input id="e-desc" oninput="checkBillExpenseOverlap(this.value,'expense-overlap-warn')" placeholder="Optional detail"/></div>
+      <div class="field-row">
+        <div class="field"><label>Amount ($)</label><input id="e-amount" type="number" inputmode="decimal" placeholder="0.00"/></div>
+        <div class="field"><label>Date</label><input id="e-date" type="date"/></div>
+      </div>
+      <div class="field"><label>Frequency</label>
+        <select id="e-freq"><option selected>One-time</option><option>Weekly</option><option>Bi-weekly</option><option>Monthly</option><option>Yearly</option></select>
+      </div>
+      <div class="autolog-toggle" onclick="toggleAutoLogExpense()">
+        <label for="e-autolog">&#128259; Auto-log this expense every month</label>
+        <input type="checkbox" id="e-autolog"/>
+      </div>
+      <div id="autolog-account-wrap" class="field">
+        <label>Pay from Account</label>
+        <select id="e-autolog-account" style="background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:8px;color:var(--text);font-size:13px;width:100%">
+          <option value="">-- Select account --</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- BILL/DEBT FIELDS (shown when Credit Card or Loan is selected) -->
+    <div id="e-bill-fields" style="display:none">
+      <div class="field"><label>Name</label><input id="e-bill-name" placeholder="e.g. Chase Visa, Car Loan" oninput="checkBillExpenseOverlap(this.value,'expense-overlap-warn');autofillBillUrl()"/></div>
+      <div class="field-row">
+        <div class="field"><label>Min. Payment ($)</label><input id="e-bill-amount" type="number" inputmode="decimal" placeholder="0.00"/></div>
+        <div class="field"><label>Due Date</label><input id="e-bill-date" type="date"/></div>
+      </div>
+      <div class="field"><label>Recurring?</label>
+        <select id="e-bill-recur" onchange="onExpenseBillRecurChange()">
+          <option value="No">One-time</option>
+          <option value="Weekly">Weekly</option>
+          <option value="Bi-weekly">Bi-weekly</option>
+          <option value="Monthly">Monthly</option>
+          <option value="Yearly">Yearly</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Current Balance ($)</label><input id="e-bill-balance" type="number" inputmode="decimal" placeholder="0.00"/></div>
+        <div class="field"><label>APR (%)</label><input id="e-bill-apr" type="number" inputmode="decimal" placeholder="e.g. 19.99" step="0.01"/></div>
+      </div>
+      <div class="field" id="e-bill-limit-wrap"><label>Credit Limit ($)</label><input id="e-bill-limit" type="number" inputmode="decimal" placeholder="e.g. 10000"/></div>
+      <div class="field" id="e-bill-original-wrap"><label>Original Loan Amount ($)</label><input id="e-bill-original" type="number" inputmode="decimal" placeholder="e.g. 25000" step="0.01"/>
+        <div class="txt-muted-sm-top">Used by Debt Planner to show payoff progress.</div>
+      </div>
+      <div id="e-bill-autolog-section" style="display:none">
+        <div class="autolog-toggle" onclick="toggleAutoLogExpenseBill()">
+          <label for="e-bill-autolog">&#128259; Auto-log payment every month</label>
+          <input type="checkbox" id="e-bill-autolog"/>
+        </div>
+        <div id="e-bill-autolog-account-wrap" class="field" style="display:none">
+          <label>Pay from Account</label>
+          <select id="e-bill-autolog-account" style="background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:8px;color:var(--text);font-size:13px;width:100%">
+            <option value="">-- Select account --</option>
+          </select>
+        </div>
+      </div>
+      <div class="field"><label>Website (optional)</label><input id="e-bill-url" placeholder="e.g. chase.com" oninput="onBillUrlInput(this.value)"/>
+        <div class="txt-muted-sm-top">Tap to go directly to this biller's site when paying.</div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary btn-full" id="e-save-btn" onclick="saveExpense()">Save</button>
+  </div>
+</div>
+
+<!-- BILL -->
+<div class="overlay" id="modal-bill">
+  <div class="modal">
+    <div class="modal-header"><span class="modal-title" id="bill-modal-title" data-i18n="Add Bill / Debt">Add Bill / Debt</span><button class="close-btn" onclick="closeModal('bill')">✕</button></div>
+    <input type="hidden" id="b-id"/>
+    <div class="overlap-warn" id="bill-overlap-warn"></div>
+
+    <!-- ── CORE FIELDS (always visible) ── -->
+    <div class="field"><label data-i18n="Type">Type</label>
+      <select id="b-type" onchange="toggleDebtFields()">
+        <option value="bill" data-i18n="Regular Bill">Regular Bill</option>
+        <option value="creditcard" data-i18n="Credit Card">Credit Card</option>
+        <option value="loan" data-i18n="Loan (Car, Student, Mortgage)">Loan (Car, Student, Mortgage)</option>
+      </select>
+    </div>
+    <div class="field"><label data-i18n="Name">Name</label><input id="b-name" placeholder="e.g. Rent, Chase Visa, Student Loan" oninput="checkBillExpenseOverlap(this.value,'bill-overlap-warn');autofillBillUrl()"/></div>
+    <div class="field-row">
+      <div class="field"><label data-i18n="Min. Payment ($)">Min. Payment ($)</label><input id="b-amount" type="number" inputmode="decimal" placeholder="0.00"/></div>
+      <div class="field"><label data-i18n="Due Date">Due Date</label><input id="b-date" type="date"/></div>
+    </div>
+    <div class="field"><label data-i18n="Recurring?">Recurring?</label>
+      <select id="b-recur" onchange="onBillRecurChange()"><option>No</option><option data-i18n="Monthly">Monthly</option><option data-i18n="Weekly">Weekly</option><option data-i18n="Yearly">Yearly</option></select>
+    </div>
+
+    <!-- ── MORE OPTIONS (collapsed by default) ── -->
+    <button id="b-more-btn" onclick="toggleBillMore()" style="width:100%;background:none;border:0.5px solid var(--border2);border-radius:10px;padding:9px 14px;color:var(--muted);font-size:12px;font-weight:600;font-family:var(--font-b);display:flex;justify-content:space-between;align-items:center;cursor:pointer;margin-bottom:12px">
+      <span>More options</span><span id="b-more-chevron">▾</span>
+    </button>
+    <div id="b-more-fields" style="display:none">
+      <div id="debt-fields">
+        <div class="field-row">
+          <div class="field"><label data-i18n="Current Balance ($)">Current Balance ($)</label><input id="b-balance" type="number" inputmode="decimal" placeholder="0.00"/></div>
+          <div class="field"><label data-i18n="APR (%)">APR (%)</label><input id="b-apr" type="number" inputmode="decimal" placeholder="e.g. 19.99" step="0.01"/></div>
+        </div>
+        <div class="field" id="b-limit-wrap"><label data-i18n="Credit Limit ($)">Credit Limit ($)</label><input id="b-limit" type="number" inputmode="decimal" placeholder="e.g. 10000"/></div>
+        <div id="b-spending-wrap" style="display:none">
+          <div class="autolog-toggle" onclick="toggleSpendingCard()">
+            <label for="b-spending-card">Spending card — pay in full monthly (not a debt to pay off)</label>
+            <input type="checkbox" id="b-spending-card"/>
+          </div>
+          <div class="txt-muted-sm-top" style="margin-top:-6px;margin-bottom:12px">Excludes this card from the Debt Planner and defaults its payment to Statement Balance.</div>
+        </div>
+        <div class="field" id="b-original-wrap"><label>Original Loan Amount ($)</label><input id="b-original" type="number" inputmode="decimal" placeholder="e.g. 25000" step="0.01"/>
+          <div class="txt-muted-sm-top">Used by Debt Planner to show payoff progress.</div>
+        </div>
+      </div>
+      <div id="b-autolog-wrap" style="display:none">
+        <div class="autolog-toggle" onclick="toggleAutoLogBill()">
+          <label for="b-autolog">&#128259; Auto-log payment every month</label>
+          <input type="checkbox" id="b-autolog"/>
+        </div>
+        <div id="b-autolog-account-wrap" class="field">
+          <label>Pay from Account</label>
+          <select id="b-autolog-account" style="background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:8px;color:var(--text);font-size:13px;width:100%">
+            <option value="">-- Select account --</option>
+          </select>
+        </div>
+      </div>
+      <div class="field"><label>Website (optional)</label><input id="b-url" placeholder="e.g. chase.com or netflix.com" oninput="onBillUrlInput(this.value)"/>
+        <div class="txt-muted-sm-top">Tap to go directly to this biller's site or app when paying.</div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary btn-full" onclick="saveBill()" data-i18n="Save">Save</button>
+    <div id="bill-delete-wrap" style="display:none;margin-top:10px">
+      <button class="btn btn-danger btn-full" onclick="deleteBillFromModal()">🗑️ Remove this Bill / Debt</button>
+    </div>
+  </div>
+</div>
+<div class="overlay" id="modal-card">
+  <div class="modal">
+    <div class="modal-header"><span class="modal-title" data-i18n="Add Inactive Card">Add Inactive Card</span><button class="close-btn" onclick="closeModal('card')">✕</button></div>
+    <div class="field"><label data-i18n="Card Name / Bank">Card Name / Bank</label><input id="c-name" placeholder="e.g. Chase Freedom"/></div>
+    <div class="field-row">
+      <div class="field"><label data-i18n="Last 4 Digits">Last 4 Digits</label><input id="c-last4" placeholder="1234" maxlength="4" inputmode="numeric"/></div>
+      <div class="field"><label data-i18n="Remind me every">Remind me every</label>
+        <select id="c-days"><option value="30">30 days</option><option value="60" selected>60 days</option><option value="90">90 days</option></select>
+      </div>
+    </div>
+    <div class="field"><label data-i18n="Notes (optional)">Notes (optional)</label><input id="c-notes" placeholder="e.g. Use for gas only"/></div>
+    <button class="btn btn-primary btn-full" onclick="saveCard()" data-i18n="Save Card">Save Card</button>
+  </div>
+</div>
+
+<!-- ASSET -->
+<div class="overlay" id="modal-asset">
+  <div class="modal">
+    <div class="modal-header"><span class="modal-title" id="asset-modal-title" data-i18n="Add Asset">Add Asset</span><button class="close-btn" onclick="closeModal('asset')">✕</button></div>
+    <input type="hidden" id="a-id"/>
+    <div class="field"><label data-i18n="Asset Name">Asset Name</label><input id="a-name" placeholder="e.g. Chase Savings, 401k, Tesla"/></div>
+    <div class="field"><label data-i18n="Category">Category</label>
+      <select id="a-cat" onchange="toggleAssetFields()">
+        <option value="cash">💵 Savings / Cash</option>
+        <option value="invest">📈 Investments / Stocks</option>
+        <option value="property">🏠 Property / Real Estate</option>
+        <option value="vehicle">🚗 Vehicle</option>
+      </select>
+    </div>
+    <div class="field"><label data-i18n="Current Value ($)">Current Value ($)</label><input id="a-value" type="number" inputmode="decimal" placeholder="0.00"/></div>
+
+    <!-- Depreciation fields (vehicle + property) -->
+    <div id="a-depreciation-wrap">
+      <div class="field-row">
+        <div class="field"><label>Purchase / Appraisal Date</label><input id="a-purchase-date" type="date"/></div>
+        <div class="field"><label>Original Value ($)</label><input id="a-original-value" type="number" inputmode="decimal" placeholder="0.00"/></div>
+      </div>
+      <div class="field" id="a-depr-rate-wrap">
+        <label>Annual Depreciation (%)</label>
+        <input id="a-depr-rate" type="number" inputmode="decimal" placeholder="e.g. 15 for a car" step="0.1"/>
+        <div class="txt-muted-sm-top">Used to estimate current value from purchase date. Typical: car 15–20%, home appreciates (leave blank).</div>
+      </div>
+    </div>
+
+    <!-- Linked mortgage (property only) -->
+    <div class="field" id="a-mortgage-wrap">
+      <label>Linked Mortgage / Loan (optional)</label>
+      <select id="a-linked-bill" style="background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:8px;color:var(--text);font-size:13px;width:100%">
+        <option value="">-- None --</option>
+      </select>
+      <div class="txt-muted-sm-top">Links the loan balance so the card shows your equity automatically.</div>
+    </div>
+
+    <div class="field"><label data-i18n="Notes (optional)">Notes (optional)</label><input id="a-notes" placeholder="e.g. Estimated market value"/></div>
+    <button class="btn btn-primary btn-full" onclick="saveAsset()" data-i18n="Save Asset">Save Asset</button>
+    <div id="asset-delete-wrap" style="display:none;margin-top:10px">
+      <button class="btn btn-danger btn-full" onclick="deleteAssetFromModal()">🗑️ Remove Asset</button>
+    </div>
+  </div>
+</div>
+
+<!-- BUDGET TARGET -->
+<div class="overlay" id="modal-target">
+  <div class="modal">
+    <div class="modal-header"><span class="modal-title" id="target-modal-title" data-i18n="Set Budget Target">Set Budget Target</span><button class="close-btn" onclick="closeModal('target')">✕</button></div>
+    <input type="hidden" id="tg-id"/>
+    <div class="field"><label data-i18n="Target Type">Target Type</label>
+      <select id="tg-type" onchange="toggleTargetType()">
+        <option value="category" data-i18n="Expense Category">Expense Category</option>
+        <option value="card" data-i18n="Credit Card Spending">Credit Card Spending</option>
+      </select>
+    </div>
+    <div id="tg-cat-wrap" class="field"><label data-i18n="Category">Category</label>
+      <select id="tg-cat">
+        <option data-i18n="Housing">Housing</option><option data-i18n="Food">Food</option><option data-i18n="Transport">Transport</option>
+        <option data-i18n="Utilities">Utilities</option><option data-i18n="Subscriptions">Subscriptions</option><option data-i18n="Healthcare">Healthcare</option>
+        <option data-i18n="Entertainment">Entertainment</option><option data-i18n="Savings">Savings</option><option data-i18n="Other">Other</option>
+      </select>
+    </div>
+    <div id="tg-card-wrap" class="field" style="display:none"><label data-i18n="Credit Card">Credit Card</label>
+      <select id="tg-card"></select>
+    </div>
+    <div class="field"><label data-i18n="Monthly Limit ($)">Monthly Limit ($)</label><input id="tg-amount" type="number" inputmode="decimal" placeholder="e.g. 400"/></div>
+    <button class="btn btn-primary btn-full" onclick="saveTarget()" data-i18n="Save Target">Save Target</button>
+  </div>
+</div></div>
+
+<!-- PIN SETUP -->
+<div class="overlay" id="modal-pinsetup">
+  <div class="modal">
+    <div class="modal-header"><span class="modal-title" id="pinsetup-title" data-i18n="Set Up PIN">Set Up PIN</span><button class="close-btn" onclick="closeModal('pinsetup')">✕</button></div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.6" id="pinsetup-desc" data-i18n="Choose a 4-digit PIN to lock the app on startup.">Choose a 4-digit PIN to lock the app on startup.</div>
+    <div class="field"><label data-i18n="New PIN (4 digits)">New PIN (4 digits)</label><input id="pin-new" type="password" inputmode="numeric" maxlength="4" placeholder="----"/></div>
+    <div class="field" id="pin-confirm-field"><label data-i18n="Confirm PIN">Confirm PIN</label><input id="pin-confirm" type="password" inputmode="numeric" maxlength="4" placeholder="----"/></div>
+    <div id="pinsetup-error" style="color:var(--red);font-size:12px;min-height:16px;margin-bottom:10px"></div>
+    <button class="btn btn-primary btn-full" onclick="savePinSetup()" data-i18n="Save PIN">Save PIN</button>
+    <button class="btn btn-danger btn-full" id="pin-remove-btn" style="margin-top:8px;display:none" onclick="removePin()" data-i18n="Remove PIN Lock">Remove PIN Lock</button>
+  </div>
+</div>
+
+<!-- ACCOUNT -->
+<div class="overlay" id="modal-account">
+  <div class="modal">
+    <div class="modal-header"><span class="modal-title" id="account-modal-title" data-i18n="Add Account">Add Account</span><button class="close-btn" onclick="closeModal('account')">✕</button></div>
+    <input type="hidden" id="ac-id"/>
+    <div class="field"><label data-i18n="Account Name">Account Name</label><input id="ac-name" placeholder="e.g. Chase Checking, Wells Savings"/></div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 0;margin-bottom:13px;cursor:pointer" onclick="var cb=$('ac-default');cb.checked=!cb.checked;">
+      <input type="checkbox" id="ac-default" style="width:18px;height:18px;accent-color:var(--accent);pointer-events:none;flex-shrink:0"/>
+      <span style="font-size:13px;color:var(--text)" data-i18n="Set as default payment account">Set as default payment account</span>
+    </div>
+    <div class="field"><label data-i18n="Type">Type</label>
+      <select id="ac-type" onchange="toggleAcApyField()">
+        <option value="checking">Checking</option>
+        <option value="savings">Savings</option>
+        <option value="cash">Cash</option>
+      </select>
+    </div>
+    <div class="field" id="ac-apy-wrap"><label>APY (%)</label><input id="ac-apy" type="number" inputmode="decimal" placeholder="e.g. 4.50" step="0.01"/>
+      <div class="txt-muted-sm-top">Annual Percentage Yield — used to show projected interest earned.</div>
+    </div>
+    <div class="field"><label data-i18n="Current Balance ($)">Current Balance ($)</label><input id="ac-balance" type="number" inputmode="decimal" placeholder="0.00"/></div>
+    <div class="field"><label data-i18n="Notes (optional)">Notes (optional)</label><input id="ac-notes" placeholder="e.g. Primary checking account"/></div>
+    <div class="field" id="ac-url-wrap"><label>Online Banking URL (optional)</label><input id="ac-url" placeholder="e.g. pnc.com or ally.com"/>
+      <div class="txt-muted-sm-top">Tap to jump directly to your bank's website or app.</div>
+    </div>
+    <button class="btn btn-primary btn-full" onclick="saveAccount()" data-i18n="Save Account">Save Account</button>
+    <div id="account-delete-wrap" style="display:none;margin-top:10px">
+      <button class="btn btn-danger btn-full" onclick="deleteAccountFromModal()">🗑️ Remove Account</button>
+    </div>
+  </div>
+</div>
+
+<!-- TRANSFER -->
+<div class="overlay" id="modal-transfer">
+  <div class="modal">
+    <div class="modal-header"><span class="modal-title">🔁 Transfer Between Accounts</span><button class="close-btn" onclick="closeModal('transfer')">✕</button></div>
+    <div class="field"><label>From Account</label>
+      <select id="tr-from" onchange="checkTransferOverdraft()"><option value="">-- Select account --</option></select>
+    </div>
+    <div class="field"><label>To Account</label>
+      <select id="tr-to"><option value="">-- Select account --</option></select>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Amount ($)</label><input id="tr-amount" type="number" inputmode="decimal" placeholder="0.00" oninput="checkTransferOverdraft()"/></div>
+      <div class="field"><label>Date</label><input id="tr-date" type="date"/></div>
+    </div>
+    <div id="tr-overdraft-warn" style="display:none;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--red);margin-bottom:10px"></div>
+    <div class="field"><label>Note (optional)</label><input id="tr-note" placeholder="e.g. Emergency fund contribution"/></div>
+    <button class="btn btn-primary btn-full" onclick="saveTransfer()">Save Transfer</button>
+  </div>
+</div>
+
+<!-- NEW PURCHASE -->
+<div class="overlay" id="modal-purchase">
+  <div class="modal">
+    <div class="modal-header"><span class="modal-title" id="pu-modal-title">🛒 New Transaction</span><button class="close-btn" onclick="closeModal('purchase')">✕</button></div>
+    <input type="hidden" id="pu-edit-id"/>
+    <div class="field"><label data-i18n="Description">Description</label><input id="pu-desc" placeholder="e.g. Amazon, Gas Station, Whole Foods"/></div>
+    <div class="field-row">
+      <div class="field"><label data-i18n="Amount ($)">Amount ($)</label><input id="pu-amount" type="number" inputmode="decimal" placeholder="0.00" oninput="checkPurchaseOverdraft();calcPromoRequired()"/></div>
+      <div class="field"><label data-i18n="Date">Date</label><input id="pu-date" type="date"/></div>
+    </div>
+    <div class="field">
+      <label data-i18n="Payment Method">Payment Method</label>
+      <select id="pu-method" onchange="checkPurchaseOverdraft()">
+        <option value="">-- Select payment method --</option>
+        <optgroup id="pu-accounts-group" label="Accounts"></optgroup>
+        <optgroup id="pu-cards-group" label="Credit Cards"></optgroup>
+      </select>
+    </div>
+    <div class="field">
+      <label data-i18n="Category (optional)">Category (optional)</label>
+      <select id="pu-category">
+        <option value="">-- No category --</option>
+        <option data-i18n="Housing">Housing</option><option data-i18n="Food">Food</option><option data-i18n="Transport">Transport</option>
+        <option data-i18n="Utilities">Utilities</option><option data-i18n="Subscriptions">Subscriptions</option><option data-i18n="Healthcare">Healthcare</option>
+        <option data-i18n="Entertainment">Entertainment</option><option data-i18n="Savings">Savings</option><option data-i18n="Other">Other</option>
+      </select>
+    </div>
+    <div id="pu-overdraft-warn" style="display:none;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--red);margin-bottom:10px"></div>
+    <div class="field"><label>Note (optional)</label>
+      <input id="pu-note" placeholder="e.g. Birthday gift, one-time expense..."/>
+    </div>
+    <!-- PROMO PURCHASE TOGGLE -->
+    <div class="promo-toggle-row" onclick="togglePromoFields()">
+      <input type="checkbox" id="pu-promo-check" onclick="event.stopPropagation();togglePromoFields()"/>
+      <label for="pu-promo-check">&#127873; This is a promo / no-interest purchase</label>
+    </div>
+    <div id="pu-promo-fields">
+      <div class="promo-type-toggle">
+        <div class="promo-type-btn active" id="ptype-deferred" onclick="setPromoType('deferred')">
+          &#9888;&#65039; Deferred Interest<br/><span style="font-size:10px;font-weight:400">Pay in full or get charged</span>
+        </div>
+        <div class="promo-type-btn" id="ptype-installment" onclick="setPromoType('installment')">
+          &#128197; Installment Plan<br/><span style="font-size:10px;font-weight:400">Fixed monthly, true 0%</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="field" class="m-0"><label>Promo Months</label><input id="pu-promo-months" type="number" placeholder="6" value="6" oninput="calcPromoRequired()"/></div>
+        <div class="field" class="m-0" id="pu-deferred-apr-wrap"><label>Interest Rate If Late (%)</label><input id="pu-promo-apr" type="number" placeholder="29.99" step="0.01"/></div>
+      </div>
+      <div id="pu-promo-calc" style="font-size:12px;color:var(--muted);margin-top:8px;padding:8px 10px;background:rgba(0,0,0,.15);border-radius:8px;display:none"></div>
+    </div>
+
+    <button class="btn btn-primary btn-full" onclick="confirmPurchase()" data-i18n="Log Purchase">Log Transaction</button>
+  </div>
+</div>
+
+<!-- SCHEDULE REGULAR BILL -->
+<div class="overlay" id="modal-schedulebill">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">📅 Schedule Payment</span>
+      <button class="close-btn" onclick="closeModal('schedulebill')">✕</button>
+    </div>
+    <div style="background:rgba(255,255,255,.04);border-radius:12px;padding:12px 14px;margin-bottom:12px">
+      <div class="no-accounts-nudge" id="sb-no-accounts-nudge" style="display:none;margin-bottom:8px">&#9888; No accounts set up. Add an account in Accounts first so you can track which account this payment comes from.</div>
+      <div style="font-size:15px;font-weight:700" id="sb-name"></div>
+      <div style="font-size:12px;color:var(--muted);margin-top:3px" id="sb-due"></div>
+    </div>
+    <div id="sb-website-wrap" style="display:none;margin-bottom:14px">
+      <a id="sb-website-btn" href="#" target="_blank" rel="noopener"
+        style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:11px;background:rgba(80,112,240,.12);color:var(--accent2);border:1px solid rgba(80,112,240,.3);border-radius:12px;font-size:14px;font-weight:700;text-decoration:none;box-sizing:border-box"
+        onclick="this.style.background='rgba(80,112,240,.22)'">
+        🌐 Go to Website &nbsp;→
+      </a>
+      <div style="font-size:11px;color:var(--muted);text-align:center;margin-top:6px">Come back here after paying to confirm the schedule.</div>
+    </div>
+    <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;font-weight:700" data-i18n="Payment Amount">Payment Amount</div>
+    <button id="sb-min-btn" class="btn btn-full" style="background:rgba(80,112,240,.12);color:var(--accent2);padding:12px;justify-content:space-between;margin-bottom:10px" onclick="sbSelect('min')">
+      <span data-i18n="Minimum / Standard">Minimum / Standard</span><span id="sb-min-val" class="txt-bold"></span>
+    </button>
+    <div class="field">
+      <label data-i18n="Or enter custom amount ($)">Or enter custom amount ($)</label>
+      <input id="sb-custom" type="number" inputmode="decimal" placeholder="0.00" oninput="sbSelect('custom')"/>
+    </div>
+    <div class="field"><label data-i18n="Pay from Account">Pay from Account</label><select id="sb-account"><option value="">-- No account linked --</option></select></div>
+    <button class="btn btn-primary btn-full" onclick="confirmScheduleBill()" data-i18n="Confirm Schedule">Confirm Schedule</button>
+  </div>
+</div>
+
+<!-- PAY DEBT -->
+<div class="overlay" id="modal-paydebt">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">💳 Record Payment</span>
+      <button class="close-btn" onclick="closeModal('paydebt')">✕</button>
+    </div>
+    <div style="background:rgba(255,255,255,.04);border-radius:12px;padding:12px 14px;margin-bottom:16px">
+      <div class="no-accounts-nudge" id="pd-no-accounts-nudge">
+      &#9888; You have no accounts set up. Add an account in Net Worth first so you can track which account this payment comes from.
+      <br/><button class="btn btn-sm" style="margin-top:6px;background:rgba(239,68,68,.15);color:var(--red)" onclick="closeModal('paydebt');show('networth');setTimeout(()=>openModal('account'),300)">+ Add Account</button>
+    </div>
+    <div style="font-size:15px;font-weight:700" id="pd-name"></div>
+      <div style="font-size:12px;color:var(--muted);margin-top:4px">
+        Balance: <span id="pd-balance" class="txt-red"></span>
+        &nbsp;|&nbsp; APR: <span id="pd-apr" class="txt-yellow"></span>
+      </div>
+      <div id="pd-website-wrap" style="display:none;margin-top:10px">
+        <a id="pd-website-btn" href="#" target="_blank" rel="noopener"
+          style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:9px;background:rgba(80,112,240,.12);color:var(--accent2);border:1px solid rgba(80,112,240,.3);border-radius:10px;font-size:13px;font-weight:700;text-decoration:none;box-sizing:border-box">
+          🌐 Go to Website &nbsp;→
+        </a>
+      </div>
+      <div class="balance-split" id="pd-balance-split" style="display:none">
+        <div class="balance-bucket revolving">
+          <div class="bb-label">Revolving</div>
+          <div class="bb-val" id="pd-revolving-val" class="txt-red"></div>
+          <div class="bb-sub" id="pd-revolving-interest"></div>
+        </div>
+        <div class="balance-bucket promo">
+          <div class="bb-label">Promo Items</div>
+          <div class="bb-val" id="pd-promo-val" class="txt-accent"></div>
+          <div class="bb-sub" id="pd-promo-count"></div>
+        </div>
+      </div>
+    </div>
+    <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;font-weight:700" data-i18n="Payment Amount">Payment Amount</div>
+    <div style="display:grid;gap:8px;margin-bottom:16px">
+      <button id="pd-min-btn" class="btn btn-full" style="background:rgba(80,112,240,.12);color:var(--accent2);padding:12px;justify-content:space-between" onclick="selectPayAmount('min')">
+        <span data-i18n="Minimum Payment">Minimum Payment</span><span id="pd-min-val" class="txt-bold"></span>
+      </button>
+      <button id="pd-sug-btn" class="btn btn-full" style="background:rgba(34,197,94,.1);color:var(--green);padding:12px;justify-content:space-between" onclick="selectPayAmount('statement')">
+        <span>Statement Balance</span><span id="pd-sug-val" class="txt-bold"></span>
+      </button>
+      <div id="pd-debtplan-wrap" style="display:none">
+        <div id="pd-debtplan-note" style="font-size:11px;color:var(--muted);margin:0 2px 6px"></div>
+        <button id="pd-debtplan-btn" class="btn btn-full" style="background:rgba(168,85,247,.1);color:#a855f7;padding:12px;justify-content:space-between" onclick="selectPayAmount('debtplan')">
+          <span>Debt Plan (<span id="pd-debtplan-method"></span>)</span><span id="pd-debtplan-val" class="txt-bold"></span>
+        </button>
+        <div id="pd-debtplan-link-wrap" style="display:none;text-align:center;margin:6px 0 0">
+          <a href="javascript:void(0)" onclick="closeModal('paydebt');show('debt',null);" style="font-size:12px;color:var(--accent2);text-decoration:none">View full Debt Plan →</a>
+        </div>
+      </div>
+      <button id="pd-full-btn" class="btn btn-full" style="background:rgba(251,146,60,.1);color:#fb923c;padding:12px;justify-content:space-between" onclick="selectPayAmount('full')">
+        <span data-i18n="Pay in Full">Pay in Full</span><span id="pd-full-val" class="txt-bold"></span>
+      </button>
+    </div>
+    <div class="field">
+      <label data-i18n="Or enter custom amount ($)">Or enter custom amount ($)</label>
+      <input id="pd-custom" type="number" inputmode="decimal" placeholder="0.00" oninput="selectPayAmount('custom')"/>
+    </div>
+    <div id="pd-no-interest-wrap" style="display:none;margin-bottom:12px">
+      <div class="autolog-toggle" style="margin-top:0" onclick="toggleNoInterest()">
+        <label for="pd-no-interest">💡 This payment won't incur interest</label>
+        <input type="checkbox" id="pd-no-interest" style="pointer-events:none"/>
+      </div>
+    </div>
+    <div id="pd-breakdown" style="background:rgba(255,255,255,.03);border-radius:10px;padding:12px;margin-bottom:14px;font-size:12px;display:none">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span class="txt-muted" data-i18n="Interest portion">Interest portion</span><span id="pd-interest-portion" class="txt-red"></span></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span class="txt-muted" data-i18n="Principal portion">Principal portion</span><span id="pd-principal-portion" class="txt-green"></span></div>
+      <div style="display:flex;justify-content:space-between;padding-top:6px;border-top:1px solid var(--border);font-weight:700"><span data-i18n="New Balance">New Balance</span><span id="pd-new-balance" class="txt-accent"></span></div>
+    </div>
+    <!-- PAYMENT ALLOCATION -->
+    <div class="alloc-section" id="pd-alloc-section" style="display:none">
+      <div class="alloc-title">Payment Allocation</div>
+      <div class="alloc-row">
+        <div class="alloc-label">
+          <div style="font-weight:600">Revolving Balance</div>
+          <div class="txt-muted-sm" id="pd-alloc-revolving-hint"></div>
+        </div>
+        <input class="alloc-input" id="pd-alloc-revolving" type="number" inputmode="decimal"
+          placeholder="0.00" oninput="onAllocInput('revolving')"/>
+      </div>
+      <div id="pd-alloc-promo-rows"></div>
+      <div class="alloc-total-row">
+        <span>Total Payment</span>
+        <span id="pd-alloc-total" style="color:var(--accent)"></span>
+      </div>
+      <div class="alloc-warn" id="pd-alloc-warn" style="display:none"></div>
+    </div>
+    <div class="field"><label data-i18n="Pay from Account">Pay from Account</label><select id="pd-account"><option value="">-- No account linked --</option></select></div>
+    <div class="field">
+      <label>Bill Due Date</label>
+      <div id="pd-bill-due-display" style="padding:10px 12px;border-radius:10px;background:var(--bg);border:1px solid var(--border);font-size:14px;color:var(--muted)"></div>
+    </div>
+    <div class="field">
+      <label>Pay by Date <span style="font-size:11px;color:var(--muted);font-weight:400">(optional — defaults to due date)</span></label>
+      <input type="date" id="pd-due-date" onchange="checkPayByDate()"/>
+      <div id="pd-date-warning" style="display:none;font-size:12px;color:var(--yellow);margin-top:6px">⚠ This date is after the bill's due date — a late fee may apply.</div>
+    </div>
+    <button class="btn btn-primary btn-full" id="pd-confirm-btn" onclick="confirmDebtPayment()">Confirm Payment</button>
+  </div>
+</div>
+
+<!-- EXTRA PAYMENT -->
+<div class="overlay" id="modal-extrapay">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Extra Payment</span>
+      <button class="close-btn" onclick="closeModal('extrapay')">✕</button>
+    </div>
+    <!-- Zero-balance warning (shown only when payment would clear balance) -->
+    <div id="ep-zero-warning" style="display:none;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);border-radius:10px;padding:12px 14px;margin-bottom:14px">
+      <div style="font-size:13px;font-weight:700;color:var(--yellow);margin-bottom:4px">⚠ This will bring the balance to $0</div>
+      <div id="ep-zero-msg" style="font-size:12px;color:var(--muted);line-height:1.5"></div>
+    </div>
+    <div class="field">
+      <label>Payment Amount</label>
+      <input id="ep-amount" type="number" inputmode="decimal" placeholder="0.00" oninput="onEpAmountChange()"/>
+    </div>
+    <div class="field">
+      <label>Pay from Account</label>
+      <select id="ep-account"><option value="">-- No account linked --</option></select>
+    </div>
+    <div class="field">
+      <label>Date</label>
+      <input id="ep-date" type="date"/>
+    </div>
+    <button class="btn btn-primary btn-full" onclick="confirmExtraPayment()">Confirm Extra Payment</button>
+  </div>
+</div>
+
+<!-- CALENDAR PICKER -->
+<div class="overlay" id="modal-calpick">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">📅 Add to Calendar</span>
+      <button class="close-btn" onclick="closeModal('calpick')">✕</button>
+    </div>
+    <div style="background:rgba(255,255,255,.04);border-radius:12px;padding:12px 14px;margin-bottom:18px">
+      <div style="font-size:13px;font-weight:600;color:var(--text)" id="cal-event-name"></div>
+      <div style="font-size:12px;color:var(--muted);margin-top:3px" id="cal-event-date"></div>
+    </div>
+    <div style="display:grid;gap:10px">
+      <button class="btn btn-full" style="background:rgba(255,255,255,.06);color:var(--text);padding:14px;font-size:14px;justify-content:flex-start;gap:12px" onclick="calIcal()">
+        <span style="font-size:22px">🍎</span>
+        <div style="text-align:left">
+          <div class="txt-bold" data-i18n="Apple Calendar">Apple Calendar</div>
+          <div style="font-size:11px;color:var(--muted);font-weight:400" data-i18n="Downloads .ics file - opens in Apple Calendar">Downloads .ics file - opens in Apple Calendar</div>
+        </div>
+      </button>
+      <button class="btn btn-full" style="background:rgba(255,255,255,.06);color:var(--text);padding:14px;font-size:14px;justify-content:flex-start;gap:12px" onclick="calGoogle()">
+        <span style="font-size:22px">📅</span>
+        <div style="text-align:left">
+          <div class="txt-bold" data-i18n="Google Calendar">Google Calendar</div>
+          <div style="font-size:11px;color:var(--muted);font-weight:400" data-i18n="Opens Google Calendar in your browser">Opens Google Calendar in your browser</div>
+        </div>
+      </button>
+      <button class="btn btn-full" style="background:rgba(59,130,246,.12);color:#60a5fa;padding:14px;font-size:14px;justify-content:flex-start;gap:12px" onclick="calIcal()">
+        <span style="font-size:22px">📆</span>
+        <div style="text-align:left">
+          <div class="txt-bold" data-i18n="Outlook / Other">Outlook / Other</div>
+          <div style="font-size:11px;color:#60a5fa88;font-weight:400" data-i18n="Downloads .ics - works with any calendar app">Downloads .ics - works with any calendar app</div>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- TRANSACTION -->
+<div class="overlay" id="modal-txn">
+  <div class="modal">
+    <div class="modal-header"><span class="modal-title" id="txn-title" data-i18n="Cash Withdrawal">Cash Withdrawal</span><button class="close-btn" onclick="closeModal('txn')">✕</button></div>
+    <input type="hidden" id="t-id"/>
+    <div class="field"><label data-i18n="Description">Description</label><input id="t-desc" placeholder="e.g. ATM - Chase branch"/></div>
+    <div class="field-row">
+      <div class="field"><label data-i18n="Amount ($)">Amount ($)</label><input id="t-amount" type="number" inputmode="decimal" placeholder="0.00" oninput="checkWithdrawalOverdraft()"/></div>
+      <div class="field"><label data-i18n="Date">Date</label><input id="t-date" type="date"/></div>
+    </div>
+    <div class="field"><label>Pay from Account</label>
+      <select id="t-account" onchange="checkWithdrawalOverdraft()"><option value="">-- No account linked --</option></select>
+    </div>
+    <div id="t-overdraft-warn" style="display:none;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--red);margin-bottom:10px"></div>
+    <div class="field"><label>Note (optional)</label>
+      <input id="t-note" placeholder="e.g. Stocked up for party, one-time..."/>
+    </div>
+    <button class="btn btn-primary btn-full" onclick="saveTxn()" data-i18n="Log Withdrawal">Log Withdrawal</button>
+  </div>
+</div>
+
+
+  <!-- PROMO DEBT MODAL -->
+  <div class="overlay" id="modal-promo">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="promo-modal-title">Track Promo</span>
+      <button class="close-btn" onclick="closeModal('promo')">&#x2715;</button>
+    </div>
+    <input type="hidden" id="promo-id"/>
+    <input type="hidden" id="promo-modal-scenario"/>
+
+    <!-- PROMO APR: existing or new card + optional deposit -->
+    <div id="promo-apr-fields" style="display:none">
+      <div class="field">
+        <label>Apply To Card</label>
+        <select id="promo-apr-card" onchange="onPromoAprCardChange()" style="background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:8px;color:var(--text);font-size:13px;width:100%">
+          <option value="">-- Select card --</option>
+          <option value="new">+ Create New Card</option>
+        </select>
+      </div>
+      <div id="promo-apr-new-fields" style="display:none">
+        <div class="field"><label>New Card Name</label><input id="promo-apr-new-name" placeholder="e.g. Chase Freedom, Citi Simplicity"/></div>
+        <div class="field"><label>Credit Limit ($)</label><input id="promo-apr-new-limit" type="number" placeholder="10000"/></div>
+      </div>
+      <div class="field" style="display:flex;align-items:center;gap:10px;padding:4px 0">
+        <input type="checkbox" id="promo-apr-draw-check" onchange="togglePromoDrawDest()" style="width:16px;height:16px;accent-color:var(--accent);cursor:pointer"/>
+        <label for="promo-apr-draw-check" style="font-size:13px;color:var(--text);cursor:pointer">Funds deposited to an account (cash draw)</label>
+      </div>
+      <div id="promo-apr-draw-dest-wrap" style="display:none" class="field">
+        <label>Deposit To Account</label>
+        <select id="promo-apr-dest" style="background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:8px;color:var(--text);font-size:13px;width:100%">
+          <option value="">-- Select account --</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- TRANSFER: source cards + destination -->
+    <div id="promo-transfer-fields" style="display:none">
+      <div class="field">
+        <label>Pay Off These Cards (select all that apply)</label>
+        <div id="promo-transfer-sources" style="display:flex;flex-direction:column;gap:6px;padding:4px 0"></div>
+      </div>
+      <div class="field">
+        <label>Transfer To</label>
+        <select id="promo-transfer-dest" onchange="onPromoTransferDestChange()" style="background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:8px;color:var(--text);font-size:13px;width:100%">
+          <option value="">-- Select or create new card --</option>
+          <option value="new">+ Create New Card</option>
+        </select>
+      </div>
+      <div id="promo-new-card-fields" style="display:none">
+        <div class="field"><label>New Card Name</label><input id="promo-new-card-name" placeholder="e.g. Citi Simplicity, Discover 0%"/></div>
+        <div class="field"><label>Credit Limit ($)</label><input id="promo-new-card-limit" type="number" placeholder="10000" oninput="updateTransferTotal()"/></div>
+      </div>
+      <div class="promo-limit-warn" id="promo-limit-warn"></div>
+    </div>
+
+
+    <!-- SHARED FIELDS -->
+    <div class="field"><label id="promo-bal-label">Balance / Amount ($)</label><input id="promo-bal" type="number" placeholder="5000"/></div>
+    <div class="field"><label>Suggested Monthly Payment ($)</label><input id="promo-pay" type="number" placeholder="500"/></div>
+    <div class="field"><label>Promo APR (%)</label><input id="promo-papr" type="number" value="0" step="0.01" placeholder="e.g. 19.99"/></div>
+    <div class="field"><label>Promo End Date</label><input id="promo-end" type="date"/></div>
+    <div class="field"><label>Regular APR After (%)</label><input id="promo-rapr" type="number" placeholder="24.99" step="0.01"/></div>
+    <div class="field"><label>One-Time Fee ($)</label><input id="promo-feepaid" type="number" placeholder="0" step="0.01"/></div>
+
+    <div id="promo-summary-note" style="display:none;background:rgba(80,112,240,.07);border:1px solid rgba(80,112,240,.2);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--muted);margin-bottom:10px"></div>
+
+    <button class="btn btn-primary btn-full" onclick="savePromoDebt()">Save Promo</button>
+  </div>
+  </div>
+
+
+<!-- GOAL MODAL -->
+  <div class="overlay" id="modal-goal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="goal-modal-title">Add Savings Goal</span>
+      <button class="close-btn" onclick="closeModal('goal')">&#x2715;</button>
+    </div>
+    <input type="hidden" id="g-id"/>
+    <div class="field"><label>Goal Name</label><input id="g-name" placeholder="e.g. Emergency Fund, Vacation, New Car"/></div>
+    <div class="field"><label>Target Amount ($)</label><input id="g-target" type="number" inputmode="decimal" placeholder="5000"/></div>
+    <div class="field"><label>Target Date</label><input id="g-date" type="date"/></div>
+    <div class="field"><label>Linked Account (tracks balance)</label>
+      <select id="g-account" style="background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:8px;color:var(--text);font-size:13px;width:100%">
+        <option value="">-- No account linked --</option>
+      </select>
+    </div>
+    <div class="field"><label>Current Saved ($)</label><input id="g-saved" type="number" inputmode="decimal" placeholder="0" value="0"/></div>
+    <div class="field"><label>Notes (optional)</label><input id="g-notes" placeholder="e.g. Keep in high-yield savings"/></div>
+    <button class="btn btn-primary btn-full" onclick="saveGoal()">Save Goal</button>
+  </div>
+  </div>
+
+<!-- RECONCILIATION MODAL -->
+  <div class="overlay" id="modal-recon">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">&#9878; Reconcile Account</span>
+      <button class="close-btn" onclick="closeModal('recon')">&#x2715;</button>
+    </div>
+    <input type="hidden" id="recon-account-id"/>
+    <div id="recon-account-name" style="font-size:13px;font-weight:600;color:var(--muted);margin-bottom:14px"></div>
+
+    <!-- Step 1: Enter bank balance -->
+    <div id="recon-step1">
+      <div class="field">
+        <label>Your Bank Statement Balance ($)</label>
+        <input id="recon-bank-bal" type="number" inputmode="decimal" placeholder="0.00"
+          oninput="updateReconDiff()"/>
+        <div class="txt-muted-sm-top">
+          Enter the current balance shown in your bank app or statement
+        </div>
+      </div>
+      <div class="recon-summary" id="recon-summary" style="display:none">
+        <div class="recon-row">
+          <span class="txt-muted">App balance</span>
+          <span id="recon-app-bal" style="font-weight:600"></span>
+        </div>
+        <div class="recon-row">
+          <span class="txt-muted">Your bank balance</span>
+          <span id="recon-bank-display" style="font-weight:600"></span>
+        </div>
+        <div class="recon-row total">
+          <span>Difference</span>
+          <span id="recon-diff-display"></span>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="runReconAnalysis()" id="recon-analyze-btn" style="display:none">
+        Analyze Difference
+      </button>
+    </div>
+
+    <!-- Step 2: Suggestions + adjustment -->
+    <div id="recon-step2" style="display:none">
+      <div class="recon-suggestions" id="recon-suggestions"></div>
+      <div class="recon-adj">
+        <div class="recon-adj-title">Log Adjustment</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:10px" id="recon-adj-hint"></div>
+        <div class="field" style="margin-bottom:10px">
+          <label>Reason</label>
+          <select id="recon-adj-reason" style="background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:8px;color:var(--text);font-size:13px;width:100%">
+            <option value="Bank fee">Bank fee not logged</option>
+            <option value="Interest earned">Interest earned</option>
+            <option value="Missing purchase">Missing purchase</option>
+            <option value="Missing deposit">Missing deposit</option>
+            <option value="Rounding error">Rounding / small error</option>
+            <option value="Unknown">Unknown</option>
+          </select>
+        </div>
+        <div class="field" class="m-0">
+          <label>Adjustment Amount ($) <span id="recon-adj-auto" style="color:var(--accent2);font-size:10px"></span></label>
+          <input id="recon-adj-amount" type="number" inputmode="decimal" placeholder="0.00"/>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="confirmReconcile()">
+        &#10003; Mark as Reconciled
+      </button>
+    </div>
+  </div>
+  </div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
