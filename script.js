@@ -9325,7 +9325,7 @@ function renderCashFlow(){
     const amt=getEffectiveIncome(i,yr,mo);
     const freqLabel=i.frequency!=='One-time'?' · '+i.frequency:'';
     return{label:i.source,sub:freqLabel,amt,color:'var(--green)'};
-  });
+  }).filter(r=>r.amt>0);
   const totalIn=incomeRows.reduce((s,r)=>s+r.amt,0);
 
   // ── Money Out ─────────────────────────────────
